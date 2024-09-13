@@ -1,0 +1,96 @@
+@font-face {
+  font-family: "Anuphan";
+  src: url("./assets/fonts/Anuphan-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Anuphan";
+  src: url("./assets/fonts/Anuphan-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Anuphan";
+  src: url("./assets/fonts/Anuphan-Light.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+:root {
+  --black: #000;
+  --white: #fff;
+  --white-grey-1: #fdfdfd;
+  --grey: #949494;
+  --bg-grey: #f5f5f5;
+  --soft-grey: #f0f0f0;
+  --soft-grey-hover: #f2f2f2;
+  --grey-75: #444444;
+  --grey-50: #929292;
+  --login-btn-hover: #373a3e;
+  --grey-25: #e0e0e0;
+  --active-sidebar: #fdfdfd;
+  --int-hover: #e4e4e4;
+  --text-skeleton: #525252;
+  --text-loading: #cccccc;
+  --main-color-hover: #dae5f3;
+  --sidebar-active: #dae5f3;
+  --sidebar-none-active: #81878f;
+  --danger-color: #e74c3c;
+  --danger-color-hover: #943126;
+  --danger-warning-color: #ff614f;
+  --secondary-color-badge: #4646dc;
+  --active-color-light-badge: #dceeff;
+  --yellow-color: #f1c40f;
+  --unread-color: #ebf5fb;
+  --theme-menu-color: #28b463;
+  --logout-menu-color: #cb4335;
+  --probe-noti-color: #f1948a;
+  --plug-noti-color: #40e0d0;
+  --connect-noti-color: #de3163;
+  --cool-temperature: #a3d7ff;
+  --badges-error-color: #ffc7c1;
+  --warning-light: #fff6d1;
+
+  /* Sweet alert mod colors */
+  --warning-primary: #ed6f00;
+  --warning-seccond: #de771d;
+  --danger-primary: #ca1515;
+  --danger-seccond: #cb5656;
+  --success-primary: #5fd31c;
+  --success-seccond: #80d54f;
+
+  --danger-15: #3b2a27;
+  --danger-25: #573d39;
+  --danger-50: #ffc6c0;
+  --danger-75: #fa877b;
+  --danger-100: #e94230;
+
+  /* Dark mode */
+  --main-dark-color: #181818;
+  --main-seccond-color: #252525;
+  --main-last-color: #353535;
+  --border-dark-color: #555555;
+  --hover-dark-color: #444444;
+  --main-last-rgba: rgba(53, 53, 53, 0.4);
+  --main-last-rgba-05: rgba(0, 0, 0, 0.15);
+  --main-last-rgba-03: rgba(50, 50, 50, 0.1);
+  --main-white-rgba: rgba(255, 255, 255, 0.5);
+  --main-black-tb: rgba(150, 150, 150, 0.1);
+
+  /* border */
+  --border-radius-small: 1rem;
+  /* .55rem */
+  --border-radius-big: 1.70rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Anuphan", sans-serif;
+  /* outline: 1px solid red; */
+  /* user-select: none;
+  -webkit-user-select: none; */
+}

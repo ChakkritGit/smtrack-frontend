@@ -1,0 +1,54 @@
+import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri"
+import LangguageSelector from "../lang/LangguageSelector"
+import Notification from "../../pages/notification/notification"
+import Navprofile from "../../pages/profile/navprofile"
+import ToggleButton from "../../theme/ToggleButton"
+import { ExpandContainer, ExpandSidebar, HamburgerExpand, Nav, NavRight, NavRightPipe, Navleft } from "../../style/style"
+import Button from 'react-bootstrap/Button'
+import { useEffect } from "react"
+import Globalsearch from "../filter/globalsearch"
+import { useDispatch, useSelector } from "react-redux"
+import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { setExpand } from "../../stores/utilsStateSlice"
+import { storeDispatchType } from "../../stores/store"
+
+type navbar = {
+  handleShow: () => void
+}
+
+export default function Navbar(navbar: navbar) {
+  const dispatch = useDispatch<storeDispatchType>()
+  const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  useEffect(() => {
+    localStorage.setItem('expandaside', expand.toString())
+  }, [expand])
+
+  return (
+    <Nav>
+      <Navleft>
+        <ExpandContainer>
+          <ExpandSidebar onClick={() => expand ? dispatch(setExpand(false)) : dispatch(setExpand(true))}>
+            {
+              expand ? <RiMenuUnfoldLine /> : <RiMenuFoldLine />
+            }
+          </ExpandSidebar>
+        </ExpandContainer>
+        <HamburgerExpand $primary={true}>
+          <Button onClick={navbar.handleShow}>
+            <RiMenuUnfoldLine />
+          </Button>
+        </HamburgerExpand>
+        <Globalsearch />
+        {import.meta.env.VITE_APP_NODE_ENV === 'development' && <div>{import.meta.env.VITE_APP_API}</div>}
+      </Navleft>
+      <NavRight>
+        <Notification />
+        <NavRightPipe />
+        <LangguageSelector />
+        <ToggleButton />
+        <NavRightPipe />
+        <Navprofile />
+      </NavRight>
+    </Nav>
+  )
+}
