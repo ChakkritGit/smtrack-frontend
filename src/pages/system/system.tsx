@@ -4,10 +4,10 @@ import {
   SettingRightContainer, SettingSystemContainer
 } from "../../style/style"
 import { useTranslation } from "react-i18next"
-import { RiAlarmWarningLine, RiLogoutBoxRLine, RiPaletteLine, RiTranslate2, RiUser6Line } from "react-icons/ri"
+import { RiAlarmWarningLine, RiFileTextLine, RiLogoutBoxRLine, RiPaletteLine, RiTranslate2, RiUser6Line } from "react-icons/ri"
 import { useState } from "react"
 import Color from "./display"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import Account from "./account"
 import { useDispatch, useSelector } from "react-redux"
 import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
@@ -19,6 +19,7 @@ import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLi
 import { cookieOptions, cookies } from "../../constants/constants"
 import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
 import { storeDispatchType } from "../../stores/store"
+import { useTheme } from "../../theme/ThemeProvider"
 
 export default function System() {
   const { t } = useTranslation()
@@ -26,6 +27,7 @@ export default function System() {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const [pagenumber, setPagenumber] = useState(1)
   const navigate = useNavigate()
+  const { theme } = useTheme()
 
   const logOut = () => {
     dispatch(setCookieEncode(''))
@@ -73,6 +75,14 @@ export default function System() {
                   {t('titleNotification')}
                 </span>
               </ListMenu>
+              <Link to={'/logs'} style={{ color: theme.mode === 'dark' ? 'white' : 'black', textDecoration: 'none' }}>
+                <ListMenu>
+                  <RiFileTextLine />
+                  <span>
+                    Logs
+                  </span>
+                </ListMenu>
+              </Link>
             </div>
             <ListMenu $logout onClick={() =>
               swalWithBootstrapButtons

@@ -16,7 +16,7 @@ import {
 } from "../../style/style"
 import DevicesInfoCard from "../../components/home/devicesInfoCard"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useEffect } from "react"
 import { wardsType } from "../../types/ward.type"
 import { hospitalsType } from "../../types/hospital.type"
@@ -201,7 +201,6 @@ export default function Home() {
     if (hospitalID) {
       updateLocalStorageAndDispatch('selectHos', hospitalID, setHosId)
       setWardname(wardData.filter((items) => items.hospital.hosId === hospitalID))
-    } else {
     }
   }
 
@@ -657,6 +656,22 @@ export default function Home() {
       label: item[labelKey] as unknown as string
     }))[0]
 
+
+  const filteredCards = useMemo(() => {
+    return cardFilterData.map((items) => (
+      <DevicesCard
+        key={items.id}
+        title={items.title}
+        count={items.count}
+        times={items.times}
+        svg={items.svg}
+        cardname={items.cardname as FilterText}
+        switchcase={items.switchcase}
+        active={items.active}
+      />
+    ));
+  }, [cardFilterData])
+
   return (
     <Container className="home-lg">
       <motion.div
@@ -683,20 +698,7 @@ export default function Home() {
                 }
               </DevHomeHeadTile>
               <DevHomeSecctionOne>
-                {
-                  cardFilterData.map((items) => (
-                    <DevicesCard
-                      key={items.id}
-                      title={items.title}
-                      count={items.count}
-                      times={items.times}
-                      svg={items.svg}
-                      cardname={items.cardname as FilterText}
-                      switchcase={items.switchcase}
-                      active={items.active}
-                    />
-                  ))
-                }
+                {filteredCards}
               </DevHomeSecctionOne>
               <AboutBox>
                 <h5>{t('detailAllBox')}</h5>

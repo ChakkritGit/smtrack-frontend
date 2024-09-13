@@ -36,6 +36,7 @@ import { fetchHospitals, fetchWards, filtersDevices } from '../stores/dataArrayS
 import { fetchUserData } from '../stores/userSlice'
 import { fetchDevicesLog } from '../stores/LogsSlice'
 import { fetchProbeData } from '../stores/probeSlice'
+import Logs from '../pages/setting/Logs'
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,11 @@ export const router = createBrowserRouter([
                 element: <Setting />,
                 errorElement: <SomethingWrong />
               },
+              {
+                path: 'logs',
+                element: <Logs />,
+                errorElement: <SomethingWrong />
+              }
             ],
           },
           {
