@@ -117,5 +117,23 @@ export const TabContainer = styled.div`
 `
 
 export const TabButton = styled.button<{ $primary?: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  width: max-content;
+  max-width: 150px;
+  max-height: 35px;
+  border-radius: var(--border-radius-big);
+  border: 2px solid ${props => props.$primary ? 'var(--main-color)' : 'var(--soft-grey)'};
+  background-color: ${props => props.$primary ? 'var(--main-color)' : 'unset'};
+  color: var(--soft-grey);
+  font-weight: bold;
+  padding: 0.5rem .8rem;
 
+  &:hover {
+    background-color: var(--main-color);
+    border: 2px solid var(--main-color);
+    transition: .3s;
+  }
 `

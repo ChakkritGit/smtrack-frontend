@@ -40,9 +40,6 @@ export default function Adddevform(managedevices: managedevices) {
     locationPic: null as File | null,
     macAddWiFi: pagestate !== "add" ? devdata.config.macAddWiFi : ''
   })
-  const [Mode, setMode] = useState(1)
-  // const [tabs, setTabs] = useState(1)
-  const [hosid, setHosid] = useState('')
   const dispatch = useDispatch<storeDispatchType>()
   const { cookieDecode, tokenDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { token, userLevel } = cookieDecode
@@ -64,6 +61,12 @@ export default function Adddevform(managedevices: managedevices) {
   })
   const [firmwareName, setFirmwareName] = useState<string>('')
   const [firmwareList, setFirmwareList] = useState<firmwareType[]>([])
+  const [Mode, setMode] = useState({
+    wifi: config?.mode ? Number(config.mode) : 0,
+    lan: config?.modeEth ? Number(config.modeEth) : 0
+  })
+  const [tabs, setTabs] = useState(1)
+  const [hosid, setHosid] = useState('')
 
   const fetchWard = async () => {
     try {
@@ -417,6 +420,58 @@ export default function Adddevform(managedevices: managedevices) {
     }
   }
 
+  const handleSubmitEthernetAuto = async (e: FormEvent) => {
+    e.preventDefault()
+    try {
+      const bodyData = {
+        modeEth: "0",
+      }
+      const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+        bodyData, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      })
+      Swal.fire({
+        title: t('alertHeaderSuccess'),
+        text: response.data.message,
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+      dispatch(fetchDevicesData(token))
+      const deviceModel = devdata.devSerial.substring(0, 3) === "eTP" ? "eTEMP" : "iTEMP"
+      if (deviceModel === 'eTEMP') {
+        client.publish(`siamatic/etemp/v1/${devdata.devSerial}/adj`, 'on')
+      } else {
+        client.publish(`siamatic/items/v3/${devdata.devSerial}/adj`, 'on')
+      }
+      client.publish(`${devdata.devSerial}/adj`, 'on')
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 401) {
+          dispatch(setShowAlert(true))
+        } else {
+          Swal.fire({
+            title: t('alertHeaderError'),
+            text: error.response?.data.message,
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          })
+        }
+      } else {
+        Swal.fire({
+          title: t('alertHeaderError'),
+          text: 'Uknown Error',
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        })
+      }
+    }
+  }
+
   const setValuestate = (value: string) => {
     setFormdata({ ...formdata, groupId: value })
   }
@@ -717,37 +772,51 @@ export default function Adddevform(managedevices: managedevices) {
           </ModalHead>
         </Modal.Header>
         <TabContainer>
-          <TabButton>Wi-Fi</TabButton>
-          <TabButton>Lan</TabButton>
+          <TabButton $primary={tabs === 1} onClick={() => setTabs(1)}>Wi-Fi</TabButton>
+          <TabButton $primary={tabs === 2} onClick={() => setTabs(2)}>Lan</TabButton>
         </TabContainer>
-        <Form onSubmit={Mode === 1 ? handleSubmitDHCP : Mode === 2 ? handleSubmitManual : handleSubmitEthernet}>
+        <Form onSubmit={Mode.wifi === 0 ? handleSubmitDHCP : Mode.wifi === 1 ? handleSubmitManual : Mode.lan === 0 ? handleSubmitEthernetAuto : handleSubmitEthernet}>
           <Modal.Body>
             <Row>
               <Col lg={12} className='mb-3'>
                 <ModeNetworkFlex>
-                  <Form.Check
-                    type='radio'
-                    label='DHCP'
-                    checked={Mode === 1}
-                    onChange={() => setMode(1)}
-                  />
-                  <Form.Check
-                    type='radio'
-                    label='Manual'
-                    checked={Mode === 2}
-                    onChange={() => setMode(2)}
-                  />
-                  <Form.Check
-                    type='radio'
-                    label='Ethernet'
-                    checked={Mode === 3}
-                    onChange={() => setMode(3)}
-                  />
+                  {
+                    tabs === 1 ?
+                      <>
+                        <Form.Check
+                          type='radio'
+                          label='DHCP'
+                          checked={Mode.wifi === 0}
+                          onChange={() => setMode({ ...Mode, wifi: 0 })}
+                        />
+                        <Form.Check
+                          type='radio'
+                          label='Manual'
+                          checked={Mode.wifi === 1}
+                          onChange={() => setMode({ ...Mode, wifi: 1 })}
+                        />
+                      </>
+                      :
+                      <>
+                        <Form.Check
+                          type='radio'
+                          label='Ethernet'
+                          checked={Mode.lan === 0}
+                          onChange={() => setMode({ ...Mode, lan: 0 })}
+                        />
+                        <Form.Check
+                          type='radio'
+                          label='Auto'
+                          checked={Mode.lan === 1}
+                          onChange={() => setMode({ ...Mode, lan: 1 })}
+                        />
+                      </>
+                  }
                 </ModeNetworkFlex>
               </Col>
               {
-                Mode === 1 ?
-                  <Row key={Mode}>
+                tabs === 1 && Mode.wifi === 0 ?
+                  <Row key={Mode.wifi}>
                     <Col lg={6}>
                       <InputGroup className="mb-3">
                         <Form.Label className='w-100'>
@@ -790,8 +859,8 @@ export default function Adddevform(managedevices: managedevices) {
                     </Col>
                   </Row>
                   :
-                  Mode === 2 ?
-                    <Row key={Mode}>
+                  tabs === 1 && Mode.wifi === 1 ?
+                    <Row key={Mode.wifi}>
                       <Col lg={6}>
                         <InputGroup className="mb-3">
                           <Form.Label className='w-100'>
@@ -846,60 +915,63 @@ export default function Adddevform(managedevices: managedevices) {
                       </Col>
                     </Row>
                     :
-                    <Row>
-                      <Col lg={6}>
-                        <InputGroup className="mb-3">
-                          <Form.Label className='w-100'>
-                            IP
-                            <Form.Control
-                              type='text'
-                              id='Ip Ethernet'
-                              value={netConfig.ipEth}
-                              onChange={(e) => setNetConfig({ ...netConfig, ipEth: e.target.value })}
-                            />
-                          </Form.Label>
-                        </InputGroup>
-                      </Col>
-                      <Col lg={6}>
-                        <InputGroup className="mb-3">
-                          <Form.Label className='w-100'>
-                            Subnet
-                            <Form.Control
-                              type='text'
-                              id='SubNet Ethernet'
-                              value={netConfig.subNetEth}
-                              onChange={(e) => setNetConfig({ ...netConfig, subNetEth: e.target.value })}
-                            />
-                          </Form.Label>
-                        </InputGroup>
-                      </Col>
-                      <Col lg={6}>
-                        <InputGroup className="mb-3">
-                          <Form.Label className='w-100'>
-                            Getway
-                            <Form.Control
-                              type='text'
-                              id='Getway Ethernet'
-                              value={netConfig.getwayEth}
-                              onChange={(e) => setNetConfig({ ...netConfig, getwayEth: e.target.value })}
-                            />
-                          </Form.Label>
-                        </InputGroup>
-                      </Col>
-                      <Col lg={6}>
-                        <InputGroup className="mb-3">
-                          <Form.Label className='w-100'>
-                            DNS
-                            <Form.Control
-                              type='text'
-                              id='DNS Ethernet'
-                              value={netConfig.dnsEth}
-                              onChange={(e) => setNetConfig({ ...netConfig, dnsEth: e.target.value })}
-                            />
-                          </Form.Label>
-                        </InputGroup>
-                      </Col>
-                    </Row>
+                    tabs === 2 && Mode.lan === 0 ?
+                      <Row>
+                        <Col lg={6}>
+                          <InputGroup className="mb-3">
+                            <Form.Label className='w-100'>
+                              IP
+                              <Form.Control
+                                type='text'
+                                id='Ip Ethernet'
+                                value={netConfig.ipEth}
+                                onChange={(e) => setNetConfig({ ...netConfig, ipEth: e.target.value })}
+                              />
+                            </Form.Label>
+                          </InputGroup>
+                        </Col>
+                        <Col lg={6}>
+                          <InputGroup className="mb-3">
+                            <Form.Label className='w-100'>
+                              Subnet
+                              <Form.Control
+                                type='text'
+                                id='SubNet Ethernet'
+                                value={netConfig.subNetEth}
+                                onChange={(e) => setNetConfig({ ...netConfig, subNetEth: e.target.value })}
+                              />
+                            </Form.Label>
+                          </InputGroup>
+                        </Col>
+                        <Col lg={6}>
+                          <InputGroup className="mb-3">
+                            <Form.Label className='w-100'>
+                              Getway
+                              <Form.Control
+                                type='text'
+                                id='Getway Ethernet'
+                                value={netConfig.getwayEth}
+                                onChange={(e) => setNetConfig({ ...netConfig, getwayEth: e.target.value })}
+                              />
+                            </Form.Label>
+                          </InputGroup>
+                        </Col>
+                        <Col lg={6}>
+                          <InputGroup className="mb-3">
+                            <Form.Label className='w-100'>
+                              DNS
+                              <Form.Control
+                                type='text'
+                                id='DNS Ethernet'
+                                value={netConfig.dnsEth}
+                                onChange={(e) => setNetConfig({ ...netConfig, dnsEth: e.target.value })}
+                              />
+                            </Form.Label>
+                          </InputGroup>
+                        </Col>
+                      </Row>
+                      :
+                      <></>
               }
             </Row>
           </Modal.Body>

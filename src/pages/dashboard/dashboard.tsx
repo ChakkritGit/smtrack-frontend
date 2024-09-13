@@ -77,35 +77,41 @@ export default function Dashboard() {
               </>
               :
               devicesLogs.log?.length === 0 ?
-                <OfflineDataFlex>
-                  <span>{t('todayNoData')}</span>
-                  <div>
+                <>
+                  <Devicesinfo
+                    devicesData={devicesLogs}
+                    index={0}
+                  />
+                  <OfflineDataFlex>
+                    <span>{t('todayNoData')}</span>
                     <div>
                       <div>
-                        <RiBarChartBoxLine size={62} />
+                        <div>
+                          <RiBarChartBoxLine size={62} />
+                        </div>
+                        <div>
+                          <span>{t('pageChart')}</span>
+                          <button
+                            onClick={() => navigate(`/dashboard/fullchart`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
+                            {t('seeLastData')}
+                          </button>
+                        </div>
                       </div>
                       <div>
-                        <span>{t('pageChart')}</span>
-                        <button
-                          onClick={() => navigate(`/dashboard/fullchart`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
-                          {t('seeLastData')}
-                        </button>
+                        <div>
+                          <RiTableView size={62} />
+                        </div>
+                        <div>
+                          <span>{t('pageTable')}</span>
+                          <button
+                            onClick={() => navigate(`/dashboard/fulltable`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
+                            {t('seeLastData')}
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <div>
-                        <RiTableView size={62} />
-                      </div>
-                      <div>
-                        <span>{t('pageTable')}</span>
-                        <button
-                          onClick={() => navigate(`/dashboard/fulltable`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
-                          {t('seeLastData')}
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </OfflineDataFlex>
+                  </OfflineDataFlex>
+                </>
                 :
                 <PageLoading />
           }

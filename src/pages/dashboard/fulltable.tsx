@@ -9,7 +9,7 @@ import {
 } from "../../style/style"
 import {
   RiDashboardFill,
-  RiDoorClosedLine, RiDoorOpenLine, RiFileCloseLine, RiFileExcel2Line, RiLoader3Line
+  RiDoorClosedLine, RiDoorOpenLine, RiFileExcel2Line
 } from "react-icons/ri"
 import { useEffect, useState } from "react"
 import { logtype } from "../../types/log.type"
@@ -18,7 +18,6 @@ import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { useTranslation } from "react-i18next"
 import DataTable, { TableColumn } from "react-data-table-component"
-import Loading from "../../components/loading/loading"
 import * as XLSX from 'xlsx'
 import { RiArrowRightSLine } from "react-icons/ri"
 import toast from "react-hot-toast"
@@ -30,6 +29,7 @@ import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import { storeDispatchType } from "../../stores/store"
+import PageLoading from "../../components/loading/page.loading"
 
 export default function Fulltable() {
   const { t } = useTranslation()
@@ -468,10 +468,10 @@ export default function Fulltable() {
               </FilterContainer>
             }{
               loading ?
-                <Loading loading={true} title={t('loading')} icn={<RiLoader3Line />} />
+                <PageLoading reset={pageNumber} />
                 :
                 tableData.length === 0 ?
-                  <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                  <PageLoading reset={pageNumber} />
                   :
                   <FulltableContainer>
                     <DataTable

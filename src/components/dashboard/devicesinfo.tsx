@@ -288,8 +288,8 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
         <CardstatusSpecial
           title={t('dashProbe')}
           svg={<RiCpuLine />}
-          valuesone={'Temp: ' + devicesData?.log[0]?.tempAvg.toFixed(2)}
-          valuestwo={'Hum: ' + devicesData?.log[0]?.humidityAvg.toFixed(2)}
+          valuesone={`Temp: ${devicesData?.log[0]?.tempAvg ? devicesData?.log[0]?.tempAvg.toFixed(2) : '- -'}`}
+          valuestwo={`Hum: ${devicesData?.log[0]?.humidityAvg ? devicesData?.log[0]?.humidityAvg.toFixed(2) : '- -'}`}
           pipeone={'°C'}
           pipetwo={'%RH'}
           alertone={Number(devicesData?.log[0]?.tempAvg.toFixed(2)) === 0 || Number(devicesData?.log[0]?.tempAvg.toFixed(2)) >= probe[0]?.tempMax || Number(devicesData?.log[0]?.tempAvg.toFixed(2)) <= probe[0]?.tempMin}
@@ -326,16 +326,16 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
         <CardstatusNomal
           title={t('dashBattery')}
           valuestext={
-            devicesData?.log[0]?.battery + '%'
+            `${devicesData?.log[0]?.battery ? devicesData?.log[0]?.battery : '- -'} %`
           }
           svg={<RiBatteryChargeLine />}
-          alertone={devicesData?.log[0]?.battery === 0}
+          alertone={devicesData?.log[0]?.battery === 0 || devicesData?.log[0]?.battery === undefined}
         />
         <CardstatusSpecial
           title={t('dashTempofDay')}
           svg={<RiTempColdLine />}
-          valuesone={'↑ ' + Number(Math.max(...(devicesData ? devicesData?.log.map((items) => items.tempAvg) : [0]))).toFixed(2)}
-          valuestwo={'↓ ' + Number(Math.min(...(devicesData ? devicesData?.log.map((items) => items.tempAvg) : [0]))).toFixed(2)}
+          valuesone={`↑ ${devicesData?.log.length > 0 ? Number(Math.max(...(devicesData?.log.map((items) => items.tempAvg)))).toFixed(2) : '- -'}`}
+          valuestwo={`↓ ${devicesData?.log.length > 0 ? Number(Math.min(...(devicesData?.log.map((items) => items.tempAvg)))).toFixed(2) : '- -'}`}
           pipeone={'°C'}
           pipetwo={'°C'}
         />

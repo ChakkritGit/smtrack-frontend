@@ -156,17 +156,18 @@ export default function RoutesComponent() {
   const { toasts } = useToasterStore()
   const toastLimit = 5
 
-  useEffect(() => {
-    const handleConnect = () => { }
-    const handleDisconnect = (reason: any) => console.error("Disconnected from Socket server:", reason)
-    const handleError = (error: any) => console.error("Socket error:", error)
-    const handleMessage = (response: socketResponseType) => {
-      if (!userLevel && !hosId) return
-      if (userLevel === "0" || userLevel === "1" || hosId === response.hospital) {
-        dispatch(setSocketData(response))
-      }
-    }
+  const handleConnect = () => { }
+  const handleDisconnect = (reason: any) => console.error("Disconnected from Socket server:", reason)
+  const handleError = (error: any) => console.error("Socket error:", error)
+  const handleMessage = (response: socketResponseType) => {
+    if (!userLevel && !hosId) return
 
+    if (userLevel === "0" || userLevel === "1" || hosId === response.hospital) {
+      dispatch(setSocketData(response))
+    }
+  }
+
+  useEffect(() => {
     socket.on("connect", handleConnect)
     socket.on("disconnect", handleDisconnect)
     socket.on("error", handleError)

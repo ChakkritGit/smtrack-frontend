@@ -15,7 +15,7 @@ import {
 import { BsStars } from "react-icons/bs"
 import {
   RiCloseLine, RiDashboardFill, RiFilePdf2Line,
-  RiFolderSharedLine, RiImageLine, RiLoader3Line, RiPrinterLine
+  RiFolderSharedLine, RiImageLine, RiPrinterLine
 } from "react-icons/ri"
 import { useEffect, useRef, useState } from "react"
 import axios, { AxiosError } from "axios"
@@ -27,7 +27,6 @@ import { PDFViewer } from '@react-pdf/renderer'
 import Fullchartpdf from "../../components/pdf/fullchartpdf"
 import Images_one from '../../assets/images/Thanes.png'
 import html2canvas from 'html2canvas'
-import Loading from "../../components/loading/loading"
 import { swalOptimizeChartButtons } from "../../components/dropdown/sweetalertLib"
 import { RiArrowRightSLine } from "react-icons/ri"
 import toast from "react-hot-toast"
@@ -44,6 +43,7 @@ import { storeDispatchType } from "../../stores/store"
 import { useTheme } from "../../theme/ThemeProvider"
 import ReactToPrint from "react-to-print"
 import { PrintButton } from "../../style/components/warranty.styled"
+import PageLoading from "../../components/loading/page.loading"
 
 export default function Fullchart() {
   const { t } = useTranslation()
@@ -458,7 +458,7 @@ export default function Fullchart() {
                   />
                 </FullchartBodyChartCon>
                 :
-                <Loading loading={true} title={t('loading')} icn={<RiLoader3Line />} />
+                <PageLoading reset={pageNumber} />
             }
           </CustomChart>
           <Modal size={'xl'} show={show} onHide={handleClose} scrollable>

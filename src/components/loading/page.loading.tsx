@@ -2,15 +2,23 @@ import { RiCloseLine, RiLoader2Line } from "react-icons/ri"
 import { FailedtoLoad, PageLoadContainer } from "../../style/components/page.loading"
 import Loading from "./loading"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const PageLoading = () => {
+type state = {
+  reset: number
+}
+
+const PageLoading = (state: state) => {
   const { t } = useTranslation()
   const [timeOut, setTimeOut] = useState(false)
 
+  useEffect(() => {
+    setTimeOut(false)
+  }, [state.reset])
+
   setInterval(() => {
     setTimeOut(true)
-  }, 8000)
+  }, 15000)
 
   return (
     <>

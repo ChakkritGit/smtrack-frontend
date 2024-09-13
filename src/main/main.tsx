@@ -32,6 +32,10 @@ export default function Main() {
   const [isScrollingDown, setIsScrollingDown] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   // const location = useLocation()
+  const dispatchedDevices = new Set<{
+    device: string | undefined,
+    message: string | undefined
+  }>()
 
   const decodeToken = async () => {
     const decoded: jwtToken = await jwtDecode(token)
@@ -50,7 +54,27 @@ export default function Main() {
 
   useEffect(() => {
     if (!token) return
+    const deviceName = socketData
+    if (dispatchedDevices.has({
+      device: deviceName?.device,
+      message: deviceName?.message
+    })) {
+      console.log(`Device ${deviceName} already dispatched, waiting 30 seconds.`)
+      return
+    }
+
     dispatch(fetchDevicesData(token))
+
+    dispatchedDevices.add({
+      device: deviceName?.device,
+      message: deviceName?.message
+    })
+    setTimeout(() => {
+      dispatchedDevices.delete({
+        device: deviceName?.device,
+        message: deviceName?.message
+      })
+    }, 30000)
   }, [socketData, token, reFetchData])
 
   useEffect(() => {

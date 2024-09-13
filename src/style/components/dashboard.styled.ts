@@ -4,9 +4,8 @@ export const OfflineDataFlex = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 3rem;
-  height: calc(100dvh - 130px);
+  margin-top: 3rem;
 
   &>span {
     font-size: 32px;
