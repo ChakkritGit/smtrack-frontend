@@ -66,38 +66,38 @@ export default function Main() {
 
     if (!deviceKey || !message) return
 
-    console.log('deviceKey:', deviceKey)
-    console.log('message:', message)
+    // console.log('deviceKey:', deviceKey)
+    // console.log('message:', message)
 
-    console.log('dispatchedDevices.has(deviceKey):', dispatchedDevices.has(deviceKey))
-    console.log('dispatchedDevices.get(deviceKey):', dispatchedDevices.get(deviceKey))
+    // console.log('dispatchedDevices.has(deviceKey):', dispatchedDevices.has(deviceKey))
+    // console.log('dispatchedDevices.get(deviceKey):', dispatchedDevices.get(deviceKey))
 
     const hasSameEntry = Array.from(dispatchedDevices.entries()).some(
       ([key, msg]) => key === deviceKey && msg === message
     )
 
     if (hasSameEntry) {
-      console.log(`Device ${deviceKey} already dispatched, waiting 30 seconds.`)
+      // console.log(`Device ${deviceKey} already dispatched, waiting 30 seconds.`)
       return
     }
 
     dispatch(fetchDevicesData(token))
-    console.log('passed, dispatching and setting new device')
+    // console.log('passed, dispatching and setting new device')
 
     if (dispatchedDevices.size > 10) {
       const oldestKey = dispatchedDevices.keys().next().value
       dispatchedDevices.delete(oldestKey)
-      console.log('Map after removing oldest:', dispatchedDevices)
+      // console.log('Map after removing oldest:', dispatchedDevices)
     }
 
     dispatchedDevices.set(deviceKey, message)
 
-    console.log('Map after set:', dispatchedDevices)
+    // console.log('Map after set:', dispatchedDevices)
 
     const timer = setTimeout(() => {
-      console.log('Timeout reached, removing device:', deviceKey)
+      // console.log('Timeout reached, removing device:', deviceKey)
       dispatchedDevices.delete(deviceKey)
-      console.log('Map after delete:', dispatchedDevices)
+      // console.log('Map after delete:', dispatchedDevices)
     }, 18000)
 
     return () => clearTimeout(timer)

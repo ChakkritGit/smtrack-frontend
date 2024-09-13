@@ -1725,12 +1725,14 @@ export const HomeContainerFlex = styled.div<{ $primary?: boolean }>`
   margin-bottom: 1rem;
 `
 
-export const DevHomeDetails = styled.div<{ $primary?: boolean }>`
+export const DevHomeDetails = styled.div<{ $primary?: boolean, $limitListFlex?: boolean }>`
 display: flex;
 align-items: center;
 justify-content: center;
 gap: .5rem;
 margin-top: 1rem;
+
+${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? 'justify-content: center;' : 'justify-content: center;'}
 
 & > div {
   display: ${props => props.$primary ? 'flex' : 'grid'};
