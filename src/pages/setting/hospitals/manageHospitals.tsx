@@ -16,7 +16,7 @@ import Addhospitals from "./addhospitals"
 import Swal from "sweetalert2"
 import Addward from "./addward"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
-import { useEffect } from "react"
+import { memo, useEffect } from "react"
 
 export default function ManageHospitals() {
   const { t } = useTranslation()
@@ -158,14 +158,13 @@ export default function ManageHospitals() {
         <Actiontablehos key={index}>
           <Addhospitals
             pagestate={'edit'}
-            hosdata={
-              {
-                hosId: item.hosId,
-                hosName: item.hosName,
-                hosTelephone: item.hosTelephone,
-                hosAddress: item.hosAddress,
-                hosPic: item.hosPic
-              }}
+            hosdata={{
+              hosId: item.hosId,
+              hosName: item.hosName,
+              hosTelephone: item.hosTelephone,
+              hosAddress: item.hosAddress,
+              hosPic: item.hosPic
+            }}
             key={item.hosId}
           />
           {
@@ -250,7 +249,7 @@ export default function ManageHospitals() {
     },
   ]
 
-  const ExpandedComponent = ({ data }: { data: hospitalsType }) => (
+  const ExpandedComponent = memo(({ data }: { data: hospitalsType }) => (
     <SubWardColumnFlex>
       <DataTable
         columns={subWardColumns}
@@ -258,7 +257,7 @@ export default function ManageHospitals() {
         responsive
       />
     </SubWardColumnFlex>
-  )
+  ))
 
   // Filter Data
   const filteredItems = hospitalsData.filter(item => item.hosName.includes(searchQuery) || item.hosTelephone.includes(searchQuery))
@@ -280,9 +279,6 @@ export default function ManageHospitals() {
         </ManageHospitalsHeaderAction>
       </ManageHospitalsHeader>
       <ManageHospitalsBody>
-        {/* {
-          JSON.stringify(hospitalsData)
-        } */}
         <DataTable
           columns={columns}
           data={filteredItems}
