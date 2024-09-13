@@ -62,7 +62,7 @@ export const OfflineDataFlex = styled.div`
           height: 50px;
           background-color: var(--main-color-opacity2);
           border-radius: var(--border-radius-small);
-          color: var(--main-color);
+          color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--main-color)'};
           font-size: 18px;
           font-weight: bold;
           border: unset;

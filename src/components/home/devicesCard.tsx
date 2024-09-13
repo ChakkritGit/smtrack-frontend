@@ -20,13 +20,10 @@ type DevCardProps = {
 export default function DevicesCard(DevCard: DevCardProps) {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { switchcase } = DevCard
-  const acTive = () => {
-    switchcase?.(DevCard.cardname, !DevCard.active)
-  }
 
   return (
     <DevCardContainer
-      onClick={acTive}
+      onClick={() => switchcase?.(DevCard.cardname, !DevCard.active)}
       $primary={DevCard.active}
       $eventcount={DevCard.count > 0}
       $responsivecard={expand}>

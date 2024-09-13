@@ -72,4 +72,15 @@ type deviceLog = {
   updateAt: string
 }
 
-export type { devices, devicesType, managedevices, deviceLog }
+type cardFilterType = {
+  probe: boolean,
+  door: boolean,
+  connect: boolean,
+  plug: boolean,
+  sd: boolean,
+  adjust: boolean,
+  repair: boolean,
+  warranty: boolean
+}
+
+export type { devices, devicesType, managedevices, deviceLog, cardFilterType }
