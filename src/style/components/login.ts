@@ -30,7 +30,7 @@ background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-last-colo
 color: ${props => props.theme.mode === 'dark' ? 'var(--white-grey-1)' : 'var(--main-last-color)'};
 box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
 border-radius: var(--border-radius-big);
-padding: 3rem;
+padding: 2rem;
 width: 570px;
 
 &>div:nth-child(1) {
