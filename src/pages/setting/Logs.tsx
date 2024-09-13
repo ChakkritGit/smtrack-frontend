@@ -94,7 +94,7 @@ function Logs() {
       <pre
         ref={preRef}
         onScroll={handleScroll}
-        style={{ maxHeight: 'calc(100dvh - 100px)', overflowY: 'auto' }}
+        style={{ maxHeight: 'calc(100dvh - 200px)', overflowY: 'auto' }}
       >
         {text}
       </pre>
