@@ -24,7 +24,8 @@ import { useTheme } from "../../theme/ThemeProvider"
 export default function System() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { userLevel } = cookieDecode
   const [pagenumber, setPagenumber] = useState(1)
   const navigate = useNavigate()
   const { theme } = useTheme()
@@ -75,14 +76,14 @@ export default function System() {
                   {t('titleNotification')}
                 </span>
               </ListMenu>
-              <Link to={'/logs'} style={{ color: theme.mode === 'dark' ? 'white' : 'black', textDecoration: 'none' }}>
+              {userLevel === '0' && <Link to={'/logs'} style={{ color: theme.mode === 'dark' ? 'white' : 'black', textDecoration: 'none' }}>
                 <ListMenu>
                   <RiFileTextLine />
                   <span>
                     Logs
                   </span>
                 </ListMenu>
-              </Link>
+              </Link>}
             </div>
             <ListMenu $logout onClick={() =>
               swalWithBootstrapButtons

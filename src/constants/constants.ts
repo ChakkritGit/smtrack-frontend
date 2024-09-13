@@ -2,6 +2,7 @@ import { CookieType } from "../types/cookie.type"
 import Cookies, { CookieSetOptions } from "universal-cookie"
 import CryptoJS from "crypto-js"
 import { Schedule, ScheduleHour, ScheduleMinute } from "../types/config.type"
+import { FilterText } from "../types/component.type"
 
 export const getDateNow = () => {
   let date = new Date()
@@ -252,3 +253,14 @@ export const getFormattedDate = () => {
 
 export const formattedDate = getFormattedDate()
 export const yearMonth = formattedDate.substring(0, 6)
+
+export const createCard = (id: number, title: string, count: number, times: string, svg: JSX.Element, cardname: string, Switchcase: (filtertext: FilterText, cardactive: boolean) => void, active: boolean) => ({
+  id,
+  title,
+  count,
+  times,
+  svg,
+  cardname,
+  switchcase: Switchcase,
+  active
+})

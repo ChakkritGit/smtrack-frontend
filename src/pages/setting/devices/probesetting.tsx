@@ -140,7 +140,7 @@ export default function Probesetting() {
   ]
 
   // Filter Data
-  const filteredItems = probeData.filter(item => item.probeName && item.probeName.toLowerCase().includes(searchQuery.toLowerCase()) || item.probeType.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredItems = probeData.filter(item => item.probeName && item.probeName.toLowerCase().includes(searchQuery.toLowerCase()) || item.probeType.toLowerCase().includes(searchQuery.toLowerCase()) || item.devSerial.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (
     <ManageProbeContainer>

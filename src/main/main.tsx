@@ -32,7 +32,7 @@ export default function Main() {
   const [isScrollingDown, setIsScrollingDown] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   // const location = useLocation()
-  const dispatchedDevices = new Map<string, string>()
+  const dispatchedDevices = useRef(new Map()).current
   const isFirstLoad = useRef(true)
 
   const decodeToken = async () => {
@@ -59,25 +59,50 @@ export default function Main() {
       return
     }
 
-    const { device: deviceKey, message } = socketData || {}
+    const { device: rawDeviceKey, message: rawMessage } = socketData || {}
+
+    const deviceKey = rawDeviceKey?.trim().toLowerCase()
+    const message = rawMessage?.trim().toLowerCase()
+
     if (!deviceKey || !message) return
 
-    if (dispatchedDevices.has(deviceKey) && dispatchedDevices.get(deviceKey) === message) {
+    console.log('deviceKey:', deviceKey)
+    console.log('message:', message)
+
+    console.log('dispatchedDevices.has(deviceKey):', dispatchedDevices.has(deviceKey))
+    console.log('dispatchedDevices.get(deviceKey):', dispatchedDevices.get(deviceKey))
+
+    const hasSameEntry = Array.from(dispatchedDevices.entries()).some(
+      ([key, msg]) => key === deviceKey && msg === message
+    )
+
+    if (hasSameEntry) {
       console.log(`Device ${deviceKey} already dispatched, waiting 30 seconds.`)
       return
     }
 
     dispatch(fetchDevicesData(token))
+    console.log('passed, dispatching and setting new device')
+
+    if (dispatchedDevices.size > 10) {
+      const oldestKey = dispatchedDevices.keys().next().value
+      dispatchedDevices.delete(oldestKey)
+      console.log('Map after removing oldest:', dispatchedDevices)
+    }
 
     dispatchedDevices.set(deviceKey, message)
 
+    console.log('Map after set:', dispatchedDevices)
+
     const timer = setTimeout(() => {
+      console.log('Timeout reached, removing device:', deviceKey)
       dispatchedDevices.delete(deviceKey)
+      console.log('Map after delete:', dispatchedDevices)
     }, 18000)
 
     return () => clearTimeout(timer)
 
-  }, [socketData, token, reFetchData])
+  }, [socketData, token, dispatch, reFetchData])
 
   useEffect(() => {
     if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId, token }))
