@@ -13,13 +13,13 @@ https://siamatic.co.th
 Clone the project
 
 ```bash
-  git clone https://github.com/newton2000/etemp-reactbs.git
+  git clone https://github.com/ChakkritGit/etemp-react-bun.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd etemp-reactbs
+  cd etemp-react-bun
 ```
 
 Install dependencies
