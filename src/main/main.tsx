@@ -54,29 +54,29 @@ export default function Main() {
     if (!token) return
 
     if (isFirstLoad.current) {
-      console.log('First load in true')
       dispatch(fetchDevicesData(token))
       isFirstLoad.current = false
       return
     }
 
-    const deviceName = socketData
-    if (!deviceName) return
+    const { device: deviceKey, message } = socketData || {}
+    if (!deviceKey || !message) return
 
-    const deviceKey = deviceName?.device
-
-    if (dispatchedDevices.has(deviceKey) && dispatchedDevices.get(deviceKey) === deviceName?.message) {
+    if (dispatchedDevices.has(deviceKey) && dispatchedDevices.get(deviceKey) === message) {
       console.log(`Device ${deviceKey} already dispatched, waiting 30 seconds.`)
       return
     }
 
     dispatch(fetchDevicesData(token))
 
-    dispatchedDevices.set(deviceKey, deviceName?.message)
+    dispatchedDevices.set(deviceKey, message)
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       dispatchedDevices.delete(deviceKey)
-    }, 30000)
+    }, 18000)
+
+    return () => clearTimeout(timer)
+
   }, [socketData, token, reFetchData])
 
   useEffect(() => {
