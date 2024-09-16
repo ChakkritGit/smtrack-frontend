@@ -21,7 +21,7 @@ import Bottombar from "../components/navigation/bottombar"
 import { BottomNavigateWrapper } from "../style/components/bottom.navigate"
 import Popupcomponent from "../components/utils/popupcomponent"
 // import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
+// import 'nprogress/nprogress.css'
 
 export default function Main() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -84,7 +84,7 @@ export default function Main() {
     dispatch(fetchDevicesData(token))
     // console.log('passed, dispatching and setting new device')
 
-    if (dispatchedDevices.size > 10) {
+    if (dispatchedDevices.size > 30) {
       const oldestKey = dispatchedDevices.keys().next().value
       dispatchedDevices.delete(oldestKey)
       // console.log('Map after removing oldest:', dispatchedDevices)

@@ -171,6 +171,17 @@ export default function Home() {
     setCardFilterData(CardFilterData)
   }, [devicesFilter, t, wardId])
 
+  const storeCookie: { name: FilterText, cardState: boolean } = cookies.get('cardFilter')
+
+  useEffect(() => {
+    if (!storeCookie) return
+    Switchcase(storeCookie.name, storeCookie.cardState)
+
+    return () => {
+      Switchcase('' as FilterText, false)
+      cookies.remove('cardFilter', cookieOptions)
+    }
+  }, [])
 
   const handleRowClicked = (row: devicesType) => {
     cookies.set('devid', row.devId, cookieOptions)
@@ -726,7 +737,8 @@ export default function Home() {
                                     ...theme,
                                     colors: {
                                       ...theme.colors,
-                                      primary25: 'var(--main-color)',
+                                      primary50: 'var(--main-color-opacity2)',
+                                      primary25: 'var(--main-color-opacity2)',
                                       primary: 'var(--main-color)',
                                     },
                                   })}
@@ -753,7 +765,8 @@ export default function Home() {
                                   ...theme,
                                   colors: {
                                     ...theme.colors,
-                                    primary25: 'var(--main-color)',
+                                    primary50: 'var(--main-color-opacity2)',
+                                    primary25: 'var(--main-color-opacity2)',
                                     primary: 'var(--main-color)',
                                   },
                                 })}
@@ -803,7 +816,7 @@ export default function Home() {
                       expandableRows
                       pointerOnHover
                       fixedHeader
-                      fixedHeaderScrollHeight="calc(100dvh - 420px)"
+                      fixedHeaderScrollHeight="calc(100dvh - 450px)"
                     />
                   </DatatableHome>
                   :

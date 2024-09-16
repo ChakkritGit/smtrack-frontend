@@ -14,7 +14,7 @@ export const LogSpan = styled.div<{ $primary?: boolean }>`
 
 export const LogDetailsButton = styled.button<{ $primary?: boolean }>`
 background-color: var(--main-color);
-color: var(--white-grey-1);
+color: var(--white);
 border-radius: var(--border-radius-small);
 border: unset;
 height: 35px;

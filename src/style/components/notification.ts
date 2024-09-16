@@ -21,22 +21,24 @@ export const NotiHeadBtn = styled.button<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--grey-75);
   background-color: unset;
-  color: var(--main-color);
+  color: var(--grey-75);
   font-weight: bold;
   padding: 0.5rem;
 
   &:hover {
     background-color: var(--main-color);
-    color: var(--white-grey-1);
+    border: 2px solid var(--main-color);
+    color: var(--white);
     transition: .3s;
   }
 
   ${props => props.$primary &&
     css`
     background-color: var(--main-color);
-    color: var(--white-grey-1);
+    border: 2px solid var(--main-color);
+    color: var(--white);
   `}
 `
 

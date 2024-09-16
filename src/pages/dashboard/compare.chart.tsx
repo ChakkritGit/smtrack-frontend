@@ -264,8 +264,8 @@ const Comparechart = () => {
         </Modal.Body>
         <Modal.Footer>
           <GlobalButtoncontainer>
-            <GlobalButton $color onClick={handleClose}>
-              {t('form_btn_close')}
+            <GlobalButton onClick={handleClose}>
+              {t('closeButton')}
             </GlobalButton>
           </GlobalButtoncontainer>
         </Modal.Footer>

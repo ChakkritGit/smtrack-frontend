@@ -45,20 +45,14 @@ export const GlobalButton = styled.button<{ $color?: boolean }>`
   max-height: 50px;
   border-radius: var(--border-radius-big);
   border: 2px solid transparent;
-  background-color: unset;
+  background-color: var(--danger-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem;
 
-  ${props => props.$color &&
-    css`
-    border-color: var(--danger-color);
-    color: var(--danger-color);
-    &:hover {
-      background-color: var(--danger-color);
-      color: white;
-      transition: .3s;
-      }
-    `
+  &:hover {
+    background-color: var(--danger-color-hover);
+    transition: .3s;
   }
 `
 
@@ -251,7 +245,6 @@ export const SidebarLogo = styled.img<{ $primary?: boolean }>`
   max-width: 100px;
   max-height: 100px;
   margin-bottom: .5rem;
-  background-color: var(--white-grey-1);
   overflow: hidden;
 
   ${porps => porps.$primary && css`
@@ -544,7 +537,7 @@ ${props => props.theme.mode === 'dark' &&
     color: var(--white-grey-1);
 `}
 @media (max-width: 430px) {
-  padding: 0 3rem;
+  padding: 0 1.5rem;
   height: 55px;
   }
 `
@@ -635,6 +628,8 @@ ${props => props.$primary &&
 background-color: var(--main-last-color);
 `}
 `}
+
+
 
 & svg:nth-child(2) {
   position: absolute;
@@ -850,15 +845,14 @@ gap: .5rem;
 width: 80px;
 max-height: 50px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
-padding: .5rem;
+padding: .5rem .8rem;
 
 &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 
@@ -876,23 +870,22 @@ align-items: center;
 justify-content: center;
 gap: .5rem;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem .8rem;
+
+&:hover {
+  background-color: var(--second-color);
+  transition: .3s;
+}
 
 ${props => props.$primary && css`
   padding: unset;
   width: 36px;
   height: 36px;
 `}
-
-&:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
-  transition: .3s;
-}
 
 & svg {
   stroke-width: 1px;
@@ -905,15 +898,14 @@ align-items: center;
 justify-content: center;
 gap: .5rem;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--danger-color);
-background-color: unset;
-color: var(--danger-color);
+border: 2px solid transparent;
+background-color: var(--danger-color);;
+color: var(--white);
 font-weight: bold;
 padding: .5rem;
 
 &:hover {
-  background-color: var(--danger-color);
-  color: var(--white-grey-1);
+  background-color: var(--danger-color-hover);
   transition: .3s;
 }
 
@@ -928,15 +920,14 @@ align-items: center;
 justify-content: center;
 gap: .5rem;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--secondary-color-badge);
-background-color: unset;
-color: var(--secondary-color-badge);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem;
 
 &:hover {
-  background-color: var(--secondary-color-badge);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 
@@ -954,15 +945,14 @@ width: max-content;
 max-width: 165px;
 max-height: 45px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--danger-color);
-background-color: unset;
-color: var(--danger-color);
+border: 2px solid transparent;
+background-color: var(--danger-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem;
 
 &:hover {
-  background-color: var(--danger-color);
-  color: var(--white-grey-1);
+  background-color: var(--danger-color-hover);
   transition: .3s;
 }
 
@@ -984,7 +974,8 @@ margin: 1rem 0;
 
 export const CardUserBody = styled.div<{ $primary?: boolean }> `
 display: grid;
-grid-template-columns: repeat(6, 1fr);
+grid-template-columns: repeat(5, 1fr);
+overflow-wrap: break-word;
 gap: 1rem;
 padding: 1rem;
 
@@ -1023,6 +1014,11 @@ export const UsercardFlex = styled.div<{ $primary?: boolean }> `
   padding: 1rem;
   background-color: var(--white-grey-1);
   box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 25%)'};
+
+  &>div:nth-child(1) {
+    display: flex;
+    gap: 1rem;
+  }
 
   ${props => props.theme.mode === 'dark' &&
     css`
@@ -1203,23 +1199,22 @@ width: max-content;
 max-width: 165px;
 max-height: 45px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem .8rem;
+
+&:hover {
+  background-color: var(--second-color);
+  transition: .3s;
+}
 
 ${props => props.$primary && css`
 padding: unset;
 width: 36px;
 height: 36px;
 `}
-
-&:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
-  transition: .3s;
-}
 
 & svg {
   stroke-width: 1px;
@@ -1235,9 +1230,9 @@ width: max-content;
 max-width: 165px;
 max-height: 45px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem .8rem;
 
@@ -1248,8 +1243,7 @@ height: 36px;
 `}
 
 &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 
@@ -1426,9 +1420,9 @@ width: max-content;
 max-width: 165px;
 max-height: 45px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem .8rem;
 
@@ -1439,8 +1433,7 @@ height: 36px;
 `}
 
 &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 
@@ -1672,8 +1665,13 @@ display: flex;
 justify-content: center;
 align-items: center;
 flex-wrap: wrap;
+background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-seccond-color)' : 'var(--bg-grey)'};
 gap: .5rem;
 margin-top: 1rem;
+position: sticky;
+top: 60px;
+padding: 1rem;
+z-index: 100;
 
 @media (max-width: 1185px) {
   display: grid;
@@ -1687,6 +1685,8 @@ margin-top: 1rem;
   grid-template-columns: repeat(2, 0fr);
   justify-items: center;
   gap: 1rem;
+  position: unset;
+  padding: unset;
 }
 `
 
@@ -1727,10 +1727,12 @@ export const HomeContainerFlex = styled.div<{ $primary?: boolean }>`
 
 export const DevHomeDetails = styled.div<{ $primary?: boolean, $limitListFlex?: boolean }>`
 display: flex;
-align-items: center;
+/* align-items: center; */
 justify-content: center;
+/* max-height: calc(100dvh - 365px); */
 gap: .5rem;
 margin-top: 1rem;
+/* overflow-y: scroll; */
 
 ${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? 'justify-content: center;' : 'justify-content: center;'}
 
@@ -1873,14 +1875,6 @@ export const CardDevBtn = styled.button<{ $primary?: boolean }>`
   border: unset;
   color: black;
   position: relative;
-
-  /* &:hover ${TooltipSpan} {
-    visibility: visible;
-    opacity: 1;
-    left: 115%;
-    transition: ease .3s;
-    z-index: 500;
-} */
 
   ${props => props.theme.mode === 'dark' &&
     css`
@@ -2936,11 +2930,16 @@ export const FullcharComparetHeadBtn = styled.button<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem 0.8rem;
+
+  &:hover {
+    background-color: var(--second-color);
+    transition: .3s;
+}
 
   svg {
     font-size: 24px;
@@ -2952,13 +2951,6 @@ export const FullcharComparetHeadBtn = styled.button<{ $primary?: boolean }>`
     border: 2px solid var(--main-color);
     color: var(--white-grey-1);
   `}
-
-  &:hover {
-    background-color: var(--main-color);
-    border: 2px solid var(--main-color);
-    color: var(--white-grey-1);
-    transition: .3s;
-}
 `
 
 export const FullchartHead = styled.div<{ $primary?: boolean }>`
@@ -3058,9 +3050,9 @@ export const AuditGraphBtn = styled.button<{ $primary?: boolean }>`
   max-width: 200px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--danger-color);
-  background-color: unset;
-  color: var(--danger-color);
+  border: 2px solid transparent;
+  background-color: var(--danger-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem 0.8rem;
   position: relative;
@@ -3070,7 +3062,6 @@ export const AuditGraphBtn = styled.button<{ $primary?: boolean }>`
 
     &:hover {
       background-color: unset;
-      color: var(--danger-color);
     }
   }
 
@@ -3079,8 +3070,7 @@ export const AuditGraphBtn = styled.button<{ $primary?: boolean }>`
   }
 
   &:hover {
-    background-color: var(--danger-color);
-    color: var(--white-grey-1);
+    background-color: var(--danger-color-hover);
     transition: .3s;
   }
 `
@@ -3130,11 +3120,16 @@ export const FulltableExportHeadBtn = styled.button<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem 0.8rem;
+
+  &:hover {
+    background-color: var(--second-color);
+    transition: .3s;
+}
 
   svg {
     font-size: 24px;
@@ -3146,13 +3141,6 @@ export const FulltableExportHeadBtn = styled.button<{ $primary?: boolean }>`
     border: 2px solid var(--main-color);
     color: var(--white-grey-1);
   `}
-
-  &:hover {
-    background-color: var(--main-color);
-    border: 2px solid var(--main-color);
-    color: var(--white-grey-1);
-    transition: .3s;
-}
 `
 
 
@@ -3228,16 +3216,14 @@ export const FilterSearchBtn = styled.button<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
+  border: 2px solid transparent;
   background-color: var(--main-color);
-  color: var(--white-grey-1);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem;
 
   &:hover {
-  border-color: var(--second-color);
   background-color: var(--second-color);
-  color: var(--white-grey-1);
   transition: .3s;
 }
 `
@@ -3262,7 +3248,6 @@ background-color: var(--main-last-color);
 `}
 }
 `
-
 
 /* chart plugin */
 export const PluginContainer = styled.button<{ $primary?: boolean }>`
@@ -3585,23 +3570,22 @@ export const AddrepairBtn = styled.button<{ $primary?: boolean }>`
   max-width: 165px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem .8rem;
+
+  &:hover {
+    background-color: var(--second-color);
+    transition: .3s;
+  }
 
   ${props => props.$primary && css`
   padding: unset;
     width: 36px;
-  height: 36px;
-    `}
-
-  &:hover {
-    background-color: var(--main-color);
-    color: var(--white-grey-1);
-    transition: .3s;
-  }
+    height: 36px;
+  `}
 
   svg {
     stroke-width: 1px;
@@ -3724,9 +3708,9 @@ export const RepairPrintBtn = styled.button<{ $primary?: boolean }>`
   justify-content: center;
   gap: 0.5rem;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem;
 
@@ -3735,8 +3719,7 @@ export const RepairPrintBtn = styled.button<{ $primary?: boolean }>`
   }
 
   &:hover {
-    background-color: var(--main-color);
-    color: var(--white-grey-1);
+    background-color: var(--second-color);
     transition: .3s;
   }
 `
@@ -4221,8 +4204,8 @@ export const ListMenu = styled.div<{ $primary?: boolean, $logout?: boolean }>`
   display: flex;
   align-items: center;
   gap: .5rem;
-  padding: 5px .5rem;
-  border-radius: .5rem;
+  padding: .5rem .8rem;
+  border-radius: var(--border-radius-big);
   cursor: pointer;
 
   &:hover {
@@ -4376,17 +4359,16 @@ export const EditProfileButton = styled.button`
   gap: 0.5rem;
   width: max-content;
   max-width: 150px;
-  max-height: 35px;
+  max-height: 40px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
-  padding: 0.5rem;
+  padding: .5rem .8rem;
 
   &:hover {
-    background-color: var(--main-color);
-    color: var(--white-grey-1);
+    background-color: var(--second-color);
     transition: .3s;
   }
 `
@@ -4405,17 +4387,16 @@ export const SecurityPasswordBtn = styled.button<{ $primary?: boolean }>`
   gap: 0.5rem;
   width: max-content;
   max-width: 150px;
-  max-height: 35px;
+  max-height: 40px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
-  padding: 0.5rem;
+  padding: .5rem .8rem;
 
   &:hover {
-    background-color: var(--main-color);
-    color: var(--white-grey-1);
+    background-color: var(--second-color);
     transition: .3s;
   }
 `
@@ -4425,25 +4406,28 @@ export const FullscreenBtn = styled.button<{ $primary?: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  width: max-content;
-  max-width: 150px;
-  max-height: 35px;
+  width: 40px;
+  height: 40px;
+  max-width: 40px;
+  max-height: 40px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
-  font-weight: bold;
-  padding: 0.5rem;
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
+  padding: .3rem;
 
   &>svg {
-    font-size: 18px;
+    font-size: 20px;
     stroke-width: 1px;
   }
 
   &:hover {
-    background-color: var(--main-color);
-    color: var(--white-grey-1);
+    background-color: var(--second-color);
     transition: .3s;
+
+    &>svg {
+    font-size: 24px;
+    }
   }
 `
 
@@ -4723,8 +4707,8 @@ const getColorStyles = ($color?: string) => {
 }
 
 export const ButtonColorChang = styled.button<{ $color?: string }>`
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: var(--border-radius-big);
 
   @media (max-width: 430px) {
@@ -4855,9 +4839,9 @@ export const DetailWarranty = styled.button<{ $primary?: boolean }>`
   max-width: 165px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem;
 
@@ -4866,8 +4850,9 @@ export const DetailWarranty = styled.button<{ $primary?: boolean }>`
   }
 
   &:hover {
-    background-color: var(--main-color);
+    background-color: var(--second-color);
     transition: .3s;
+
     svg {
       color: var(--white-grey-1);
       transition: .3s;

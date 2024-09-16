@@ -67,6 +67,8 @@ export default function Fullchart() {
   const [validationData, setValidationData] = useState<wardsType>()
   const { theme, toggleTheme } = useTheme()
 
+  let count = 0
+
   const handleClose = () => {
     setShow(false)
     if (canvasChartRef.current) {
@@ -241,7 +243,7 @@ export default function Fullchart() {
   }
 
   useEffect(() => {
-    if (String(deviceId) !== 'undefined' && token) fetchData()
+    if (String(deviceId) !== 'undefined' && token) fetchData(); console.log('passed', count++)
   }, [pageNumber, token, deviceId])
 
   useEffect(() => {
@@ -461,6 +463,7 @@ export default function Fullchart() {
                 <PageLoading reset={pageNumber} />
             }
           </CustomChart>
+
           <Modal size={'xl'} show={show} onHide={handleClose} scrollable>
             <Modal.Header>
               <ModalHead>
@@ -471,24 +474,19 @@ export default function Fullchart() {
               </ModalHead>
             </Modal.Header>
             <Modal.Body>
-              {
-                convertImage !== '' && devData ?
-                  <PDFViewer style={{ width: '100%', height: '100vh' }}>
-                    <Fullchartpdf
-                      title={'Chart-Report'}
-                      image={Images_one}
-                      chartIMG={convertImage}
-                      dev_sn={devData.devSerial}
-                      dev_name={devData.devDetail}
-                      hospital={validationData?.hospital.hosName}
-                      ward={validationData?.wardName}
-                      datetime={String(new Date).substring(0, 25)}
-                      hosImg={hosImg}
-                    />
-                  </PDFViewer>
-                  :
-                  null
-              }
+              <PDFViewer style={{ width: '100%', height: '100vh' }}>
+                <Fullchartpdf
+                  title={'Chart-Report'}
+                  image={Images_one}
+                  chartIMG={convertImage}
+                  dev_sn={devData?.devSerial}
+                  dev_name={devData?.devDetail}
+                  hospital={validationData?.hospital.hosName}
+                  ward={validationData?.wardName}
+                  datetime={String(new Date).substring(0, 25)}
+                  hosImg={hosImg}
+                />
+              </PDFViewer>
             </Modal.Body>
             <Modal.Footer>
               <GlobalButtoncontainer>

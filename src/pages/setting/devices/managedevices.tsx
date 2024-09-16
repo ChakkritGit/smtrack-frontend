@@ -305,7 +305,8 @@ export default function Managedev() {
                     ...theme,
                     colors: {
                       ...theme.colors,
-                      primary25: 'var(--main-color)',
+                      primary50: 'var(--main-color-opacity2)',
+                      primary25: 'var(--main-color-opacity2)',
                       primary: 'var(--main-color)',
                     },
                   })}
@@ -332,7 +333,8 @@ export default function Managedev() {
                   ...theme,
                   colors: {
                     ...theme.colors,
-                    primary25: 'var(--main-color)',
+                    primary50: 'var(--main-color-opacity2)',
+                    primary25: 'var(--main-color-opacity2)',
                     primary: 'var(--main-color)',
                   },
                 })}

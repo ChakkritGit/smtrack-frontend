@@ -7,15 +7,14 @@ align-items: center;
 justify-content: center;
 gap: .5rem;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--theme-menu-color);
-background-color: unset;
-color: var(--theme-menu-color);
+border: 2px solid transparent;
+background-color: var(--theme-menu-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem;
 
 &:hover {
-  background-color: var(--theme-menu-color);
-  color: var(--white-grey-1);
+  background-color: var(--theme-menu-color-hover);
   transition: .3s;
 }
 
@@ -87,9 +86,9 @@ width: max-content;
 max-width: 165px;
 max-height: 45px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem .8rem;
 
@@ -100,8 +99,7 @@ height: 36px;
 `}
 
 &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 
@@ -125,15 +123,16 @@ export const TabButton = styled.button<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid ${props => props.$primary ? 'var(--main-color)' : 'var(--soft-grey)'};
+  border: 2px solid ${props => props.$primary ? 'var(--main-color)' : 'var(--grey-75)'};
   background-color: ${props => props.$primary ? 'var(--main-color)' : 'unset'};
-  color: var(--soft-grey);
+  color: ${props => props.$primary ? 'var(--white)' : 'var(--grey-75)'};
   font-weight: bold;
   padding: 0.5rem .8rem;
 
   &:hover {
     background-color: var(--main-color);
     border: 2px solid var(--main-color);
+    color: var(--white);
     transition: .3s;
   }
 `

@@ -63,21 +63,21 @@ width: max-content;
 height: 35px;
 gap: .5rem;
 padding: 1.5rem .5rem;
-background-color: transparent;
+background-color: var(--main-color);
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
+border: 2px solid transparent;
 
 & > svg, span {
-  color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
 }
 
 &:hover {
-  background-color: var(--main-color);
+  background-color: var(--second-color);
   transition: .3s;
 
   & > svg, span {
-  color: var(--white-grey-1);
+  color: var(--white);
   transition: .3s;
   }
 }

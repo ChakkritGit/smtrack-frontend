@@ -91,15 +91,14 @@ export const DelProbeButton = styled.button<{ $primary?: boolean }>`
   justify-content: center;
   gap: .5rem;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--danger-color);
-  background-color: unset;
-  color: var(--danger-color);
+  border: 2px solid transparent;
+  background-color: var(--danger-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem;
 
 &:hover {
-  background-color: var(--danger-color);
-  color: var(--white-grey-1);
+  background-color: var(--danger-color-hover);
   transition: .3s;
 }
 
@@ -117,9 +116,9 @@ export const ManageProbeAdd = styled.button<{ $primary?: boolean }>`
   max-width: 165px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem .8rem;
 
@@ -130,8 +129,7 @@ export const ManageProbeAdd = styled.button<{ $primary?: boolean }>`
     `}
 
 &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 

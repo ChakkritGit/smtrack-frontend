@@ -63,20 +63,19 @@ export default function Globalsearch() {
           <RiSearchLine />
         </GlobalsearchMBIcon>
         <GlobalsearchContainerMB $primary={showSearch}>
-          <GlobalsearchInput
-            type="text"
-            value={searchQuery}
-            onChange={(e) => dispatch(setSearchQuery(e.target.value))}
-            placeholder={t('searchItemsNav')} />
-          <RiSearchLine />
           {
             searchQuery ?
-              <MBSearchClearIcon onClick={() => dispatch(setSearchQuery(''))}>
+            <MBSearchClearIcon onClick={() => dispatch(setSearchQuery(''))}>
                 <RiCloseFill />
               </MBSearchClearIcon>
               :
               <></>
-          }
+            }
+            <GlobalsearchInput
+              type="text"
+              value={searchQuery}
+              onChange={(e) => dispatch(setSearchQuery(e.target.value))}
+              placeholder={t('searchItemsNav')} />
           <MBSearchCloseIcon onClick={() => setShowSearch(false)}>
             <RiCloseFill />
           </MBSearchCloseIcon>

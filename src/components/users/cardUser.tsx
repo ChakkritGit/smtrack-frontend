@@ -63,14 +63,16 @@ export default function CardUser(userProp: cardType) {
 
   return (
     <UsercardFlex>
-      <Userimage
-        src={userPic ? `${import.meta.env.VITE_APP_IMG}${userPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
-        alt="user-picture" />
-      <UserDetails>
-        <span>{displayName}</span>
-        <span>@{userName}</span>
-        <span>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : t('levelUser')}</span>
-      </UserDetails>
+      <div>
+        <Userimage
+          src={userPic ? `${import.meta.env.VITE_APP_IMG}${userPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
+          alt="user-picture" />
+        <UserDetails>
+          <span>{displayName}</span>
+          <span>@{userName}</span>
+          <span>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : t('levelUser')}</span>
+        </UserDetails>
+      </div>
       <UserMenu>
         <Adduser
           pagestate={'edit'}

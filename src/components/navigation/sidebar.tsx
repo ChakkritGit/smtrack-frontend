@@ -12,7 +12,7 @@ import {
   SettingSystem,
   Sidebar, SidebarLogo, SpanAside, TooltipSpan, Ul
 } from '../../style/style'
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setCookieEncode, setShowAlert, setShowAside } from "../../stores/utilsStateSlice"
@@ -30,7 +30,7 @@ export default function sidebar() {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
-  const isFirstLoad = useRef(true)
+  let isFirstLoad = true
 
   const reFetchdata = async () => {
     if (tokenDecode.userId) {
@@ -72,9 +72,9 @@ export default function sidebar() {
     if (location.pathname !== '/login') {
       window.scrollTo(0, 0)
 
-      if (isFirstLoad.current) {
+      if (isFirstLoad) {
         reFetchdata()
-        isFirstLoad.current = false
+        isFirstLoad = false
         return
       }
 

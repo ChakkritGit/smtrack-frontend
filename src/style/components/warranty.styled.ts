@@ -6,9 +6,9 @@ export const AddWarrantyButton = styled.button<{ $primary?: boolean }>`
   justify-content: center;
   gap: .5rem;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem .8rem;
 
@@ -19,8 +19,7 @@ export const AddWarrantyButton = styled.button<{ $primary?: boolean }>`
     `}
 
   &:hover {
-    background-color: var(--main-color);
-    color: var(--white-grey-1);
+    background-color: var(--second-color);
     transition: .3s;
   }
 

@@ -282,7 +282,7 @@ export default function Account() {
         <Modal.Header>
           <ModalHead>
             <strong>
-              {t('userDisplayName')}
+              {t('editButton')}
             </strong>
             <button onClick={closemodalProfile}>
               <RiCloseLine />

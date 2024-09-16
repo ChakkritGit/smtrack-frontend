@@ -18,7 +18,7 @@ export const ReloadPromptToast = styled.div`
   margin: 16px;
   padding: 14px;
   border-radius: .8rem;
-  z-index: 1;
+  z-index: 101;
   text-align: left;
   box-shadow: 0 0 10px rgba(0, 0, 0, .1);
   background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--white-grey-1)'};

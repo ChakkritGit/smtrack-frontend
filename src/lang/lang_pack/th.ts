@@ -367,7 +367,7 @@ export default {
     // router
     titleError: 'อุ๊ปส์!',
     descriptionError: '404 ไม่พบหน้า',
-    descriptionErrorWrong: '(code 41) มีบางอย่างผิดพลาด โปรดลองอีกครั้ง',
+    descriptionErrorWrong: 'มีบางอย่างผิดพลาด โปรดลองอีกครั้ง',
     buttonErrorBack: 'กลับไปหน้าแรก',
     titleNotAccess: 'ปฏิเสธการเข้าใช้',
     descriptionNotAccess: 'คุณไม่ได้รับอนุญาตให้เข้าถึงหน้านี้!',

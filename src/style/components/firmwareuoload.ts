@@ -80,9 +80,9 @@ gap: .5rem;
 width: max-content;
 max-height: 45px;
 border-radius: var(--border-radius-big);
-border: 2px solid var(--main-color);
-background-color: unset;
-color: var(--main-color);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
 font-weight: bold;
 padding: .5rem .8rem;
 
@@ -102,8 +102,7 @@ ${props => props.$primary &&
 }
 
 &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 
@@ -401,15 +400,14 @@ export const ConnectButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 `
@@ -423,15 +421,14 @@ export const DisConnectButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--danger-color);
-  background-color: unset;
-  color: var(--danger-color);
+  border: 2px solid transparent;
+  background-color: var(--danger-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--danger-color);
-  color: var(--white-grey-1);
+  background-color: var(--danger-color-hover);
   transition: .3s;
 }
 
@@ -455,15 +452,14 @@ export const TraceButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 `
@@ -477,15 +473,14 @@ export const EraseButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--danger-color);
-  background-color: unset;
-  color: var(--danger-color);
+  border: 2px solid transparent;
+  background-color: var(--danger-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--danger-color);
-  color: var(--white-grey-1);
+  background-color: var(--danger-color-hover);
   transition: .3s;
 }
 
@@ -509,15 +504,14 @@ export const ProgramButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 `
@@ -548,15 +542,14 @@ export const StartConsoleButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 `
@@ -570,15 +563,14 @@ export const StopConsoleButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--danger-color);
-  background-color: unset;
-  color: var(--danger-color);
+  border: 2px solid transparent;
+  background-color: var(--danger-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--danger-color);
-  color: var(--white-grey-1);
+  background-color: var(--danger-color-hover);
   transition: .3s;
 }
 `
@@ -592,15 +584,14 @@ export const ResetButton = styled.button<{ $primary?: boolean }>`
   height: 45px;
   max-height: 45px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: .5rem 1rem;
 
   &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 `
