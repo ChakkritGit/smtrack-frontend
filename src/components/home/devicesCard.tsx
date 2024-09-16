@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 import { DeviceStateStore, UtilsStateStore } from '../../types/redux.type'
 import { FilterText } from '../../types/component.type'
 import { useTranslation } from 'react-i18next'
-import { cookieOptions, cookies } from '../../constants/constants'
 
 type DevCardProps = {
   title: string
@@ -25,7 +24,6 @@ export default function DevicesCard(DevCard: DevCardProps) {
   const { switchcase } = DevCard
 
   const handleFilter = () => {
-    cookies.set('cardFilter', { name: DevCard.cardname, cardState: !DevCard.active }, cookieOptions)
     switchcase?.(DevCard.cardname, !DevCard.active)
   }
 

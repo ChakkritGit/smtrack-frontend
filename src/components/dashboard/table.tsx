@@ -74,7 +74,7 @@ export default function Table(tableType: tableType) {
 
   const openFulltable = () => {
     cookies.set('devSerial', data ? data[0].devSerial : '', cookieOptions)
-    navigate(`/dashboard/fulltable`, { state: { tempMin: tempMin, tempMax: tempMax } })
+    navigate(`/dashboard/table`, { state: { tempMin: tempMin, tempMax: tempMax } })
     window.scrollTo(0, 0)
   }
 

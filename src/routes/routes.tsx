@@ -37,6 +37,7 @@ import { fetchUserData } from '../stores/userSlice'
 import { fetchDevicesLog } from '../stores/LogsSlice'
 import { fetchProbeData } from '../stores/probeSlice'
 import Logs from '../pages/setting/Logs'
+import PreviewPDF from '../components/pdf/preview.pdf'
 
 export const router = createBrowserRouter([
   {
@@ -105,17 +106,22 @@ export const router = createBrowserRouter([
             errorElement: <SomethingWrong />
           },
           {
-            path: "dashboard/fullchart",
+            path: "dashboard/chart",
             element: <Fullchart />,
             errorElement: <SomethingWrong />
           },
           {
-            path: "dashboard/fulltable",
+            path: "dashboard/chart/preview",
+            element: <PreviewPDF />,
+            errorElement: <SomethingWrong />
+          },
+          {
+            path: "dashboard/table",
             element: <Fulltable />,
             errorElement: <SomethingWrong />
           },
           {
-            path: "dashboard/fullchart/compare",
+            path: "dashboard/chart/compare",
             element: <Comparechart />,
             errorElement: <SomethingWrong />
           },

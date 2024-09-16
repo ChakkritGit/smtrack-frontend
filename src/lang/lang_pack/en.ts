@@ -114,6 +114,7 @@ export default {
     dashRepair: 'Repairs',
     pageChart: 'Chart',
     pageTable: 'Table',
+    pagePDF: 'PDF',
 
     // full chart
     chartDay: 'Day',
@@ -397,6 +398,7 @@ export default {
     deleteWardTitle: 'Do you want to delete a ward?',
     deleteRepairTitle: 'Do you want to delete a repair?',
     optimizeCahrtText: 'When using this function, the graph will display differently from the actual values and adjust the graph to fit within the range of the maximum and minimum limits (tempMin, tempMax). Please note that this operation will not affect the data in the system; it is merely a temporary adjustment of the graph.',
+    dataNotReady: 'Data is not ready to generate PDF!',
 
     // time
     thTime: 'en-EN',

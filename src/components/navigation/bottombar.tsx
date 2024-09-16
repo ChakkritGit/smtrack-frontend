@@ -29,15 +29,15 @@ export default function Bottombar({ isScrollingDown }: BottombarProps) {
         <span>{t('sideShowAllBox')}</span>
         <ActiveNavBlur $primary={location.pathname === "/"} />
       </NavigationItems>
-      <NavigationItems $primary={location.pathname === "/dashboard" || location.pathname === "/dashboard/fullchart" || location.pathname === "/dashboard/fulltable" || location.pathname === "/dashboard/fullchart/compare"} onClick={() => navigate('/dashboard')}>
+      <NavigationItems $primary={location.pathname === "/dashboard" || location.pathname === "/dashboard/chart" || location.pathname === "/dashboard/table" || location.pathname === "/dashboard/chart/compare"} onClick={() => navigate('/dashboard')}>
         {
-          location.pathname === "/dashboard" || location.pathname === "/dashboard/fullchart" || location.pathname === "/dashboard/fulltable" || location.pathname === "/dashboard/fullchart/compare" ?
+          location.pathname === "/dashboard" || location.pathname === "/dashboard/chart" || location.pathname === "/dashboard/table" || location.pathname === "/dashboard/chart/compare" ?
             <RiDashboardFill />
             :
             <RiDashboardLine />
         }
         <span>{t('sideDashboard')}</span>
-        <ActiveNavBlur $primary={location.pathname === "/dashboard" || location.pathname.split('/')[2] === "fullchart" || location.pathname.split('/')[2] === "fulltable" || location.pathname === "/dashboard/fullchart/compare"} />
+        <ActiveNavBlur $primary={location.pathname === "/dashboard" || location.pathname.split('/')[2] === "chart" || location.pathname.split('/')[2] === "table" || location.pathname === "/dashboard/chart/compare"} />
       </NavigationItems>
       {
         cookieDecode.userLevel !== '3' ?

@@ -92,7 +92,7 @@ export default function Dashboard() {
                         <div>
                           <span>{t('pageChart')}</span>
                           <button
-                            onClick={() => navigate(`/dashboard/fullchart`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
+                            onClick={() => navigate(`/dashboard/chart`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
                             {t('seeLastData')}
                           </button>
                         </div>
@@ -104,7 +104,7 @@ export default function Dashboard() {
                         <div>
                           <span>{t('pageTable')}</span>
                           <button
-                            onClick={() => navigate(`/dashboard/fulltable`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
+                            onClick={() => navigate(`/dashboard/table`, { state: { tempMin: devicesLogs.probe[0]?.tempMin, tempMax: devicesLogs.probe[0]?.tempMax } })}>
                             {t('seeLastData')}
                           </button>
                         </div>

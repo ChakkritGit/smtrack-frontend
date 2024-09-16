@@ -60,9 +60,9 @@ export const OpenSettingBuzzer = styled.button<{ $primary?: boolean }>`
 display: flex;
 align-items: center;
 width: max-content;
-height: 35px;
+height: 50px;
 gap: .5rem;
-padding: 1.5rem .5rem;
+padding: 1rem;
 background-color: var(--main-color);
 border-radius: var(--border-radius-big);
 border: 2px solid transparent;

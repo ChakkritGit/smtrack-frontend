@@ -2856,7 +2856,7 @@ ${props => props.theme.mode === 'dark' &&
 `
 
 // fullchart
-export const FullchartHeadExport = styled.div<{ $primary?: boolean }>`
+export const FullchartHeadExport = styled.button<{ $primary?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2865,9 +2865,9 @@ export const FullchartHeadExport = styled.div<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid var(--main-color);
-  background-color: unset;
-  color: var(--main-color);
+  border: 2px solid transparent;
+  background-color: var(--main-color);
+  color: var(--white);
   font-weight: bold;
   padding: 0.5rem .8rem;
 
@@ -2882,8 +2882,7 @@ export const FullchartHeadExport = styled.div<{ $primary?: boolean }>`
   `}
 
   &:hover {
-  background-color: var(--main-color);
-  color: var(--white-grey-1);
+  background-color: var(--second-color);
   transition: .3s;
 }
 `

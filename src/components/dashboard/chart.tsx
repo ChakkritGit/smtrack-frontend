@@ -20,7 +20,7 @@ export default function Chart(chartData: chartData) {
 
   const openFullchart = () => {
     cookies.set('devSerial', chartData.data ? chartData.data[0].devSerial : '', cookieOptions)
-    navigate(`/dashboard/fullchart`, { state: { tempMin: chartData.tempMin, tempMax: chartData.tempMax } })
+    navigate(`/dashboard/chart`, { state: { tempMin: chartData.tempMin, tempMax: chartData.tempMax } })
     window.scrollTo(0, 0)
   }
 

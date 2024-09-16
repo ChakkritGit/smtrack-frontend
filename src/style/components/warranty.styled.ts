@@ -36,4 +36,5 @@ export const PrintButton = styled.button<{ $primary?: boolean }>`
   height: 40px;
   border: unset;
   background-color: unset;
+  color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--black)'};
 `

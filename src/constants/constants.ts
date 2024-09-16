@@ -264,3 +264,35 @@ export const createCard = (id: number, title: string, count: number, times: stri
   switchcase: Switchcase,
   active
 })
+
+export const styleElement = document.createElement('style')
+styleElement.innerHTML = `
+  .apexcharts-tooltip {
+    color: black;
+  }
+  .apexcharts-text tspan {
+    fill: black;
+  }
+  .apexcharts-legend-text {
+    color: black !important;
+  }
+  .apexcharts-menu-icon, .apexcharts-pan-icon, .apexcharts-reset-icon, .apexcharts-selection-icon, .apexcharts-toolbar-custom-icon, .apexcharts-zoom-icon, .apexcharts-zoomin-icon, .apexcharts-zoomout-icon {
+    color: black !important;
+  }
+  .apexcharts-menu-icon svg,
+  .apexcharts-pan-icon svg,
+  .apexcharts-reset-icon svg,
+  .apexcharts-selection-icon svg,
+  .apexcharts-toolbar-custom-icon svg,
+  .apexcharts-zoom-icon svg,
+  .apexcharts-zoomin-icon svg,
+  .apexcharts-zoomout-icon svg {
+    fill: black !important;
+  }
+  .apexcharts-menu {
+    color: black;
+  }
+  .apexcharts-gridline {
+    stroke: var(--grey-25);
+  }
+`

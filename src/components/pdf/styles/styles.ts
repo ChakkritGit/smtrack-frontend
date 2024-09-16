@@ -42,13 +42,12 @@ export const StylesPdf = StyleSheet.create({
   },
   img: {
     objectFit: 'contain',
-    aspectRatio: 80 / 70,
+    aspectRatio: 70 / 80,
     width: 70,
     height: 80,
     maxWidth: 100,
     maxHeight: 100,
     padding: 5,
-    borderRadius: 20
   },
   left_row: {
     fontSize: 12
@@ -60,6 +59,8 @@ export const StylesPdf = StyleSheet.create({
   },
   img_width : {
     objectFit: 'contain',
+    aspectRatio: 750 / 320,
     width: 750,
+    height: 320
   }
 })

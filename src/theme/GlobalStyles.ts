@@ -476,6 +476,17 @@ img {
   box-shadow: 0 0 10px var(--main-color), 0 0 5px var(--main-color);
 }
 
+.Link-bread-cmui {
+  color: var(--grey) !important;
+  text-decoration: unset !important;
+  cursor: pointer;
+}
+
+.Link-bread-cmui:hover {
+  color: var(--main-color) !important;
+  transition: .3s;
+}
+
 ${(props) =>
     props.theme.mode === 'dark' ?
       css`
@@ -687,6 +698,14 @@ div:where(.swal2-container).swal2-center>.swal2-popup {
 
 .react-select__control:hover {
   border-color: var(--main-color) !important;
+}
+
+.MuiBreadcrumbs-ol {
+  color: white;
+
+  &>li>p {
+    color: white !important;
+}
 }
 `
       :

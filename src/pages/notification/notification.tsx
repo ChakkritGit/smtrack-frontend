@@ -11,7 +11,7 @@ import axios, { AxiosError } from "axios"
 import Notificationdata from "../../components/notification/notificationdata"
 import notificationSound from "../../assets/sounds/notification.mp3"
 import { storeDispatchType } from "../../stores/store"
-import { setNotidata, setShowAlert, setSocketData } from "../../stores/utilsStateSlice"
+import { setNotidata, setShowAlert } from "../../stores/utilsStateSlice"
 import { useTranslation } from "react-i18next"
 import toast from "react-hot-toast"
 import { ToastContainer } from "../../style/components/toast.styled"
@@ -69,8 +69,6 @@ export default function Notification() {
   useEffect(() => {
     if (socketData && !soundMode && !popUpMode) {
       notiSound.play()
-    } else {
-      dispatch(setSocketData(null))
     }
 
     if (socketData && !popUpMode && !socketData.message.includes('Device offline') && !socketData.message.includes('Device online')) {

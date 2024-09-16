@@ -1,5 +1,4 @@
-import { css } from "@emotion/react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 export const OpenModalButton = styled.button`
 display: flex;
@@ -82,15 +81,16 @@ display: flex;
 align-items: center;
 justify-content: center;
 gap: .5rem;
-width: max-content;
-max-width: 165px;
+width: 45;
+height: 45;
+max-width: 45px;
 max-height: 45px;
 border-radius: var(--border-radius-big);
 border: 2px solid transparent;
 background-color: var(--main-color);
 color: var(--white);
 font-weight: bold;
-padding: .5rem .8rem;
+padding: .5rem;
 
 ${props => props.$primary && css`
 padding: unset;
@@ -123,9 +123,9 @@ export const TabButton = styled.button<{ $primary?: boolean }>`
   max-width: 150px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
-  border: 2px solid ${props => props.$primary ? 'var(--main-color)' : 'var(--grey-75)'};
-  background-color: ${props => props.$primary ? 'var(--main-color)' : 'unset'};
-  color: ${props => props.$primary ? 'var(--white)' : 'var(--grey-75)'};
+  border: 2px solid ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--grey-75)'};
+  background-color: transparent;
+  color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--grey-75)'};
   font-weight: bold;
   padding: 0.5rem .8rem;
 
@@ -135,4 +135,9 @@ export const TabButton = styled.button<{ $primary?: boolean }>`
     color: var(--white);
     transition: .3s;
   }
+
+${props => props.$primary && css`
+  background-color: var(--main-color);
+  border: 2px solid var(--main-color);
+`}
 `

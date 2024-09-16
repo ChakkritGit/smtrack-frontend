@@ -171,18 +171,6 @@ export default function Home() {
     setCardFilterData(CardFilterData)
   }, [devicesFilter, t, wardId])
 
-  const storeCookie: { name: FilterText, cardState: boolean } = cookies.get('cardFilter')
-
-  useEffect(() => {
-    if (!storeCookie) return
-    Switchcase(storeCookie.name, storeCookie.cardState)
-
-    return () => {
-      Switchcase('' as FilterText, false)
-      cookies.remove('cardFilter', cookieOptions)
-    }
-  }, [])
-
   const handleRowClicked = (row: devicesType) => {
     cookies.set('devid', row.devId, cookieOptions)
     cookies.set('devSerial', row.devSerial, cookieOptions)

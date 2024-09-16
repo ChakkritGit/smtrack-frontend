@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useLocation, useNavigate, useRouteError } from "react-router-dom"
 import { ErrorPageStyled } from "../style/components/error.page"
@@ -9,6 +9,7 @@ export default function SomethingWrong() {
   const navigate = useNavigate()
   const error = useRouteError()
   const langs = localStorage.getItem("lang")
+  const [errorText, setErrorText] = useState('')
 
   useEffect(() => {
     if (langs) {
@@ -18,6 +19,8 @@ export default function SomethingWrong() {
 
   useEffect(() => {
     if (error) {
+      const err = error as unknown as { message: string }
+      setErrorText(String(err.message))
       console.error(error)
     }
   }, [error])
@@ -26,6 +29,9 @@ export default function SomethingWrong() {
     <ErrorPageStyled>
       <h1>{t('titleError')}</h1>
       <p>{t('descriptionErrorWrong')}</p>
+      <pre>
+        {errorText.toString()}
+      </pre>
       <p>
         {
           pathName.pathname !== '/' && <i onClick={() => navigate('/')}>{t('buttonErrorBack')}</i>

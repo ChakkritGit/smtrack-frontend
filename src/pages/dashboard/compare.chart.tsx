@@ -255,7 +255,7 @@ const Comparechart = () => {
                   chartIMG={convertImage}
                   hospital={'devData.ward.group_name'}
                   ward={'devData?.ward.group_name'}
-                  datetime={String(new Date).substring(0, 25)}
+                  dateTime={String(new Date).substring(0, 25)}
                 />
               </PDFViewer>
               :

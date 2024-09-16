@@ -116,6 +116,7 @@ export default {
     dashRepair: 'แจ้งซ่อม',
     pageChart: 'กราฟ',
     pageTable: 'ตาราง',
+    pagePDF: 'PDF',
 
     // full chart
     chartDay: 'วัน',
@@ -399,6 +400,7 @@ export default {
     deleteWardTitle: 'คุณต้องการลบวอร์ดหรือไม่',
     deleteRepairTitle: 'คุณต้องการลบแจ้งซ่อมหรือไม่',
     optimizeChartText: 'เมื่อใช้ฟังก์ชันนี้กราฟจะแสดงผลต่างจากค่าจริงและปรับกราฟให้สมในช่วงของขีดจำกัดสูงสุดและต่ำสุด (tempMin, tempMax) </br> โปรดจำไว้ว่าการดำเนินการดังกล่าวจะไม่มีผลต่อข้อมูลในระบบ</br>เป็นเพียงการปรับแต่งกราฟแค่ชั่วคราว',
+    dataNotReady: 'ข้อมูลยังไม่พร้อมสร้าง PDF',
 
     // time
     thTime: 'th-TH',
