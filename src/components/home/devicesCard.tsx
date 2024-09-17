@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useCallback } from 'react'
 import {
   CardSpan, DevCardContainer,
   DevCardFooter
@@ -23,9 +23,9 @@ export default function DevicesCard(DevCard: DevCardProps) {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { switchcase } = DevCard
 
-  const handleFilter = () => {
+  const handleFilter = useCallback(() => {
     switchcase?.(DevCard.cardname, !DevCard.active)
-  }
+  }, [switchcase, DevCard.cardname, DevCard.active])
 
   return (
     <DevCardContainer

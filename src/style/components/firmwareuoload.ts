@@ -77,7 +77,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 gap: .5rem;
-width: max-content;
+width: 100%;
 max-height: 45px;
 border-radius: var(--border-radius-big);
 border: 2px solid transparent;
@@ -93,11 +93,12 @@ ${props => props.$primary &&
 `}
 
 &:disabled {
+  cursor: not-allowed;
   opacity: .5;
 
   &:hover {
-    background-color: unset;
-    color: var(--main-color);
+    background-color: var(--main-color);
+    color: var(--white);
   }
 }
 
@@ -353,7 +354,7 @@ export const ProgressBar = styled.div<{ $primary?: string }>`
 
 export const SendOTAtoBoard = styled.div<{ $primary?: boolean }>`
   display: grid;
-  grid-template-columns: repeat(2, .5fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: .5rem;
 
   &>select {

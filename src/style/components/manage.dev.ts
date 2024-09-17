@@ -137,6 +137,7 @@ export const TabButton = styled.button<{ $primary?: boolean }>`
   }
 
 ${props => props.$primary && css`
+  color: var(--white);
   background-color: var(--main-color);
   border: 2px solid var(--main-color);
 `}

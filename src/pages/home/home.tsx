@@ -19,17 +19,15 @@ import { useTranslation } from "react-i18next"
 import { useMemo, useState } from "react"
 import { useEffect } from "react"
 import { wardsType } from "../../types/ward.type"
-import { hospitalsType } from "../../types/hospital.type"
 import { devicesType } from "../../types/device.type"
 import { itemsFilter } from "../../animation/animate"
 import Loading from "../../components/loading/loading"
 import { useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setDeviceId, setSerial, setSearchQuery, setHosId, setWardId } from "../../stores/utilsStateSlice"
 import { filtersDevices, setFilterDevice } from "../../stores/dataArraySlices"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import DataTable, { TableColumn } from "react-data-table-component"
 import TableModal from "../../components/home/table.modal"
 import PageLoading from "../../components/loading/page.loading"
@@ -59,11 +57,11 @@ interface Ward {
 
 export default function Home() {
   const dispatch = useDispatch<storeDispatchType>()
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
-  const { searchQuery, hosId, wardId, cookieDecode, tokenDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const devicesFilter = useSelector<DeviceStateStore, devicesType[]>((state) => state.arraySlice.device.devicesFilter)
-  const hospitalsData = useSelector<DeviceStateStore, hospitalsType[]>((state) => state.arraySlice.hospital.hospitalsData)
-  const wardData = useSelector<DeviceStateStore, wardsType[]>((state) => state.arraySlice.ward.wardData)
+  const { devices } = useSelector((state: RootState) => state.devices)
+  const { searchQuery, hosId, wardId, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const devicesFilter = useSelector((state: RootState) => state.arraySlice.device.devicesFilter)
+  const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
+  const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [filterdata, setFilterdata] = useState(false)
@@ -654,7 +652,7 @@ export default function Home() {
         switchcase={items.switchcase}
         active={items.active}
       />
-    ));
+    ))
   }, [cardFilterData])
 
   return (

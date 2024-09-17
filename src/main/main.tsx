@@ -68,15 +68,15 @@ export default function Main() {
 
     if (!deviceKey || !message) return
 
-    console.log('Checking hasSameEntry for:', deviceKey, message)
-    console.log('Current dispatchedDevices:', Array.from(dispatchedDevices.entries()))
+    // console.log('Checking hasSameEntry for:', deviceKey, message)
+    // console.log('Current dispatchedDevices:', Array.from(dispatchedDevices.entries()))
 
     const hasSameEntry = Array.from(dispatchedDevices.entries()).some(
       ([key, msg]) => key.toLowerCase().includes(deviceKey.toLowerCase()) && msg.toLowerCase().includes(message.toLowerCase())
     )
 
     if (hasSameEntry) {
-      console.log(`\x1b[42mDevice ${deviceKey} already dispatched, waiting 30 seconds.\x1b[0m`)
+      // console.log(`\x1b[42mDevice ${deviceKey} already dispatched, waiting 30 seconds.\x1b[0m`)
       return
     }
 
@@ -85,17 +85,17 @@ export default function Main() {
     if (dispatchedDevices.size > maxDevices) {
       const oldestKey = dispatchedDevices.keys().next().value
       dispatchedDevices.delete(oldestKey)
-      console.log('\x1b[41mRemoved oldest entry to maintain size:', Array.from(dispatchedDevices.entries()), '\x1b[0m')
+      // console.log('\x1b[41mRemoved oldest entry to maintain size:', Array.from(dispatchedDevices.entries()), '\x1b[0m')
     }
 
-    console.log('Setting new device entry:', deviceKey, message)
+    // console.log('Setting new device entry:', deviceKey, message)
     dispatchedDevices.set(deviceKey, message)
 
-    console.log('\x1b[44mMap after set:', Array.from(dispatchedDevices.entries()), '\x1b[0m')
+    // console.log('\x1b[44mMap after set:', Array.from(dispatchedDevices.entries()), '\x1b[0m')
 
     const timer = setTimeout(() => {
       dispatchedDevices.delete(deviceKey)
-      console.log('\x1b[41mMap after delete:', Array.from(dispatchedDevices.entries()), '\x1b[0m')
+      // console.log('\x1b[41mMap after delete:', Array.from(dispatchedDevices.entries()), '\x1b[0m')
     }, 30000)
 
     return () => clearTimeout(timer)
