@@ -22,7 +22,8 @@ const initialState: UtilsStateStore = {
   cookieDecode: false as unknown as CookieType,
   showAlert: false,
   notiData: [],
-  reFetchData: false
+  reFetchData: false,
+  onFilter: false
 }
 
 const utilsSlice = createSlice({
@@ -80,10 +81,13 @@ const utilsSlice = createSlice({
     setRefetchdata: (state, action: PayloadAction<boolean>) => {
       state.reFetchData = action.payload
     },
+    setOnFilter: (state, action: PayloadAction<boolean>) => {
+      state.onFilter = action.payload
+    },
   },
 })
 
 export const { setDeviceId, setSerial, setSocketData, setSearchQuery, setExpand, setShowAside, setNotidata,
-  setTokenDecode, setSoundMode, setPopUpMode, setHosId, setWardId, setCookieEncode, setCookieDecode, setShowAlert, setRefetchdata } = utilsSlice.actions
+  setTokenDecode, setSoundMode, setPopUpMode, setHosId, setWardId, setCookieEncode, setCookieDecode, setShowAlert, setRefetchdata, setOnFilter } = utilsSlice.actions
 
 export default utilsSlice.reducer

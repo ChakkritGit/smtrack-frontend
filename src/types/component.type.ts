@@ -73,7 +73,6 @@ type cardFilter = {
   times: string
   svg: JSX.Element
   cardname: string
-  switchcase: (filtertext: FilterText, cardactive: boolean) => void
   active: boolean
 }
 

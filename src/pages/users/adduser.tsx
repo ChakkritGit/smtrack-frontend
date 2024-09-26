@@ -34,7 +34,7 @@ export default function Adduser(AdduserProp: adduserProp) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { tokenDecode, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { token, displayName } = cookieDecode
+  const { token, displayName, userLevel } = cookieDecode
   const [show, setShow] = useState(false)
   const [form, setform] = useState({
     group_id: pagestate !== "add" ? String(userData?.userId) : '',
@@ -272,12 +272,22 @@ export default function Adduser(AdduserProp: adduserProp) {
     }
   }
 
-  const userlevel = [
-    { value: '0', name: t('levelSuper') },
-    { value: '1', name: t('levelService') },
-    { value: '2', name: t('levelAdmin') },
-    { value: '3', name: t('levelUser') },
-  ]
+  const userlevel =
+    userLevel === '0' ?
+      [{ value: '0', name: t('levelSuper') },
+      { value: '1', name: t('levelService') },
+      { value: '2', name: t('levelAdmin') },
+      { value: '3', name: t('levelUser') },]
+      :
+      userLevel === '1' ?
+        [{ value: '1', name: t('levelService') },
+        { value: '2', name: t('levelAdmin') },
+        { value: '3', name: t('levelUser') },]
+        :
+
+        [{ value: '2', name: t('levelAdmin') },
+        { value: '3', name: t('levelUser') },]
+
 
   const userstatus = [
     { value: '1', name: t('userActive') },

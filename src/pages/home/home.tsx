@@ -16,7 +16,7 @@ import {
 } from "../../style/style"
 import DevicesInfoCard from "../../components/home/devicesInfoCard"
 import { useTranslation } from "react-i18next"
-import { useMemo, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useEffect } from "react"
 import { wardsType } from "../../types/ward.type"
 import { devicesType } from "../../types/device.type"
@@ -106,7 +106,7 @@ export default function Home() {
     }
   }
 
-  const Switchcase = (filtertext: FilterText, cardactive: boolean) => {
+  const Switchcase = useCallback((filtertext: FilterText, cardactive: boolean) => {
     showToolTip()
     setOnFilteres(cardactive)
     let tempFilter: devicesType[] = []
@@ -144,30 +144,30 @@ export default function Home() {
     if (allActive) {
       dispatch(setFilterDevice(devices))
     }
-  }
-
-  const filter: devicesType[] = wardId !== 'WID-DEVELOPMENT' ? devices.filter((f) => f.wardId === wardId) : devices
-
-  const getSum = (key: keyof NonNullable<devicesType['_count']>): number =>
-    filter.reduce((acc, devItems) => acc + (devItems._count?.[key] ?? 0), 0)
-
-  const getFilteredCount = (predicate: (n: notificationType) => boolean): number =>
-    filter.flatMap(i => i.noti).filter(predicate).length
+  }, [devices, wardId, dispatch, navigate, resetActive])
 
   useEffect(() => {
+    const filter: devicesType[] = wardId !== 'WID-DEVELOPMENT' ? devicesFilter.filter((f) => f.wardId === wardId) : devices
+
+    const getSum = (key: keyof NonNullable<devicesType['_count']>): number =>
+      filter.reduce((acc, devItems) => acc + (devItems._count?.[key] ?? 0), 0)
+
+    const getFilteredCount = (predicate: (n: notificationType) => boolean): number =>
+      filter.flatMap(i => i.noti).filter(predicate).length
+
     const CardFilterData = [
-      createCard(1, 'countProbe', getFilteredCount(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])), 'countNormalUnit', <RiTempColdLine />, 'probe', Switchcase, active.probe),
-      createCard(2, 'countDoor', getFilteredCount(n => n.notiDetail.split('/')[0].substring(0, 5) === 'PROBE' && n.notiDetail.split('/')[2].substring(0, 5) === 'ON'), 'countNormalUnit', <RiDoorClosedLine />, 'door', Switchcase, active.door),
-      createCard(3, 'countConnect', getSum('log'), 'countNormalUnit', <RiSignalWifi1Line />, 'connect', Switchcase, active.connect),
-      createCard(4, 'countPlug', getFilteredCount(n => n.notiDetail.split('/')[0] === 'AC'), 'countNormalUnit', <RiPlugLine />, 'plug', Switchcase, active.plug),
-      createCard(5, 'countSdCard', getFilteredCount(n => n.notiDetail.split('/')[0] === 'SD'), 'countNormalUnit', <RiSdCardMiniLine />, 'sd', Switchcase, active.sd),
-      createCard(6, 'countAdjust', getSum('history'), 'countNormalUnit', <RiListSettingsLine />, 'adjust', Switchcase, active.adjust),
-      createCard(7, 'countRepair', getSum('repair'), 'countDeviceUnit', <RiFolderSettingsLine />, 'repair', Switchcase, active.repair),
-      createCard(8, 'countWarranty', getSum('warranty'), 'countDeviceUnit', <RiShieldCheckLine />, 'warranty', Switchcase, active.warranty),
+      createCard(1, 'countProbe', getFilteredCount(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])), 'countNormalUnit', <RiTempColdLine />, 'probe', active.probe),
+      createCard(2, 'countDoor', getFilteredCount(n => n.notiDetail.split('/')[0].substring(0, 5) === 'PROBE' && n.notiDetail.split('/')[2].substring(0, 5) === 'ON'), 'countNormalUnit', <RiDoorClosedLine />, 'door', active.door),
+      createCard(3, 'countConnect', getSum('log'), 'countNormalUnit', <RiSignalWifi1Line />, 'connect', active.connect),
+      createCard(4, 'countPlug', getFilteredCount(n => n.notiDetail.split('/')[0] === 'AC'), 'countNormalUnit', <RiPlugLine />, 'plug', active.plug),
+      createCard(5, 'countSdCard', getFilteredCount(n => n.notiDetail.split('/')[0] === 'SD'), 'countNormalUnit', <RiSdCardMiniLine />, 'sd', active.sd),
+      createCard(6, 'countAdjust', getSum('history'), 'countNormalUnit', <RiListSettingsLine />, 'adjust', active.adjust),
+      createCard(7, 'countRepair', getSum('repair'), 'countDeviceUnit', <RiFolderSettingsLine />, 'repair', active.repair),
+      createCard(8, 'countWarranty', getSum('warranty'), 'countDeviceUnit', <RiShieldCheckLine />, 'warranty', active.warranty),
     ]
 
     setCardFilterData(CardFilterData)
-  }, [devicesFilter, t, wardId])
+  }, [devices, devicesFilter, wardId])
 
   const handleRowClicked = (row: devicesType) => {
     cookies.set('devid', row.devId, cookieOptions)
@@ -649,11 +649,11 @@ export default function Home() {
         times={items.times}
         svg={items.svg}
         cardname={items.cardname as FilterText}
-        switchcase={items.switchcase}
+        switchcase={Switchcase}
         active={items.active}
       />
     ))
-  }, [cardFilterData])
+  }, [cardFilterData, Switchcase])
 
   return (
     <Container className="home-lg">

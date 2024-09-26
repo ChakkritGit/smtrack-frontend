@@ -38,6 +38,7 @@ import { fetchDevicesLog } from '../stores/LogsSlice'
 import { fetchProbeData } from '../stores/probeSlice'
 import Logs from '../pages/setting/Logs'
 import PreviewPDF from '../components/pdf/preview.pdf'
+import Test from '../pages/test/test'
 
 export const router = createBrowserRouter([
   {
@@ -128,6 +129,11 @@ export const router = createBrowserRouter([
           {
             path: "changeLog",
             element: <Log />,
+            errorElement: <SomethingWrong />
+          },
+          {
+            path: "test",
+            element: <Test />,
             errorElement: <SomethingWrong />
           },
           {

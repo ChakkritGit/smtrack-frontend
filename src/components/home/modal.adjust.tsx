@@ -51,14 +51,14 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
     adjustHum: devicesdata.probe[0]?.adjustHum
   })
   const [muteMode, setMuteMode] = useState({
-    choichOne: devicesdata.config.notiTime === "0" ? 'immediately' : 'after',
-    choichtwo: devicesdata.config.backToNormal === "0" ? 'donotsend' : 'send',
-    choichthree: devicesdata.config.repeat === "0" ? "onetime" : 'every',
-    choichfour: devicesdata.config.mobileNoti === "1" ? 'on' : 'off'
+    choichOne: devicesdata.config.notiTime === 0 ? 'immediately' : 'after',
+    choichtwo: devicesdata.config.backToNormal === "0" ? 'send' : 'donotsend',
+    choichthree: devicesdata.config.repeat === 0 ? "onetime" : 'every',
+    choichfour: devicesdata.config.mobileNoti === "0" ? 'on' : 'off'
   })
   const [sendTime, setSendTime] = useState({
-    after: devicesdata.config.notiTime > "0" ? Number(devicesdata.config.notiTime) : 1,
-    every: devicesdata.config.repeat !== "0" ? Number(devicesdata.config.repeat) : 1
+    after: devicesdata.config.notiTime > 0 ? devicesdata.config.notiTime : 5,
+    every: devicesdata.config.repeat !== 0 ? devicesdata.config.repeat : 5
   })
   const [mqttData, setMqttData] = useState({ temp: 0, humi: 0 })
   const [selectProbeI, setSelectProbeI] = useState(devicesdata.probe[0]?.probeId)
@@ -173,10 +173,10 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
     ) {
       const url: string = `${import.meta.env.VITE_APP_API}/config/${devicesdata.devSerial}`
       const bodyData = {
-        notiTime: muteMode.choichOne === "immediately" ? "0" : sendTime.after.toString(),
-        backToNormal: muteMode.choichtwo === "send" ? "1" : "0",
-        repeat: muteMode.choichthree === "onetime" ? "0" : sendTime.every.toString(),
-        mobileNoti: muteMode.choichfour === "on" ? "1" : "0",
+        notiTime: muteMode.choichOne === "immediately" ? 0 : sendTime.after,
+        backToNormal: muteMode.choichtwo === "send" ? "0" : "1",
+        repeat: muteMode.choichthree === "onetime" ? 0 : sendTime.every,
+        mobileNoti: muteMode.choichfour === "on" ? "0" : "1",
         firstDay: scheduleDay.firstDay,
         secondDay: scheduleDay.seccondDay,
         thirdDay: scheduleDay.thirdDay,
@@ -184,7 +184,6 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
         secondTime: `${scheduleTime.secondTime}${scheduleTime.seccondMinute}`,
         thirdTime: `${scheduleTime.thirdTime}${scheduleTime.thirdMinute}`
       }
-      console.log(bodyData)
       try {
         const response = await axios.put<responseType<configType>>(url, bodyData, { headers: { authorization: `Bearer ${token}` } })
         Swal.fire({
@@ -737,16 +736,16 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                       />
                     </Col>
                     {choichOne === 'after' && <InputGroup className="mb-3 mt-2">
-                      <ConfigBtn type="button" onClick={() => sendTime.after >= 2 && setSendTime({ ...sendTime, after: sendTime.after - 1 })}>-</ConfigBtn>
+                      <ConfigBtn type="button" onClick={() => sendTime.after >= 10 && setSendTime({ ...sendTime, after: sendTime.after - 5 })}>-</ConfigBtn>
                       <Form.Control
                         type="number"
-                        step={1}
-                        min={0}
-                        max={10}
+                        step={5}
+                        min={5}
+                        max={30}
                         value={sendTime.after}
                         onChange={(e) => setSendTime({ ...sendTime, after: Number(e.target.value) })}
                       />
-                      <ConfigBtn type="button" onClick={() => sendTime.after <= 9 && setSendTime({ ...sendTime, after: sendTime.after + 1 })}>+</ConfigBtn>
+                      <ConfigBtn type="button" onClick={() => sendTime.after <= 25 && setSendTime({ ...sendTime, after: sendTime.after + 5 })}>+</ConfigBtn>
                     </InputGroup>}
                   </Row>
                 </Row>
@@ -796,16 +795,16 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                         onChange={() => setMuteMode({ ...muteMode, choichthree: 'every' })}
                       />
                       {choichthree === 'every' && <InputGroup className="mb-3 mt-2">
-                        <ConfigBtn type="button" onClick={() => sendTime.every >= 2 && setSendTime({ ...sendTime, every: sendTime.every - 1 })}>-</ConfigBtn>
+                        <ConfigBtn type="button" onClick={() => sendTime.every >= 10 && setSendTime({ ...sendTime, every: sendTime.every - 5 })}>-</ConfigBtn>
                         <Form.Control
                           type="number"
-                          step={1}
-                          min={0}
-                          max={10}
+                          step={5}
+                          min={5}
+                          max={30}
                           value={sendTime.every}
                           onChange={(e) => setSendTime({ ...sendTime, every: Number(e.target.value) })}
                         />
-                        <ConfigBtn type="button" onClick={() => sendTime.every <= 9 && setSendTime({ ...sendTime, every: sendTime.every + 1 })}>+</ConfigBtn>
+                        <ConfigBtn type="button" onClick={() => sendTime.every <= 25 && setSendTime({ ...sendTime, every: sendTime.every + 5 })}>+</ConfigBtn>
                       </InputGroup>}
                     </Col>
                   </Row>

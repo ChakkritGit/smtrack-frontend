@@ -14,7 +14,7 @@ import { DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useSelector } from "react-redux"
 import { responseType } from "../../../types/response.type"
 import { wardsType } from "../../../types/ward.type"
-import { setShowAlert } from "../../../stores/utilsStateSlice"
+import { setOnFilter, setShowAlert } from "../../../stores/utilsStateSlice"
 
 export default function Addward(addwardprop: addWardProp) {
   const { t } = useTranslation()
@@ -30,10 +30,12 @@ export default function Addward(addwardprop: addWardProp) {
 
   const openmodal = () => {
     setShow(true)
+    dispatch(setOnFilter(true))
   }
 
   const closemodal = () => {
     setShow(false)
+    dispatch(setOnFilter(false))
   }
 
   const handleSubmit = async (e: FormEvent) => {
