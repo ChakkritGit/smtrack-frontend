@@ -703,6 +703,28 @@ export default function Addprobe(addprobe: addprobeProps) {
                   </div>
                 </AdjustRealTimeFlex>
               </Col>
+              <Col lg={12}>
+                <AdjustRealTimeFlex $primary={Number((mqttData.humi + Number(formdata.adjust_hum)).toFixed(2)) >= formdata.humvalue[1] || Number((mqttData.humi + Number(formdata.adjust_hum)).toFixed(2)) <= formdata.humvalue[0]}>
+                  <div>
+                    <span>{t('currentHum')}</span>
+                    <div>
+                      <span>
+                        <span>{mqttData.humi.toFixed(2)}</span> %
+                      </span>
+                    </div>
+                  </div>
+                  <RiArrowRightLine size={32} fill="grey" />
+                  <RiArrowDownLine size={32} fill="grey" />
+                  <div>
+                    <span>{t('adjustAfterHum')}</span>
+                    <div>
+                      <span>
+                        <span>{(mqttData.humi + Number(formdata.adjust_hum) - Number(probeData?.adjustHum)).toFixed(2)}</span> %
+                      </span>
+                    </div>
+                  </div>
+                </AdjustRealTimeFlex>
+              </Col>
             </Row>
           </Modal.Body>
           <Modal.Footer>

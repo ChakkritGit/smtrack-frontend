@@ -673,7 +673,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     <span>{t('currentHum')}</span>
                     <div>
                       <span>
-                        <span>{mqttData.humi.toFixed(2)}</span> °C
+                        <span>{mqttData.humi.toFixed(2)}</span> %
                       </span>
                     </div>
                   </div>
@@ -683,7 +683,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     <span>{t('adjustAfterHum')}</span>
                     <div>
                       <span>
-                        <span>{(mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)}</span> °C
+                        <span>{(mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)}</span> %
                       </span>
                     </div>
                   </div>

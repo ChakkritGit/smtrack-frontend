@@ -195,7 +195,7 @@ export const HomeCardItem = styled.div<{ $primary?: boolean }>`
 display: flex;
 flex-direction: column;
 gap: 0.5rem;
-background-color: ${props => props.$primary ? 'var(--main-color)' : 'var(--white)'};
+background-color: ${props => props.$primary ? 'var(--main-color)' : props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--white)'};
 color: ${props => props.$primary ? 'var(--white)' : 'var(--balck)'};
 padding: 0.8rem;
 width: 145px;

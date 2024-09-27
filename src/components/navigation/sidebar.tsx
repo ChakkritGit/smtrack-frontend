@@ -1,5 +1,4 @@
-import {
-  RiContactsBook2Fill, RiContactsBook2Line, RiDashboardFill, RiDashboardLine,
+import { RiDashboardFill, RiDashboardLine,
   RiFileSettingsFill, RiFileSettingsLine, RiHome3Fill, RiHome3Line,
   RiListSettingsFill, RiListSettingsLine, RiSettings3Fill, RiSettings3Line, RiShieldCheckFill,
   RiShieldCheckLine, RiUser6Fill, RiUser6Line
@@ -229,7 +228,7 @@ export default function sidebar() {
       <LineHr />
       <SettingSystem >
         <Ul className="nav nav-pills">
-          <Li $primary={expand}>
+          {/* <Li $primary={expand}>
             <Link to="/contact" onClick={resetAsideandCardcount} className={location.pathname === "/contact" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
               {
                 location.pathname === "/contact" ?
@@ -244,7 +243,7 @@ export default function sidebar() {
             <TooltipSpan $primary={expand}>
               {t('sideContact')}
             </TooltipSpan>
-          </Li>
+          </Li> */}
           <Li $primary={expand}>
             <Link to="/setting" onClick={resetAsideandCardcount} className={location.pathname === "/setting" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
               {

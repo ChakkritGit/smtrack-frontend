@@ -21,7 +21,7 @@ import Setting from '../pages/setting/setting'
 import Permission from '../pages/users/manageusers'
 import Warranty from '../pages/warranty/warranty'
 import Repair from '../pages/repair/repair'
-import Contact from '../pages/contact/contact'
+// import Contact from '../pages/contact/contact'
 import Fullchart from '../pages/dashboard/fullchart'
 import Fulltable from '../pages/dashboard/fulltable'
 import System from '../pages/system/system'
@@ -38,7 +38,7 @@ import { fetchDevicesLog } from '../stores/LogsSlice'
 import { fetchProbeData } from '../stores/probeSlice'
 import Logs from '../pages/setting/Logs'
 import PreviewPDF from '../components/pdf/preview.pdf'
-import Test from '../pages/test/test'
+// import Test from '../pages/test/test'
 
 export const router = createBrowserRouter([
   {
@@ -96,11 +96,11 @@ export const router = createBrowserRouter([
             element: <Repair />,
             errorElement: <SomethingWrong />
           },
-          {
-            path: "contact",
-            element: <Contact />,
-            errorElement: <SomethingWrong />
-          },
+          // {
+          //   path: "contact",
+          //   element: <Contact />,
+          //   errorElement: <SomethingWrong />
+          // },
           {
             path: "setting",
             element: <System />,
@@ -131,11 +131,11 @@ export const router = createBrowserRouter([
             element: <Log />,
             errorElement: <SomethingWrong />
           },
-          {
-            path: "test",
-            element: <Test />,
-            errorElement: <SomethingWrong />
-          },
+          // {
+          //   path: "test",
+          //   element: <Test />,
+          //   errorElement: <SomethingWrong />
+          // },
           {
             element: <HideFlashFW />,
             errorElement: <SomethingWrong />,

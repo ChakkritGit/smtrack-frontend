@@ -554,7 +554,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
                     <span>{t('currentTemp')}</span>
                     <div>
                       <span>
-                        <span>{mqttData.temp.toFixed(2)}</span> °C
+                        <span>{mqttData.temp.toFixed(2)}</span> %
                       </span>
                     </div>
                   </div>
@@ -565,6 +565,28 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
                     <div>
                       <span>
                         <span>{(mqttData.temp + formdata.adjust_temp - devicesData.probe[0]?.adjustTemp).toFixed(2)}</span> °C
+                      </span>
+                    </div>
+                  </div>
+                </AdjustRealTimeFlex>
+              </Col>
+              <Col lg={12}>
+                <AdjustRealTimeFlex $primary={Number((mqttData.humi + formdata.adjust_hum).toFixed(2)) >= humvalue[1] || Number((mqttData.humi + formdata.adjust_hum).toFixed(2)) <= humvalue[0]}>
+                  <div>
+                    <span>{t('currentHum')}</span>
+                    <div>
+                      <span>
+                        <span>{mqttData.humi.toFixed(2)}</span> °C
+                      </span>
+                    </div>
+                  </div>
+                  <RiArrowRightLine size={32} fill="grey" />
+                  <RiArrowDownLine size={32} fill="grey" />
+                  <div>
+                    <span>{t('adjustAfterHum')}</span>
+                    <div>
+                      <span>
+                        <span>{(mqttData.humi + formdata.adjust_hum - devicesData.probe[0]?.adjustHum).toFixed(2)}</span> %
                       </span>
                     </div>
                   </div>
