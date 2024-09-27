@@ -19,13 +19,17 @@ type Hospital = {
 export default function HospitalDropdown(hosprop: dropDownHospitalProp) {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { setHos_id, Hosid } = hosprop
+  const { setHos_id, Hosid, page } = hosprop
   const hospitalsData = useSelector<DeviceStateStore, hospitalsType[]>((state) => state.arraySlice.hospital.hospitalsData)
 
   const setHosId = (e: SingleValue<Option>) => {
     const selectedValue = e?.value
     if (!selectedValue) return
-    setHos_id(selectedValue)
+    if (page) {
+      setHos_id(e?.label)
+    } else {
+      setHos_id(selectedValue)
+    }
   }
 
   const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>

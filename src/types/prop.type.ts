@@ -45,7 +45,8 @@ type dropDownWardProp = {
 // dropdownHospitalProps
 type dropDownHospitalProp = {
   setHos_id: Dispatch<SetStateAction<string>>,
-  Hosid?: string
+  Hosid?: string,
+  page?: boolean
 }
 // closeDropdownHospitalProps
 

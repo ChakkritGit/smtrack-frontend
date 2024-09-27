@@ -2,9 +2,8 @@ import { Container, Modal } from "react-bootstrap"
 import DevicesCard from "../../components/home/devicesCard"
 import {
   RiCloseLine, RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
-  RiFileCloseLine, RiFilter3Line, RiFolderSettingsLine,
-  RiLayoutGridLine, RiListSettingsLine, RiListUnordered, RiPlugLine,
-  RiSdCardMiniLine, RiShieldCheckLine, RiSignalWifi1Line, RiTempColdLine
+  RiFileCloseLine, RiFilter3Line,
+  RiLayoutGridLine, RiListUnordered, RiTempColdLine
 } from "react-icons/ri"
 import Select from "react-select"
 import {
@@ -16,14 +15,13 @@ import {
 } from "../../style/style"
 import DevicesInfoCard from "../../components/home/devicesInfoCard"
 import { useTranslation } from "react-i18next"
-import { useCallback, useMemo, useState } from "react"
+import { useState } from "react"
 import { useEffect } from "react"
 import { wardsType } from "../../types/ward.type"
 import { devicesType } from "../../types/device.type"
 import { itemsFilter } from "../../animation/animate"
 import Loading from "../../components/loading/loading"
 import { useNavigate } from "react-router-dom"
-import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
 import { setDeviceId, setSerial, setSearchQuery, setHosId, setWardId } from "../../stores/utilsStateSlice"
 import { filtersDevices, setFilterDevice } from "../../stores/dataArraySlices"
@@ -32,13 +30,13 @@ import DataTable, { TableColumn } from "react-data-table-component"
 import TableModal from "../../components/home/table.modal"
 import PageLoading from "../../components/loading/page.loading"
 import { probeType } from "../../types/probe.type"
-import { cardFilter, FilterText } from "../../types/component.type"
-import { cookieOptions, cookies, createCard, resetActive } from "../../constants/constants"
+import { FilterText } from "../../types/component.type"
+import { cookieOptions, cookies } from "../../constants/constants"
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { TagCurrentHos } from "../../style/components/home.styled"
 import { useTheme } from "../../theme/ThemeProvider"
-import { notificationType } from "../../types/notification.type"
+import HomeCard from "../../components/home/home.card"
 
 type Option = {
   value: string,
@@ -66,27 +64,14 @@ export default function Home() {
   const navigate = useNavigate()
   const [filterdata, setFilterdata] = useState(false)
   const [wardName, setWardname] = useState<wardsType[]>([])
-  const [active, setActive] = useState({
-    probe: false,
-    door: false,
-    connect: false,
-    plug: false,
-    sd: false,
-    adjust: false,
-    repair: false,
-    warranty: false
-  })
   const [showticks, setShowticks] = useState(false)
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
-  const [cardFilterData, setCardFilterData] = useState<cardFilter[]>([])
   const { userLevel, hosName, groupId } = cookieDecode
   const { theme } = useTheme()
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
+  const [cardActive, setCardActive] = useState('')
 
-  const showtk = () => {
-    setShowticks(true)
-  }
   const isshowtk = () => {
     setShowticks(false)
   }
@@ -96,78 +81,6 @@ export default function Home() {
       dispatch(setSearchQuery(''))
     }
   }, [])
-
-  const showToolTip = () => {
-    if (localStorage.getItem('cardticks') === null) {
-      localStorage.setItem('cardticks', '')
-      showtk()
-    } else {
-      setShowticks(false)
-    }
-  }
-
-  const Switchcase = useCallback((filtertext: FilterText, cardactive: boolean) => {
-    showToolTip()
-    setOnFilteres(cardactive)
-    let tempFilter: devicesType[] = []
-    dispatch(setSearchQuery(''))
-    const filter: devicesType[] = wardId !== 'WID-DEVELOPMENT' ? devices.filter((f) => f.wardId === wardId) : devices
-
-    const filterMap: {
-      [key in FilterText]: () => devicesType[] | void
-    } = {
-      probe: () => filter.filter(dev => dev.noti.some(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1]))),
-      door: () => filter.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE'))),
-      connect: () => filter.filter(dev => dev._count?.log),
-      plug: () => filter.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'AC')),
-      sd: () => filter.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'SD')),
-      adjust: () => navigate("/management/logadjust"),
-      repair: () => navigate("/repair"),
-      warranty: () => navigate("/warranty"),
-    }
-
-    if (filtertext in filterMap) {
-      const result = filterMap[filtertext]()
-      if (Array.isArray(result)) {
-        tempFilter = result
-      }
-    }
-
-    if (!filtertext) {
-      setActive({ ...resetActive, [filtertext]: true })
-    } else {
-      setActive({ ...resetActive, [filtertext]: cardactive })
-      dispatch(setFilterDevice(cardactive ? tempFilter : filter))
-    }
-
-    const allActive = Object.values(active).every(Boolean)
-    if (allActive) {
-      dispatch(setFilterDevice(devices))
-    }
-  }, [devices, wardId, dispatch, navigate, resetActive])
-
-  useEffect(() => {
-    const filter: devicesType[] = wardId !== 'WID-DEVELOPMENT' ? devicesFilter.filter((f) => f.wardId === wardId) : devices
-
-    const getSum = (key: keyof NonNullable<devicesType['_count']>): number =>
-      filter.reduce((acc, devItems) => acc + (devItems._count?.[key] ?? 0), 0)
-
-    const getFilteredCount = (predicate: (n: notificationType) => boolean): number =>
-      filter.flatMap(i => i.noti).filter(predicate).length
-
-    const CardFilterData = [
-      createCard(1, 'countProbe', getFilteredCount(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])), 'countNormalUnit', <RiTempColdLine />, 'probe', active.probe),
-      createCard(2, 'countDoor', getFilteredCount(n => n.notiDetail.split('/')[0].substring(0, 5) === 'PROBE' && n.notiDetail.split('/')[2].substring(0, 5) === 'ON'), 'countNormalUnit', <RiDoorClosedLine />, 'door', active.door),
-      createCard(3, 'countConnect', getSum('log'), 'countNormalUnit', <RiSignalWifi1Line />, 'connect', active.connect),
-      createCard(4, 'countPlug', getFilteredCount(n => n.notiDetail.split('/')[0] === 'AC'), 'countNormalUnit', <RiPlugLine />, 'plug', active.plug),
-      createCard(5, 'countSdCard', getFilteredCount(n => n.notiDetail.split('/')[0] === 'SD'), 'countNormalUnit', <RiSdCardMiniLine />, 'sd', active.sd),
-      createCard(6, 'countAdjust', getSum('history'), 'countNormalUnit', <RiListSettingsLine />, 'adjust', active.adjust),
-      createCard(7, 'countRepair', getSum('repair'), 'countDeviceUnit', <RiFolderSettingsLine />, 'repair', active.repair),
-      createCard(8, 'countWarranty', getSum('warranty'), 'countDeviceUnit', <RiShieldCheckLine />, 'warranty', active.warranty),
-    ]
-
-    setCardFilterData(CardFilterData)
-  }, [devices, devicesFilter, wardId])
 
   const handleRowClicked = (row: devicesType) => {
     cookies.set('devid', row.devId, cookieOptions)
@@ -209,8 +122,26 @@ export default function Home() {
       item.devDetail?.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
-    dispatch(setFilterDevice(filteredDevicesList))
-  }, [searchQuery, devices, wardId])
+    if (cardActive === '1') {
+      dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])))))
+    } else if (cardActive === '2') {
+      dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE')))))
+    } else if (cardActive === '3') {
+      dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev._count?.log)))
+    } else if (cardActive === '4') {
+      dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'AC'))))
+    } else if (cardActive === '5') {
+      dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'SD'))))
+    } else if (cardActive === '6') {
+      navigate("/management/logadjust")
+    } else if (cardActive === '7') {
+      navigate("/repair")
+    } else if (cardActive === '8') {
+      navigate("/warranty")
+    } else {
+      dispatch(setFilterDevice(filteredDevicesList))
+    }
+  }, [searchQuery, devices, wardId, cardActive])
 
   const isLeapYear = (year: number): boolean => {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
@@ -610,7 +541,6 @@ export default function Home() {
 
   const ExpandedComponent = ({ data }: { data: devicesType }) => {
     const { probe } = data
-
     return (
       <>
         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
@@ -620,7 +550,7 @@ export default function Home() {
             data={probe}
             responsive
             dense
-          // noTableHead
+
           />
         </SubWardColumnFlex>
       </>
@@ -639,22 +569,6 @@ export default function Home() {
       label: item[labelKey] as unknown as string
     }))[0]
 
-
-  const filteredCards = useMemo(() => {
-    return cardFilterData.map((items) => (
-      <DevicesCard
-        key={items.id}
-        title={items.title}
-        count={items.count}
-        times={items.times}
-        svg={items.svg}
-        cardname={items.cardname as FilterText}
-        switchcase={Switchcase}
-        active={items.active}
-      />
-    ))
-  }, [cardFilterData, Switchcase])
-
   return (
     <Container className="home-lg">
       <motion.div
@@ -662,9 +576,6 @@ export default function Home() {
         initial="hidden"
         animate="visible"
       >
-        <Helmet>
-          <meta name="description" content="page show all etemp box detect temperature realtime and nofi when temperture higher then limit This project is using the production build of React and supported redux, product copyright Thanes Development Co. Ltd." />
-        </Helmet>
         {
           devices.length > 0 ?
             <HomeContainerFlex>
@@ -681,7 +592,14 @@ export default function Home() {
                 }
               </DevHomeHeadTile>
               <DevHomeSecctionOne>
-                {filteredCards}
+                <HomeCard
+                  deviceData={devices}
+                  cardActive={cardActive}
+                  setCardActive={setCardActive}
+                  deviceDataFilter={devicesFilter}
+                  wardId={wardId}
+                  setOnFilteres={setOnFilteres}
+                />
               </DevHomeSecctionOne>
               <AboutBox>
                 <h5>{t('detailAllBox')}</h5>
@@ -790,7 +708,6 @@ export default function Home() {
                     <DataTable
                       responsive={true}
                       columns={columns}
-                      // data={devicesFilter.length > 0 ? devicesFilter.filter((items) => { if (items.log.length > 0) { return items } }) : devicesFilter}
                       data={devicesFilter}
                       paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
                       paginationPerPage={rowPerPage}
@@ -810,17 +727,6 @@ export default function Home() {
                     <div>
                       {
                         devicesFilter.length > 0 ?
-                          // devicesFilter.map((item, index) => {
-                          //   if (item.log.length > 0) {
-                          //     return <DevicesInfoCard
-                          //       devicesdata={item}
-                          //       keyindex={index}
-                          //       key={item.devSerial}
-                          //       fetchData={filtersDevices}
-                          //     />
-                          //   }
-                          // }
-                          // )
                           devicesFilter.map((item, index) =>
                             <DevicesInfoCard
                               devicesdata={item}

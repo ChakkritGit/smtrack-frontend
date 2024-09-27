@@ -57,7 +57,6 @@ export default function AdjustLog() {
       } else {
         console.error('Uknown error: ', error)
       }
-
     }
   }
 
@@ -86,7 +85,7 @@ export default function AdjustLog() {
   },
   {
     name: t('hisUsername'),
-    selector: (items) => items.user.displayName,
+    selector: (items) => items.user?.displayName,
     sortable: false,
     center: true
   },
@@ -108,7 +107,7 @@ export default function AdjustLog() {
   ]
 
   // Filter Data
-  const filteredItems = history.length > 0 ? history.filter(item => item.devSerial && item.devSerial.toLowerCase().includes(searchQuery.toLowerCase()) || item.user.displayName.toLowerCase().includes(searchQuery.toLowerCase())) : []
+  const filteredItems = history.length > 0 ? history.filter(item => item.devSerial && item.devSerial.toLowerCase().includes(searchQuery.toLowerCase()) || item.user?.displayName.toLowerCase().includes(searchQuery.toLowerCase())) : []
 
   // format json
   const formatJson = (jsonStr: string) => {

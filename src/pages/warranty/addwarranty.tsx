@@ -11,8 +11,20 @@ import Swal from "sweetalert2"
 import axios, { AxiosError } from "axios"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
 import { storeDispatchType } from "../../stores/store"
-import Select from 'react-select'
+import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
+import { hospitalsType } from "../../types/hospital.type"
+import { companyList } from "../../constants/constants"
+
+type Hospital = {
+  hosId: string,
+  hosName: string,
+}
+
+type Company = {
+  key: number,
+  value: string,
+}
 
 interface AddWarrantyPropsType {
   pagestate: string,
@@ -21,15 +33,16 @@ interface AddWarrantyPropsType {
 }
 
 interface WarrantyObjectType {
-  devName: string | undefined;
-  expire: string | undefined;
-  invoice?: string | undefined;
-  warrStatus: boolean | undefined
-}
-
-interface WarrantyObjectEditType {
-  expire: string | undefined;
-  invoice?: string | undefined;
+  devName?: string | undefined,
+  productName?: string | undefined,
+  productModel?: string | undefined,
+  installDate?: string | undefined,
+  customerName?: string | undefined,
+  customerAddress?: string | undefined,
+  saleDept?: string | undefined,
+  invoice?: string | undefined,
+  expire: string,
+  warrStatus: boolean
 }
 
 type Option = {
@@ -44,7 +57,7 @@ interface WithCount {
 }
 
 type WarrantyOption = WithCount & {
-  devId: string,
+  devName: string,
   devSerial: string
 }
 
@@ -54,13 +67,21 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
   const { cookieDecode, reFetchData } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const hospitalsData = useSelector<DeviceStateStore, hospitalsType[]>((state) => state.arraySlice.hospital.hospitalsData)
   const { token } = cookieDecode
   const [show, setShowe] = useState(false)
   const [warrantyObject, setWarrantyObject] = useState({
-    devName: warData?.device.devName,
-    invoice: warData?.invoice,
-    expire: warData?.expire.substring(0, 10)
+    productName: warData?.productName ? warData?.productName : '',
+    devSerial: warData?.productModel ? warData?.productModel : '',
+    devName: warData?.device.devName ? warData?.device.devName : '',
+    invoice: warData?.invoice ? warData?.invoice : '',
+    installDate: warData?.installDate ? warData?.installDate.substring(0, 10) : '',
+    expireData: warData?.expire ? warData?.expire.substring(0, 10) : '',
+    customerName: warData?.customerName ? warData?.customerName : '',
+    customerAddress: warData?.customerAddress ? warData?.customerAddress : '',
+    saleDept: warData?.saleDept ? warData?.saleDept : '',
   })
+  const { devName, expireData, installDate, invoice, devSerial, productName, customerAddress, customerName, saleDept } = warrantyObject
   const { theme } = useTheme()
 
   const openModal = () => {
@@ -71,15 +92,34 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
     setShowe(false)
   }
 
+  const setHosId = (e: SingleValue<Option>) => {
+    const selectedValue = e?.value
+    const selectedLabel = e?.label
+    if (!selectedValue) return
+    setWarrantyObject({ ...warrantyObject, customerAddress: hospitalsData.filter((items) => items.hosId.toLowerCase().includes(selectedValue.toLowerCase())).map((items) => items.hosAddress)[0], customerName: String(selectedLabel) })
+  }
+
+  const setSaleDept = (e: SingleValue<Option>) => {
+    const selectedLabel = e?.label
+    if (!selectedLabel) return
+    setWarrantyObject({ ...warrantyObject, saleDept: selectedLabel })
+  }
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (warrantyObject.devName !== '' && warrantyObject.expire !== '' || warrantyObject.invoice !== '') {
+    if (devName !== '' && expireData !== '' && devSerial !== '' && invoice !== '' && installDate !== '' && productName !== '' && customerAddress !== '' && customerName !== '' && saleDept !== '') {
       const body: WarrantyObjectType = {
-        devName: warrantyObject.devName,
-        expire: warrantyObject.expire,
+        devName: devName,
+        productName: productName,
+        customerAddress: customerAddress,
+        customerName: customerName,
+        installDate: installDate,
+        productModel: devSerial,
+        saleDept: saleDept,
+        expire: expireData,
+        invoice: invoice,
         warrStatus: true
       }
-      if (warrantyObject.invoice !== '') body.invoice = warrantyObject.invoice
       try {
         const response = await axios.post(`${import.meta.env.VITE_APP_API}/warranty`, body, {
           headers: { authorization: `Bearer ${token}` }
@@ -117,6 +157,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
       } finally {
         closeModal()
         fetchData()
+        setWarrantyObject({ ...warrantyObject, devName: '', expireData: '', invoice: '', customerAddress: '', customerName: '', devSerial: '', installDate: '', productName: '', saleDept: '' })
       }
     } else {
       Swal.fire({
@@ -131,11 +172,19 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
 
   const handleSubmitEdit = async (e: FormEvent) => {
     e.preventDefault()
-    if (warrantyObject.expire !== '' || warrantyObject.invoice !== '') {
-      const body: WarrantyObjectEditType = {
-        expire: warrantyObject.expire
+    if (devName !== '' && expireData !== '' && devSerial !== '' && invoice !== '' && installDate !== '' && productName !== '' && customerAddress !== '' && customerName !== '' && saleDept !== '') {
+      const body: WarrantyObjectType = {
+        devName: devName,
+        productName: productName,
+        customerAddress: customerAddress,
+        customerName: customerName,
+        installDate: installDate,
+        productModel: devSerial,
+        saleDept: saleDept,
+        expire: expireData,
+        invoice: invoice,
+        warrStatus: true
       }
-      if (warrantyObject.invoice !== '') body.invoice = warrantyObject.invoice
       try {
         const response = await axios.put(`${import.meta.env.VITE_APP_API}/warranty/${warData?.warrId}`, body, {
           headers: { authorization: `Bearer ${token}` }
@@ -173,6 +222,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
       } finally {
         closeModal()
         fetchData()
+        setWarrantyObject({ ...warrantyObject, devName: '', expireData: '', invoice: '', customerAddress: '', customerName: '', devSerial: '', installDate: '', productName: '', saleDept: '' })
       }
     } else {
       Swal.fire({
@@ -193,6 +243,18 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
 
   const mapDefaultValue = <T, K extends keyof T>(data: T[], id: string, valueKey: K, labelKey: K): Option | undefined =>
     data.filter(item => item[valueKey] === id).map(item => ({
+      value: item[valueKey] as unknown as string,
+      label: item[labelKey] as unknown as string
+    }))[0]
+
+  const mapOptionsHospital = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
+    data.map(item => ({
+      value: item[valueKey] as unknown as string,
+      label: item[labelKey] as unknown as string
+    }))
+
+  const mapDefaultValueHospital = <T, K extends keyof T>(data: T[], id: string, valueKey: K, labelKey: K): Option | undefined =>
+    data.filter(item => item[labelKey] === id).map(item => ({
       value: item[valueKey] as unknown as string,
       label: item[labelKey] as unknown as string
     }))[0]
@@ -232,15 +294,37 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               {/* <pre>
                 {JSON.stringify(warrantyObject, null, 2)}
               </pre> */}
+              <Col lg={12}>
+                <Form.Label className="w-100">
+                  {t('invoice')}
+                  <Form.Control
+                    type="text"
+                    value={invoice}
+                    onChange={(e) => setWarrantyObject({ ...warrantyObject, invoice: e.target.value })}
+                    className="mt-2"
+                  />
+                </Form.Label>
+              </Col>
+              <Col sm={12}>
+                <Form.Label className="w-100">
+                  {t('ชื่อผลิตภัณฑ์')}
+                  <Form.Control
+                    type="text"
+                    value={productName}
+                    onChange={(e) => setWarrantyObject({ ...warrantyObject, productName: e.target.value })}
+                    className="mt-2"
+                  />
+                </Form.Label>
+              </Col>
               {
                 pagestate === 'add' &&
                 <Col lg={12}>
                   <Form.Label className="w-100">
                     {t('selectDeviceDrop')}
                     <Select
-                      options={mapOptions<WarrantyOption, keyof WarrantyOption>(devices, 'devId', 'devSerial')}
-                      defaultValue={mapDefaultValue<WarrantyOption, keyof WarrantyOption>(devices, String(warrantyObject.devName), 'devId', 'devSerial')}
-                      onChange={(e) => setWarrantyObject({ ...warrantyObject, devName: e?.value })}
+                      options={mapOptions<WarrantyOption, keyof WarrantyOption>(devices, 'devName', 'devSerial')}
+                      defaultValue={mapDefaultValue<WarrantyOption, keyof WarrantyOption>(devices, String(devName), 'devName', 'devSerial')}
+                      onChange={(e) => setWarrantyObject({ ...warrantyObject, devName: String(e?.value), devSerial: String(e?.label.substring(0, 3) === "eTP" ? 'eTEMP' : 'iTEMP') })}
                       autoFocus={false}
                       placeholder={t('selectDeviceDrop')}
                       styles={{
@@ -267,13 +351,24 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
                   </Form.Label>
                 </Col>
               }
-              <Col lg={6}>
+              <Col sm={12}>
                 <Form.Label className="w-100">
-                  {t('invoice')}
+                  {t('รุ่น')}
                   <Form.Control
                     type="text"
-                    value={warrantyObject.invoice}
-                    onChange={(e) => setWarrantyObject({ ...warrantyObject, invoice: e.target.value })}
+                    value={devSerial}
+                    onChange={(e) => setWarrantyObject({ ...warrantyObject, devSerial: e.target.value })}
+                    className="mt-2"
+                  />
+                </Form.Label>
+              </Col>
+              <Col lg={6}>
+                <Form.Label className="w-100">
+                  {t('วันที่ติดตั้ง')}
+                  <Form.Control
+                    type="date"
+                    value={installDate}
+                    onChange={(e) => setWarrantyObject({ ...warrantyObject, installDate: e.target.value })}
                     className="mt-2"
                   />
                 </Form.Label>
@@ -283,9 +378,84 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
                   {t('endDate')}
                   <Form.Control
                     type="date"
-                    value={warrantyObject.expire}
-                    onChange={(e) => setWarrantyObject({ ...warrantyObject, expire: e.target.value })}
+                    value={expireData}
+                    onChange={(e) => setWarrantyObject({ ...warrantyObject, expireData: e.target.value })}
                     className="mt-2"
+                  />
+                </Form.Label>
+              </Col>
+              <Col sm={12}>
+                <Form.Label className="w-100">
+                  {t('ชื่อลูกค้า')}
+                  <Select
+                    options={mapOptionsHospital<Hospital, keyof Hospital>(hospitalsData, 'hosId', 'hosName')}
+                    defaultValue={mapDefaultValueHospital<Hospital, keyof Hospital>(hospitalsData, String(customerName), 'hosId', 'hosName')}
+                    onChange={setHosId}
+                    autoFocus={false}
+                    placeholder={t('selectDeviceDrop')}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
+                        borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
+                        boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
+                        borderRadius: "var(--border-radius-big)"
+                      }),
+                    }}
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary50: 'var(--main-color-opacity2)',
+                        primary25: 'var(--main-color-opacity2)',
+                        primary: 'var(--main-color)',
+                      },
+                    })}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                  />
+                </Form.Label>
+              </Col>
+              <Col sm={12}>
+                <Form.Label className="w-100">
+                  {t('ที่อยู่ลูกค้า')}
+                  <Form.Control
+                    type="text"
+                    value={customerAddress}
+                    onChange={(e) => setWarrantyObject({ ...warrantyObject, customerAddress: e.target.value })}
+                    className="mt-2"
+                  />
+                </Form.Label>
+              </Col>
+              <Col sm={12}>
+                <Form.Label className="w-100">
+                  {t('บริษัทจัดจำหน่าย')}
+                  <Select
+                    options={mapOptionsHospital<Company, keyof Company>(companyList, 'key', 'value')}
+                    defaultValue={mapDefaultValueHospital<Company, keyof Company>(companyList, String(saleDept), 'key', 'value')}
+                    onChange={setSaleDept}
+                    autoFocus={false}
+                    placeholder={t('selectDeviceDrop')}
+                    styles={{
+                      control: (baseStyles, state) => ({
+                        ...baseStyles,
+                        backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
+                        borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
+                        boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
+                        borderRadius: "var(--border-radius-big)"
+                      }),
+                    }}
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary50: 'var(--main-color-opacity2)',
+                        primary25: 'var(--main-color-opacity2)',
+                        primary: 'var(--main-color)',
+                      },
+                    })}
+                    className="react-select-container"
+                    classNamePrefix="react-select"
                   />
                 </Form.Label>
               </Col>

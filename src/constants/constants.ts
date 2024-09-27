@@ -236,10 +236,6 @@ export const scheduleMinuteArray: ScheduleMinute[] = [
     scheduleMinuteKey: '50',
     scheduleMinuteLabel: '50'
   },
-  // {
-  //   scheduleMinuteKey: '60',
-  //   scheduleMinuteLabel: '60'
-  // }
 ]
 
 export const getFormattedDate = () => {
@@ -264,6 +260,7 @@ export const createCard = (id: number, title: string, count: number, times: stri
 })
 
 export const styleElement = document.createElement('style')
+
 styleElement.innerHTML = `
   .apexcharts-tooltip {
     color: black;
@@ -294,3 +291,14 @@ styleElement.innerHTML = `
     stroke: var(--grey-25);
   }
 `
+
+export const companyList = [
+  {
+    key: 0,
+    value: 'SCI 1'
+  },
+  {
+    key: 1,
+    value: 'SCI 2'
+  }
+]

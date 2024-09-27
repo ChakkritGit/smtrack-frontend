@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios"
 import { Noticontainer, NotiflexOne, NotiflexTwo } from "../../style/style"
 import { notificationType } from "../../types/notification.type"
 import Loading from "../loading/loading"
-import { RiFileCloseLine, RiLoader2Line } from "react-icons/ri"
+import { RiFileCloseLine } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
 import { NotiHead, NotiHeadBtn } from "../../style/components/notification"
@@ -114,7 +114,7 @@ export default function Notificationdata(notilist: notilist) {
                   />
                 ))
               ) :
-                <Loading loading={true} title={t('loading')} icn={<RiLoader2Line />} />
+                <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
             })()
             :
             <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
@@ -132,7 +132,7 @@ export default function Notificationdata(notilist: notilist) {
                     />
                   ))
                 ) :
-                  <Loading loading={true} title={t('loading')} icn={<RiLoader2Line />} />
+                  <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
               })()
               :
               <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
@@ -148,7 +148,7 @@ export default function Notificationdata(notilist: notilist) {
                     />
                   ))
                 ) :
-                  <Loading loading={true} title={t('loading')} icn={<RiLoader2Line />} />
+                  <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
               })()
               :
               <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />

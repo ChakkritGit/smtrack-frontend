@@ -1,11 +1,11 @@
-import { RefObject } from "react"
+import { RefObject, useEffect } from "react"
 import { WCD1, WCDC1, WCDC2 } from "../../style/style"
 import Logo from '../../assets/images/Thanes.png'
 import Logofooter from '../../assets/images/ts-logo.png'
-import QRCode from "react-qr-code"
+import LogoTwo from '../../assets/images/Thanesscience_Logo.png'
+import LogofooterTwo from '../../assets/images/Thanesscience.png'
+// import QRCode from "react-qr-code"
 import { warrantyType } from "../../types/warranty.type"
-import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 
 type warrantytype = {
   data: warrantyType[],
@@ -13,14 +13,17 @@ type warrantytype = {
 }
 
 export default function Printwarranty(warrantytype: warrantytype) {
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { displayName } = cookieDecode
+  const { data } = warrantytype
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   return (
     <>
       {
         warrantytype.data.map((items) => {
-          const formattedDate = new Date(items.device.dateInstall).toLocaleDateString('en-GB', {
+          const formattedDate = new Date(String(items.installDate)).toLocaleDateString('en-GB', {
             day: '2-digit',
             month: '2-digit',
             year: 'numeric'
@@ -35,7 +38,7 @@ export default function Printwarranty(warrantytype: warrantytype) {
               <WCDC1>
                 <div>
                   <div>
-                    <img src={Logo} alt="ts-logo" />
+                    <img src={items.saleDept === 'SCI 1' ? Logo : LogoTwo} alt="ts-logo" />
                   </div>
                   <div>
                     <span>บัตรรับประกันผลิตภัณฑ์</span>
@@ -69,14 +72,14 @@ export default function Printwarranty(warrantytype: warrantytype) {
                         <span>ประเภทสินค้า</span>
                         <span>Product</span>
                       </span>
-                      <span>{items.device.devSerial.substring(0, 3) === "eTP" ? "eTEMP" : "iTEMP"}</span>
+                      <span>{items.productName}</span>
                     </div>
                     <div>
                       <span>
                         <span>รุ่น</span>
                         <span>Model</span>
                       </span>
-                      <span>{items.device.devSerial.substring(0, 8)}</span>
+                      <span>{items.productModel}</span>
                     </div>
                     <div>
                       <span>
@@ -90,7 +93,7 @@ export default function Printwarranty(warrantytype: warrantytype) {
                         <span>ชื่อลูกค้า</span>
                         <span>Customer's Name</span>
                       </span>
-                      <span>{displayName}</span>
+                      <span>{items.customerName}</span>
                     </div>
                   </div>
                   <div>
@@ -120,7 +123,7 @@ export default function Printwarranty(warrantytype: warrantytype) {
                         <span>โทร</span>
                         <span>Tel.</span>
                       </span>
-                      <span>0-2791-4500</span>
+                      <span>{items.saleDept === 'SCI 1' ? '0-2791-4500' : '(662) 941-0202-3'}</span>
                     </div>
                   </div>
                 </div>
@@ -131,7 +134,7 @@ export default function Printwarranty(warrantytype: warrantytype) {
                       <span>Address</span>
                     </div>
                     <div>
-                      61/34 ซ.อมรพันธ์ 4 (วิภาวดี 42) ถ.วิภาวดีรังสิต แขวงลาดยาว เขตจตุจักร กรุงเทพฯ 10900
+                      {items.customerAddress}
                     </div>
                   </div>
                   <div>
@@ -178,16 +181,16 @@ export default function Printwarranty(warrantytype: warrantytype) {
                 </div>
                 <div>
                   <div>
-                    <img src={Logofooter} alt="ts-logo" />
+                    <img src={items.saleDept === 'SCI 1' ? Logofooter : LogofooterTwo} alt="ts-logo" />
                   </div>
                   <div>
                     <span>61/34 ซ.อมรพันธ์ 4 (วิภาวดี 42) ถ.วิภาวดีรังสิต แขวงลาดยาว เขตจตุจักร กรุงเทพฯ 10900</span>
                     <span>61/34 Amornpan 4 (Vibhavadi 42), Vibhavadi Rangsit RD, Lat Yao, Chatuchak, Bangkok 10900</span>
-                    <span>Tel : 0-2791-4500</span>
+                    <span>{items.saleDept === 'SCI 1' ? '0-2791-4500' : '(662) 941-0202-3'}</span>
                   </div>
                 </div>
               </WCDC2>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end', width: '100%' }}>
+              {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end', width: '100%' }}>
                 <QRCode
                   size={48}
                   style={{ height: "auto", maxWidth: "100%", width: "8%" }}
@@ -195,7 +198,7 @@ export default function Printwarranty(warrantytype: warrantytype) {
                   viewBox={`0 0 48 48`}
                   level={'H'}
                 />
-              </div>
+              </div> */}
             </WCD1>
           )
         })

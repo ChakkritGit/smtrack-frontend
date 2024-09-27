@@ -60,6 +60,8 @@ export default {
     adjustHumi: 'Humidity compensation',
     currentTemp: 'Temperature before adjust',
     adjustAfterTemp: 'Temperature after adjust',
+    currentHum: 'Humidity before adjust',
+    adjustAfterHum: 'Humidity after adjust',
     muteSetting: 'Mute Settings',
     notificationSettings: 'Notification Settings',
     muteSettings: 'Mute Settings',
@@ -67,7 +69,9 @@ export default {
     muteTemporary: 'Temporary Mute',
     muteAlways: 'Mute Always',
     muteDoor: 'Mute Door',
-
+    adjustHumGreater: 'The humidity range cannot be set beyond 0-100%',
+    clearShedule: 'Clear',
+    
     // notification setting itemp
     choiceOne: '1. Sending message for the first time.',
     choiceTwo: '2. Sending message when the temperature returned to normal level.',
@@ -81,7 +85,7 @@ export default {
     messageEvery: 'Every (Minutes)',
     messageOn: 'On',
     messageOff: 'Off',
-    notificationButtonSubmit: 'บันทึก',
+    notificationButtonSubmit: 'Save',
 
     // device cards
     deviceOnline: 'Online',
@@ -140,7 +144,7 @@ export default {
     userHospitals: 'Hospitals',
     userWard: 'Ward',
     userNameForm: 'Username',
-    userpassword: 'Password',
+    userPassword: 'Password',
     userDisplayName: 'Name',
     userRole: 'Role Level',
     userPicture: 'Picture',
@@ -207,7 +211,7 @@ export default {
     tabWarrantyall: 'All',
     warrantyMa: 'MA',
     warrantyEtc: 'Other',
-    invoice: 'invoice',
+    invoice: 'Invoice',
 
     // repair
     addRepair: 'Add Repair',
@@ -333,8 +337,8 @@ export default {
     action: 'Action',
     hospitals: 'Hospital',
     ward: 'Ward',
-    Delay: 'Delay Time',
-    Door: 'Number of door',
+    delay: 'Delay Time',
+    door: 'Number of door',
     nodata: 'Data not found',
     loading: 'Loading...',
     searchItemsNav: 'Search',
@@ -353,10 +357,10 @@ export default {
     seeLastData: 'See last data',
     scheduleTile: 'Schedule',
     firstDay: 'First Day',
-    seccondDay: 'Seccond Day',
+    seccondDay: 'Second Day',
     thirdDay: 'Third Day',
     firstTime: 'First Time',
-    seccondTime: 'Seccond Time',
+    seccondTime: 'Second Time',
     thirdTime: 'Third Time',
     adjustTime: 'Set time successfully',
 
@@ -399,7 +403,7 @@ export default {
     deleteHosTitle: 'Do you want to delete a hospital?',
     deleteWardTitle: 'Do you want to delete a ward?',
     deleteRepairTitle: 'Do you want to delete a repair?',
-    optimizeCahrtText: 'When using this function, the graph will display differently from the actual values and adjust the graph to fit within the range of the maximum and minimum limits (tempMin, tempMax). Please note that this operation will not affect the data in the system; it is merely a temporary adjustment of the graph.',
+    optimizeChartText: 'When using this function, the graph will display differently from the actual values and adjust the graph to fit within the range of the maximum and minimum limits (tempMin, tempMax). Please note that this operation will not affect the data in the system; it is merely a temporary adjustment of the graph.',
     dataNotReady: 'Data is not ready to generate PDF!',
 
     // time

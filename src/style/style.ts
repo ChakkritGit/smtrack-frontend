@@ -842,7 +842,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 gap: .5rem;
-width: 80px;
+width: max-content;
 max-height: 50px;
 border-radius: var(--border-radius-big);
 border: 2px solid transparent;
@@ -4154,7 +4154,7 @@ span {
 
 export const SettingSystemContainer = styled.div<{ $primary?: boolean }>`
 display: flex;
-flex-wrap: wrap;
+/* flex-wrap: wrap; */
 gap: 1rem;
 height: 100%;
 width: 100%;
@@ -4995,7 +4995,7 @@ export const WCDC1 = styled.div<{ $primary?: boolean }>`
 
 &>div:nth-child(4)>div {
   display: flex;
-  justify-content: center;
+  margin-left: 8rem;
   gap: .5rem;
   margin-bottom: .5rem;
 }

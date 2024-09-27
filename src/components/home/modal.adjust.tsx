@@ -6,10 +6,11 @@ import {
 import {
   RiAlarmWarningFill, RiArrowDownLine, RiArrowLeftSLine, RiArrowRightLine,
   RiBellFill,
-  RiCloseLine
+  RiCloseLine,
+  RiFormatClear
 } from "react-icons/ri"
 import { Slider } from "@mui/material"
-import { AdjustRealTimeFlex, ModalMuteHead, MuteFlex, NotiActionFlex, OpenSettingBuzzer, ScheduleFlec, ScheduleItem, ScheduleItemFlex } from "../../style/components/home.styled"
+import { AdjustRealTimeFlex, ModalMuteHead, MuteFlex, NotiActionFlex, OpenSettingBuzzer, ScheduleContainer, ScheduleFlec, ScheduleItem, ScheduleItemFlex } from "../../style/components/home.styled"
 import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
 import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { AsyncThunk } from "@reduxjs/toolkit"
@@ -68,17 +69,17 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
     door: cookies.get(devicesdata.devSerial) === 'door' || false,
   })
   const [scheduleDay, setScheduleDay] = useState({
-    firstDay: devicesdata.config.firstDay,
-    seccondDay: devicesdata.config.secondDay,
-    thirdDay: devicesdata.config.thirdDay
+    firstDay: devicesdata.config.firstDay ?? null,
+    seccondDay: devicesdata.config.secondDay ?? null,
+    thirdDay: devicesdata.config.thirdDay ?? null
   })
   const [scheduleTime, setScheduleTime] = useState({
-    firstTime: devicesdata.config.firstTime?.substring(0, 2),
-    secondTime: devicesdata.config.secondTime?.substring(0, 2),
-    thirdTime: devicesdata.config.thirdTime?.substring(0, 2),
-    firstMinute: devicesdata.config.firstTime?.substring(2, 4),
-    seccondMinute: devicesdata.config.secondTime?.substring(2, 4),
-    thirdMinute: devicesdata.config.thirdTime?.substring(2, 4)
+    firstTime: devicesdata.config.firstTime?.substring(0, 2) ?? null,
+    secondTime: devicesdata.config.secondTime?.substring(0, 2) ?? null,
+    thirdTime: devicesdata.config.thirdTime?.substring(0, 2) ?? null,
+    firstMinute: devicesdata.config.firstTime?.substring(2, 4) ?? null,
+    seccondMinute: devicesdata.config.secondTime?.substring(2, 4) ?? null,
+    thirdMinute: devicesdata.config.thirdTime?.substring(2, 4) ?? null
   })
   const { choichOne, choichfour, choichthree, choichtwo } = muteMode
   const { userLevel } = tokenDecode
@@ -111,6 +112,18 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
         adjustTemp: formData.adjustTemp,
         adjustHum: formData.adjustHum,
       }
+
+      if (Number((mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)) > 100.00) {
+        Swal.fire({
+          title: t('alertHeaderWarning'),
+          text: t('adjustHumGreater'),
+          icon: "warning",
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        return
+      }
+
       const response = await axios.put<responseType<devicesType>>(url, bodyData, { headers: { authorization: `Bearer ${token}` } })
       // setShow(false)
       Swal.fire({
@@ -160,16 +173,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
       muteMode.choichOne &&
       muteMode.choichtwo &&
       muteMode.choichthree &&
-      muteMode.choichfour &&
-      scheduleDay.firstDay &&
-      scheduleDay.seccondDay &&
-      scheduleDay.thirdDay &&
-      scheduleTime.firstTime &&
-      scheduleTime.firstMinute &&
-      scheduleTime.secondTime &&
-      scheduleTime.seccondMinute &&
-      scheduleTime.thirdTime &&
-      scheduleTime.thirdMinute
+      muteMode.choichfour
     ) {
       const url: string = `${import.meta.env.VITE_APP_API}/config/${devicesdata.devSerial}`
       const bodyData = {
@@ -422,7 +426,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
       label: item[labelKey] as unknown as string ?? t('nameNotRegister')
     }))
 
-  const mapDefaultValue = <T, K extends keyof T>(data: T[], id: string, valueKey: K, labelKey: K): Option | undefined =>
+  const mapvalue = <T, K extends keyof T>(data: T[], id: string, valueKey: K, labelKey: K): Option | undefined =>
     data.filter(item => item[valueKey] === id).map(item => ({
       value: item[valueKey] as unknown as string,
       label: item[labelKey] as unknown as string ?? t('nameNotRegister')
@@ -456,7 +460,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                 <LineHr />
                 <Select
                   options={mapOptions<Ward, keyof Ward>(devicesdata.probe, 'probeId', 'probeName')}
-                  defaultValue={mapDefaultValue<Ward, keyof Ward>(devicesdata.probe, selectProbeI, 'probeId', 'probeName')}
+                  value={mapvalue<Ward, keyof Ward>(devicesdata.probe, selectProbeI, 'probeId', 'probeName')}
                   onChange={selectProbe}
                   autoFocus={false}
                   styles={{
@@ -579,11 +583,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     <SliderLabelFlex>
                       <span>{t('adjustTemp')}</span>
                       <div>
-                        <RangeInputText type="number"
+                        <RangeInputText
+                          type="number"
                           min={-20}
                           max={20}
-                          step={.1}
-                          disabled={userLevel === '3'}
+                          step={.01}
+                          disabled={userLevel === '3' || userLevel === '2'}
                           value={formData.adjustTemp}
                           onChange={(e) => setFormData({ ...formData, adjustTemp: Number(e.target.value) })} />
                         <strong>°C</strong>
@@ -591,14 +596,14 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     </SliderLabelFlex>
                     <FormSliderRange
                       $primary="temp"
-                      $disabled={userLevel === '3'}
+                      $disabled={userLevel === '3' || userLevel === '2'}
                     >
                       <Slider
                         color="error"
                         min={-20}
                         max={20}
                         step={.01}
-                        disabled={userLevel === '3'}
+                        disabled={userLevel === '3' || userLevel === '2'}
                         value={formData.adjustTemp}
                         onChange={handleAdjusttempChange}
                         valueLabelDisplay="off" />
@@ -612,11 +617,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     <SliderLabelFlex>
                       <span>{t('adjustHumi')}</span>
                       <div>
-                        <RangeInputText type="number"
-                          min={-20}
-                          max={20}
+                        <RangeInputText
+                          type="number"
+                          min={0}
+                          max={100}
                           step={.01}
-                          disabled={userLevel === '3'}
+                          disabled={userLevel === '3' || userLevel === '2'}
                           value={formData.adjustHum}
                           onChange={(e) => setFormData({ ...formData, adjustHum: Number(e.target.value) })} />
                         <strong>%</strong>
@@ -624,14 +630,14 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     </SliderLabelFlex>
                     <FormSliderRange
                       $primary="hum"
-                      $disabled={userLevel === '3'}
+                      $disabled={userLevel === '3' || userLevel === '2'}
                     >
                       <Slider
                         color="primary"
-                        min={-20}
-                        max={20}
-                        step={.1}
-                        disabled={userLevel === '3'}
+                        min={0}
+                        max={100}
+                        step={.01}
+                        disabled={userLevel === '3' || userLevel === '2'}
                         value={formData.adjustHum}
                         onChange={handleAdjusthumChange}
                         valueLabelDisplay="off" />
@@ -656,6 +662,28 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     <div>
                       <span>
                         <span>{(mqttData.temp + formData.adjustTemp - devicesdata.probe[0]?.adjustTemp).toFixed(2)}</span> °C
+                      </span>
+                    </div>
+                  </div>
+                </AdjustRealTimeFlex>
+              </Col>
+              <Col lg={12}>
+                <AdjustRealTimeFlex $primary={Number((mqttData.humi + formData.adjustHum).toFixed(2)) >= humvalue[1] || Number((mqttData.humi + formData.adjustHum).toFixed(2)) <= humvalue[0]}>
+                  <div>
+                    <span>{t('currentHum')}</span>
+                    <div>
+                      <span>
+                        <span>{mqttData.humi.toFixed(2)}</span> °C
+                      </span>
+                    </div>
+                  </div>
+                  <RiArrowRightLine size={32} fill="grey" />
+                  <RiArrowDownLine size={32} fill="grey" />
+                  <div>
+                    <span>{t('adjustAfterHum')}</span>
+                    <div>
+                      <span>
+                        <span>{(mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)}</span> °C
                       </span>
                     </div>
                   </div>
@@ -834,9 +862,30 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                 </Row>
               </Col>
               <Col lg={12}>
-                <Form.Label className="w-100 mt-3">
-                  <span><b>{t('scheduleTile')}</b></span>
-                </Form.Label>
+                <ScheduleContainer>
+                  <Form.Label className="w-100 mt-3">
+                    <span><b>{t('scheduleTile')}</b></span>
+                  </Form.Label>
+                  <div onClick={() => {
+                    setScheduleTime({
+                      firstMinute: '',
+                      firstTime: '',
+                      seccondMinute: '',
+                      secondTime: '',
+                      thirdMinute: '',
+                      thirdTime: ''
+                    });
+
+                    setScheduleDay({
+                      firstDay: '',
+                      seccondDay: '',
+                      thirdDay: ''
+                    });
+                  }}>
+                    <RiFormatClear size={20} />
+                    <span>{t('clearShedule')}</span>
+                  </div>
+                </ScheduleContainer>
               </Col>
               <Col lg={12}>
                 <ScheduleFlec>
@@ -850,11 +899,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                   <div>
                     <span>{t('firstDay')}</span>
                     <Select
+                      key={String(scheduleDay.firstDay)}
                       options={filterOptions(
                         mapOptions<Schedule, keyof Schedule>(scheduleDayArray, 'scheduleKey', 'scheduleLabel'),
                         [String(scheduleDay.seccondDay), String(scheduleDay.thirdDay)]
                       )}
-                      defaultValue={mapDefaultValue<Schedule, keyof Schedule>(scheduleDayArray, String(scheduleDay.firstDay), 'scheduleKey', 'scheduleLabel')}
+                      value={mapvalue<Schedule, keyof Schedule>(scheduleDayArray, String(scheduleDay.firstDay), 'scheduleKey', 'scheduleLabel')}
                       onChange={(e) => getScheduleDay(e, 'firstDay')}
                       autoFocus={false}
                       styles={{
@@ -883,11 +933,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                   <div>
                     <span>{t('seccondDay')}</span>
                     <Select
+                      key={String(scheduleDay.seccondDay)}
                       options={filterOptions(
                         mapOptions<Schedule, keyof Schedule>(scheduleDayArray, 'scheduleKey', 'scheduleLabel'),
                         [String(scheduleDay.firstDay), String(scheduleDay.thirdDay)]
                       )}
-                      defaultValue={mapDefaultValue<Schedule, keyof Schedule>(scheduleDayArray, String(scheduleDay.seccondDay), 'scheduleKey', 'scheduleLabel')}
+                      value={mapvalue<Schedule, keyof Schedule>(scheduleDayArray, String(scheduleDay.seccondDay), 'scheduleKey', 'scheduleLabel')}
                       onChange={(e) => getScheduleDay(e, 'seccondDay')}
                       autoFocus={false}
                       styles={{
@@ -916,11 +967,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                   <div>
                     <span>{t('thirdDay')}</span>
                     <Select
+                      key={String(scheduleDay.thirdDay)}
                       options={filterOptions(
                         mapOptions<Schedule, keyof Schedule>(scheduleDayArray, 'scheduleKey', 'scheduleLabel'),
                         [String(scheduleDay.firstDay), String(scheduleDay.seccondDay)]
                       )}
-                      defaultValue={mapDefaultValue<Schedule, keyof Schedule>(scheduleDayArray, String(scheduleDay.thirdDay), 'scheduleKey', 'scheduleLabel')}
+                      value={mapvalue<Schedule, keyof Schedule>(scheduleDayArray, String(scheduleDay.thirdDay), 'scheduleKey', 'scheduleLabel')}
                       onChange={(e) => getScheduleDay(e, 'thirdDay')}
                       autoFocus={false}
                       styles={{
@@ -960,11 +1012,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                   <span>{t('firstTime')}</span>
                   <div>
                     <Select
+                      key={String(scheduleTime.firstTime)}
                       options={filterOptions(
                         mapOptions<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, 'scheduleHourKey', 'scheduleHourLabel'),
                         [String(scheduleTime.secondTime), String(scheduleTime.thirdTime)]
                       )}
-                      defaultValue={mapDefaultValue<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, String(scheduleTime.firstTime), 'scheduleHourKey', 'scheduleHourLabel')}
+                      value={mapvalue<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, String(scheduleTime.firstTime), 'scheduleHourKey', 'scheduleHourLabel')}
                       onChange={(e) => getScheduleTime(e, 'firstTime')}
                       autoFocus={false}
                       styles={{
@@ -990,8 +1043,9 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                       classNamePrefix="react-select"
                     />
                     <Select
+                      key={String(scheduleTime.firstMinute)}
                       options={mapOptions<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, 'scheduleMinuteKey', 'scheduleMinuteLabel')}
-                      defaultValue={mapDefaultValue<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, String(scheduleTime.firstMinute), 'scheduleMinuteKey', 'scheduleMinuteLabel')}
+                      value={mapvalue<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, String(scheduleTime.firstMinute), 'scheduleMinuteKey', 'scheduleMinuteLabel')}
                       onChange={(e) => getScheduleTimeMinute(e, 'firstTimeMinute')}
                       autoFocus={false}
                       styles={{
@@ -1024,11 +1078,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                   <span>{t('seccondTime')}</span>
                   <div>
                     <Select
+                      key={String(scheduleTime.secondTime)}
                       options={filterOptions(
                         mapOptions<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, 'scheduleHourKey', 'scheduleHourLabel'),
                         [String(scheduleTime.firstTime), String(scheduleTime.thirdTime)]
                       )}
-                      defaultValue={mapDefaultValue<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, String(scheduleTime.secondTime), 'scheduleHourKey', 'scheduleHourLabel')}
+                      value={mapvalue<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, String(scheduleTime.secondTime), 'scheduleHourKey', 'scheduleHourLabel')}
                       onChange={(e) => getScheduleTime(e, 'seccondTime')}
                       autoFocus={false}
                       styles={{
@@ -1054,8 +1109,9 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                       classNamePrefix="react-select"
                     />
                     <Select
+                      key={String(scheduleTime.seccondMinute)}
                       options={mapOptions<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, 'scheduleMinuteKey', 'scheduleMinuteLabel')}
-                      defaultValue={mapDefaultValue<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, String(scheduleTime.seccondMinute), 'scheduleMinuteKey', 'scheduleMinuteLabel')}
+                      value={mapvalue<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, String(scheduleTime.seccondMinute), 'scheduleMinuteKey', 'scheduleMinuteLabel')}
                       onChange={(e) => getScheduleTimeMinute(e, 'seccondTimeMinute')}
                       autoFocus={false}
                       styles={{
@@ -1088,11 +1144,12 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                   <span>{t('thirdTime')}</span>
                   <div>
                     <Select
+                      key={String(scheduleTime.thirdTime)}
                       options={filterOptions(
                         mapOptions<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, 'scheduleHourKey', 'scheduleHourLabel'),
                         [String(scheduleTime.firstTime), String(scheduleTime.secondTime)]
                       )}
-                      defaultValue={mapDefaultValue<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, String(scheduleTime.thirdTime), 'scheduleHourKey', 'scheduleHourLabel')}
+                      value={mapvalue<ScheduleHour, keyof ScheduleHour>(scheduleTimeArray, String(scheduleTime.thirdTime), 'scheduleHourKey', 'scheduleHourLabel')}
                       onChange={(e) => getScheduleTime(e, 'thirdTime')}
                       autoFocus={false}
                       styles={{
@@ -1118,8 +1175,9 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                       classNamePrefix="react-select"
                     />
                     <Select
+                      key={String(scheduleTime.thirdMinute)}
                       options={mapOptions<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, 'scheduleMinuteKey', 'scheduleMinuteLabel')}
-                      defaultValue={mapDefaultValue<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, String(scheduleTime.thirdMinute), 'scheduleMinuteKey', 'scheduleMinuteLabel')}
+                      value={mapvalue<ScheduleMinute, keyof ScheduleMinute>(scheduleMinuteArray, String(scheduleTime.thirdMinute), 'scheduleMinuteKey', 'scheduleMinuteLabel')}
                       onChange={(e) => getScheduleTimeMinute(e, 'thirdTimeMinute')}
                       autoFocus={false}
                       styles={{

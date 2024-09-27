@@ -60,6 +60,8 @@ export default {
     adjustHumi: 'ปรับชดเชยความชื้น',
     currentTemp: 'อุณหภูมิก่อนปรับชดเชย',
     adjustAfterTemp: 'อุณหภูมิหลังปรับชดเชย',
+    currentHum: 'ความชื่นก่อนปรับชดเชย',
+    adjustAfterHum: 'ความชื่นหลังปรับชดเชย',
     muteSetting: 'ตั้งค่าเสียง',
     notificationSettings: 'ตั้งค่าการแจ้งเตือน',
     muteSettings: 'ตั้งค่าการปิดเสียง',
@@ -67,6 +69,8 @@ export default {
     muteTemporary: 'ปิดเสียงชั่วคราว',
     muteAlways: 'ปิดเสียงตลอดเวลา',
     muteDoor: 'ปิดเสียงประตู',
+    adjustHumGreater: 'ช่วงความชื่นไม่สามารถตั้งได้เกินช่วง 0-100%',
+    clearShedule: 'ล้าง',
 
     // notification setting itemp
     choiceOne: '1. ส่งข้อความครั้งแรก',
@@ -249,7 +253,7 @@ export default {
     editWarranty: 'แก้ไขการรับประกัน',
     startDate: 'วันเริ่มประกัน',
     endDate: 'วันหมดประกัน',
-    invoice: 'invoice',
+    invoice: 'Invoice',
 
     // notification
     titleNotification: 'การแจ้งเตือน',

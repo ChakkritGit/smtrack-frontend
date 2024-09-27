@@ -56,7 +56,6 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
       cookies.set('devSerial', data.devsn, cookieOptions)
       navigate('/dashboard')
       window.scrollTo(0, 0)
-      // เมื่อสลับหน้าไปยังแดชบอร์ดให้สกลอไปบนสุด
     }
   }
 

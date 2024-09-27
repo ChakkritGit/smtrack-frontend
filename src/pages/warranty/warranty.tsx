@@ -72,7 +72,7 @@ export default function Warranty() {
     fetchData()
   }, [token])
 
-  const devicesArray = warrantyData.filter((items) => items.device.devSerial.includes(searchQuery) || items.devName.includes(searchQuery))
+  const devicesArray = warrantyData.filter((items) => items.device.devSerial.toLowerCase().includes(searchQuery.toLowerCase()) || items.device.devDetail?.toLowerCase().includes(searchQuery.toLowerCase()))
 
   const expiredArray = devicesArray.filter((items) => {
     const today = new Date()
@@ -150,6 +150,12 @@ export default function Warranty() {
       cell: (_, index) => {
         return <div>{index + 1}</div>
       },
+      sortable: false,
+      center: true,
+    },
+    {
+      name: t('deviceNameTb'),
+      selector: (items) => items.device.devDetail ?? '- -',
       sortable: false,
       center: true,
     },

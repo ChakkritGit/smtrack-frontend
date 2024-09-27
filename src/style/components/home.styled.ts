@@ -5,7 +5,7 @@ display: flex;
 justify-content: space-evenly;
 align-items: center;
 padding: .5rem;
-margin: 1rem 0;
+margin: .5rem 0;
 
 & > div {
   display: flex;
@@ -188,5 +188,73 @@ justify-content: space-around;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+`
+
+export const HomeCardItem = styled.div<{ $primary?: boolean }>`
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+background-color: ${props => props.$primary ? 'var(--main-color)' : 'var(--white)'};
+color: ${props => props.$primary ? 'var(--white)' : 'var(--balck)'};
+padding: 0.8rem;
+width: 145px;
+height: max-content;
+max-width: 150px;
+max-height: 130px;
+border-radius: var(--border-radius-small);
+box-shadow: rgba(50, 50, 50, 0.1) 0px 12px 28px;
+transition: 0.3s;
+cursor: pointer;
+overflow: hidden;
+
+&>span:nth-child(1) {
+  font-size: 14px;
+  max-width: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+&>div>span:nth-child(1) {
+  font-size: 12px;
+}
+
+&:hover {
+  transform: scale(1.05);
+  transition: 0.3s;
+}
+
+&>div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0px 0.5rem;
+}
+`
+
+export const CountStyle = styled.h3<{ $primary?: boolean }>`
+  color: ${props => props.$primary && 'var(--danger-color)'};
+  text-align: center;
+  font-weight: bold;
+`
+
+export const ScheduleContainer = styled.div`
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-right: .5rem;
+
+&>div {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--grey-50);
+    transition: .3s;
+  }
 }
 `
