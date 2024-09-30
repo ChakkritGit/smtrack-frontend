@@ -593,14 +593,14 @@ export default function Home() {
   const updatedWardData = [allWard, ...wardName]
 
   useEffect(() => {
-    setCurrentPage(0)
+    // setCurrentPage(0)
     setDisplayedCards(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
     showPage(0, searchQuery)
   }, [searchQuery, devicesFilter, cardsPerPage, rowPerPage])
 
   useEffect(() => {
     showPage(currentPage, searchQuery)
-  }, [currentPage, devicesFilter, cardsPerPage, rowPerPage])
+  }, [currentPage, devicesFilter, cardsPerPage])
 
   const showPage = (pageNumber: number, query: string = '') => {
     const startIndex = pageNumber * cardsPerPage
