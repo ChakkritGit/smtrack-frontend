@@ -3,7 +3,7 @@ import DevicesCard from "../../components/home/devicesCard"
 import {
   RiCloseLine, RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
   RiFileCloseLine, RiFilter3Line,
-  RiLayoutGridLine, RiListUnordered, RiTempColdLine
+  RiLayoutGridLine, RiListUnordered, RiSkipUpLine, RiTempColdLine
 } from "react-icons/ri"
 import Select from "react-select"
 import {
@@ -35,7 +35,7 @@ import { FilterText } from "../../types/component.type"
 import { cookieOptions, cookies, paginationCardHome } from "../../constants/constants"
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
-import { TagCurrentHos } from "../../style/components/home.styled"
+import { FloatingTop, TagCurrentHos } from "../../style/components/home.styled"
 import { useTheme } from "../../theme/ThemeProvider"
 import HomeCard from "../../components/home/home.card"
 import { hospitalsType } from "../../types/hospital.type"
@@ -79,6 +79,7 @@ export default function Home() {
   const [cardsPerPage, setCardsPerPage] = useState<number>(cookies.get('rowperpage') ?? 10)
   const [displayedCards, setDisplayedCards] = useState<devicesType[]>(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
   const totalPages = Math.ceil(devicesFilter.length / cardsPerPage)
+  const [visible, setVisible] = useState(false)
 
   const isshowtk = () => {
     setShowticks(false)
@@ -622,6 +623,25 @@ export default function Home() {
     cookies.set('rowperpage', Number(event.target.value), cookieOptions)
   }
 
+  const handleScroll = () => {
+    if (window.scrollY > 100) {
+      setVisible(true)
+    } else {
+      setVisible(false)
+    }
+  }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   return (
     <Container className="home-lg">
       <motion.div
@@ -811,6 +831,10 @@ export default function Home() {
             :
             <PageLoading />
         }
+
+        <FloatingTop $primary={visible} onClick={scrollToTop}>
+          <RiSkipUpLine size={24} />
+        </FloatingTop>
 
         <Modal show={showticks} onHide={isshowtk}>
           <Modal.Header closeButton>

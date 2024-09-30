@@ -1708,6 +1708,27 @@ z-index: 99;
 }
 `
 
+export const ProbeHead = styled.div<{ $primary?: boolean }>`
+display: flex;
+align-items: center;
+gap: 1rem;
+z-index: 99;
+background-color: red;
+margin-bottom: 1.5rem;
+width: 100%;
+
+@media (max-width: 430px) {
+  gap: .5rem;
+}
+
+&>div:nth-child(1) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+`
+
 export const DevHomeHeadTile = styled.div<{ $primary?: boolean }>`
 display: flex;
 justify-content: space-between;

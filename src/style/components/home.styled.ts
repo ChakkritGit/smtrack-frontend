@@ -258,3 +258,25 @@ margin-right: .5rem;
   }
 }
 `
+
+export const FloatingTop = styled.div<{ $primary?: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--main-color);
+  color: var(--white);
+  border-radius: var(--border-radius-small);
+  opacity: ${props => (props.$primary ? 1 : 0)};
+  box-shadow: 5px 8px 15px -5px rgba(0, 0, 0, .3);
+  transition: opacity 0.3s ease;
+  cursor: pointer;
+
+  @media (max-width: 430px) {
+    display: none;
+}
+`

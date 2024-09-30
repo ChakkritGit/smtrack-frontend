@@ -34,9 +34,11 @@ display: flex;
 align-items: center;
 justify-content: space-between;
 
-&>div {
+&>div:nth-child(2) {
   display: flex;
+  align-items: center;
   gap: .5rem;
+  z-index: 99;
 }
 
 & h3 {
