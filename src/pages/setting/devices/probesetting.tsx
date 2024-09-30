@@ -197,7 +197,7 @@ export default function Probesetting() {
   }
 
   // Filter Data
-  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? probeData.filter(item => item.device.wardId === wardId) : probeData
+  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? probeData.filter(item => item.device.wardId.toLowerCase().includes(wardId.toLowerCase())) : probeData
   const filter = filteredItems.filter((f) => f.devSerial && f.devSerial.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (

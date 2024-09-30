@@ -268,7 +268,7 @@ export default function Managedev() {
   }
 
   // Filter Data
-  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? devices.filter(item => item.wardId === wardId) : devices
+  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? devices.filter(item => item.wardId.toLowerCase().includes(wardId.toLowerCase())) : devices
   const filter = filteredItems.filter((f) => f.devSerial && f.devSerial.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (

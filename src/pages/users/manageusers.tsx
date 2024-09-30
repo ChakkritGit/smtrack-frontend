@@ -50,8 +50,12 @@ export default function Permission() {
   const [filterdata, setFilterdata] = useState(false)
   const [wardName, setWardname] = useState<wardsType[]>([])
   // Filter Data
-  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? userData.filter(item => item.wardId === wardId) : userData
+  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? userData.filter(item => item.wardId.toLowerCase().includes(wardId.toLowerCase())) : userData
   const totalPages = Math.ceil(filteredItems.length / cardsPerPage)
+
+  const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
+
+  const updatedWardData = [allWard, ...wardName]
 
   useEffect(() => {
     return () => {
@@ -90,7 +94,6 @@ export default function Permission() {
   const displaySelectDevices = (event: ChangeEvent<HTMLSelectElement>) => {
     setCardsPerPage(Number(event.target.value))
   }
-  // จบส่วนการ์ด
 
   const updateLocalStorageAndDispatch = (key: string, id: string | undefined, action: Function) => {
     cookies.set(key, String(id), cookieOptions)
@@ -107,7 +110,12 @@ export default function Permission() {
   }, [wardData])
 
   const getWard = (wardID: string | undefined) => {
-    updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
+    if (wardID !== '') {
+      updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
+    } else {
+      cookies.remove('selectWard', cookieOptions)
+      dispatch(setWardId(''))
+    }
   }
 
   const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
@@ -171,8 +179,8 @@ export default function Permission() {
                   />
                 }
                 <Select
-                  options={mapOptions<Ward, keyof Ward>(wardName, 'wardId', 'wardName')}
-                  defaultValue={mapDefaultValue<Ward, keyof Ward>(wardData, wardId !== groupId ? groupId : wardId, 'wardId', 'wardName')}
+                  options={mapOptions<Ward, keyof Ward>(updatedWardData, 'wardId', 'wardName')}
+                  defaultValue={mapDefaultValue<Ward, keyof Ward>(wardName, wardId !== groupId ? groupId : wardId, 'wardId', 'wardName')}
                   onChange={(e) => getWard(e?.value)}
                   autoFocus={false}
                   styles={{

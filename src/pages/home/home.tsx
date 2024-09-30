@@ -74,7 +74,6 @@ export default function Home() {
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
   const [cardActive, setCardActive] = useState('')
-
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [cardsPerPage, setCardsPerPage] = useState<number>(cookies.get('rowperpage') ?? 10)
   const [displayedCards, setDisplayedCards] = useState<devicesType[]>(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
@@ -122,7 +121,6 @@ export default function Home() {
     } else {
       cookies.remove('selectWard', cookieOptions)
       dispatch(setWardId(''))
-      // dispatch(setFilterDevice(devices))
     }
   }
 

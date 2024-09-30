@@ -382,7 +382,7 @@ export default {
     alertHeaderError: 'Error',
     alertHeaderSuccess: 'Success',
     completeField: 'Please complete this field!',
-    deleteuserTitle: 'Do you want to delete a user?',
+    deleteUserTitle: 'Do you want to delete a user?',
     notReverseText: 'You will not be able to reverse this',
     CustomMessageLogData: 'The selected time periods are more than 30 days apart.',
     deactivateDevice: 'Do you want to deactivate a device?',
