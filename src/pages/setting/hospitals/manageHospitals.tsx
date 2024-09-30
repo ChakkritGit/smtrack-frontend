@@ -1,8 +1,8 @@
-import { Actiontablehos, DelUserButton, FormBtn, FormFlexBtn, HosTableImage, ManageHospitalsBody, ManageHospitalsContainer, ManageHospitalsHeader, ManageHospitalsHeaderAction, ModalHead, SubWardColumnFlex } from "../../../style/style"
+import { Actiontablehos, DelUserButton, FormBtn, FormFlexBtn, HosTableImage, ManageHospitalsBody, ManageHospitalsContainer, ManageHospitalsHeader, ManageHospitalsHeaderAction, ManageWardAdd, ModalHead, SubWardColumnFlex } from "../../../style/style"
 import { useTranslation } from "react-i18next"
 import { hospitalsType } from "../../../types/hospital.type"
 import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
-import { RiCloseLine, RiDeleteBin2Line } from "react-icons/ri"
+import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine } from "react-icons/ri"
 import { useSelector } from "react-redux"
 import { DataArrayStore, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useDispatch } from "react-redux"
@@ -14,7 +14,6 @@ import axios, { AxiosError } from "axios"
 import DataTable, { TableColumn } from "react-data-table-component"
 import Addhospitals from "./addhospitals"
 import Swal from "sweetalert2"
-import Addward from "./addward"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
 import { FormEvent, memo, useEffect, useState } from "react"
 import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
@@ -29,7 +28,7 @@ export default function ManageHospitals() {
   const { hospitalsData } = hospital
   const { userLevel } = tokenDecode
   const [addwardprop, setAddwardprop] = useState<{ pagestate: string, warddata: wardsType | undefined }>({
-    pagestate: '',
+    pagestate: 'add',
     warddata: undefined
   })
   const [formdata, setFormdata] = useState('')
@@ -223,11 +222,9 @@ export default function ManageHospitals() {
       name: t('action'),
       cell: (item, index) => (
         <Actiontablehos key={index}>
-          <Addward
-            key={item.wardId}
-            pagestate={'edit'}
-            openmodal={() => openmodal(item)}
-          />
+          <ManageWardAdd onClick={() => { openmodal(); setAddwardprop({ ...addwardprop, pagestate: 'edit', warddata: item }) }} $primary >
+            <RiEditLine size={16} />
+          </ManageWardAdd>
           {item.hosId !== "HID-DEVELOPMENT" && (
             <DelUserButton onClick={() =>
               swalWithBootstrapButtons
@@ -266,13 +263,14 @@ export default function ManageHospitals() {
     </SubWardColumnFlex>
   ))
 
-  const openmodal = (wardData?: wardsType) => {
+  const openmodal = () => {
     setShow(true)
-    setAddwardprop({ ...addwardprop, warddata: wardData })
   }
 
   const closemodal = () => {
     setShow(false)
+    setAddwardprop({ pagestate: 'add', warddata: undefined })
+    setFormdata('')
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -325,7 +323,7 @@ export default function ManageHospitals() {
       }
     } else {
       Swal.fire({
-        title: t('alert_header_Warning'),
+        title: t('alertHeaderWarning'),
         text: t('completeField'),
         icon: "warning",
         timer: 2000,
@@ -381,7 +379,7 @@ export default function ManageHospitals() {
       }
     } else {
       Swal.fire({
-        title: t('alert_header_Warning'),
+        title: t('alertHeaderWarning'),
         text: t('completeField'),
         icon: "warning",
         timer: 2000,
@@ -389,6 +387,10 @@ export default function ManageHospitals() {
       })
     }
   }
+
+  useEffect(() => {
+    console.log(pagestate)
+  }, [pagestate])
 
   // Filter Data
   const filteredItems = hospitalsData.filter(item => item.hosName.includes(searchQuery) || item.hosTelephone.includes(searchQuery))
@@ -404,10 +406,10 @@ export default function ManageHospitals() {
               pagestate={'add'}
             />
           }
-          <Addward
-            pagestate={'add'}
-            openmodal={openmodal}
-          />
+          <ManageWardAdd onClick={() => { openmodal(); setAddwardprop({ ...addwardprop, pagestate: 'add' }) }}>
+            {t('addWard')}
+            <RiAddLine />
+          </ManageWardAdd>
         </ManageHospitalsHeaderAction>
       </ManageHospitalsHeader>
       <ManageHospitalsBody>
