@@ -1,8 +1,8 @@
-import { Actiontablehos, DelUserButton, HosTableImage, ManageHospitalsBody, ManageHospitalsContainer, ManageHospitalsHeader, ManageHospitalsHeaderAction, SubWardColumnFlex } from "../../../style/style"
+import { Actiontablehos, DelUserButton, FormBtn, FormFlexBtn, HosTableImage, ManageHospitalsBody, ManageHospitalsContainer, ManageHospitalsHeader, ManageHospitalsHeaderAction, ModalHead, SubWardColumnFlex } from "../../../style/style"
 import { useTranslation } from "react-i18next"
 import { hospitalsType } from "../../../types/hospital.type"
 import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
-import { RiDeleteBin2Line } from "react-icons/ri"
+import { RiCloseLine, RiDeleteBin2Line } from "react-icons/ri"
 import { useSelector } from "react-redux"
 import { DataArrayStore, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useDispatch } from "react-redux"
@@ -16,7 +16,9 @@ import Addhospitals from "./addhospitals"
 import Swal from "sweetalert2"
 import Addward from "./addward"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
-import { memo, useEffect } from "react"
+import { FormEvent, memo, useEffect, useState } from "react"
+import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
+import HospitalDropdown from "../../../components/dropdown/hospitalDropdown"
 
 export default function ManageHospitals() {
   const { t } = useTranslation()
@@ -26,6 +28,15 @@ export default function ManageHospitals() {
   const { hospital } = useSelector<DeviceStateStore, DataArrayStore>((state) => state.arraySlice)
   const { hospitalsData } = hospital
   const { userLevel } = tokenDecode
+  const [addwardprop, setAddwardprop] = useState<{ pagestate: string, warddata: wardsType | undefined }>({
+    pagestate: '',
+    warddata: undefined
+  })
+  const [formdata, setFormdata] = useState('')
+
+  const [show, setShow] = useState(false)
+  const [hosid, setHosid] = useState('')
+  const { pagestate, warddata } = addwardprop
 
   useEffect(() => {
     return () => {
@@ -215,11 +226,7 @@ export default function ManageHospitals() {
           <Addward
             key={item.wardId}
             pagestate={'edit'}
-            warddata={{
-              group_id: item.wardId,
-              group_name: item.wardName,
-              hospital: item.hospital
-            }}
+            openmodal={() => openmodal(item)}
           />
           {item.hosId !== "HID-DEVELOPMENT" && (
             <DelUserButton onClick={() =>
@@ -259,6 +266,130 @@ export default function ManageHospitals() {
     </SubWardColumnFlex>
   ))
 
+  const openmodal = (wardData?: wardsType) => {
+    setShow(true)
+    setAddwardprop({ ...addwardprop, warddata: wardData })
+  }
+
+  const closemodal = () => {
+    setShow(false)
+  }
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    const url: string = `${import.meta.env.VITE_APP_API}/ward`
+    if (hosid !== '' && formdata !== '') {
+      try {
+        const response = await axios.post<responseType<wardsType>>(url, {
+          hosId: String(hosid),
+          wardName: String(formdata)
+        }, {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        })
+        setShow(false)
+        Swal.fire({
+          title: t('alertHeaderSuccess'),
+          text: response.data.message,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        setAddwardprop({
+          ...addwardprop, warddata: undefined
+        })
+        dispatch(fetchHospitals(token))
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            dispatch(setShowAlert(true))
+          } else {
+            Swal.fire({
+              title: t('alertHeaderError'),
+              text: error.response?.data.message,
+              icon: "error",
+              timer: 2000,
+              showConfirmButton: false,
+            })
+          }
+        } else {
+          Swal.fire({
+            title: t('alertHeaderError'),
+            text: 'Uknown Error',
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          })
+        }
+      }
+    } else {
+      Swal.fire({
+        title: t('alert_header_Warning'),
+        text: t('completeField'),
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+    }
+  }
+
+  const handleSubmitedit = async (e: FormEvent) => {
+    e.preventDefault()
+    const url: string = `${import.meta.env.VITE_APP_API}/ward/${addwardprop?.warddata?.wardId}`
+
+    if (formdata !== '') {
+      try {
+        const response = await axios.put<responseType<wardsType>>(url, {
+          wardName: String(formdata)
+        }, {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        })
+        setShow(false)
+        Swal.fire({
+          title: t('alertHeaderSuccess'),
+          text: response.data.message,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        dispatch(fetchHospitals(token))
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            dispatch(setShowAlert(true))
+          } else {
+            Swal.fire({
+              title: t('alertHeaderError'),
+              text: error.response?.data.message,
+              icon: "error",
+              timer: 2000,
+              showConfirmButton: false,
+            })
+          }
+        } else {
+          Swal.fire({
+            title: t('alertHeaderError'),
+            text: 'Uknown Error',
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          })
+        }
+      }
+    } else {
+      Swal.fire({
+        title: t('alert_header_Warning'),
+        text: t('completeField'),
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+    }
+  }
+
   // Filter Data
   const filteredItems = hospitalsData.filter(item => item.hosName.includes(searchQuery) || item.hosTelephone.includes(searchQuery))
 
@@ -275,6 +406,7 @@ export default function ManageHospitals() {
           }
           <Addward
             pagestate={'add'}
+            openmodal={openmodal}
           />
         </ManageHospitalsHeaderAction>
       </ManageHospitalsHeader>
@@ -293,6 +425,68 @@ export default function ManageHospitals() {
           fixedHeaderScrollHeight="calc(100dvh - 350px)"
         />
       </ManageHospitalsBody>
+
+      <Modal show={show} onHide={closemodal}>
+        <Modal.Header>
+          {/* {JSON.stringify(formdata)} */}
+          <ModalHead>
+            <strong>
+              {
+                pagestate === "add" ?
+                  t('addWard')
+                  :
+                  t('editWard')
+              }
+            </strong>
+            <button onClick={closemodal}>
+              <RiCloseLine />
+            </button>
+          </ModalHead>
+        </Modal.Header>
+        <Form onSubmit={pagestate === 'add' ? handleSubmit : handleSubmitedit}>
+          <Modal.Body>
+            <Row>
+              {
+                pagestate === 'add' ?
+                  <Col lg={6}>
+                    <InputGroup className="mb-3">
+                      <Form.Label className="w-100">
+                        {t('userHospitals')}
+                        <HospitalDropdown
+                          setHos_id={setHosid}
+                        />
+                      </Form.Label>
+                    </InputGroup>
+                  </Col>
+                  :
+                  <></>
+              }
+              <Col lg={pagestate === 'edit' ? 12 : 6}>
+                <InputGroup className="mb-3">
+                  <Form.Label className="w-100">
+                    {t('wardName')}
+                    <Form.Control
+                      name="form_ward_name"
+                      spellCheck={false}
+                      autoComplete='off'
+                      type='text'
+                      value={warddata?.wardName}
+                      onChange={(e) => setFormdata(e.target.value)}
+                    />
+                  </Form.Label>
+                </InputGroup>
+              </Col>
+            </Row>
+          </Modal.Body>
+          <Modal.Footer>
+            <FormFlexBtn>
+              <FormBtn type="submit">
+                {t('saveButton')}
+              </FormBtn>
+            </FormFlexBtn>
+          </Modal.Footer>
+        </Form>
+      </Modal>
     </ManageHospitalsContainer>
   )
 }

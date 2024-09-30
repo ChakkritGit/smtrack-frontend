@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react"
 import { cardType } from "./component.type"
-import { hospitalsType } from "./hospital.type"
 import { probeType } from "./probe.type"
 
 // userProps
@@ -12,12 +11,8 @@ type adduserProp = {
 
 // wardProps
 type addWardProp = {
-  pagestate: string
-  warddata?: {
-    group_id: string,
-    group_name: string,
-    hospital: hospitalsType
-  }
+  pagestate: string,
+  openmodal: () => void
 }
 // closeWardProps
 

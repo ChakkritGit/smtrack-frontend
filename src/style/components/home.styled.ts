@@ -276,6 +276,11 @@ export const FloatingTop = styled.div<{ $primary?: boolean }>`
   transition: opacity 0.3s ease;
   cursor: pointer;
 
+  &:hover {
+    background-color: var(--second-color);
+    transition: .3s;
+  }
+
   @media (max-width: 430px) {
     display: none;
 }
