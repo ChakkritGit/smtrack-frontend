@@ -1,196 +1,87 @@
 import { Dispatch, SetStateAction } from "react"
 import { devicesType } from "../../types/device.type"
 import { useTranslation } from "react-i18next"
-import { RiDoorClosedLine, RiFolderSettingsLine, RiListSettingsLine, RiPlugLine, RiSdCardMiniLine, RiShieldCheckLine, RiSignalWifi1Line, RiTempColdLine } from "react-icons/ri"
+import {
+  RiDoorClosedLine,
+  RiFolderSettingsLine,
+  RiListSettingsLine,
+  RiPlugLine,
+  RiSdCardMiniLine,
+  RiShieldCheckLine,
+  RiSignalWifi1Line,
+  RiTempColdLine,
+} from "react-icons/ri"
 import { notificationType } from "../../types/notification.type"
 import { CountStyle, HomeCardItem } from "../../style/components/home.styled"
 
 type HomeCardData = {
-  deviceData: devicesType[],
-  deviceDataFilter: devicesType[],
-  wardId: string,
-  cardActive: string,
-  setCardActive: Dispatch<SetStateAction<string>>,
-  setOnFilteres: Dispatch<SetStateAction<boolean>>,
+  deviceData: devicesType[]
+  wardId: string
+  cardActive: string
+  setCardActive: Dispatch<SetStateAction<string>>
+  setOnFilteres: Dispatch<SetStateAction<boolean>>
 }
 
-function HomeCard(homeCardData: HomeCardData) {
+function HomeCard({ cardActive, deviceData, wardId, setCardActive, setOnFilteres }: HomeCardData) {
   const { t } = useTranslation()
-  const { cardActive, deviceData, setCardActive, wardId, setOnFilteres } = homeCardData
 
-  const filter: devicesType[] = wardId !== 'WID-DEVELOPMENT' ? deviceData.filter((f) => f.wardId === wardId) : deviceData
+  const filter = wardId !== 'WID-DEVELOPMENT' ? deviceData.filter((f) => f.wardId.toLowerCase().includes(wardId.toLowerCase())) : deviceData
 
-  const getSum = (key: keyof NonNullable<devicesType['_count']>): number =>
+  const getSum = (key: keyof NonNullable<devicesType['_count']>) =>
     filter.reduce((acc, devItems) => acc + (devItems._count?.[key] ?? 0), 0)
 
-  const getFilteredCount = (predicate: (n: notificationType) => boolean): number =>
+  const getFilteredCount = (predicate: (n: notificationType) => boolean) =>
     filter.flatMap(i => i.noti).filter(predicate).length
 
   const countState = {
     temp: getFilteredCount(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])),
-    door: getFilteredCount(n => n.notiDetail.split('/')[0].substring(0, 5) === 'PROBE' && n.notiDetail.split('/')[2].substring(0, 5) === 'ON'),
+    door: getFilteredCount(n => n.notiDetail.startsWith('PROBE') && n.notiDetail.split('/')[2].startsWith('ON')),
     connect: getSum('log'),
     plug: getFilteredCount(n => n.notiDetail.split('/')[0] === 'AC'),
     scCard: getFilteredCount(n => n.notiDetail.split('/')[0] === 'SD'),
     adjust: getSum('history'),
     repair: getSum('repair'),
-    warranties: getSum('warranty')
+    warranties: getSum('warranty'),
   }
+
+  const cardItems = [
+    { key: '1', label: t('countProbe'), count: countState.temp, icon: <RiTempColdLine /> },
+    { key: '2', label: t('countDoor'), count: countState.door, icon: <RiDoorClosedLine /> },
+    { key: '3', label: t('countConnect'), count: countState.connect, icon: <RiSignalWifi1Line /> },
+    { key: '4', label: t('countPlug'), count: countState.plug, icon: <RiPlugLine /> },
+    { key: '5', label: t('countSdCard'), count: countState.scCard, icon: <RiSdCardMiniLine /> },
+    { key: '6', label: t('countAdjust'), count: countState.adjust, icon: <RiListSettingsLine /> },
+    { key: '7', label: t('countRepair'), count: countState.repair, icon: <RiFolderSettingsLine /> },
+    { key: '8', label: t('countWarranty'), count: countState.warranties, icon: <RiShieldCheckLine /> },
+  ]
+
+  const handleCardClick = (key: string) => {
+    if (cardActive === key) {
+      setCardActive('')
+      setOnFilteres(false)
+    } else {
+      setCardActive(key)
+      setOnFilteres(true)
+    }
+  }
+
 
   return (
     <>
-      <HomeCardItem
-        $primary={cardActive === '1'}
-        onClick={() => {
-          if (cardActive === '1') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('1')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countProbe')}</span>
-        <CountStyle $primary={countState.temp > 0}>{countState.temp}</CountStyle>
-        <div>
-          <span>{t('countNormalUnit')}</span>
-          <RiTempColdLine />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '2'}
-        onClick={() => {
-          if (cardActive === '2') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('2')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countDoor')}</span>
-        <CountStyle $primary={countState.door > 0}>{countState.door}</CountStyle>
-        <div>
-          <span>{t('countNormalUnit')}</span>
-          <RiDoorClosedLine />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '3'}
-        onClick={() => {
-          if (cardActive === '3') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('3')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countConnect')}</span>
-        <CountStyle $primary={countState.connect > 0}>{countState.connect}</CountStyle>
-        <div>
-          <span>{t('countNormalUnit')}</span>
-          <RiSignalWifi1Line />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '4'}
-        onClick={() => {
-          if (cardActive === '4') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('4')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countPlug')}</span>
-        <CountStyle $primary={countState.plug > 0}>{countState.plug}</CountStyle>
-        <div>
-          <span>{t('countNormalUnit')}</span>
-          <RiPlugLine />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '5'}
-        onClick={() => {
-          if (cardActive === '5') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('5')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countSdCard')}</span>
-        <CountStyle $primary={countState.scCard > 0}>{countState.scCard}</CountStyle>
-        <div>
-          <span>{t('countNormalUnit')}</span>
-          <RiSdCardMiniLine />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '6'}
-        onClick={() => {
-          if (cardActive === '6') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('6')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countAdjust')}</span>
-        <CountStyle $primary={countState.adjust > 0}>{countState.adjust}</CountStyle>
-        <div>
-          <span>{t('countNormalUnit')}</span>
-          <RiListSettingsLine />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '7'}
-        onClick={() => {
-          if (cardActive === '7') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('7')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countRepair')}</span>
-        <CountStyle $primary={countState.repair > 0}>{countState.repair}</CountStyle>
-        <div>
-          <span>{t('countDeviceUnit')}</span>
-          <RiFolderSettingsLine />
-        </div>
-      </HomeCardItem>
-      <HomeCardItem
-        $primary={cardActive === '8'}
-        onClick={() => {
-          if (cardActive === '8') {
-            setCardActive('')
-            setOnFilteres(false)
-          } else {
-            setCardActive('8')
-            setOnFilteres(true)
-          }
-        }}
-      >
-        <span>{t('countWarranty')}</span>
-        <CountStyle $primary={countState.warranties > 0}>{countState.warranties}</CountStyle>
-        <div>
-          <span>{t('countDeviceUnit')}</span>
-          <RiShieldCheckLine />
-        </div>
-      </HomeCardItem>
+      {cardItems.map(({ key, label, count, icon }) => (
+        <HomeCardItem
+          key={key}
+          $primary={cardActive === key}
+          onClick={() => handleCardClick(key)}
+        >
+          <span>{label}</span>
+          <CountStyle $primary={count > 0}>{count}</CountStyle>
+          <div>
+            <span>{t('countNormalUnit')}</span>
+            {icon}
+          </div>
+        </HomeCardItem>
+      ))}
     </>
   )
 }

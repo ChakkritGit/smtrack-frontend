@@ -22,6 +22,7 @@ export default function Permission() {
   const [displayedCards, setDisplayedCards] = useState<usersType[]>(userDaata ? userDaata.slice(0, cardsPerPage) : [])
   const { searchQuery, expand, tokenDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { userId } = tokenDecode
+  const totalPages = Math.ceil(userDaata.length / cardsPerPage)
 
   useEffect(() => {
     return () => {
@@ -49,7 +50,10 @@ export default function Permission() {
   }
 
   const changePage = (change: number) => {
-    setCurrentPage(currentPage + change)
+    const newPage = currentPage + change
+    if (newPage >= 0 && newPage < totalPages) {
+      setCurrentPage(newPage)
+    }
   }
 
   const displaySelectDevices = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -68,17 +72,6 @@ export default function Permission() {
           <h3>{t('sidePermission')}</h3>
           <Adduser pagestate={"add"} />
         </CardUserHead>
-        <PaginitionContainer>
-          <div></div>
-          <Paginition
-            currentPage={currentPage}
-            cardsPerPage={cardsPerPage}
-            changePage={changePage}
-            displaySelectDevices={displaySelectDevices}
-            displayedCards={displayedCards}
-            userdata={userDaata}
-          />
-        </PaginitionContainer>
         <CardUserBody $primary={expand}>
           {
             displayedCards.filter((f) => f.userId !== userId).map((item, index) => (
@@ -97,6 +90,18 @@ export default function Permission() {
             ))
           }
         </CardUserBody>
+        <PaginitionContainer>
+          <div></div>
+          <Paginition
+            currentPage={currentPage}
+            cardsPerPage={cardsPerPage}
+            changePage={changePage}
+            displaySelectDevices={displaySelectDevices}
+            displayedCards={displayedCards}
+            userdata={userDaata}
+            totalPages={totalPages}
+          />
+        </PaginitionContainer>
       </motion.div>
     </Container >
   )

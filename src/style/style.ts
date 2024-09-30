@@ -1727,16 +1727,20 @@ export const HomeContainerFlex = styled.div<{ $primary?: boolean }>`
 
 export const DevHomeDetails = styled.div<{ $primary?: boolean, $limitListFlex?: boolean }>`
 display: flex;
-/* align-items: center; */
-justify-content: center;
-/* max-height: calc(100dvh - 365px); */
+align-items: center;
+/* justify-content: center; */
+flex-direction: column;
 gap: .5rem;
 margin-top: 1rem;
-/* overflow-y: scroll; */
 
 ${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? 'justify-content: center;' : 'justify-content: center;'}
 
-& > div {
+& > div:nth-child(2) {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+& > div:nth-child(1) {
   display: ${props => props.$primary ? 'flex' : 'grid'};
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
@@ -1752,7 +1756,7 @@ ${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? '
 }
 
 @media (max-width: 430px) {
-  & > div {
+  & > div:nth-child(1) {
     justify-content: center;
   }
 }

@@ -302,3 +302,30 @@ export const companyList = [
     value: 'SCI 2'
   }
 ]
+
+export const paginationCardHome = [
+  {
+    key: 10,
+    value: '10'
+  },
+  {
+    key: 20,
+    value: '20'
+  },
+  {
+    key: 40,
+    value: '40'
+  },
+  {
+    key: 60,
+    value: '60'
+  },
+  {
+    key: 80,
+    value: '80'
+  },
+  {
+    key: 100,
+    value: '100'
+  }
+]

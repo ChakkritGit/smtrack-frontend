@@ -11,11 +11,12 @@ import {
   DevHomeSecctionOne, DeviceCardFooterDoor, DeviceCardFooterDoorFlex,
   DeviceCardFooterInfo, DeviceInfoSpan, DeviceInfoSpanClose, DeviceInfoflex,
   DeviceListFlex, DeviceStateNetwork, FilterHomeHOSWARD, HomeContainerFlex, ListBtn,
+  PaginitionContainer,
   SubWardColumnFlex
 } from "../../style/style"
 import DevicesInfoCard from "../../components/home/devicesInfoCard"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { useEffect } from "react"
 import { wardsType } from "../../types/ward.type"
 import { devicesType } from "../../types/device.type"
@@ -31,12 +32,14 @@ import TableModal from "../../components/home/table.modal"
 import PageLoading from "../../components/loading/page.loading"
 import { probeType } from "../../types/probe.type"
 import { FilterText } from "../../types/component.type"
-import { cookieOptions, cookies } from "../../constants/constants"
+import { cookieOptions, cookies, paginationCardHome } from "../../constants/constants"
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { TagCurrentHos } from "../../style/components/home.styled"
 import { useTheme } from "../../theme/ThemeProvider"
 import HomeCard from "../../components/home/home.card"
+import { hospitalsType } from "../../types/hospital.type"
+import Paginition from "../../components/filter/paginition"
 
 type Option = {
   value: string,
@@ -71,6 +74,11 @@ export default function Home() {
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
   const [cardActive, setCardActive] = useState('')
+
+  const [currentPage, setCurrentPage] = useState<number>(0)
+  const [cardsPerPage, setCardsPerPage] = useState<number>(cookies.get('rowperpage') ?? 10)
+  const [displayedCards, setDisplayedCards] = useState<devicesType[]>(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
+  const totalPages = Math.ceil(devicesFilter.length / cardsPerPage)
 
   const isshowtk = () => {
     setShowticks(false)
@@ -108,13 +116,23 @@ export default function Home() {
   }, [wardData])
 
   const getWard = (wardID: string | undefined) => {
-    updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
+    if (wardID !== '') {
+      updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
+    } else {
+      cookies.remove('selectWard', cookieOptions)
+      dispatch(setWardId(''))
+      // dispatch(setFilterDevice(devices))
+    }
   }
 
   useEffect(() => {
-    if (!wardId) return
+    if (!wardId) {
+      dispatch(setFilterDevice(devices))
+      return
+    }
+
     let filteredDevicesList = wardId !== 'WID-DEVELOPMENT'
-      ? devices.filter((item) => item.wardId === wardId)
+      ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
       : devices
 
     filteredDevicesList = filteredDevicesList.filter((item) =>
@@ -569,6 +587,41 @@ export default function Home() {
       label: item[labelKey] as unknown as string
     }))[0]
 
+  const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
+
+  const updatedWardData = [allWard, ...wardName]
+
+  useEffect(() => {
+    setCurrentPage(0)
+    setDisplayedCards(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
+    showPage(0, searchQuery)
+  }, [searchQuery, devicesFilter, cardsPerPage, rowPerPage])
+
+  useEffect(() => {
+    showPage(currentPage, searchQuery)
+  }, [currentPage, devicesFilter, cardsPerPage, rowPerPage])
+
+  const showPage = (pageNumber: number, query: string = '') => {
+    const startIndex = pageNumber * cardsPerPage
+    const endIndex = startIndex + cardsPerPage
+    const filteredCards = devicesFilter ? (query ? devicesFilter.filter(card => [card?.devDetail, card?.locInstall, card?.devSerial].some(attr => attr?.toLowerCase().includes(query.toLowerCase()))) : devicesFilter) : []
+    const cardsToDisplay = filteredCards ? filteredCards.slice(startIndex, endIndex) : []
+    setDisplayedCards(cardsToDisplay)
+  }
+
+  const changePage = (change: number) => {
+    const newPage = currentPage + change
+    if (newPage >= 0 && newPage < totalPages) {
+      setCurrentPage(newPage)
+    }
+  }
+
+  const displaySelectDevices = (event: ChangeEvent<HTMLSelectElement>) => {
+    setCardsPerPage(Number(event.target.value))
+    setRowPerPage(Number(event.target.value))
+    cookies.set('rowperpage', Number(event.target.value), cookieOptions)
+  }
+
   return (
     <Container className="home-lg">
       <motion.div
@@ -586,7 +639,7 @@ export default function Home() {
                 {
                   userLevel === '0' && <TagCurrentHos>
                     {
-                      `${hospitalsData.filter((f) => f.hosId === hosId)[0]?.hosName ?? hosName} - ${wardData.filter((w) => w.wardId === wardId)[0]?.wardName}`
+                      `${hospitalsData.filter((f) => f.hosId?.toLowerCase().includes(hosId?.toLowerCase()))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.toLowerCase().includes(wardId?.toLowerCase()))[0]?.wardName ?? 'ALL'}`
                     }
                   </TagCurrentHos>
                 }
@@ -596,7 +649,6 @@ export default function Home() {
                   deviceData={devices}
                   cardActive={cardActive}
                   setCardActive={setCardActive}
-                  deviceDataFilter={devicesFilter}
                   wardId={wardId}
                   setOnFilteres={setOnFilteres}
                 />
@@ -651,8 +703,8 @@ export default function Home() {
                                 />
                               }
                               <Select
-                                options={mapOptions<Ward, keyof Ward>(wardName, 'wardId', 'wardName')}
-                                defaultValue={mapDefaultValue<Ward, keyof Ward>(wardData, wardId !== groupId ? groupId : wardId, 'wardId', 'wardName')}
+                                options={mapOptions<Ward, keyof Ward>(updatedWardData, 'wardId', 'wardName')}
+                                defaultValue={mapDefaultValue<Ward, keyof Ward>(wardName, wardId !== groupId ? groupId : wardId, 'wardId', 'wardName')}
                                 onChange={(e) => getWard(e?.value)}
                                 autoFocus={false}
                                 styles={{
@@ -723,11 +775,11 @@ export default function Home() {
                     />
                   </DatatableHome>
                   :
-                  <DevHomeDetails $primary={devicesFilter.length === 0} $limitListFlex={devicesFilter.length < 5 && devicesFilter.length > 0}>
+                  <DevHomeDetails $primary={displayedCards.length === 0} $limitListFlex={displayedCards.length < 5 && displayedCards.length > 0}>
                     <div>
                       {
-                        devicesFilter.length > 0 ?
-                          devicesFilter.map((item, index) =>
+                        displayedCards.length > 0 ?
+                          displayedCards.map((item, index) =>
                             <DevicesInfoCard
                               devicesdata={item}
                               keyindex={index}
@@ -740,6 +792,19 @@ export default function Home() {
                           <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
                       }
                     </div>
+                    <PaginitionContainer>
+                      <div></div>
+                      <Paginition
+                        currentPage={currentPage}
+                        cardsPerPage={cardsPerPage}
+                        changePage={changePage}
+                        displaySelectDevices={displaySelectDevices}
+                        displayedCards={displayedCards}
+                        userdata={devicesFilter}
+                        pagPerpage={paginationCardHome}
+                        totalPages={totalPages}
+                      />
+                    </PaginitionContainer>
                   </DevHomeDetails>
               }
             </HomeContainerFlex>

@@ -113,7 +113,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
         adjustHum: formData.adjustHum,
       }
 
-      if (Number((mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)) > 100.00) {
+      if (Number((mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)) > 100.00 || Number((mqttData.humi + formData.adjustHum - devicesdata.probe[0]?.adjustHum).toFixed(2)) < -100) {
         Swal.fire({
           title: t('alertHeaderWarning'),
           text: t('adjustHumGreater'),
