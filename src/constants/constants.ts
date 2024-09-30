@@ -329,3 +329,22 @@ export const paginationCardHome = [
     value: '100'
   }
 ]
+
+export const paginationCardUsers = [
+  {
+    key: 50,
+    value: '50'
+  },
+  {
+    key: 80,
+    value: '80'
+  },
+  {
+    key: 100,
+    value: '100'
+  },
+  {
+    key: 150,
+    value: '150'
+  }
+]

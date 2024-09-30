@@ -967,6 +967,12 @@ align-items: center;
 justify-content: space-between;
 margin: 1rem 0;
 
+&>div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 & h3 {
   margin-bottom: unset;
 }

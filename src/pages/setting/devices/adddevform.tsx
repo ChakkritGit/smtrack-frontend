@@ -63,7 +63,8 @@ export default function Adddevform(managedevices: managedevices) {
   const [firmwareList, setFirmwareList] = useState<firmwareType[]>([])
   const [Mode, setMode] = useState({
     wifi: config?.mode ? Number(config.mode) : 0,
-    lan: config?.modeEth ? Number(config.modeEth) : 0
+    lan: config?.modeEth ? Number(config.modeEth) : 0,
+    sim: config?.sim ? config?.sim : ''
   })
   const [tabs, setTabs] = useState(1)
   const [hosid, setHosid] = useState('')
@@ -420,8 +421,71 @@ export default function Adddevform(managedevices: managedevices) {
     }
   }
 
+  const handleSubmitSim = async (e: FormEvent) => {
+    e.preventDefault()
+    if (Mode.sim !== '') {
+      try {
+        const bodyData = {
+          sim: Mode.sim
+        }
+        const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+          bodyData, {
+          headers: {
+            authorization: `Bearer ${token}`
+          }
+        })
+        Swal.fire({
+          title: t('alertHeaderSuccess'),
+          text: response.data.message,
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        })
+        dispatch(fetchDevicesData(token))
+        const deviceModel = devdata.devSerial.substring(0, 3) === "eTP" ? "eTEMP" : "iTEMP"
+        if (deviceModel === 'eTEMP') {
+          client.publish(`siamatic/etemp/v1/${devdata.devSerial}/adj`, 'on')
+        } else {
+          client.publish(`siamatic/items/v3/${devdata.devSerial}/adj`, 'on')
+        }
+        client.publish(`${devdata.devSerial}/adj`, 'on')
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            dispatch(setShowAlert(true))
+          } else {
+            Swal.fire({
+              title: t('alertHeaderError'),
+              text: error.response?.data.message,
+              icon: "error",
+              timer: 2000,
+              showConfirmButton: false,
+            })
+          }
+        } else {
+          Swal.fire({
+            title: t('alertHeaderError'),
+            text: 'Uknown Error',
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          })
+        }
+      }
+    } else {
+      Swal.fire({
+        title: t('alertHeaderWarning'),
+        text: t('completeField'),
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+    }
+  }
+
   const handleSubmitEthernetAuto = async (e: FormEvent) => {
     e.preventDefault()
+    console.log('auto')
     try {
       const bodyData = {
         modeEth: "0",
@@ -774,8 +838,10 @@ export default function Adddevform(managedevices: managedevices) {
         <TabContainer>
           <TabButton $primary={tabs === 1} onClick={() => setTabs(1)}>Wi-Fi</TabButton>
           <TabButton $primary={tabs === 2} onClick={() => setTabs(2)}>Lan</TabButton>
+          <TabButton $primary={tabs === 3} onClick={() => setTabs(3)}>SIM</TabButton>
         </TabContainer>
-        <Form onSubmit={Mode.wifi === 0 ? handleSubmitDHCP : Mode.wifi === 1 ? handleSubmitManual : Mode.lan === 0 ? handleSubmitEthernetAuto : handleSubmitEthernet}>
+        <Form
+          onSubmit={tabs === 1 && Mode.wifi === 0 ? handleSubmitDHCP : tabs === 1 && Mode.wifi === 1 ? handleSubmitManual : tabs === 2 && Mode.lan === 0 ? handleSubmitEthernet : tabs === 2 && Mode.lan === 1 ? handleSubmitEthernetAuto : handleSubmitSim }>
           <Modal.Body>
             <Row>
               <Col lg={12} className='mb-3'>
@@ -797,20 +863,42 @@ export default function Adddevform(managedevices: managedevices) {
                         />
                       </>
                       :
-                      <>
-                        <Form.Check
-                          type='radio'
-                          label='Ethernet'
-                          checked={Mode.lan === 0}
-                          onChange={() => setMode({ ...Mode, lan: 0 })}
-                        />
-                        <Form.Check
-                          type='radio'
-                          label='Auto'
-                          checked={Mode.lan === 1}
-                          onChange={() => setMode({ ...Mode, lan: 1 })}
-                        />
-                      </>
+                      tabs === 2 ?
+                        <>
+                          <Form.Check
+                            type='radio'
+                            label='Ethernet'
+                            checked={Mode.lan === 0}
+                            onChange={() => setMode({ ...Mode, lan: 0 })}
+                          />
+                          <Form.Check
+                            type='radio'
+                            label='Auto'
+                            checked={Mode.lan === 1}
+                            onChange={() => setMode({ ...Mode, lan: 1 })}
+                          />
+                        </>
+                        :
+                        <>
+                          <Form.Check
+                            type='radio'
+                            label='AIS'
+                            checked={Mode.sim === 'AIS'}
+                            onChange={() => setMode({ ...Mode, sim: 'AIS' })}
+                          />
+                          <Form.Check
+                            type='radio'
+                            label='TRUE'
+                            checked={Mode.sim === 'TRUE'}
+                            onChange={() => setMode({ ...Mode, sim: 'TRUE' })}
+                          />
+                          <Form.Check
+                            type='radio'
+                            label='DTAC'
+                            checked={Mode.sim === 'DTAC'}
+                            onChange={() => setMode({ ...Mode, sim: 'DTAC' })}
+                          />
+                        </>
                   }
                 </ModeNetworkFlex>
               </Col>

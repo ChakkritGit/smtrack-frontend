@@ -73,7 +73,7 @@ type ArrayStore = {
 }
 
 type UserState = {
-  userDaata: usersType[],
+  userData: usersType[],
   userLoading: boolean,
   userError: string,
 }

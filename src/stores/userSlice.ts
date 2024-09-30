@@ -13,7 +13,7 @@ export const fetchUserData = createAsyncThunk<usersType[], string>('user/fetchUs
 })
 
 const initialState: UserState = {
-  userDaata: [],
+  userData: [],
   userLoading: false,
   userError: '',
 }
@@ -36,7 +36,7 @@ const userSlice = createSlice({
         (state: UserState, action: PayloadAction<usersType[]>) => {
           state.userLoading = false
           if (action.type.includes("fetchUserData")) {
-            state.userDaata = action.payload
+            state.userData = action.payload
           }
         },
       )
