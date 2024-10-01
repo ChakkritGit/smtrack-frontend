@@ -71,7 +71,8 @@ export default {
     muteDoor: 'Mute Door',
     adjustHumGreater: 'The humidity range cannot be set beyond 0-100%',
     clearShedule: 'Clear',
-    
+    everyDays: 'Every Day',
+
     // notification setting itemp
     choiceOne: '1. Sending message for the first time.',
     choiceTwo: '2. Sending message when the temperature returned to normal level.',

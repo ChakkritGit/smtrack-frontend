@@ -71,6 +71,7 @@ export default {
     muteDoor: 'ปิดเสียงประตู',
     adjustHumGreater: 'ช่วงความชื่นไม่สามารถตั้งได้เกินช่วง 0-100%',
     clearShedule: 'ล้าง',
+    everyDays: 'ทุกวัน',
 
     // notification setting itemp
     choiceOne: '1. ส่งข้อความครั้งแรก',
