@@ -39,8 +39,11 @@ export default function Navprofile() {
         <NavProfileFlex>
           <NavProfileContainer className="profile-name-dark">
             <NavProfile src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
-            <span >{displayName}</span>
-            <RiArrowDropDownLine />
+            <div>
+              <span>{displayName}</span>
+              <span>{userLevel === '0' ? 'SUPER' : userLevel === '1' ? 'SERVICE' : userLevel === '2' ? 'ADMIN' : 'USER'}</span>
+            </div>
+            <RiArrowDropDownLine size={28} />
           </NavProfileContainer>
         </NavProfileFlex>
       </Dropdown.Toggle>
