@@ -4,6 +4,10 @@ import { CacheFirst, NetworkFirst, NetworkOnly } from "workbox-strategies"
 import { BackgroundSyncPlugin } from "workbox-background-sync"
 
 declare let self: ServiceWorkerGlobalScope
+const CACHE_NAME = 'SMTrackPlus-v1'
+const assetsToCache = [
+  '/assets/index-gNlLyWjB.js',
+]
 
 cleanupOutdatedCaches()
 
@@ -259,10 +263,24 @@ const deleteProbeSubmit = new Route(
 
 registerRoute(deleteProbeSubmit)
 
-self.addEventListener('install', () => {
-  self.skipWaiting()
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(assetsToCache)
+    })
+  )
 })
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim())
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cache => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache)
+          }
+        })
+      )
+    })
+  )
 })

@@ -211,6 +211,12 @@ export default {
     tabWarrantyAll: 'ทั้งหมด',
     warrantyMa: 'MA',
     warrantyEtc: 'อื่น ๆ',
+    productName: 'ชื่อผลิตภัณฑ์',
+    modelName: 'รุ่น',
+    installDate: 'วันที่ติดตั้ง',
+    customerName: 'ชื่อลูกค้า',
+    customerAddress: 'ที่อยู่ลูกค้า',
+    distributionCompany: 'บริษัทจัดจำหน่าย',
 
     // repair
     addRepair: 'แจ้งซ่อม',

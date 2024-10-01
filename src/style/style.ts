@@ -1762,6 +1762,11 @@ margin-top: 1rem;
 
 ${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? 'justify-content: center;' : 'justify-content: center;'}
 
+/* &>div:nth-child(1) {
+  height: calc(100dvh - 450px);
+  overflow-y: scroll;
+} */
+
 & > div:nth-child(2) {
   margin-top: 1rem;
   width: 100%;

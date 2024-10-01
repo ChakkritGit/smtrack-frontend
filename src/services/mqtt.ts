@@ -1,4 +1,4 @@
-import mqtt from 'mqtt' // import namespace "mqtt"
+import mqtt from 'mqtt'
 import type { IClientOptions } from 'mqtt'
 import { v4 as uuidv4, v5 as uuidv5 } from 'uuid'
 

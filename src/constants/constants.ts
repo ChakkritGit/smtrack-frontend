@@ -2,6 +2,7 @@ import { CookieType } from "../types/cookie.type"
 import Cookies, { CookieSetOptions } from "universal-cookie"
 import CryptoJS from "crypto-js"
 import { Schedule, ScheduleHour, ScheduleMinute } from "../types/config.type"
+import piexif from 'piexifjs'
 
 export const getDateNow = () => {
   let date = new Date()
@@ -62,14 +63,26 @@ export const resizeImage = (file: File): Promise<File> => {
         const context: CanvasRenderingContext2D | null = canvas.getContext('2d')
         context?.drawImage(image, 0, 0, canvas.width, canvas.height)
 
-        canvas.toBlob(
-          (blob: Blob | null) => {
-            const resizedFile = new File([blob as Blob], file.name, { type: file.type })
-            resolve(resizedFile)
-          },
-          file.type,
-          1 // JPEG quality, 1 is maximum
-        )
+        const originalData = e.target?.result as string
+        const exifObj = piexif.load(originalData)
+
+        exifObj["0th"] = exifObj["0th"] || {}
+        exifObj["0th"][piexif.ImageIFD.Copyright] = "SMTrack+ Copyright - Thanes Development Co., Ltd."
+
+        const exifStr = piexif.dump(exifObj)
+        const newImageData = piexif.insert(exifStr, canvas.toDataURL(file.type))
+
+        const byteString = atob(newImageData.split(',')[1]);
+        const mimeString = newImageData.split(',')[0].split(':')[1].split(';')[0]
+        const ab = new ArrayBuffer(byteString.length)
+        const ia = new Uint8Array(ab)
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i)
+        }
+
+        const blob = new Blob([ab], { type: mimeString });
+        const resizedFile = new File([blob], file.name, { type: file.type })
+        resolve(resizedFile)
       }
     }
 

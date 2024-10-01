@@ -207,18 +207,24 @@ export default {
 
     // warranty
     tabWarrantyExpired: 'Expired',
-    tabWarrantyaftersale: 'In Warranty',
-    tabWarrantyall: 'All',
+    tabWarrantyAfterSale: 'In Warranty',
+    tabWarrantyAll: 'All',
     warrantyMa: 'MA',
     warrantyEtc: 'Other',
     invoice: 'Invoice',
+    productName: 'Product Name',
+    modelName: 'Model',
+    installDate: 'Install Date',
+    customerName: 'Customer Name',
+    customerAddress: 'Customer Address',
+    distributionCompany: 'Distribution Company',
 
     // repair
     addRepair: 'Add Repair',
     editRepair: 'Edit Repair',
     sectionPersonal: 'Personal Info',
     sectionProduct: 'Product Info',
-    deiveCondition: 'Device Condition',
+    deviceCondition: 'Device Condition',
     deviceRepairInfo: 'Returned Equipment',
 
     // contact

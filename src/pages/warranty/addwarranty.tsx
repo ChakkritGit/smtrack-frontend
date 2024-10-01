@@ -307,7 +307,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               </Col>
               <Col sm={12}>
                 <Form.Label className="w-100">
-                  {t('ชื่อผลิตภัณฑ์')}
+                  {t('productName')}
                   <Form.Control
                     type="text"
                     value={productName}
@@ -353,7 +353,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               }
               <Col sm={12}>
                 <Form.Label className="w-100">
-                  {t('รุ่น')}
+                  {t('modelName')}
                   <Form.Control
                     type="text"
                     value={devSerial}
@@ -364,7 +364,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               </Col>
               <Col lg={6}>
                 <Form.Label className="w-100">
-                  {t('วันที่ติดตั้ง')}
+                  {t('installDate')}
                   <Form.Control
                     type="date"
                     value={installDate}
@@ -386,7 +386,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               </Col>
               <Col sm={12}>
                 <Form.Label className="w-100">
-                  {t('ชื่อลูกค้า')}
+                  {t('customerName')}
                   <Select
                     options={mapOptionsHospital<Hospital, keyof Hospital>(hospitalsData, 'hosId', 'hosName')}
                     defaultValue={mapDefaultValueHospital<Hospital, keyof Hospital>(hospitalsData, String(customerName), 'hosId', 'hosName')}
@@ -418,7 +418,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               </Col>
               <Col sm={12}>
                 <Form.Label className="w-100">
-                  {t('ที่อยู่ลูกค้า')}
+                  {t('customerAddress')}
                   <Form.Control
                     type="text"
                     value={customerAddress}
@@ -429,7 +429,7 @@ export default function Addwarranty(warProps: AddWarrantyPropsType) {
               </Col>
               <Col sm={12}>
                 <Form.Label className="w-100">
-                  {t('บริษัทจัดจำหน่าย')}
+                  {t('distributionCompany')}
                   <Select
                     options={mapOptionsHospital<Company, keyof Company>(companyList, 'key', 'value')}
                     defaultValue={mapDefaultValueHospital<Company, keyof Company>(companyList, String(saleDept), 'key', 'value')}
