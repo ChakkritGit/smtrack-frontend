@@ -848,17 +848,17 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
                     <Col className="mt-2">
                       <Form.Check
                         type='radio'
-                        id='MessageOn'
-                        label={t('messageOn')}
-                        checked={choichfour === 'on'}
-                        onChange={() => setMuteMode({ ...muteMode, choichfour: 'on' })}
-                      />
-                      <Form.Check
-                        type='radio'
                         id='MessageOff'
                         label={t('messageOff')}
                         checked={choichfour === 'off'}
                         onChange={() => setMuteMode({ ...muteMode, choichfour: 'off' })}
+                      />
+                      <Form.Check
+                        type='radio'
+                        id='MessageOn'
+                        label={t('messageOn')}
+                        checked={choichfour === 'on'}
+                        onChange={() => setMuteMode({ ...muteMode, choichfour: 'on' })}
                       />
                     </Col>
                   </Row>
