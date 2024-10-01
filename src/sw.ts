@@ -6,7 +6,7 @@ import { BackgroundSyncPlugin } from "workbox-background-sync"
 declare let self: ServiceWorkerGlobalScope
 const CACHE_NAME = 'SMTrackPlus-v1'
 const assetsToCache = [
-  '/assets/index-DN0_D5LL.js',
+  '/assets/index-DL5CCjNU.js',
 ]
 
 cleanupOutdatedCaches()

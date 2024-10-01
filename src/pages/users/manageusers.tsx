@@ -48,7 +48,7 @@ export default function Permission() {
   const [filterdata, setFilterdata] = useState(false)
   const [wardName, setWardname] = useState<wardsType[]>([])
   // Filter Data
-  const filteredItems = wardId !== 'WID-DEVELOPMENT' ? userData.filter(item => item.wardId.toLowerCase().includes(wardId.toLowerCase())) : userData
+  const filteredItems = wardId !== '' ? userData.filter(item => item.wardId.toLowerCase().includes(wardId.toLowerCase())) : userData
   const totalPages = Math.ceil(filteredItems.length / cardsPerPage)
 
   const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
