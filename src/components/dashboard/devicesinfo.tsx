@@ -554,7 +554,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
                     <span>{t('currentTemp')}</span>
                     <div>
                       <span>
-                        <span>{mqttData.temp.toFixed(2)}</span> %
+                        <span>{mqttData.temp.toFixed(2)}</span> °C
                       </span>
                     </div>
                   </div>
@@ -576,7 +576,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
                     <span>{t('currentHum')}</span>
                     <div>
                       <span>
-                        <span>{mqttData.humi.toFixed(2)}</span> °C
+                        <span>{mqttData.humi.toFixed(2)}</span> %
                       </span>
                     </div>
                   </div>
