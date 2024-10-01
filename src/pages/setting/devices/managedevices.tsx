@@ -283,7 +283,7 @@ export default function Managedev() {
             </DeviceInfoSpan>}
           {
             filterdata &&
-            <>
+            <div>
               {
                 userLevel !== '2' &&
                 <Select
@@ -344,10 +344,10 @@ export default function Managedev() {
               <DeviceInfoSpanClose onClick={() => setFilterdata(false)}>
                 <RiCloseLine />
               </DeviceInfoSpanClose>
-            </>
+            </div>
           }
           {
-            userLevel !== '2' && userLevel !== '3' && <>
+            userLevel !== '2' && userLevel !== '3' && <div>
               <Adddevform
                 pagestate={'add'}
                 devdata={{} as devicesType}
@@ -363,7 +363,7 @@ export default function Managedev() {
               })}>
                 <RiTimer2Line size={24} />
               </AdjustTime>
-            </>
+            </div>
           }
         </DevHomeHead>
       </ManageHospitalsHeader>

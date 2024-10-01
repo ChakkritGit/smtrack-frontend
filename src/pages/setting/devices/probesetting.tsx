@@ -213,7 +213,7 @@ export default function Probesetting() {
               </DeviceInfoSpan>}
             {
               filterdata &&
-              <>
+              <div>
                 {
                   userLevel !== '2' &&
                   <Select
@@ -274,7 +274,7 @@ export default function Probesetting() {
                 <DeviceInfoSpanClose onClick={() => setFilterdata(false)}>
                   <RiCloseLine />
                 </DeviceInfoSpanClose>
-              </>
+              </div>
             }
             <Addprobe
               pagestate={'add'}
