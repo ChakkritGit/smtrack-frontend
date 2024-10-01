@@ -41,7 +41,7 @@ export default function Navprofile() {
             <NavProfile src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
             <div>
               <span>{displayName}</span>
-              <span>{userLevel === '0' ? 'SUPER' : userLevel === '1' ? 'SERVICE' : userLevel === '2' ? 'ADMIN' : 'USER'}</span>
+              <span>{userLevel === '0' ? t('levelSuper') : userLevel === '1' ? t('levelService') : userLevel === '2' ? t('levelAdmin') : t('levelUser')}</span>
             </div>
             <RiArrowDropDownLine size={28} />
           </NavProfileContainer>
