@@ -40,6 +40,10 @@ position: relative;
       align-items: center;
       gap: .5rem;
 
+      &>span {
+        font-size: 42px;
+      }
+
       &>p {
         font-size: 24px;
 

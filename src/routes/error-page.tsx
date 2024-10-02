@@ -38,6 +38,7 @@ export default function ErrorPage() {
       <div>
         <span>{t('titleError')}</span>
         <div>
+          <span>404</span>
           <p>{t('descriptionError')}</p>
           <p>
             <button onClick={() => navigate('/')}>{t('buttonErrorBack')}</button>

@@ -378,7 +378,7 @@ export default {
 
     // router
     titleError: 'Oops!',
-    descriptionError: '404 Not found',
+    descriptionError: 'Not found',
     descriptionErrorWrong: 'Something wrong please try again',
     buttonErrorBack: 'Back to home',
     titleNotAccess: 'Access denied',
