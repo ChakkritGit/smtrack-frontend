@@ -1,24 +1,70 @@
 import styled, { css } from "styled-components"
+import bg from '../../assets/images/bg-not-found.jpeg'
 
 export const ErrorPageStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 25px;
-  height: calc(100dvh - 80px);
+position: relative;
 
-  ${props => props.theme.mode === 'dark' && css`
-  color: var(--white);
-    `}
-
-  & p>i {
-    cursor: pointer;
-    color: grey;
+  &>div:nth-child(1) {
+    width: 100%;
+    height: 100dvh;
+    background-image: ${`url(${bg})`};
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.5;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 
-  & p>i:hover {
-    text-decoration: underline;
-    text-underline-offset: 5px;
+  &>div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 100dvh;
+    gap: 2rem;
+
+    &>span {
+      font-size: 104px;
+
+      @media (max-width: 430px) {
+        font-size: 72px;
+      }
+    }
+
+    &> div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+
+      &>p {
+        font-size: 24px;
+
+      &>button {
+        height: 40px;
+        width: max-content;
+        padding: .5rem .8rem;
+        background-color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--black)'};
+        border-radius: var(--border-radius-small);
+        font-size: 18px;
+        color: ${props => props.theme.mode === 'dark' ? 'var(--black)' : 'var(--white)'};
+        border: none;
+        cursor: pointer;
+      }
+
+      &>button:hover {
+        background-color: var(--hover-dark-color);
+        color: var(--white);
+        transition: .3s;
+      }
+      }
+    }
+
+    ${props => props.theme.mode === 'dark' && css`
+    color: var(--white);
+  `}
   }
 `

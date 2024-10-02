@@ -2,12 +2,12 @@ import axios, { AxiosError } from "axios"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
-import Swal from "sweetalert2"
 import { useTranslation } from "react-i18next"
 import { formattedDate, yearMonth } from "../../constants/constants"
 import { LogContainer, LogForm, PreLine } from "../../style/components/log.styled"
 import { Container, Form } from "react-bootstrap"
 import { FilterSearchBtn } from "../../style/style"
+import Swal from "sweetalert2"
 
 function Logs() {
   const { t } = useTranslation()
