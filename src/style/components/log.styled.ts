@@ -26,8 +26,8 @@ margin: 1rem 1.5rem 1rem 0;
 `
 
 export const PreLine = styled.pre<{ $primary?: boolean }>`
-  max-height: calc(100dvh - 170px);
-  max-width: ${props => props.$primary ? '100%' : 'calc(100vw - 280px)'};
+  max-height: calc(100dvh - 250px);
+  max-width: ${props => props.$primary ? 'calc(100vw - 420px)' : 'calc(100vw - 550px)'};
   overflow-y: scroll;
   padding: .5rem .3rem;
   border-radius: var(--border-radius-small);
@@ -36,6 +36,6 @@ export const PreLine = styled.pre<{ $primary?: boolean }>`
 
   @media (max-width: 430px) {
     max-height: calc(100dvh - 200px);
-    max-width: unset;
+    /* max-width: unset; */
 }
 `

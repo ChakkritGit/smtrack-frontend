@@ -405,7 +405,7 @@ export const DeviceStateNetwork = styled.span<{ $primary?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 90px;
+  max-width: 70px;
   max-height: 30px;
   width: max-content;
   height: 30px;
@@ -414,6 +414,14 @@ export const DeviceStateNetwork = styled.span<{ $primary?: boolean }>`
   padding: 5px;
   border-radius: .5rem;
   overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  &>div {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 
   ${props => props.theme.mode === 'dark' &&
     css`
