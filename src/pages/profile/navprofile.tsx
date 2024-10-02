@@ -49,7 +49,7 @@ export default function Navprofile() {
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <NavbarProfileDropdown>
-          <NavProfileContainer onClick={() => navigate("/setting")}>
+          <NavProfileContainer onClick={() => navigate("/settings")}>
             <NavProfile src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
             <div style={{ display: 'flex', flexDirection: 'column', width: '100px', maxWidth: '100px' }}>
               <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{displayName}</span>

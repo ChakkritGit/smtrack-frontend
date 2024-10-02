@@ -102,7 +102,7 @@ export const router = createBrowserRouter([
           //   errorElement: <SomethingWrong />
           // },
           {
-            path: "setting",
+            path: "settings",
             element: <System />,
             errorElement: <SomethingWrong />
           },

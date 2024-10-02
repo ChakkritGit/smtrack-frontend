@@ -13,7 +13,7 @@ function Logs() {
   const { t } = useTranslation()
   const { cookieDecode, expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { token } = cookieDecode
-  const [text, setText] = useState('')
+  const [text, setText] = useState(t('nodata'))
   const [date, setDate] = useState('')
   const [dateFormatted, setDateFormatted] = useState({
     month: yearMonth,
