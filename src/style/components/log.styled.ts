@@ -36,6 +36,6 @@ export const PreLine = styled.pre<{ $primary?: boolean }>`
 
   @media (max-width: 430px) {
     max-height: calc(100dvh - 200px);
-    /* max-width: unset; */
+    max-width: unset;
 }
 `

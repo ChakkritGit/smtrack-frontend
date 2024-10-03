@@ -72,3 +72,22 @@ position: relative;
   `}
   }
 `
+
+export const SomethingWrongPageStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  height: calc(100dvh - 150px);
+
+  &>p>i {
+    text-underline-offset: 8px;
+    cursor: pointer;
+  }
+
+  &>p>i:hover {
+    text-decoration: underline;
+    transition: .3s;
+  }
+`
