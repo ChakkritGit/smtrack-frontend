@@ -25,7 +25,11 @@ export default function Account() {
   const { t } = useTranslation()
   const [show, setshow] = useState(false)
   const [showProfile, setShowProfile] = useState(false)
-  const [newpassword, setNewpassword] = useState('')
+  const [pass, setPass] = useState({
+    oldPassword: '',
+    newPassword: ''
+  })
+  const { oldPassword, newPassword } = pass
   const [showpassword, setShowpassword] = useState(false)
   const [userData, setUserData] = useState<usersType>()
   const [userDisplayName, setUserDisplayName] = useState<string>('')
@@ -133,10 +137,11 @@ export default function Account() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (newpassword !== '') {
+    if (newPassword !== '' && oldPassword !== '') {
       try {
         const response = await axios.patch(`${import.meta.env.VITE_APP_API}/auth/reset/${cookieDecode.userId}`, {
-          password: newpassword
+          oldPassword: oldPassword,
+          password: newPassword
         }, {
           headers: {
             Accept: "application/json",
@@ -335,30 +340,44 @@ export default function Account() {
               <Col lg={12}>
                 <InputGroup className="mb-3">
                   <Form.Label className="w-100">
+                    {t('oldPassword')}
+                    <Form.Control
+                      spellCheck={false}
+                      autoComplete='off'
+                      type={showpassword ? 'text' : 'password'}
+                      value={oldPassword}
+                      onChange={(e) => setPass({ ...pass, oldPassword: e.target.value })}
+                    />
+                  </Form.Label>
+                </InputGroup>
+              </Col>
+              <Col lg={12}>
+                <InputGroup className="mb-3">
+                  <Form.Label className="w-100">
                     {t('newPassword')}
                     <Form.Control
                       spellCheck={false}
                       autoComplete='off'
                       type={showpassword ? 'text' : 'password'}
-                      value={newpassword}
-                      onChange={(e) => setNewpassword(e.target.value)}
+                      value={newPassword}
+                      onChange={(e) => setPass({ ...pass, newPassword: e.target.value })}
                     />
                   </Form.Label>
                 </InputGroup>
-                <PasswordChangeFlex $primary={newpassword.length}>
+                <PasswordChangeFlex $primary={newPassword.length}>
                   <div></div>
                   <span>
                     {
-                      newpassword.length === 0 ?
+                      newPassword.length === 0 ?
                         t('passLower')
                         :
-                        newpassword.length < 4 ?
+                        newPassword.length < 4 ?
                           t('passLow')
                           :
-                          newpassword.length < 8 ?
+                          newPassword.length < 8 ?
                             t('passNormal')
                             :
-                            newpassword.length < 12 ?
+                            newPassword.length < 12 ?
                               t('passGood')
                               :
                               t('passExcellent')

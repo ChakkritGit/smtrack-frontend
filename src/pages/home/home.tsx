@@ -1,16 +1,15 @@
 import { Container, Modal } from "react-bootstrap"
 import DevicesCard from "../../components/home/devicesCard"
 import {
-  RiCloseLine, RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
-  RiFileCloseLine, RiFilter3Line,
+  RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
+  RiFileCloseLine,
   RiLayoutGridLine, RiListUnordered, RiSkipUpLine, RiTempColdLine
 } from "react-icons/ri"
-import Select from "react-select"
 import {
-  AboutBox, DatatableHome, DevHomeDetails, DevHomeHead, DevHomeHeadTile,
+  AboutBox, DatatableHome, DevHomeDetails, DevHomeHeadTile,
   DevHomeSecctionOne, DeviceCardFooterDoor, DeviceCardFooterDoorFlex,
-  DeviceCardFooterInfo, DeviceInfoSpan, DeviceInfoSpanClose, DeviceInfoflex,
-  DeviceListFlex, DeviceStateNetwork, FilterHomeHOSWARD, HomeContainerFlex, ListBtn,
+  DeviceCardFooterInfo, DeviceInfoflex,
+  DeviceListFlex, DeviceStateNetwork, HomeContainerFlex, ListBtn,
   PaginitionContainer,
   SubWardColumnFlex
 } from "../../style/style"
@@ -18,13 +17,11 @@ import DevicesInfoCard from "../../components/home/devicesInfoCard"
 import { useTranslation } from "react-i18next"
 import { ChangeEvent, useState } from "react"
 import { useEffect } from "react"
-import { wardsType } from "../../types/ward.type"
 import { devicesType } from "../../types/device.type"
-import { itemsFilter } from "../../animation/animate"
 import Loading from "../../components/loading/loading"
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { setDeviceId, setSerial, setSearchQuery, setHosId, setWardId } from "../../stores/utilsStateSlice"
+import { setDeviceId, setSerial, setSearchQuery} from "../../stores/utilsStateSlice"
 import { filtersDevices, setFilterDevice } from "../../stores/dataArraySlices"
 import { RootState, storeDispatchType } from "../../stores/store"
 import DataTable, { TableColumn } from "react-data-table-component"
@@ -36,42 +33,24 @@ import { cookieOptions, cookies, paginationCardHome } from "../../constants/cons
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { FloatingTop, TagCurrentHos } from "../../style/components/home.styled"
-import { useTheme } from "../../theme/ThemeProvider"
 import HomeCard from "../../components/home/home.card"
-import { hospitalsType } from "../../types/hospital.type"
 import Paginition from "../../components/filter/paginition"
 import { DoorKey } from "../../types/log.type"
-
-type Option = {
-  value: string,
-  label: string,
-}
-
-interface Hospital {
-  hosId: string,
-  hosName: string,
-}
-
-interface Ward {
-  wardId: string,
-  wardName: string,
-}
+import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 
 export default function Home() {
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { searchQuery, hosId, wardId, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, hosId, wardId, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const devicesFilter = useSelector((state: RootState) => state.arraySlice.device.devicesFilter)
   const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
   const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [filterdata, setFilterdata] = useState(false)
-  const [wardName, setWardname] = useState<wardsType[]>([])
+
   const [showticks, setShowticks] = useState(false)
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
-  const { userLevel, hosName, groupId } = cookieDecode
-  const { theme } = useTheme()
+  const { userLevel, hosName } = cookieDecode
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
   const [cardActive, setCardActive] = useState('')
@@ -100,37 +79,7 @@ export default function Home() {
     window.scrollTo(0, 0)
   }
 
-  const updateLocalStorageAndDispatch = (key: string, id: string | undefined, action: Function) => {
-    cookies.set(key, String(id), cookieOptions)
-    dispatch(action(String(id)))
-  }
-
-  const getHospital = (hospitalID: string | undefined) => {
-    if (hospitalID) {
-      updateLocalStorageAndDispatch('selectHos', hospitalID, setHosId)
-      setWardname(wardData.filter((items) => items.hospital.hosId === hospitalID))
-    }
-  }
-
   useEffect(() => {
-    setWardname(wardData)
-  }, [wardData])
-
-  const getWard = (wardID: string | undefined) => {
-    if (wardID !== '') {
-      updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
-    } else {
-      cookies.remove('selectWard', cookieOptions)
-      dispatch(setWardId(''))
-    }
-  }
-
-  useEffect(() => {
-    // if (!wardId) {
-    //   dispatch(setFilterDevice(devices))
-    //   return
-    // }
-
     let filteredDevicesList = wardId !== ''
       ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
       : devices
@@ -478,22 +427,6 @@ export default function Home() {
     )
   }
 
-  const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
-    data.map(item => ({
-      value: item[valueKey] as unknown as string,
-      label: item[labelKey] as unknown as string
-    }))
-
-  const mapDefaultValue = <T, K extends keyof T>(data: T[], id: string, valueKey: K, labelKey: K): Option | undefined =>
-    data.filter(item => item[valueKey] === id).map(item => ({
-      value: item[valueKey] as unknown as string,
-      label: item[labelKey] as unknown as string
-    }))[0]
-
-  const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
-
-  const updatedWardData = [allWard, ...wardName]
-
   useEffect(() => {
     // setCurrentPage(0)
     setDisplayedCards(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
@@ -578,88 +511,7 @@ export default function Home() {
               <AboutBox>
                 <h5>{t('detailAllBox')}</h5>
                 <DeviceInfoflex>
-                  {
-                    userLevel !== '3' &&
-                    <>
-                      {!filterdata &&
-                        <DeviceInfoSpan onClick={() => setFilterdata(true)}>
-                          {t('deviceFilter')}
-                          <RiFilter3Line />
-                        </DeviceInfoSpan>}
-                      <FilterHomeHOSWARD>
-                        {
-                          filterdata &&
-                          <DevHomeHead>
-                            <motion.div
-                              variants={itemsFilter}
-                              initial="hidden"
-                              animate="visible"
-                            >
-                              {
-                                userLevel !== '2' && <Select
-                                  options={mapOptions<Hospital, keyof Hospital>(hospitalsData, 'hosId', 'hosName')}
-                                  defaultValue={mapDefaultValue<Hospital, keyof Hospital>(hospitalsData, hosId || tokenDecode.hosId, 'hosId', 'hosName')}
-                                  onChange={(e) => getHospital(e?.value)}
-                                  autoFocus={false}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
-                                      borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
-                                      boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
-                                      borderRadius: "var(--border-radius-big)",
-                                      width: "200px"
-                                    }),
-                                  }}
-                                  theme={(theme) => ({
-                                    ...theme,
-                                    colors: {
-                                      ...theme.colors,
-                                      primary50: 'var(--main-color-opacity2)',
-                                      primary25: 'var(--main-color-opacity2)',
-                                      primary: 'var(--main-color)',
-                                    },
-                                  })}
-                                  className="react-select-container"
-                                  classNamePrefix="react-select"
-                                />
-                              }
-                              <Select
-                                options={mapOptions<Ward, keyof Ward>(updatedWardData, 'wardId', 'wardName')}
-                                defaultValue={mapDefaultValue<Ward, keyof Ward>(wardName, wardId !== groupId ? groupId : wardId, 'wardId', 'wardName')}
-                                onChange={(e) => getWard(e?.value)}
-                                autoFocus={false}
-                                styles={{
-                                  control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
-                                    borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
-                                    boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
-                                    borderRadius: "var(--border-radius-big)",
-                                    width: "200px"
-                                  }),
-                                }}
-                                theme={(theme) => ({
-                                  ...theme,
-                                  colors: {
-                                    ...theme.colors,
-                                    primary50: 'var(--main-color-opacity2)',
-                                    primary25: 'var(--main-color-opacity2)',
-                                    primary: 'var(--main-color)',
-                                  },
-                                })}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                              />
-                            </motion.div>
-                            <DeviceInfoSpanClose onClick={() => setFilterdata(false)}>
-                              <RiCloseLine />
-                            </DeviceInfoSpanClose>
-                          </DevHomeHead>
-                        }
-                      </FilterHomeHOSWARD>
-                    </>
-                  }
+                  <FilterHosAndWard />
                   <DeviceListFlex>
                     <ListBtn $primary={listAndgrid === 1} onClick={() => {
                       localStorage.setItem('listGrid', String(1))

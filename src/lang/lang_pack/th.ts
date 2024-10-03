@@ -241,6 +241,7 @@ export default {
     titlePassword: 'รหัสผ่าน',
     changPassword: 'เปลี่ยน',
     newPassword: 'รหัสผ่านใหม่',
+    oldPassword: 'รหัสผ่านเดิม',
     passLower: 'ต่ำมาก',
     passLow: 'ต่ำ',
     passNormal: 'ปานกลาง',
