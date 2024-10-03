@@ -33,6 +33,7 @@ export default function Account() {
   const [showpassword, setShowpassword] = useState(false)
   const [userData, setUserData] = useState<usersType>()
   const [userDisplayName, setUserDisplayName] = useState<string>('')
+  const { userLevel } = cookieDecode
 
   const openmodalProfile = () => {
     setShowProfile(true)
@@ -137,7 +138,7 @@ export default function Account() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (newPassword !== '' && oldPassword !== '') {
+    if (userLevel === '0' || userLevel === '1' ? (newPassword !== '') : (newPassword !== '' && oldPassword !== '')) {
       try {
         const response = await axios.patch(`${import.meta.env.VITE_APP_API}/auth/reset/${cookieDecode.userId}`, {
           oldPassword: oldPassword,
@@ -337,20 +338,22 @@ export default function Account() {
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
             <Row>
-              <Col lg={12}>
-                <InputGroup className="mb-3">
-                  <Form.Label className="w-100">
-                    {t('oldPassword')}
-                    <Form.Control
-                      spellCheck={false}
-                      autoComplete='off'
-                      type={showpassword ? 'text' : 'password'}
-                      value={oldPassword}
-                      onChange={(e) => setPass({ ...pass, oldPassword: e.target.value })}
-                    />
-                  </Form.Label>
-                </InputGroup>
-              </Col>
+              {
+                userLevel === '2' || userLevel === '3' && <Col lg={12}>
+                  <InputGroup className="mb-3">
+                    <Form.Label className="w-100">
+                      {t('oldPassword')}
+                      <Form.Control
+                        spellCheck={false}
+                        autoComplete='off'
+                        type={showpassword ? 'text' : 'password'}
+                        value={oldPassword}
+                        onChange={(e) => setPass({ ...pass, oldPassword: e.target.value })}
+                      />
+                    </Form.Label>
+                  </InputGroup>
+                </Col>
+              }
               <Col lg={12}>
                 <InputGroup className="mb-3">
                   <Form.Label className="w-100">
