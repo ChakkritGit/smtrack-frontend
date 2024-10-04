@@ -1,15 +1,13 @@
-import { Container } from "react-bootstrap"
-import { BR, HeadTitle } from "../../style/components/policy"
+import { BR, HeadTitle, PrivacyContainer } from "../../style/components/policy"
 
 function Policy() {
   return (
-    <Container className="text-white mt-3 mb-3">
+    <PrivacyContainer>
       <HeadTitle>Privacy Policy</HeadTitle>
       <br />
       <span>This privacy policy applies to the SMTrack+ app (hereby referred to as "Application") for mobile devices that was created by THANES DEVELOPMENT COMPANY LIMITED (hereby referred to as "Service Provider") as a Free service. This service is intended for use "AS IS".
       </span>
       <BR />
-      <br />
       <HeadTitle>Information Collection and Use</HeadTitle>
       <br />
       <span>he Application collects information when you download and use it. This information may include information such as</span>
@@ -20,7 +18,6 @@ function Policy() {
         <li>The time spent on the Application</li>
         <li>The operating system you use on your mobile device</li>
       </ul>
-      <br />
       <span>
         The Application does not gather precise information about the location of your mobile device.
       </span>
@@ -29,13 +26,11 @@ function Policy() {
       <br />
       <span>For a better experience, while using the Application, the Service Provider may require you to provide us with certain personally identifiable information. The information that the Service Provider request will be retained by them and used as described in this privacy policy.</span>
       <BR />
-      <br />
       <HeadTitle>Third Party Access</HeadTitle>
       <br />
       <span>Only aggregated, anonymized data is periodically transmitted to external services to aid the Service Provider in improving the Application and their service. The Service Provider may share your information with third parties in the ways that are described in this privacy statement.
       </span>
       <BR />
-      <br />
       <span>Please note that the Application utilizes third-party services that have their own Privacy Policy about handling data. Below are the links to the Privacy Policy of the third-party service providers used by the Application:</span>
       <ul>
         <li>Google Play Services The Service Provider may disclose User Provided and Automatically Collected Information:</li>
@@ -55,7 +50,6 @@ function Policy() {
       <br />
       <span>The Service Provider does not use the Application to knowingly solicit data from or market to children under the age of 13.</span>
       <BR />
-      <br />
       <span>The Application does not address anyone under the age of 13. The Service Provider does not knowingly collect personally identifiable information from children under 13 years of age. In the case the Service Provider discover that a child under 13 has provided personal information, the Service Provider will immediately delete this from their servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact the Service Provider (siamatic.thanesgroup@gmail.com) so that they will be able to take the necessary actions.</span>
       <BR />
       <HeadTitle>Security</HeadTitle>
@@ -66,19 +60,16 @@ function Policy() {
       <br />
       <span>This Privacy Policy may be updated from time to time for any reason. The Service Provider will notify you of any changes to the Privacy Policy by updating this page with the new Privacy Policy. You are advised to consult this Privacy Policy regularly for any changes, as continued use is deemed approval of all changes.</span>
       <BR />
-      <br />
       <span>This privacy policy is effective as of 2024-10-04</span>
       <BR />
-      <br />
       <HeadTitle>Your Consent</HeadTitle>
       <br />
       <span>By using the Application, you are consenting to the processing of your information as set forth in this Privacy Policy now and as amended by us.</span>
       <BR />
-      <br />
       <HeadTitle>Contact Us</HeadTitle>
       <br />
       <span>If you have any questions regarding privacy while using the Application, or have questions about the practices, please contact the Service Provider via email at siamatic.thanesgroup@gmail.com.</span>
-    </Container>
+    </PrivacyContainer>
   )
 }
 
