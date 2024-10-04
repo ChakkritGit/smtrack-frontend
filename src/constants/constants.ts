@@ -44,7 +44,7 @@ export const cookieOptions: CookieSetOptions = {
   sameSite: true // ตัวเลือก 'strict', 'lax', หรือ 'none'
 }
 
-export const resizeImage = (file: File, targetDPI: number = 1200): Promise<File> => {
+export const resizeImage = (file: File, targetDPI: number = 300): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
 

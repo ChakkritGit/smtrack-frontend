@@ -35,6 +35,10 @@ export const NavigateTop = styled.div`
   &>h4 {
     margin-bottom: unset;
   }
+
+  &>div:nth-child(3) {
+    width: 84px;
+  }
 `
 
 export const BackPre = styled.div`
