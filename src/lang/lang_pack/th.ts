@@ -87,6 +87,14 @@ export default {
     messageOn: 'เปิด',
     messageOff: 'ปิด',
     notificationButtonSubmit: 'บันทึก',
+    tempBackToNormal: 'อุณหภูมิกลับมาปกติ',
+    tempBelowLimmit: 'อุณหภูมิต่ำกว่าขีดจำกัด',
+    tempHigherLimmit: 'อุณหภูมิเกินขีดจำกัด',
+    plugProblem: 'ปลั๊กมีปัญหา',
+    plugBackToNormal: 'ปลั๊กกลับมาปกติ',
+    SdCardProblem: 'เอสดีการ์ดมีปัญหา',
+    SdCardBackToNormal: 'เอสดีการ์ดกลับมาปกติ',
+    doorNum: 'ประตู',
 
     // device cards
     deviceOnline: 'ออนไลน์',
