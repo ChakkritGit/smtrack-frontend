@@ -425,6 +425,8 @@ export default {
 
     // time
     thTime: 'th-TH',
+    backToPre: 'กลับ',
+    privacy: 'นโยบายความเป็นส่วนตัว',
 
     // reload sw
     appOffline: 'แอพพร้อมใช้งานแบบออฟไลน์',

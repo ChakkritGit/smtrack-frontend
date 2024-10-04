@@ -1,8 +1,25 @@
-import { BR, HeadTitle, PrivacyContainer } from "../../style/components/policy"
+import { useTranslation } from "react-i18next"
+import { BackPre, BR, HeadTitle, NavigateTop, PrivacyContainer } from "../../style/components/policy"
+import { RiArrowLeftSLine } from "react-icons/ri"
+import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 
 function Policy() {
+  const { t } = useTranslation()
+  const navagate = useNavigate()
+  const { cookieEncode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+
   return (
     <PrivacyContainer>
+      <NavigateTop>
+        {cookieEncode ? <BackPre onClick={() => navagate('/settings')}>
+          <RiArrowLeftSLine size={24} />
+          <span>{t('backToPre')}</span>
+        </BackPre> : <div></div>}
+        <h4>Privacy & Policy</h4>
+        <div></div>
+      </NavigateTop>
       <HeadTitle>Privacy Policy</HeadTitle>
       <span>This privacy policy applies to the SMTrack+ app (hereby referred to as "Application") for mobile devices that was created by THANES DEVELOPMENT COMPANY LIMITED (hereby referred to as "Service Provider") as a Free service. This service is intended for use "AS IS".
       </span>

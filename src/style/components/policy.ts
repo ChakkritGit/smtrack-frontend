@@ -6,7 +6,7 @@ export const PrivacyContainer = styled.div<{$primary?: boolean}>`
   color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--black)'};
   padding: 1rem;
   max-width: 720px;
-  margin: 1rem auto 3rem auto;
+  margin: 3rem auto;
 
   &>ul {
     margin-top: .5rem;
@@ -18,10 +18,37 @@ export const PrivacyContainer = styled.div<{$primary?: boolean}>`
 `
 
 export const BR = styled.div `
-  margin: 1.125rem 0;
+  margin: .725rem 0;
 `
 
 export const HeadTitle = styled.span`
   font-size: 1.125rem;
   font-weight: bold;
+`
+
+export const NavigateTop = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+
+  &>h4 {
+    margin-bottom: unset;
+  }
+`
+
+export const BackPre = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: max-content;
+  height: 35px;
+  padding: 0 .5rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: .5;
+    transition: .3s;
+  }
 `
