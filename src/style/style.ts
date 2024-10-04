@@ -2371,8 +2371,17 @@ overflow: hidden;
 export const DashboardHeadFilter = styled.div<{ $primary?: boolean }>`
 margin-top: 1rem;
 display: grid;
+align-items: center;
 grid-template-columns: repeat(2, 1fr);
-width: 60%;
+
+&>div:nth-child(1) {
+  width: 50%;
+}
+
+&>div:nth-child(2) {
+  display: flex;
+  justify-content: right;
+}
 
 @media (max-width: 1185px) {
   grid-template-columns: repeat(1, 1fr);
