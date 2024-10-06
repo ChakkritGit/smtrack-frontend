@@ -10,7 +10,7 @@ import { jwtToken } from "../types/component.type"
 import { jwtDecode } from "jwt-decode"
 import { useDispatch, useSelector } from "react-redux"
 import { DeviceState, DeviceStateStore, UtilsStateStore } from "../types/redux.type"
-import { setShowAside, setTokenDecode } from "../stores/utilsStateSlice"
+import { setRefetchdata, setShowAside, setTokenDecode } from "../stores/utilsStateSlice"
 import { fetchHospitals, fetchWards, filtersDevices } from "../stores/dataArraySlices"
 import { storeDispatchType } from "../stores/store"
 import { fetchDevicesLog } from "../stores/LogsSlice"
@@ -100,8 +100,16 @@ export default function Main() {
     }, 30000)
 
     return () => clearTimeout(timer)
-  }, [socketData, token, dispatch, reFetchData, onFilter])
+  }, [socketData, token, dispatch, onFilter])
 
+  useEffect(() => {
+    if (!token) return
+    if (reFetchData) {
+      dispatch(fetchDevicesData(token))
+      dispatch(fetchProbeData(token))
+      dispatch(setRefetchdata(false))
+    }
+  }, [reFetchData, token])
 
   useEffect(() => {
     if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId, token }))

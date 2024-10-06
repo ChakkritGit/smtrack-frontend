@@ -3072,6 +3072,12 @@ align-items: center;
 justify-content: space-between;
 margin-top: 1rem;
 
+  &>div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
 .dropdown-menu.show>a {
     ${props => props.theme.mode === 'dark' &&
     css`
@@ -4326,6 +4332,10 @@ export const ListPrivacy = styled.div`
   padding: .5rem .8rem;
   border-radius: var(--border-radius-big);
   cursor: pointer;
+
+  &>span {
+    font-size: 12px;
+  }
 
   &:hover {
     opacity: .5;
