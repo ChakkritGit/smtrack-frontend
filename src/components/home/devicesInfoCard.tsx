@@ -34,8 +34,6 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
   const { devicesdata, onFilter, setDeviceData, setShow } = DevicesInfoCard
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  // const [show, setShow] = useState(false)
-  // const [deviceData, setDeviceData] = useState<devicesType | null>(null)
   const navigate = useNavigate()
 
   const openDashboard = (data: {
@@ -238,37 +236,6 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
           </DeviceCardFooterI>
         </DeviceCardFooter>
       </DeviceCard>
-
-      {/* {
-        show && deviceData && <ModalAdjust
-          key={deviceData.devId}
-          devicesdata={deviceData}
-          fetchData={filtersDevices}
-          setShow={setShow}
-          show={show}
-          openSetting={openSetting}
-          openSettingMute={openSettingMute}
-        />
-      }
-      {
-        showSetting && deviceData && <ModalNotification
-          key={deviceData.devId}
-          devicesdata={deviceData}
-          fetchData={filtersDevices}
-          setShow={setShow}
-          showSetting={showSetting}
-          setShowSetting={setShowSetting}
-        />
-      }
-      {
-        showSettingMute && deviceData && <ModalMute
-          key={deviceData.devId}
-          devicesdata={deviceData}
-          setShow={setShow}
-          showSettingMute={showSettingMute}
-          setShowSettingMute={setShowSettingMute}
-        />
-      } */}
     </>
   )
 }
