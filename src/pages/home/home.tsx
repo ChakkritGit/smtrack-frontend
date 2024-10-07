@@ -1,5 +1,7 @@
 import { Container } from "react-bootstrap"
 import {
+  RiArrowDownWideLine,
+  RiArrowUpWideLine,
   RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
   RiFileCloseLine,
   RiLayoutGridLine, RiListUnordered, RiSettings3Line, RiSkipUpLine, RiTempColdLine
@@ -59,6 +61,8 @@ export default function Home() {
   const [deviceData, setDeviceData] = useState<devicesType | null>(null)
   const [showSetting, setShowSetting] = useState(false)
   const [showSettingMute, setShowSettingMute] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [expand, setExpand] = useState(false)
 
   const openSettingMute = () => {
     setShow(false)
@@ -495,6 +499,20 @@ export default function Home() {
     }
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true)
+      } else {
+        setScrolled(false)
+        setExpand(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <Container className="home-lg">
       {
@@ -512,14 +530,22 @@ export default function Home() {
                 </TagCurrentHos>
               }
             </DevHomeHeadTile>
-            <DevHomeSecctionOne>
-              <HomeCard
-                deviceData={devices}
-                cardActive={cardActive}
-                setCardActive={setCardActive}
-                wardId={wardId}
-                setOnFilteres={setOnFilteres}
-              />
+            <DevHomeSecctionOne $primary={scrolled} $expand={expand}>
+              <div>
+                <HomeCard
+                  deviceData={devices}
+                  cardActive={cardActive}
+                  setCardActive={setCardActive}
+                  wardId={wardId}
+                  setOnFilteres={setOnFilteres}
+                />
+              </div>
+              <div>
+                {
+                  !expand ? <RiArrowUpWideLine size={24} onClick={() => setExpand(true)} /> :
+                    <RiArrowDownWideLine size={24} onClick={() => setExpand(false)} />
+                }
+              </div>
             </DevHomeSecctionOne>
             <AboutBox>
               <h5>{t('detailAllBox')}</h5>
