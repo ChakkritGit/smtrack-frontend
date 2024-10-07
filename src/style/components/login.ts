@@ -115,3 +115,15 @@ export const LoadingButton = styled.div`
   }
 }
 `
+
+export const LoginContact = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: 1rem;
+
+  &>span {
+    color: var(--grey);
+  }
+`

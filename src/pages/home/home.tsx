@@ -161,7 +161,7 @@ export default function Home() {
       name: t('deviceTempTb'),
       cell: items => (
         <span key={items.devSerial}>
-          {items.log[0]?.tempAvg ? `${items.log[0].tempAvg.toFixed(2)}°C` : 'No data'}
+          {items.log[0]?.tempAvg ? `${items.log[0].tempAvg.toFixed(2)}°C` : '- -'}
         </span>
       ),
       sortable: false,
@@ -171,7 +171,7 @@ export default function Home() {
     {
       name: t('deviceHumiTb'),
       selector: items =>
-        items.log[0]?.humidityAvg ? `${items.log[0].humidityAvg.toFixed(2)}%` : 'No data',
+        items.log[0]?.humidityAvg ? `${items.log[0].humidityAvg.toFixed(2)}%` : '- -',
       sortable: false,
       center: true,
       width: '85px',
@@ -360,7 +360,7 @@ export default function Home() {
 
         return (
           <span key={index}>
-            {deviceLog?.tempAvg ? `${deviceLog?.tempAvg.toFixed(2)}°C` : 'Data not found'}
+            {deviceLog?.tempAvg ? `${deviceLog?.tempAvg.toFixed(2)}°C` : '- -'}
           </span>
         );
       },
@@ -376,7 +376,7 @@ export default function Home() {
 
         return (
           <span key={index}>
-            {deviceLog?.humidityAvg ? `${deviceLog?.humidityAvg.toFixed(2)}%` : 'Data not found'}
+            {deviceLog?.humidityAvg ? `${deviceLog?.humidityAvg.toFixed(2)}%` : '- -'}
           </span>
         );
       },

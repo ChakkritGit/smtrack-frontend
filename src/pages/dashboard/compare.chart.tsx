@@ -92,7 +92,8 @@ const Comparechart = () => {
     try {
       setDevices([])
       const res = await axios.get(`${import.meta.env.VITE_APP_API}/utils/compare`, {
-        headers: { authorization: `Bearer ${token}` }
+        headers: { authorization: `Bearer ${token}` },
+        signal: AbortSignal.timeout(600000)
       })
       setDevices(res.data.data)
     } catch (error) {
@@ -119,7 +120,8 @@ const Comparechart = () => {
         try {
           setDevices([])
           const res = await axios.get(`${import.meta.env.VITE_APP_API}/utils/compare?start=${startDate}&end=${endDate}`, {
-            headers: { authorization: `Bearer ${token}` }
+            headers: { authorization: `Bearer ${token}` },
+            signal: AbortSignal.timeout(600000)
           })
           setDevices(res.data.data)
         } catch (error) {

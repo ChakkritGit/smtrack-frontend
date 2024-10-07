@@ -20,9 +20,11 @@ import { accessToken, cookieOptions, cookies } from '../../constants/constants'
 import {
   CardContainer, CardFlex, HeaderText, LangContainer, LoadingButton,
   LoginButton,
+  LoginContact,
   TimeStap
 } from '../../style/components/login'
 import { LineHr } from '../../style/style'
+import { Helmet } from 'react-helmet'
 
 export default function Login() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -130,11 +132,14 @@ export default function Login() {
   const formattedTime = currentDate.toLocaleTimeString(t('thTime'), {
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit'
+    // second: '2-digit'
   })
 
   return (
     <Container className='p-3'>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <LangContainer>
         <LangguageSelector />
       </LangContainer>
@@ -190,9 +195,13 @@ export default function Login() {
               <RiLoader3Line />
               {t('loginButtonLoading')}</LoadingButton> : t('loginButton')}
             </LoginButton>
-            <LineHr className="mt-4" />
+            <LoginContact>
+              <LineHr />
+              <span className=''>{t('contactUs')}</span>
+              <LineHr />
+            </LoginContact>
             <div className="mt-3 text-center">
-              <span>Need help? <Link to={'/support'}>Contact Support</Link></span>
+              <span>{t('neddHelp')} <Link to={'/support'}>{t('contactSupport')}</Link></span>
             </div>
             <div className="mt-3 d-flex align-items-center justify-content-center gap-3">
               <a href="tel:027914500"><RiPhoneFill size={24} fill='white' /></a>

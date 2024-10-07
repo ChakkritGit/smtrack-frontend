@@ -122,32 +122,32 @@ export const resizeImage = (file: File, targetDPI: number = 300): Promise<File> 
 
 export const scheduleDayArray: Schedule[] = [
   {
-    scheduleKey: 'Mon',
-    scheduleLabel: 'Mon'
+    scheduleKey: 'MON',
+    scheduleLabel: 'MON'
   },
   {
-    scheduleKey: 'Tue',
-    scheduleLabel: 'Tue'
+    scheduleKey: 'TUE',
+    scheduleLabel: 'TUE'
   },
   {
-    scheduleKey: 'Wed',
-    scheduleLabel: 'Wed'
+    scheduleKey: 'WED',
+    scheduleLabel: 'WED'
   },
   {
-    scheduleKey: 'Thu',
-    scheduleLabel: 'Thu'
+    scheduleKey: 'THU',
+    scheduleLabel: 'THU'
   },
   {
-    scheduleKey: 'Fri',
-    scheduleLabel: 'Fri'
+    scheduleKey: 'FRI',
+    scheduleLabel: 'FRI'
   },
   {
-    scheduleKey: 'Sat',
-    scheduleLabel: 'Sat'
+    scheduleKey: 'SAT',
+    scheduleLabel: 'SAT'
   },
   {
-    scheduleKey: 'Sun',
-    scheduleLabel: 'Sun'
+    scheduleKey: 'SUN',
+    scheduleLabel: 'SUN'
   },
 ]
 
