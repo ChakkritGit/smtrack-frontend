@@ -8,8 +8,8 @@ import axios, { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { FormEvent, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
-import { RiFacebookCircleFill, RiLoader3Line, RiMailFill, RiPhoneFill } from "react-icons/ri"
-import { FaLine } from "react-icons/fa"
+import { RiLoader3Line } from "react-icons/ri"
+// import { FaLine } from "react-icons/fa"
 import { useEffect } from 'react'
 import { setCookieEncode } from '../../stores/utilsStateSlice'
 import { useDispatch } from 'react-redux'
@@ -25,6 +25,7 @@ import {
 } from '../../style/components/login'
 import { LineHr } from '../../style/style'
 import { Helmet } from 'react-helmet'
+import { AgreeSection } from '../../style/components/contact.styled'
 
 export default function Login() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -200,15 +201,9 @@ export default function Login() {
               <span className=''>{t('contactUs')}</span>
               <LineHr />
             </LoginContact>
-            <div className="mt-3 text-center">
+            <AgreeSection>
               <span>{t('neddHelp')} <Link to={'/support'}>{t('contactSupport')}</Link></span>
-            </div>
-            <div className="mt-3 d-flex align-items-center justify-content-center gap-3">
-              <a href="tel:027914500"><RiPhoneFill size={24} fill='white' /></a>
-              <a href="mailto:thanes@thanesgroup.com"><RiMailFill size={24} fill='white' /></a>
-              <a href="https://line.me/R/ti/p/%40925maysc"><FaLine size={24} fill='white' /></a>
-              <a href="https://www.facebook.com/thanesgroup"><RiFacebookCircleFill size={25} fill='white' /></a>
-            </div>
+            </AgreeSection>
           </Form>
         </CardFlex>
         <TimeStap>
