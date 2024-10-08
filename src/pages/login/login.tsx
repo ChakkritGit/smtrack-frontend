@@ -50,10 +50,10 @@ export default function Login() {
       document.title = `${location.pathname.split("/")[1] !== '' ? location.pathname.split("/")[1] : 'home'}`
     }
 
-    changeFavicon('logo.png')
+    changeFavicon('Logo_SM_WBG.jpg')
 
     return () => {
-      changeFavicon('logo.png')
+      changeFavicon('Logo_SM_WBG.jpg')
     }
   }, [location])
 
