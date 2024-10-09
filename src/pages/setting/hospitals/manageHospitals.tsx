@@ -338,7 +338,7 @@ export default function ManageHospitals() {
 
   const handleSubmitedit = async (e: FormEvent) => {
     e.preventDefault()
-    const url: string = `${import.meta.env.VITE_APP_API}/ward/${addwardprop?.warddata?.wardId}`
+    const url: string = `${import.meta.env.VITE_APP_API}/ward/${warddata?.wardId}`
     if (formdata !== '') {
       try {
         const response = await axios.put<responseType<wardsType>>(url, {

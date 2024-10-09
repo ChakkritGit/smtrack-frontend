@@ -4407,7 +4407,7 @@ export const ListMenu = styled.div<{ $primary?: boolean, $logout?: boolean }>`
   `}
 
 span {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 svg {
