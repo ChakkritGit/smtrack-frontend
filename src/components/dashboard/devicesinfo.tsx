@@ -238,6 +238,17 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
     setDateData(calulateDate(devicesData))
   }, [devicesData])
 
+  useEffect(() => {
+    if (show) {
+      setFormdata({
+        adjustTemp: probe[0]?.adjustTemp,
+        adjustHum: probe[0]?.adjustHum
+      })
+      setTempvalue([probe[0]?.tempMin, probe[0]?.tempMax])
+      setHumvalue([probe[0]?.humMin, probe[0]?.humMax])
+    }
+  }, [show])
+
   return (
     <DashboardDevicesInfo>
       <DashboardDevicesDetails>
