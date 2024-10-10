@@ -429,6 +429,8 @@ export default {
     thTime: 'th-TH',
     backToPre: 'กลับ',
     privacy: 'นโยบายความเป็นส่วนตัว',
+    resetHour: 'ชั่วโมง',
+    resetMinute: 'นาที',
 
     // reload sw
     appOffline: 'แอพพร้อมใช้งานแบบออฟไลน์',

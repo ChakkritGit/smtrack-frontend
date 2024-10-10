@@ -887,7 +887,7 @@ export default function Adddevform(managedevices: managedevices) {
                           <Col>
                             <InputGroup className="mb-3">
                               <Form.Label className="w-100">
-                                reset hours
+                                {t('resetHour')}
                                 <Select
                                   id="hours"
                                   options={mapOptions<selectOption, keyof selectOption>(hoursOptions, 'value', 'label')}
@@ -922,7 +922,7 @@ export default function Adddevform(managedevices: managedevices) {
                           <Col>
                             <InputGroup className="mb-3">
                               <Form.Label className="w-100">
-                                reset minutes
+                                {t('resetMinute')}
                                 <Select
                                   id="minutes"
                                   options={mapOptions<selectOption, keyof selectOption>(minutesOptions, 'value', 'label')}

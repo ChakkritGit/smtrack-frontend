@@ -429,6 +429,8 @@ export default {
     thTime: 'en-EN',
     backToPre: 'Back',
     privacy: 'Privacy & Policy',
+    resetHour: 'Hour',
+    resetMinute: 'Minute',
 
     // reload sw
     appOffline: 'App ready to work offline',
