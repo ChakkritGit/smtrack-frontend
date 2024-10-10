@@ -593,3 +593,13 @@ export const countryCodes = [
   { code: '+996', country: 'Kyrgyzstan' },
   { code: '+998', country: 'Uzbekistan' },
 ]
+
+export const hoursOptions = Array.from({ length: 24 }, (_, i) => ({
+  value: String(i).padStart(2, '0'),
+  label: String(i).padStart(2, '0'),
+}))
+
+export const minutesOptions = Array.from({ length: 60 }, (_, i) => ({
+  value: String(i).padStart(2, '0'),
+  label: String(i).padStart(2, '0'),
+}))
