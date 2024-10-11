@@ -313,7 +313,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           valuestext={
             !devicesData?.log[0]?.door1 ||
               !devicesData?.log[0]?.door2 ||
-              !devicesData?.log[0]?.door3 ? t('stateOn') : t('stateOff')}
+              !devicesData?.log[0]?.door3 ? t('doorOpen') : t('doorClose')}
           svg={<RiDoorClosedLine />}
           alertone={
             !devicesData?.log[0]?.door1 ||
@@ -364,6 +364,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           title={t('dashWarranty')}
           svg={<RiShieldCheckLine />}
           valuestext={
+            devicesData.warranty[0]?.expire ?
             dataData.daysRemaining > 0
               ? dataData.years > 0
                 ? `${dataData.years} ${t('year')} ${dataData.months} ${t('month')} ${dataData.remainingDays} ${t('day')}`
@@ -371,6 +372,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
                   ? `${dataData.months} ${t('month')} ${dataData.remainingDays} ${t('day')}`
                   : `${dataData.remainingDays} ${t('day')}`
               : t('tabWarrantyExpired')
+              : t('notRegistered')
           }
           alertone={Math.ceil((new Date(devicesData.dateInstall ?? devicesData?.dateInstall).setFullYear(new Date(devicesData ? devicesData?.dateInstall : '2024-01-01').getFullYear() + 1) - new Date().getTime()) / (1000 * 60 * 60 * 24)) <= 0}
           pathName="/warranty"

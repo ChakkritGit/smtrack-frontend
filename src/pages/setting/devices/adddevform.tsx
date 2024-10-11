@@ -16,13 +16,13 @@ import { fetchDevicesData } from '../../../stores/devicesSlices'
 import { responseType } from '../../../types/response.type'
 import { ManageConfigAdd, ModeNetworkFlex } from '../../../style/components/manage.config'
 import { ModalMuteHead } from '../../../style/components/home.styled'
-import { configType, Option } from '../../../types/config.type'
+import { configType } from '../../../types/config.type'
 import { client } from '../../../services/mqtt'
 import { wardsType } from '../../../types/ward.type'
 import { SendOTAtoBoard, UploadButton } from '../../../style/components/firmwareuoload'
 import { firmwareType } from '../../../types/component.type'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
-import { hoursOptions, minutesOptions, resizeImage } from '../../../constants/constants'
+import { hoursOptions, mapDefaultValue, mapOptions, minutesOptions, resizeImage } from '../../../constants/constants'
 import { TabButton, TabContainer } from '../../../style/components/manage.dev'
 import Select from 'react-select'
 import { useTheme } from '../../../theme/ThemeProvider'
@@ -30,7 +30,6 @@ import { useTheme } from '../../../theme/ThemeProvider'
 interface FirmwareItem {
   fileName: string,
 }
-
 
 type selectOption = {
   value: string,
@@ -657,19 +656,6 @@ export default function Adddevform(managedevices: managedevices) {
     )
     .sort(versionCompare)
 
-
-  const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
-    data.map(item => ({
-      value: item[valueKey] as unknown as string,
-      label: item[labelKey] as unknown as string
-    }))
-
-  const mapDefaultValue = <T, K extends keyof T>(data: T[], id: string, valueKey: K, labelKey: K): Option | undefined =>
-    data.filter(item => item[valueKey] === id).map(item => ({
-      value: item[valueKey] as unknown as string,
-      label: item[labelKey] as unknown as string
-    }))[0]
-
   return (
     <div>
       {
@@ -883,78 +869,83 @@ export default function Adddevform(managedevices: managedevices) {
                             </InputGroup>
                           </Row>
                         }
-                        <Row>
-                          <Col>
-                            <InputGroup className="mb-3">
-                              <Form.Label className="w-100">
-                                {t('resetHour')}
-                                <Select
-                                  id="hours"
-                                  options={mapOptions<selectOption, keyof selectOption>(hoursOptions, 'value', 'label')}
-                                  value={mapDefaultValue<selectOption, keyof selectOption>(hoursOptions, String(resetHour), 'value', 'label')}
-                                  onChange={(e) => setResetTime({ ...resetTime, resetHour: e?.value })}
-                                  autoFocus={false}
-                                  placeholder={t('selectDeviceDrop')}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
-                                      borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
-                                      boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
-                                      borderRadius: "var(--border-radius-big)"
-                                    }),
-                                  }}
-                                  theme={(theme) => ({
-                                    ...theme,
-                                    colors: {
-                                      ...theme.colors,
-                                      primary50: 'var(--main-color-opacity2)',
-                                      primary25: 'var(--main-color-opacity2)',
-                                      primary: 'var(--main-color)',
-                                    },
-                                  })}
-                                  className="react-select-container"
-                                  classNamePrefix="react-select"
-                                />
-                              </Form.Label>
-                            </InputGroup>
-                          </Col>
-                          <Col>
-                            <InputGroup className="mb-3">
-                              <Form.Label className="w-100">
-                                {t('resetMinute')}
-                                <Select
-                                  id="minutes"
-                                  options={mapOptions<selectOption, keyof selectOption>(minutesOptions, 'value', 'label')}
-                                  value={mapDefaultValue<selectOption, keyof selectOption>(minutesOptions, String(resetMinute), 'value', 'label')}
-                                  onChange={(e) => setResetTime({ ...resetTime, resetMinute: e?.value })}
-                                  autoFocus={false}
-                                  placeholder={t('selectDeviceDrop')}
-                                  styles={{
-                                    control: (baseStyles, state) => ({
-                                      ...baseStyles,
-                                      backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
-                                      borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
-                                      boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
-                                      borderRadius: "var(--border-radius-big)"
-                                    }),
-                                  }}
-                                  theme={(theme) => ({
-                                    ...theme,
-                                    colors: {
-                                      ...theme.colors,
-                                      primary50: 'var(--main-color-opacity2)',
-                                      primary25: 'var(--main-color-opacity2)',
-                                      primary: 'var(--main-color)',
-                                    },
-                                  })}
-                                  className="react-select-container"
-                                  classNamePrefix="react-select"
-                                />
-                              </Form.Label>
-                            </InputGroup>
-                          </Col>
-                        </Row>
+                        {
+                          userLevel === '0' && <Row>
+                            <Row>
+                              <span className='mb-2'>{t('hardReset')}</span>
+                            </Row>
+                            <Col>
+                              <InputGroup className="mb-3">
+                                <Form.Label className="w-100">
+                                  {t('resetHour')}
+                                  <Select
+                                    id="hours"
+                                    options={mapOptions<selectOption, keyof selectOption>(hoursOptions, 'value', 'label')}
+                                    value={mapDefaultValue<selectOption, keyof selectOption>(hoursOptions, String(resetHour), 'value', 'label')}
+                                    onChange={(e) => setResetTime({ ...resetTime, resetHour: e?.value })}
+                                    autoFocus={false}
+                                    placeholder={t('selectDeviceDrop')}
+                                    styles={{
+                                      control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
+                                        borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
+                                        boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
+                                        borderRadius: "var(--border-radius-big)"
+                                      }),
+                                    }}
+                                    theme={(theme) => ({
+                                      ...theme,
+                                      colors: {
+                                        ...theme.colors,
+                                        primary50: 'var(--main-color-opacity2)',
+                                        primary25: 'var(--main-color-opacity2)',
+                                        primary: 'var(--main-color)',
+                                      },
+                                    })}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                  />
+                                </Form.Label>
+                              </InputGroup>
+                            </Col>
+                            <Col>
+                              <InputGroup className="mb-3">
+                                <Form.Label className="w-100">
+                                  {t('resetMinute')}
+                                  <Select
+                                    id="minutes"
+                                    options={mapOptions<selectOption, keyof selectOption>(minutesOptions, 'value', 'label')}
+                                    value={mapDefaultValue<selectOption, keyof selectOption>(minutesOptions, String(resetMinute), 'value', 'label')}
+                                    onChange={(e) => setResetTime({ ...resetTime, resetMinute: e?.value })}
+                                    autoFocus={false}
+                                    placeholder={t('selectDeviceDrop')}
+                                    styles={{
+                                      control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
+                                        borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
+                                        boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
+                                        borderRadius: "var(--border-radius-big)"
+                                      }),
+                                    }}
+                                    theme={(theme) => ({
+                                      ...theme,
+                                      colors: {
+                                        ...theme.colors,
+                                        primary50: 'var(--main-color-opacity2)',
+                                        primary25: 'var(--main-color-opacity2)',
+                                        primary: 'var(--main-color)',
+                                      },
+                                    })}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                  />
+                                </Form.Label>
+                              </InputGroup>
+                            </Col>
+                          </Row>
+                        }
                       </Col>
                     }
                   </>
