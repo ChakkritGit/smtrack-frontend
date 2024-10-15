@@ -144,7 +144,7 @@ export default function Probesetting() {
   const filteredItems = useMemo(() => {
     return wardId !== ''
       ? probeData.filter((item) => item.device.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hosId === 'HID-DEVELOPMENT' ? probeData : probeData.filter((item) => item.device.wardId.includes(hosId))
+      : hosId === 'HID-DEVELOPMENT' ? probeData : probeData.filter((item) => item.device.ward.hosId.includes(hosId))
   }, [wardId, probeData, hosId])
 
   const filter = filteredItems.filter((f) => f.devSerial && f.devSerial.toLowerCase().includes(searchQuery.toLowerCase()))

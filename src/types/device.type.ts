@@ -26,6 +26,12 @@ type devices = {
   updateAt: string,
 }
 
+interface ProbeDeviceType extends devices {
+  ward: {
+    hosId: string
+  }
+}
+
 interface devicesType extends devices {
   log: logtype[],
   probe: probeType[],
@@ -87,4 +93,4 @@ type cardFilterType = {
   warranty: boolean
 }
 
-export type { devices, devicesType, managedevices, deviceLog, cardFilterType }
+export type { devices, devicesType, managedevices, deviceLog, cardFilterType, ProbeDeviceType }
