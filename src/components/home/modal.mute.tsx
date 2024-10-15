@@ -36,10 +36,9 @@ function ModalMute(modalProps: modalAdjustType) {
   const { theme } = useTheme()
   const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
-  const [mqttData, setMqttData] = useState<MqttType>()
-  const [muteDoor, setMuteDoor] = useState({
-    always: '5',
-    alert: '5'
+  const [muteDoor, setMuteDoor] = useState<MqttType>({
+    always: '',
+    alert: ''
   })
 
   const { alert, always } = muteDoor
@@ -49,12 +48,6 @@ function ModalMute(modalProps: modalAdjustType) {
     always: cookies.get(devSerial) === 'always' || false,
     door: config.muteDoor === '0' ? false : true,
   })
-
-  useEffect(() => {
-    if (mqttData) {
-      setMuteDoor(mqttData)
-    }
-  }, [mqttData])
 
   const closeSettingMute = () => {
     setShowSettingMute(false)
@@ -111,8 +104,7 @@ function ModalMute(modalProps: modalAdjustType) {
       client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/status`, 'on')
 
       client.on('message', (_topic, message) => {
-        console.log(message.toString())
-        setMqttData(JSON.parse(message.toString()))
+        setMuteDoor(JSON.parse(message.toString()))
       })
 
       client.on("error", (err) => {
@@ -141,9 +133,9 @@ function ModalMute(modalProps: modalAdjustType) {
         </ModalHead>
       </Modal.Header>
       <Modal.Body>
-        <NotiActionFlex $primary={!mqttData}>
+        <NotiActionFlex $primary={alert === '' && always === ''}>
           {
-            mqttData ?
+            alert !== '' && always !== '' ?
               <>
                 {deviceModel === 'etemp' && <div>
                   <span>{t('muteTemporary')}</span>
@@ -154,7 +146,7 @@ function ModalMute(modalProps: modalAdjustType) {
                 <div>
                   <div>
                     <span>{t('muteAlways')}</span>
-                    <span>14:00 - 17:00</span>
+                    <span>{always}</span>
                   </div>
                   <div>
                     <Select
@@ -200,7 +192,7 @@ function ModalMute(modalProps: modalAdjustType) {
                 <div>
                   <div>
                     <span>{t('muteAlert')}</span>
-                    <span>14:00 - 17:00</span>
+                    <span>{alert}</span>
                   </div>
                   <div>
                     <Select
