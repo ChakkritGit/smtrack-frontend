@@ -22,6 +22,7 @@ export default function Probesetting() {
   const { searchQuery, cookieDecode, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { probeData } = useSelector<DeviceStateStore, ProbeState>((state) => state.probe)
   const { token, userLevel } = cookieDecode
+  const hId = cookieDecode.hosId
 
   useEffect(() => {
     return () => {
@@ -144,8 +145,8 @@ export default function Probesetting() {
   const filteredItems = useMemo(() => {
     return wardId !== ''
       ? probeData.filter((item) => item.device.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hosId === 'HID-DEVELOPMENT' ? probeData : probeData.filter((item) => item.device.ward.hosId.includes(hosId))
-  }, [wardId, probeData, hosId])
+      : hId === 'HID-DEVELOPMENT' ? probeData : probeData.filter((item) => item.device.ward.hosId.includes(hosId))
+  }, [wardId, probeData, hosId, hId])
 
   const filter = filteredItems.filter((f) => f.devSerial && f.devSerial.toLowerCase().includes(searchQuery.toLowerCase()))
 

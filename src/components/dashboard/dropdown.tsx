@@ -26,7 +26,8 @@ export default function Dropdown() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
-  const { deviceId, Serial, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { deviceId, Serial, wardId, hosId, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const hId = cookieDecode.hosId
   const [val, setVal] = useState(`${deviceId}-${Serial}`)
   const { theme } = useTheme()
 
@@ -59,8 +60,8 @@ export default function Dropdown() {
   const filteredDevicesList = useMemo(() => {
     return wardId !== ''
       ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hosId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
-  }, [wardId, devices, hosId])
+      : hId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
+  }, [wardId, devices, hosId, hId])
 
   return (
     <Select

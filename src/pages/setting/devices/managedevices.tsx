@@ -33,6 +33,7 @@ export default function Managedev() {
   const dispatch = useDispatch<storeDispatchType>()
   const { searchQuery, cookieDecode, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { token, userLevel } = cookieDecode
+  const hId = cookieDecode.hosId
   const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
 
   useEffect(() => {
@@ -217,8 +218,8 @@ export default function Managedev() {
   const filteredItems = useMemo(() => {
     return wardId !== ''
       ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hosId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
-  }, [wardId, devices, hosId])
+      : hId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
+  }, [wardId, devices, hosId, hId])
 
   const filter = filteredItems.filter((f) => f.devSerial && f.devSerial.toLowerCase().includes(searchQuery.toLowerCase()))
 

@@ -49,6 +49,7 @@ export default function Home() {
   const navigate = useNavigate()
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
   const { userLevel, hosName } = cookieDecode
+  const hId = cookieDecode.hosId
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
   const [cardActive, setCardActive] = useState('')
@@ -95,8 +96,8 @@ export default function Home() {
   let filteredDevicesList = useMemo(() => {
     return wardId !== ''
       ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hosId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
-  }, [wardId, devices, hosId])
+      : hId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
+  }, [wardId, devices, hosId, hId])
 
   useEffect(() => {
     filteredDevicesList = filteredDevicesList.filter((item) =>
