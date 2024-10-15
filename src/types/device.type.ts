@@ -44,7 +44,8 @@ interface devicesType extends devices {
   ward: {
     wardName: string,
     hospital: {
-      hosName: string
+      hosName: string,
+      hosId: string
     }
   }
 }
