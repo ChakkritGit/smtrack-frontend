@@ -371,6 +371,10 @@ export const paginationCardHome = [
 
 export const paginationCardUsers = [
   {
+    key: 20,
+    value: '20'
+  },
+  {
     key: 50,
     value: '50'
   },

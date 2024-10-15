@@ -31,10 +31,11 @@ type modalAdjustType = {
 
 function ModalMute(modalProps: modalAdjustType) {
   const { devicesdata, setShow, setShowSettingMute, showSettingMute } = modalProps
+  const { devSerial, config } = devicesdata
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const deviceModel = devicesdata.devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
-  const version = devicesdata.devSerial.substring(3, 5).toLowerCase()
+  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const version = devSerial.substring(3, 5).toLowerCase()
   const [mqttData, setMqttData] = useState<MqttType>()
   const [muteDoor, setMuteDoor] = useState({
     always: '5',
@@ -45,16 +46,13 @@ function ModalMute(modalProps: modalAdjustType) {
 
   const [muteEtemp, setMuteEtemp] = useState({
     temporary: false,
-    always: cookies.get(devicesdata.devSerial) === 'always' || false,
-    door: devicesdata.config.muteDoor === '0' ? false : true,
+    always: cookies.get(devSerial) === 'always' || false,
+    door: config.muteDoor === '0' ? false : true,
   })
 
   useEffect(() => {
     if (mqttData) {
-      setMuteDoor({
-        always: mqttData.always,
-        alert: mqttData.alert
-      })
+      setMuteDoor(mqttData)
     }
   }, [mqttData])
 
@@ -66,51 +64,51 @@ function ModalMute(modalProps: modalAdjustType) {
   const muteTemporary = () => {
     setMuteEtemp({ ...muteEtemp, temporary: !muteEtemp.temporary })
     if (muteEtemp.temporary) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/temporary`, 'on')
-      client.publish(`${devicesdata.devSerial}/mute/short`, 'on')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temporary`, 'on')
+      client.publish(`${devSerial}/mute/short`, 'on')
     } else {
       console.log('off')
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/temporary`, 'off')
-      client.publish(`${devicesdata.devSerial}/mute/short`, 'off')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temporary`, 'off')
+      client.publish(`${devSerial}/mute/short`, 'off')
     }
   }
 
   const muteAlarm = () => {
     setMuteEtemp({ ...muteEtemp, door: !muteEtemp.door })
     if (muteEtemp.door) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/door/alarm`, 'on')
-      client.publish(`${devicesdata.devSerial}/mute/long`, 'on')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alarm`, 'on')
+      client.publish(`${devSerial}/mute/long`, 'on')
     } else {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/door/alarm`, 'off')
-      client.publish(`${devicesdata.devSerial}/mute/long`, 'off')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alarm`, 'off')
+      client.publish(`${devSerial}/mute/long`, 'off')
     }
   }
 
   const muteAlways = (status: boolean) => {
     if (status) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/alway`, always)
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/alway`, always)
     } else {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/alway`, '0')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/alway`, '0')
     }
   }
 
   const muteAlert = (status: boolean) => {
     if (status) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/door/alert`, alert)
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alert`, alert)
     } else {
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/door/alert`, '0')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alert`, '0')
     }
   }
 
   useEffect(() => {
     if (showSettingMute) {
-      client.subscribe(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/receive`, (err) => {
+      client.subscribe(`siamatic/${deviceModel}/${version}/${devSerial}/mute/receive`, (err) => {
         if (err) {
           console.error("MQTT Suubscribe Error", err)
         }
       })
 
-      client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/mute/status`, 'on')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/status`, 'on')
 
       client.on('message', (_topic, message) => {
         console.log(message.toString())
