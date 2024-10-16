@@ -90,8 +90,8 @@ export default function Adddevform(managedevices: managedevices) {
   const { theme } = useTheme()
   const { resetHour, resetMinute } = resetTime
   const { devSerial } = devdata
-  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
-  const version = devSerial.substring(3, 5).toLowerCase()
+  const deviceModel = devSerial?.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const version = devSerial?.substring(3, 5).toLowerCase()
 
   const fetchWard = async () => {
     try {
