@@ -2290,10 +2290,12 @@ align-items: center;
 width: 100%;
 padding: 0 .5rem 0 0;
 
-&>div:nth-child(1) {
+${props => props.$primary && css`
+  &>div:nth-child(1) {
   display: flex;
   flex-direction: column;
 }
+`}
 
 & button {
   display: flex;
@@ -4391,6 +4393,23 @@ export const ListPrivacy = styled.div`
     opacity: .5;
     transition: .3s;
   }
+
+  &>svg {
+    display: none;
+  }
+
+  @media (max-width: 430px) {
+    justify-content: center;
+
+  &>svg {
+    display: block;
+    font-size: 24px;
+  }
+
+  &>span {
+    display: none;
+  }
+}
 `
 
 export const ListMenu = styled.div<{ $primary?: boolean, $logout?: boolean }>`
