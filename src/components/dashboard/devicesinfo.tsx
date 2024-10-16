@@ -310,7 +310,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
         <CardstatusSpecial
           title={t('dashProbe')}
           svg={<RiCpuLine />}
-          valuesone={`Temp: ${devicesData?.log[0]?.tempAvg ? devicesData?.log[0]?.tempAvg.toFixed(2) : '- -'}`}
+          valuesone={`Temp: ${Number(devicesData?.log[0]?.tempAvg.toFixed(2)) <= probe[0]?.tempMin ? '↓' : Number(devicesData?.log[0]?.tempAvg.toFixed(2)) >= probe[0]?.tempMax ? '↑' : ''} ${devicesData?.log[0]?.tempAvg ? devicesData?.log[0]?.tempAvg.toFixed(2) : '- -'}`}
           valuestwo={`Hum: ${devicesData?.log[0]?.humidityAvg ? devicesData?.log[0]?.humidityAvg.toFixed(2) : '- -'}`}
           pipeone={'°C'}
           pipetwo={'%RH'}
