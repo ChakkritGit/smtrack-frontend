@@ -811,14 +811,18 @@ export default function Adddevform(managedevices: managedevices) {
                     </Col>
                     <Col lg={6}>
                       <InputGroup className="mb-3">
-                        <Form.Label className="w-auto">
+                        <Form.Label className="w-100">
                           {t('devicePicture')}
                           <ProfileFlex $radius={10} $dimension={250}>
                             <div>
                               <img src={devicePicture ? devicePicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
-                              <label htmlFor={'user-file-upload'} >
+                              <label htmlFor={'user-file-upload'}>
                                 <RiEditLine />
-                                <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={fileSelected} />
+                                <input
+                                  id="user-file-upload"
+                                  type="file"
+                                  accept="image/gif, image/jpg, image/jpeg, image/png"
+                                  onChange={fileSelected} />
                               </label>
                             </div>
                           </ProfileFlex>

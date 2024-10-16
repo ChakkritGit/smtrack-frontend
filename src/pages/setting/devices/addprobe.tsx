@@ -161,7 +161,7 @@ export default function Addprobe(addprobe: addprobeProps) {
       humMax: formdata.humvalue[1],
     }
     if (formdata.devSerial !== '' && formdata.adjustTemp !== '' && formdata.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
-      && formdata.probeName !== '' && formdata.probeType !== '' && formdata.probeCh !== '' && formdata.location !== '' && formdata.tempvalue !== null && formdata.humvalue !== null) {
+      && formdata.probeName !== '' && formdata.probeType !== '' && formdata.probeCh !== '' && formdata.location !== null && formdata.tempvalue !== null && formdata.humvalue !== null) {
       try {
         const response = await axios.put<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeData?.probeId}`, bodyData, {
           headers: {
@@ -367,6 +367,7 @@ export default function Addprobe(addprobe: addprobeProps) {
       <Modal size={"lg"} show={show} onHide={closemodal}>
         <Modal.Header>
           <ModalHead>
+            <div>
             <strong>
               {
                 pagestate === "add" ?
@@ -375,6 +376,8 @@ export default function Addprobe(addprobe: addprobeProps) {
                   t('editProbe')
               }
             </strong>
+            <span>{probeData?.devSerial}</span>
+            </div>
             {/* <pre>{JSON.stringify(formdata, null, 2)}</pre> */}
             <button onClick={closemodal}>
               <RiCloseLine />
