@@ -49,7 +49,6 @@ export default function Home() {
   const navigate = useNavigate()
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
   const { userLevel, hosName } = cookieDecode
-  const hId = cookieDecode.hosId
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
   const [cardActive, setCardActive] = useState('')
@@ -95,9 +94,11 @@ export default function Home() {
 
   let filteredDevicesList = useMemo(() => {
     return wardId !== ''
-      ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
-  }, [wardId, devices, hosId, hId])
+      ? devices.filter((item) => item.wardId.includes(wardId))
+      : hosId && hosId !== ''
+        ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
+        : devices
+  }, [wardId, devices, hosId])
 
   useEffect(() => {
     filteredDevicesList = filteredDevicesList.filter((item) =>
@@ -135,7 +136,7 @@ export default function Home() {
         break;
     }
 
-  }, [searchQuery, devices, wardId, cardActive])
+  }, [searchQuery, devices, wardId, cardActive, filteredDevicesList])
 
   const isLeapYear = (year: number): boolean => {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
@@ -524,7 +525,7 @@ export default function Home() {
               {
                 userLevel === '0' && <TagCurrentHos>
                   {
-                    `${hospitalsData.filter((f) => f.hosId?.toLowerCase().includes(hosId?.toLowerCase()))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.toLowerCase().includes(wardId?.toLowerCase()))[0]?.wardName ?? 'ALL'}`
+                    `${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`
                   }
                 </TagCurrentHos>
               }

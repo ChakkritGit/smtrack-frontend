@@ -26,8 +26,7 @@ export default function Dropdown() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
-  const { deviceId, Serial, wardId, hosId, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const hId = cookieDecode.hosId
+  const { deviceId, Serial, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const [val, setVal] = useState(`${deviceId}-${Serial}`)
   const { theme } = useTheme()
 
@@ -48,7 +47,7 @@ export default function Dropdown() {
   const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, valueKey2: K, labelKey: K): Option[] =>
     data.map(item => ({
       value: `${item[valueKey]}-${item[valueKey2]}` as unknown as string,
-      label: item[labelKey] as unknown as string
+      label: item[labelKey] && item[labelKey] !== "null" ? item[labelKey] as unknown as string : '- -'
     }))
 
   const mapDefaultValue = <T, K extends keyof T>(data: T[], id: string, valueKey: K, valueKey2: K, labelKey: K): Option | undefined =>
@@ -57,11 +56,14 @@ export default function Dropdown() {
       label: item[labelKey] as unknown as string
     }))[0]
 
-  const filteredDevicesList = useMemo(() => {
+  let filteredDevicesList = useMemo(() => {
     return wardId !== ''
-      ? devices.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hId === 'HID-DEVELOPMENT' ? devices : devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
-  }, [wardId, devices, hosId, hId])
+      ? devices.filter((item) => item.wardId.includes(wardId))
+      : hosId && hosId !== 'ALL'
+        ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
+        : devices
+  }, [wardId, devices, hosId])
+
 
   return (
     <Select

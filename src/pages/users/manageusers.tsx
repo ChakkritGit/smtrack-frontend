@@ -22,14 +22,15 @@ export default function Permission() {
   const [displayedCards, setDisplayedCards] = useState<usersType[]>(userData ? userData.slice(0, cardsPerPage) : [])
   const { searchQuery, expand, tokenDecode, hosId, wardId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { userId } = tokenDecode
-  const hId = tokenDecode.hosId
   // Filter Data
 
-  const filteredItems = useMemo(() => {
+  let filteredItems = useMemo(() => {
     return wardId !== ''
-      ? userData.filter((item) => item.wardId.toLowerCase().includes(wardId.toLowerCase()))
-      : hId === 'HID-DEVELOPMENT' ? userData : userData.filter((item) => item.ward.hosId.includes(hosId))
-  }, [wardId, userData, hosId, hId])
+      ? userData.filter((item) => item.wardId.includes(wardId))
+      : hosId && hosId !== ''
+        ? userData.filter((item) => item.ward.hosId.includes(hosId))
+        : userData
+  }, [wardId, userData, hosId])
 
   const totalPages = Math.ceil(filteredItems.length / cardsPerPage)
 
