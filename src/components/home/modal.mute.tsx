@@ -229,7 +229,7 @@ function ModalMute(modalProps: modalAdjustType) {
                 </div>
               </>
               :
-              <div>{t('loading')}</div>
+              <div>{t('loadingConfig')}</div>
           }
         </NotiActionFlex>
 
