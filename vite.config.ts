@@ -1,13 +1,10 @@
 import { defineConfig } from 'vitest/config'
-import { loadEnv } from 'vite'
+// import { loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
-  const apiUrl = env.VITE_APP_API || 'https://api.siamatic.co.th/etemp'
-
+export default defineConfig(({ }) => {
   return {
     plugins: [
       react(),
@@ -26,19 +23,18 @@ export default defineConfig(({ mode }) => {
         workbox: {
           cleanupOutdatedCaches: true,
           sourcemap: true,
-          globPatterns: ['**/*.{css,html,ico,png,svg,jpg,jpeg,json,mp3}'],
+          globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,json,mp3}'],
           maximumFileSizeToCacheInBytes: 100 * 1024 * 1024, // 100MB
           runtimeCaching: [
             {
-              urlPattern: new RegExp(`^${apiUrl}.*`, 'i'),
-              handler: 'NetworkFirst',
+              urlPattern: /.*\.js$/,
+              handler: 'StaleWhileRevalidate',
               options: {
-                cacheName: 'api-cache',
+                cacheName: 'js-cache',
                 expiration: {
-                  maxEntries: 100,
-                  maxAgeSeconds: 60 * 60 // 1 hour
-                },
-                networkTimeoutSeconds: 10
+                  maxEntries: 50,
+                  maxAgeSeconds: 8 * 60 * 60
+                }
               }
             }
           ]

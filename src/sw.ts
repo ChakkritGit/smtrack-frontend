@@ -4,7 +4,7 @@ import { CacheFirst, NetworkFirst, NetworkOnly } from "workbox-strategies"
 import { BackgroundSyncPlugin } from "workbox-background-sync"
 
 declare let self: ServiceWorkerGlobalScope
-const CACHE_NAME = 'SMTrackPlus-cache-v25'
+const CACHE_NAME = 'SMTrackPlus-cache-v28'
 
 cleanupOutdatedCaches()
 
