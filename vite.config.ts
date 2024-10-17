@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
         workbox: {
           cleanupOutdatedCaches: true,
           sourcemap: true,
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,json,mp3}'],
+          globPatterns: ['**/*.{css,html,ico,png,svg,jpg,jpeg,json,mp3}'],
           maximumFileSizeToCacheInBytes: 100 * 1024 * 1024, // 100MB
           runtimeCaching: [
             {
