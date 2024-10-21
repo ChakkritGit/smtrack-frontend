@@ -5,9 +5,9 @@ export const NotiHead = styled.div<{ $primary?: boolean }>`
   align-items: center;
   gap: .5rem;
   padding: 1rem .5rem;
-  background-color: ${(propss) => (propss.theme.mode === 'dark' ? 'var(--main-last-rgba)' : 'var(--main-white-rgba)')};
-  backdrop-filter: ${(propss) => (propss.theme.mode === 'dark' ? 'blur(35px)' : 'blur(20px)')};
-  -webkit-backdrop-filter: ${(propss) => (propss.theme.mode === 'dark' ? 'blur(35px)' : 'blur(20px)')};
+  background-color: ${props => props.theme.mode === 'dark' ? props.$primary ? 'rgba(53, 53, 53, .4)' : 'rgba(53, 53, 53, 1)' : props.$primary ? 'rgba(255, 255, 255, .5)' : 'rgba(255, 255, 255, 1)'};
+  backdrop-filter: ${props => props.theme.mode === 'dark' ? props.$primary ? 'blur(35px)' : 'unset' : props.$primary ? 'blur(20px)' : 'unset'};
+  -webkit-backdrop-filter: ${props => props.theme.mode === 'dark' ? props.$primary ? 'blur(35px)' : 'unset' : props.$primary ? 'blur(20px)' : 'unset'};
   position: sticky;
   top: 0;
 `

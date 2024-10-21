@@ -18,13 +18,13 @@ type navbar = {
 
 export default function Navbar(navbar: navbar) {
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand, transparent } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   useEffect(() => {
     localStorage.setItem('expandaside', expand.toString())
   }, [expand])
 
   return (
-    <Nav>
+    <Nav $transparent={transparent}>
       <Navleft>
         <ExpandContainer>
           <ExpandSidebar onClick={() => expand ? dispatch(setExpand(false)) : dispatch(setExpand(true))}>

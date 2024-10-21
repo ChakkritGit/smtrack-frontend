@@ -6,6 +6,7 @@ import {
 import { useColorContext } from "../../theme/ColorsProvider"
 import { useTranslation } from "react-i18next"
 import ToggleButton from "../../theme/ToggleButton"
+import { ToggleButtonTransparent } from "../../theme/ToggleTransparentButton"
 
 export default function Color() {
   const { t } = useTranslation()
@@ -58,6 +59,10 @@ export default function Color() {
       <H3mt>{t('mode')}</H3mt>
       <SwitchMode>
         <span>{t('appearanceMode')}</span><ToggleButton />
+      </SwitchMode>
+      <LineHr />
+      <SwitchMode>
+        <span>{t('transparencyBlur')}</span><ToggleButtonTransparent />
       </SwitchMode>
       <LineHr />
       <H3mt>{t('screen')}</H3mt>

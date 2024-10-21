@@ -48,7 +48,8 @@ type UtilsStateStore = {
   showAlert: boolean,
   notiData: notificationType[],
   reFetchData: boolean,
-  onFilter: boolean
+  onFilter: boolean,
+  transparent: boolean
 }
 
 type DeviceStateStore = {

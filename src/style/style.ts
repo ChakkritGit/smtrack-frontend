@@ -2,10 +2,10 @@ import styled, { css } from "styled-components"
 
 export const ToggleButtonWrapper = styled.button`
   position: relative;
-  width: 45px;
-  height: 30px;
-  background-color: ${(propss) => (propss.theme.mode === 'dark' ? 'var(--main-color)' : '#ddd')};
-  border: 1px solid ${(propss) => (propss.theme.mode === 'dark' ? 'var(--main-color)' : '#ccc')};
+  width: 55px;
+  height: 35px;
+  background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-color)' : '#ddd'};
+  border: 1px solid ${props => props.theme.mode === 'dark' ? 'var(--main-color)' : '#ccc'};
   border-radius: 20px;
   outline: none;
   cursor: pointer;
@@ -15,17 +15,51 @@ export const ToggleButtonWrapper = styled.button`
   overflow: hidden;
 
   .icon {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background-color: ${(propss) => (propss.theme.mode === 'dark' ? 'var(--white-grey-1)' : 'var(--white-grey-1)')};
+    background-color: ${props => props.theme.mode === 'dark' ? 'var(--white-grey-1)' : 'var(--white-grey-1)'};
     transition: transform 0.3s ease;
     transform: ${(propss) =>
-    propss.theme.mode === 'dark' ? 'translateX(16.5px)' : 'translateX(1.5px)'};
+    propss.theme.mode === 'dark' ? 'translateX(21px)' : 'translateX(2px)'};
     display: flex;
     align-items: center;
     justify-content: center;
-    color: ${(propss) => (propss.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--main-last-color)')};
+    color: ${props => props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--main-last-color)'};
+    transition: .3s;
+  }
+
+  &:hover {
+  border-color: var(--main-color);
+  transition: .3s;
+}
+`
+
+export const ToggleTransparentButtonWrapper = styled.button<{ $primary?: boolean }>`
+  position: relative;
+  width: 55px;
+  height: 35px;
+  background-color: ${props => props.$primary ? 'var(--main-color)' : '#ddd'};
+  border: 1px solid ${props => props.$primary ? 'var(--main-color)' : '#ccc'};
+  border-radius: 20px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+
+  .icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: ${props => props.$primary ? 'var(--white-grey-1)' : 'var(--white-grey-1)'};
+    transition: transform 0.3s ease;
+    transform: ${props => props.$primary ? 'translateX(21px)' : 'translateX(2px)'};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${props => props.$primary ? 'var(--main-last-color)' : 'var(--main-last-color)'};
     transition: .3s;
   }
 
@@ -490,13 +524,13 @@ ${props => props.$mg === .5 &&
 `
 
 // Navbar
-export const Nav = styled.nav`
+export const Nav = styled.nav<{ $transparent?: boolean }>`
 display: flex;
 align-items: center;
 justify-content: space-between;
-background-color: rgba(255, 255, 255, .7);
-backdrop-filter: blur(13px);
--webkit-backdrop-filter: blur(13px);
+background-color: ${props => props.$transparent ? 'rgba(255, 255, 255, .7)' : 'rgba(255, 255, 255, 1)'};
+backdrop-filter: ${props => props.$transparent ? 'blur(13px)' : 'unset'};
+-webkit-backdrop-filter: ${props => props.$transparent ? 'blur(13px)' : 'unset'};
 width: 100%;
 height: 60px;
 padding: 0 1.5rem 0 1rem;
@@ -506,7 +540,7 @@ box-shadow: 0px 15px 10px -15px rgba(0, 0, 0, .05);
 
 ${props => props.theme.mode === 'dark' &&
     css`
-  background-color: rgba(53, 53, 53, .6);
+  background-color: ${props.$transparent ? 'rgba(53, 53, 53, .6)' : 'rgba(53, 53, 53, 1)'};
   border-color: var(--border-dark-color);
   color: var(--white-grey-1);
 `}
@@ -518,7 +552,7 @@ ${props => props.theme.mode === 'dark' &&
   background-color: #fcfcfc;
 
   ${props => props.theme.mode === 'dark' &&
-  css`
+    css`
     background-color: #2f2f2f;
   `}
 }
@@ -1721,7 +1755,7 @@ max-height: 130px;
 overflow: hidden;
 `
 
-export const DevHomeSecctionOne = styled.div<{ $primary?: boolean, $expand?: boolean, $inList?: boolean }>`
+export const DevHomeSecctionOne = styled.div<{ $primary?: boolean, $expand?: boolean, $inList?: boolean, $transparent?: boolean }>`
 display: flex;
 justify-content: center;
 align-items: center;
@@ -1733,9 +1767,9 @@ top: 60px;
 height: ${props => props.$expand ? '55.38px' : props.$inList ? 'max-content' : '195.19px'};
 padding: 1rem;
 z-index: 100;
-background-color: ${props => props.theme.mode === 'dark' ? 'rgba(37, 37, 37, .6)' : 'rgba(245, 245, 245, .7)'};
-backdrop-filter: blur(13px);
--webkit-backdrop-filter: blur(13px);
+background-color: ${props => props.theme.mode === 'dark' ? props.$transparent ? 'rgba(37, 37, 37, .6)' : 'rgba(37, 37, 37, 1)' : props.$transparent ? 'rgba(245, 245, 245, .7)' : 'rgba(245, 245, 245, 1)'};
+backdrop-filter: ${props => props.$transparent ? 'blur(13px)' : 'unset'};
+-webkit-backdrop-filter: ${props => props.$transparent ? 'blur(13px)' : 'unset'};
 border-bottom: ${props => props.$primary ? `1px solid ${props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--soft-grey)'}` : 'unset'};
 transition: height .3s;
 

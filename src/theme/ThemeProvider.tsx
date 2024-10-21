@@ -1,8 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
+import { RootState } from '../stores/store'
+import { useSelector } from 'react-redux'
 
 interface Theme {
   mode: 'light' | 'dark'
+  // transparent: boolean
 }
 
 interface ThemeContextProps {
@@ -19,16 +22,17 @@ const STORAGE_KEY = 'themeMode'
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined)
 
 const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
+  const { transparent } = useSelector((state: RootState) => state.utilsState)
   const [theme, setTheme] = useState<Theme>(() => {
     const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme['mode']
-    return { mode: storedTheme || 'light' }
+    return { mode: storedTheme || 'light', transparent: transparent }
   })
 
   const toggleTheme = () => {
     setTheme((prevTheme) => {
       const newMode = prevTheme.mode === 'light' ? 'dark' : 'light'
       localStorage.setItem(STORAGE_KEY, newMode)
-      return { mode: newMode }
+      return { ...prevTheme, mode: newMode }
     })
   }
 
@@ -43,7 +47,7 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
   // Use effect to update the status bar color based on the theme
   useEffect(() => {
     const themeColorMetaTag = document.querySelector('meta[name="theme-color"]')
-    const currentColor = theme.mode === 'light' ? '#fcfcfc' : '#2f2f2f'
+    const currentColor = theme.mode === 'light' ? transparent ? '#ffffff' : '#fcfcfc' : transparent ? '#353535' : '#2f2f2f'
 
     if (themeColorMetaTag) {
       themeColorMetaTag.setAttribute('content', currentColor)
@@ -68,7 +72,7 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <StyledThemeProvider theme={{ mode: theme.mode }}>
+      <StyledThemeProvider theme={{ mode: theme.mode, transparent: transparent }}>
         {children}
       </StyledThemeProvider>
     </ThemeContext.Provider>

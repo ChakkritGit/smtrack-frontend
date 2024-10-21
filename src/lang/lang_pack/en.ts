@@ -398,6 +398,7 @@ export default {
     adjustTime: 'Set time successfully',
     hardReset: 'Hard Reset',
     notRegistered: 'Not Registered',
+    transparencyBlur: 'Transparency Blur',
 
     // connect
     ipAddress: 'IP',

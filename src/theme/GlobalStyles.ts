@@ -94,8 +94,10 @@ div:where(.swal2-container).swal2-center>.swal2-popup {
 }
 
 div:where(.swal2-container).swal2-backdrop-show {
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: ${props => props.theme.transparent ? 'blur(5px)' : 'unset'};
+  -webkit-backdrop-filter: ${props => props.theme.transparent ? 'blur(5px)' : 'unset'};
+
+  background: ${props => props.theme.transparent ? 'rgba(0, 0, 0, .4)' : 'rgba(0, 0, 0, .6)'} !important;
 }
 
 body.swal2-toast-shown .swal2-container {
@@ -135,9 +137,9 @@ div:where(.swal2-icon).swal2-success .swal2-success-ring {
 }
 
 .modal-backdrop {
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: ${props => props.theme.transparent ? 'blur(5px)' : 'unset'};
+  -webkit-backdrop-filter: ${props => props.theme.transparent ? 'blur(5px)' : 'unset'};
+  background-color: ${props => props.theme.transparent ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.6)'} !important;
 }
 
 .dropdown>button::after {

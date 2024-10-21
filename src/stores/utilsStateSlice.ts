@@ -23,7 +23,8 @@ const initialState: UtilsStateStore = {
   showAlert: false,
   notiData: [],
   reFetchData: false,
-  onFilter: false
+  onFilter: false,
+  transparent: localStorage.getItem('transparent') === 'true',
 }
 
 const utilsSlice = createSlice({
@@ -84,10 +85,14 @@ const utilsSlice = createSlice({
     setOnFilter: (state, action: PayloadAction<boolean>) => {
       state.onFilter = action.payload
     },
+    setTransparent: (state, action: PayloadAction<boolean>) => {
+      state.transparent = action.payload
+    },
   },
 })
 
 export const { setDeviceId, setSerial, setSocketData, setSearchQuery, setExpand, setShowAside, setNotidata,
-  setTokenDecode, setSoundMode, setPopUpMode, setHosId, setWardId, setCookieEncode, setCookieDecode, setShowAlert, setRefetchdata, setOnFilter } = utilsSlice.actions
+  setTokenDecode, setSoundMode, setPopUpMode, setHosId, setWardId, setCookieEncode, setCookieDecode,
+  setShowAlert, setRefetchdata, setOnFilter, setTransparent } = utilsSlice.actions
 
 export default utilsSlice.reducer

@@ -23,7 +23,7 @@ export default function Notificationdata(notilist: notilist) {
   const { t } = useTranslation()
   const { data, funcfetch } = notilist
   const [pageState, setPageState] = useState(1)
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode, transparent } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { token } = cookieDecode
 
   const setRead = async (notiID: string) => {
@@ -95,7 +95,7 @@ export default function Notificationdata(notilist: notilist) {
 
   return (
     <>
-      <NotiHead>
+      <NotiHead $primary={transparent}>
         <NotiHeadBtn $primary={pageState === 1} onClick={() => setPageState(1)}>{t('notRead')}</NotiHeadBtn>
         <NotiHeadBtn $primary={pageState === 2} onClick={() => setPageState(2)}>{t('Readed')}</NotiHeadBtn>
         <NotiHeadBtn $primary={pageState === 3} onClick={() => setPageState(3)}>{t('notificationAll')}</NotiHeadBtn>

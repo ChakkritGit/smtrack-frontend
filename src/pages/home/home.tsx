@@ -41,7 +41,7 @@ import ModalMute from "../../components/home/modal.mute"
 export default function Home() {
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { searchQuery, hosId, wardId, cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, hosId, wardId, cookieDecode, transparent } = useSelector((state: RootState) => state.utilsState)
   const devicesFilter = useSelector((state: RootState) => state.arraySlice.device.devicesFilter)
   const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
   const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
@@ -534,6 +534,7 @@ export default function Home() {
               $primary={scrolled}
               $expand={expand}
               $inList={listAndgrid === 1}
+              $transparent={transparent}
             >
               <div>
                 <HomeCard

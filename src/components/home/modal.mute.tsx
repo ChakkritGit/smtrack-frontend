@@ -164,7 +164,7 @@ function ModalMute(modalProps: modalAdjustType) {
                       key={JSON.stringify(muteDoorSelect)}
                       options={mapOptions<selectOption, keyof selectOption>(generateOptions(), 'value', 'label')}
                       value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(), muteDoorSelect.always, 'value', 'label')}
-                      onChange={(e) => setMuteDoorSelect((prev) => ({ ...prev, always: String(e?.value) }))}
+                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, always: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, always: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}
                       styles={{
@@ -211,7 +211,7 @@ function ModalMute(modalProps: modalAdjustType) {
                       key={JSON.stringify(muteDoorSelect)}
                       options={mapOptions<selectOption, keyof selectOption>(generateOptions(), 'value', 'label')}
                       value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(), muteDoorSelect.alert, 'value', 'label')}
-                      onChange={(e) => setMuteDoorSelect((prev) => ({ ...prev, alert: String(e?.value) }))}
+                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, alert: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, alert: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}
                       styles={{
