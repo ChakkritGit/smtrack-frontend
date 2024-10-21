@@ -23,6 +23,10 @@ export const ListGrid = styled.div`
     padding: 1rem;
     border-radius: var(--border-radius-small);
     box-shadow: rgba(50, 50, 50, 0.1) 0px 12px 28px;
+
+    @media (max-width: 430px) {
+      width: 380px;
+  }
   }
 `
 
@@ -75,6 +79,19 @@ export const PhoneGroup = styled.div`
     background-color: transparent;
     border-radius: var(--border-radius-small);
     color: var(--grey);
+  }
+
+  @media (max-width: 430px) {
+    flex-direction: column;
+    gap: 1rem;
+
+    /* &>select {
+      width: 100%;
+    } */
+
+    &>input {
+      width: 100%;
+    }
   }
 `
 

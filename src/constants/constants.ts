@@ -631,3 +631,14 @@ export const mapDefaultValue = <T, K extends keyof T>(data: T[], id: string, val
     value: item[valueKey] as unknown as string,
     label: item[labelKey] as unknown as string
   }))[0]
+
+export const supportInitData = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  codePhone: '+66',
+  phone: '',
+  hospitalName: '',
+  wardName: '',
+  details: ''
+}
