@@ -398,7 +398,7 @@ export default {
     adjustTime: 'ตั้งเวลาเรียบร้อยแล้ว',
     hardReset: 'รีเซ็ต',
     notRegistered: 'ยังไม่ลงทะเบียน',
-    transparencyBlur: 'ยังไม่ลงทะเบียน',
+    transparencyBlur: 'โหมดพื้นหลังเบลอ',
 
     // connect
     ipAddress: 'IP',
