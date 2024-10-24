@@ -2651,7 +2651,7 @@ gap: 1rem;
 }
 `
 
-export const DashBoardCardFlex = styled.div<{ $primary?: boolean }>`
+export const DashBoardCardFlex = styled.div<{ $primary?: boolean, $seccond?: boolean }>`
 display: flex;
 flex-direction: column;
 gap: .5rem;
@@ -2662,6 +2662,19 @@ background-color: var(--white-grey-1);
 border-radius: .8rem;
 box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 25%)'};
 overflow: hidden;
+
+${props => props.$seccond && css`
+  &:hover {
+    &>div:nth-child(1)>svg {
+      background-color: var(--second-color);
+    }
+
+    cursor: pointer;
+    background-color: var(--main-color);
+    color: var(--white-grey-1);
+    transition: .3s;
+  }
+`}
 
 ${props => props.$primary && css`
   &:hover {

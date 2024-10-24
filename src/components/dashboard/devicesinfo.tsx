@@ -67,6 +67,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
   const [showSettingMute, setShowSettingMute] = useState(false)
   const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
+  const [showSdDetail, setShowSdDetail] = useState(false)
 
   const handleTempChange = (_event: Event, newValue: number | number[]) => {
     setTempvalue(newValue as number[])
@@ -265,6 +266,10 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
     setShowSetting(true)
   }
 
+  const onShowDetail = () => {
+    setShowSdDetail(!showSdDetail)
+  }
+
   return (
     <DashboardDevicesInfo>
       <DashboardDevicesDetails>
@@ -323,6 +328,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
             devicesData.backupStatus === '0' ? t('stateDisconnect') : t('stateConnect')}
           svg={<RiSignalWifi1Line />}
           alertone={devicesData.backupStatus === '0'}
+          onClick={() => { }}
         />
         <CardstatusNomal
           title={t('dashDoor')}
@@ -336,6 +342,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
             devicesData?.log[0]?.door2 === '1' ||
             devicesData?.log[0]?.door3 === '1'
           }
+          onClick={() => { }}
         />
         <CardstatusNomal
           title={t('dashPlug')}
@@ -344,6 +351,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           }
           svg={<RiPlugLine />}
           alertone={devicesData?.log[0]?.ac === '1'}
+          onClick={() => { }}
         />
         <CardstatusNomal
           title={t('dashBattery')}
@@ -352,6 +360,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           }
           svg={<RiBatteryChargeLine />}
           alertone={devicesData?.log[0]?.battery === 0 || devicesData?.log[0]?.battery === undefined}
+          onClick={() => { }}
         />
         <CardstatusSpecial
           title={t('dashTempofDay')}
@@ -368,6 +377,13 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           }
           svg={<RiSdCardMiniLine />}
           alertone={devicesData?.log[0]?.sdCard !== '0'}
+          onClick={onShowDetail}
+          showSdDetail={showSdDetail}
+          devObj={{
+            devSerial: devicesData.devSerial,
+            deviceModel: deviceModel,
+            version: version
+          }}
         />
         <CardstatusSpecial
           title={t('dashProbeandDoor')}
@@ -392,6 +408,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           }
           alertone={Math.ceil((new Date(devicesData.dateInstall ?? devicesData?.dateInstall).setFullYear(new Date(devicesData ? devicesData?.dateInstall : '2024-01-01').getFullYear() + 1) - new Date().getTime()) / (1000 * 60 * 60 * 24)) <= 0}
           pathName="/warranty"
+          onClick={() => { }}
         />
         <CardstatusNomal
           title={t('dashRepair')}
@@ -400,6 +417,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           }
           svg={<RiFolderSettingsLine />}
           pathName="/repair"
+          onClick={() => { }}
         />
       </DevicesBodyStatus>
 

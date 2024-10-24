@@ -87,3 +87,26 @@ export const OfflineDataFlex = styled.div`
       width: 100%;
     }
 `
+
+export const SdCardMqttLoad = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+`
+
+export const SdCardData = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &>div {
+    &>div {
+      margin-bottom: 3px;
+
+      &>span {
+        font-size: 14px;
+      }
+    }
+  }
+`
