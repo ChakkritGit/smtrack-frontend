@@ -47,7 +47,13 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
   // Use effect to update the status bar color based on the theme
   useEffect(() => {
     const themeColorMetaTag = document.querySelector('meta[name="theme-color"]')
-    const currentColor = theme.mode === 'light' ? transparent ? '#ffffff' : '#fcfcfc' : transparent ? '#353535' : '#2f2f2f'
+    const currentColor = theme.mode === 'light'
+  ? transparent
+    ? '#ffffff'
+    : '#fcfcfc'
+  : transparent
+    ? '#353535'
+    : '#2f2f2f'
 
     if (themeColorMetaTag) {
       themeColorMetaTag.setAttribute('content', currentColor)

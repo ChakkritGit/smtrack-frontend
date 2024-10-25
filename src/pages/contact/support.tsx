@@ -23,11 +23,11 @@ function Support() {
       const combineText = `\n *** SUPPORT *** \n\n Name: ${firstName} ${lastName} \n Hospitals: ${hospitalName} \n Ward: ${wardName} \n Tel: ${codePhone}${phone} \n Email: ${email} \n Details: ${details} \n\n ----------------------- END -----------------------`
 
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_SUPPORT}`,
+        `${import.meta.env.VITE_APP_API}/utils/ticket`,
         { text: combineText })
       Swal.fire({
         title: t('alertHeaderSuccess'),
-        text: String(response),
+        text: String(response.data.data),
         icon: "success",
         timer: 2000,
         showConfirmButton: false,
