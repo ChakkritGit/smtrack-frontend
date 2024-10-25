@@ -32,6 +32,7 @@ function Support() {
         timer: 2000,
         showConfirmButton: false,
       })
+      setSupportData(supportInitData)
     } else {
       Swal.fire({
         title: t('alertHeaderWarning'),
