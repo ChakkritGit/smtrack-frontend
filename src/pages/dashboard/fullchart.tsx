@@ -68,7 +68,7 @@ export default function Fullchart() {
     try {
       const response = await axios.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devData?.wardId}`, { headers: { authorization: `Bearer ${token}` } })
       setValidationData(response.data.data)
-    } catch (error) { //up
+    } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.response?.data.message)
       } else {
@@ -78,10 +78,10 @@ export default function Fullchart() {
   }
 
   useEffect(() => {
-    if (devData) {
+    if (devData?.devId) {
       fetchWard()
     }
-  }, [devData])
+  }, [devData?.devId])
 
   const fetchData = async () => {
     try {
@@ -216,7 +216,7 @@ export default function Fullchart() {
   }
 
   useEffect(() => {
-    if (String(deviceId) !== 'undefined' && token) fetchData()
+    if (deviceId !== 'undefined' && token) fetchData()
   }, [pageNumber, token, deviceId])
 
   useEffect(() => {

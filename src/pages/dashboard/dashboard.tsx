@@ -11,7 +11,7 @@ import { useEffect } from "react"
 import { storeDispatchType } from "../../stores/store"
 import { setDeviceId, setSearchQuery, setSerial } from "../../stores/utilsStateSlice"
 import { fetchDevicesLog } from "../../stores/LogsSlice"
-import { cookies } from "../../constants/constants"
+import { cookieOptions, cookies } from "../../constants/constants"
 import { useNavigate } from "react-router-dom"
 import { OfflineDataFlex } from "../../style/components/dashboard.styled"
 import { RiBarChartBoxLine, RiTableView } from "react-icons/ri"
@@ -35,10 +35,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!token) return
-    if (cookies.get('devid')) return
+    if (cookies.get('devid') !== 'undefined') return
+    if (devices.length === 0) return
     dispatch(fetchDevicesLog({ deviceId: devices[0]?.devId, token }))
-    dispatch(setDeviceId(devices[0]?.devId))
     dispatch(setSerial(devices[0]?.devSerial))
+    dispatch(setDeviceId(devices[0]?.devId))
+    cookies.set('devid', String(devices[0]?.devId), cookieOptions)
   }, [devices, token])
 
   return (
