@@ -4,7 +4,8 @@ WORKDIR /build
 
 COPY . .
 
-RUN bun install
+# RUN bun install
+
 RUN bun run build
 
 FROM nginx:stable-perl
