@@ -2,6 +2,7 @@ import Chart from "react-apexcharts"
 import { logtype } from "../../types/log.type"
 import { useSelector } from "react-redux"
 import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { useTheme } from "../../theme/ThemeProvider"
 
 type chartType = {
   chartData: logtype[],
@@ -18,6 +19,7 @@ const Apexchart = (chart: chartType) => {
   const tempAvgValues = chartData.map((items) => items.tempAvg)
   const minTempAvg = Math.min(...tempAvgValues) - 2
   const maxTempAvg = Math.max(...tempAvgValues) + 2
+  const { theme } = useTheme()
 
   const mappedData = chartData.map((items) => {
     const time = new Date(items.sendTime).getTime()
@@ -120,6 +122,21 @@ const Apexchart = (chart: chartType) => {
       },
       style: {
         fontSize: '14px'
+      }
+    },
+    grid: {
+      show: true,
+      borderColor: theme.mode === 'dark' ? 'var(--grid-line-dark)' : 'var(--grid-line-light)',
+      strokeDashArray: 5,
+      xaxis: {
+        lines: {
+          show: true
+        }
+      },
+      yaxis: {
+        lines: {
+          show: true
+        }
       }
     },
     dataLabels: {

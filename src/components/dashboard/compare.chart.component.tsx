@@ -2,6 +2,7 @@ import { useSelector } from "react-redux"
 import Chart from "react-apexcharts"
 import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { CompareType } from "../../types/log.type"
+import { useTheme } from "../../theme/ThemeProvider"
 
 type compareChart = {
   chartData: CompareType[],
@@ -18,6 +19,7 @@ interface seriesType {
 
 const CompareChartComponent = ({ chartData, isExport }: compareChart) => {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { theme } = useTheme()
 
   const seriesData = () => {
     let array: seriesType[] = []
@@ -99,6 +101,21 @@ const CompareChartComponent = ({ chartData, isExport }: compareChart) => {
       },
       style: {
         fontSize: '14px'
+      }
+    },
+    grid: {
+      show: true,
+      borderColor: theme.mode === 'dark' ? 'var(--grid-line-dark)' : 'var(--grid-line-light)',
+      strokeDashArray: 5,
+      xaxis: {
+        lines: {
+          show: true
+        }
+      },
+      yaxis: {
+        lines: {
+          show: true
+        }
       }
     },
     dataLabels: {

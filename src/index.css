@@ -81,6 +81,9 @@
   --main-white-rgba: rgba(255, 255, 255, 0.5);
   --main-black-tb: rgba(150, 150, 150, 0.1);
 
+  --grid-line-light: #c2c2c2;
+  --grid-line-dark: #757575;
+
   /* border */
   --border-radius-small: 1rem;
   /* .55rem */
