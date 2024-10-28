@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "bun i && tsc && vite build --mode production && docker build -t thanespgm/etemp-frontend . && docker run --name etemp-frontend -d --restart=always --network=proxy thanespgm/etemp-frontend && docker push thanespgm/etemp-frontend && docker rm --force etemp-frontend && docker rmi thanespgm/etemp-frontend:latest",
+    "build": "npm i && tsc && vite build --mode production && docker build -t thanespgm/etemp-frontend . && docker run --name etemp-frontend -d --restart=always --network=proxy thanespgm/etemp-frontend && docker push thanespgm/etemp-frontend && docker rm --force etemp-frontend && docker rmi thanespgm/etemp-frontend:latest",
     "lint": "eslint .",
     "preview": "vite preview",
     "dep": "dep-tree entropy src/*"

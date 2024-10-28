@@ -1,4 +1,4 @@
-FROM oven/bun:latest as build
+FROM node:22-alpine as build
 
 WORKDIR /build
 
