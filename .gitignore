@@ -26,6 +26,3 @@ dist-ssr
 # Ignore .env files
 .env
 .env.*
-
-Dockerfile
-nginx.conf
