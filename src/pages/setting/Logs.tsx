@@ -9,7 +9,11 @@ import { Container, Form } from "react-bootstrap"
 import { FilterSearchBtn } from "../../style/style"
 import Swal from "sweetalert2"
 
-function Logs() {
+type isLog = {
+  routeLog?: boolean
+}
+
+function Logs(isLog: isLog) {
   const { t } = useTranslation()
   const { cookieDecode, expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
   const { token } = cookieDecode
@@ -22,6 +26,7 @@ function Logs() {
   const [autoScroll, setAutoScroll] = useState(true)
   const preRef = useRef<HTMLPreElement>(null)
   let firstLoad = true
+  const { routeLog } = isLog
 
   const getTodayDate = () => {
     const today = new Date()
@@ -113,6 +118,7 @@ function Logs() {
         ref={preRef}
         onScroll={handleScroll}
         $primary={expand}
+        $isRouteLog={routeLog}
       >
         {text}
       </PreLine>

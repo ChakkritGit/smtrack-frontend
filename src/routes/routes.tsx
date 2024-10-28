@@ -40,6 +40,7 @@ import { fetchProbeData } from '../stores/probeSlice'
 import PreviewPDF from '../components/pdf/preview.pdf'
 import Policy from '../pages/policy/policy'
 import Support from '../pages/contact/support'
+import Logs from '../pages/setting/Logs'
 // import Test from '../pages/test/test'
 
 export const router = createBrowserRouter([
@@ -81,11 +82,11 @@ export const router = createBrowserRouter([
                 element: <Setting />,
                 errorElement: <SomethingWrong />
               },
-              // {
-              //   path: 'logs',
-              //   element: <Logs />,
-              //   errorElement: <SomethingWrong />
-              // }
+              {
+                path: 'logs',
+                element: <Logs routeLog={true} />,
+                errorElement: <SomethingWrong />
+              }
             ],
           },
           {

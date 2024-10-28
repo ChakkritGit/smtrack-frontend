@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 export const LogContainer = styled.div`
   display: flex;
@@ -25,15 +25,21 @@ margin: 1rem 1.5rem 1rem 0;
 }
 `
 
-export const PreLine = styled.pre<{ $primary?: boolean }>`
+export const PreLine = styled.pre<{ $primary?: boolean, $isRouteLog?: boolean }>`
   height: calc(100dvh - 250px);
   max-height: calc(100dvh - 250px);
-  max-width: ${props => props.$primary ? 'calc(100vw - 420px)' : 'calc(100vw - 550px)'};
   overflow-y: scroll;
   padding: .5rem .3rem;
   border-radius: var(--border-radius-small);
   border: 1px solid var(--grey);
   transition: max-width .3s;
+
+  ${props => props.$isRouteLog ? css`
+  width: 100% !important;
+    ` :
+    css`
+    max-width: props.$primary ? 'calc(100vw - 420px)' : 'calc(100vw - 550px)';
+  `}
 
   @media (max-width: 430px) {
     max-height: calc(100dvh - 200px);
