@@ -4,9 +4,9 @@ WORKDIR /build
 
 COPY . .
 
-# RUN bun install
+# RUN npm install
 
-RUN bun run build
+RUN npm run build
 
 FROM nginx:stable-perl
 
