@@ -176,7 +176,8 @@ const Comparechart = () => {
       setTimeout(async () => {
         try {
           if (canvasChartRef.current) {
-            canvasChartRef.current.style.width = '1645px'
+            canvasChartRef.current.style.width = '1480px'
+            canvasChartRef.current.style.height = '680px'
             canvasChartRef.current.style.color = 'black'
 
             document.head.appendChild(styleElement)
@@ -357,7 +358,9 @@ const Comparechart = () => {
         {
           filteredDevicesList.length > 0 ?
             <CompareChartComponent
-              chartData={filteredDevicesList} />
+              chartData={filteredDevicesList}
+              isExport={isloading}
+            />
             :
             <Loading loading={true} title={t('loading')} icn={<RiLoader3Line />} />
         }

@@ -4,7 +4,8 @@ import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { CompareType } from "../../types/log.type"
 
 type compareChart = {
-  chartData: CompareType[]
+  chartData: CompareType[],
+  isExport: boolean
 }
 
 interface seriesType {
@@ -15,7 +16,7 @@ interface seriesType {
   }[]
 }
 
-const CompareChartComponent = ({ chartData }: compareChart) => {
+const CompareChartComponent = ({ chartData, isExport }: compareChart) => {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
 
   const seriesData = () => {
@@ -136,7 +137,7 @@ const CompareChartComponent = ({ chartData }: compareChart) => {
         fontFamily: undefined
       }
     },
-    responsive: [
+    responsive: isExport ? [] : [
       {
         breakpoint: 1185,
         options: {

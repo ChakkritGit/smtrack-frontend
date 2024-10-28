@@ -5,14 +5,15 @@ import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 
 type chartType = {
   chartData: logtype[],
-  devicesData: { tempMin: number, tempMax: number},
+  devicesData: { tempMin: number, tempMax: number },
   tempHeight: number | string | undefined,
-  tempWidth: number | string | undefined
+  tempWidth: number | string | undefined,
+  isExport: boolean
 }
 
 const Apexchart = (chart: chartType) => {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { chartData, devicesData } = chart
+  const { chartData, devicesData, isExport } = chart
   const { tempMax, tempMin } = devicesData
   const tempAvgValues = chartData.map((items) => items.tempAvg)
   const minTempAvg = Math.min(...tempAvgValues) - 2
@@ -189,7 +190,7 @@ const Apexchart = (chart: chartType) => {
       }
     },
     colors: ["rgba(255, 76, 60 , 1)", "rgba(52, 152, 219, .5)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
-    responsive: [
+    responsive: isExport ? [] : [
       {
         breakpoint: 1185,
         options: {

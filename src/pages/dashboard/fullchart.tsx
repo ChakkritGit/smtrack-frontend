@@ -231,7 +231,8 @@ export default function Fullchart() {
       setTimeout(async () => {
         try {
           if (canvasChartRef.current) {
-            canvasChartRef.current.style.width = '1645px'
+            canvasChartRef.current.style.width = '1480px'
+            canvasChartRef.current.style.height = '680px'
             canvasChartRef.current.style.color = 'black'
 
             document.head.appendChild(styleElement)
@@ -471,6 +472,7 @@ export default function Fullchart() {
                     }}
                     tempHeight={680}
                     tempWidth={1480}
+                    isExport={isloading}
                   />
                 </FullchartBodyChartCon>
                 :
