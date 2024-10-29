@@ -849,7 +849,7 @@ export default function Adddevform(managedevices: managedevices) {
                                     <option key={'select-option'} value="">{t('selectOTA')}</option>
                                     {combinedList.map((items, index) => (
                                       <option key={index} value={items.fileName}>
-                                        {items.fileName.startsWith('eTEMP') ? 'eTEMP: ' : 'i-TeM: '}{items.fileName}
+                                        {items.fileName}
                                       </option>
                                     ))}
                                   </Form.Select>
@@ -859,7 +859,6 @@ export default function Adddevform(managedevices: managedevices) {
                                     } else {
                                       client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/firmware`, firmwareName)
                                     }
-                                    client.publish(`${devdata.devSerial}/firmware`, firmwareName)
                                   }}>
                                     <RiMessage3Line size={24} />
                                     {t('updateButton')}

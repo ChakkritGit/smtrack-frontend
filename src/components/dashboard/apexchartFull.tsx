@@ -77,11 +77,11 @@ const ApexchartFull = (chart: chartType) => {
       stacked: false,
       zoom: {
         type: 'x',
-        enabled: true,
-        autoScaleYaxis: true
+        enabled: false,
+        autoScaleYaxis: false
       },
       toolbar: {
-        show: true,
+        show: false,
         autoSelected: 'zoom',
         tools: {
           download: false,

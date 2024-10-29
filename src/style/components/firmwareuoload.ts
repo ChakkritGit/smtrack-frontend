@@ -52,6 +52,7 @@ justify-content: space-between;
   &>div:nth-child(2) {
     width: 100%;
     justify-content: end;
+    flex-wrap: wrap;
   }
 }
 `
@@ -72,12 +73,52 @@ margin-top: .5rem;
 }
 `
 
+export const SelectDevicetoUpdateButton = styled.button<{ $primary?: boolean }>`
+display: flex;
+align-items: center;
+justify-content: center;
+gap: .5rem;
+/* width: 100%; */
+max-height: 45px;
+border-radius: var(--border-radius-big);
+border: 2px solid transparent;
+background-color: var(--main-color);
+color: var(--white);
+font-weight: bold;
+padding: .5rem .8rem;
+
+${props => props.$primary &&
+    css`
+  width: 30px;
+  height: 30px;
+`}
+
+&:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+
+  &:hover {
+    background-color: var(--main-color);
+    color: var(--white);
+  }
+}
+
+&:hover {
+  background-color: var(--second-color);
+  transition: .3s;
+}
+
+& svg {
+  stroke-width: 1px;
+}
+`
+
 export const UploadButton = styled.button<{ $primary?: boolean }>`
 display: flex;
 align-items: center;
 justify-content: center;
 gap: .5rem;
-width: 100%;
+/* width: 100%; */
 max-height: 45px;
 border-radius: var(--border-radius-big);
 border: 2px solid transparent;
@@ -594,5 +635,76 @@ export const ResetButton = styled.button<{ $primary?: boolean }>`
   &:hover {
   background-color: var(--second-color);
   transition: .3s;
+}
+`
+
+export const SelectFWFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &>div:nth-child(2) {
+    width: 30%
+  }
+
+  @media (max-width: 430px) {
+    flex-direction: column;
+    align-items: start;
+
+    &>div:nth-child(2) {
+    width: 100%
+  }
+}
+`
+
+export const CheckBoxInput = styled.input`
+  display: grid;
+  place-content: center;
+  appearance: none;
+  background-color: transparent;
+  margin: 5px;
+  font: inherit;
+  color: currentColor;
+  width: 24px;
+  height: 24px;
+  border: 1px solid ${props => props.theme.mode === 'dark' ? 'grey' : 'black'};
+  border-radius: unset;
+
+  &::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--main-color);
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+&:checked::before {
+  transform: scale(1);
+}
+`
+
+export const CheckBoxFlex = styled.div`
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+`
+
+export const CheckBoxList = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  @media (max-width: 1185px) {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+  @media (max-width: 720px) {
+    grid-template-columns: repeat(1, 1fr);
 }
 `

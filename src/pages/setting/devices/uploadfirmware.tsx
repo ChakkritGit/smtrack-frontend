@@ -1,16 +1,20 @@
 import { useTranslation } from "react-i18next"
 import {
+  CheckBoxFlex,
+  CheckBoxInput,
+  CheckBoxList,
   DropContainer, DropHereFile, FileDroped, FileList, FirewareContent, FirmwareContainer,
-  FirmwareHeader, ProgressBar, RowChildren, UploadButton
+  FirmwareHeader, ProgressBar, RowChildren, SelectDevicetoUpdateButton, SelectFWFlex, UploadButton
 } from "../../../style/components/firmwareuoload"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
+import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { Form, Modal } from "react-bootstrap"
 import { FormBtn, FormFlexBtn, ModalHead, PaginitionContainer } from "../../../style/style"
 import {
-  RiCloseCircleLine, RiCloseLine, RiCodeSSlashLine, RiDeleteBin2Line, RiDownloadCloud2Line,
-  RiDownloadLine, RiDragDropLine, RiFileCheckLine, RiFileUploadLine
+  RiCloseCircleLine, RiCloseLine, RiCodeSSlashLine, RiDeleteBin2Line, RiDeviceRecoverLine, RiDownloadCloud2Line,
+  RiDownloadLine, RiDragDropLine, RiFileCheckLine, RiFileUploadLine,
+  RiUploadLine
 } from "react-icons/ri"
 import { FileUploader } from "react-drag-drop-files"
 import { CircularProgressbar } from 'react-circular-progressbar'
@@ -30,6 +34,11 @@ import toast from "react-hot-toast"
 import TerminalComponent from "../../../components/settings/terminal"
 import { storeDispatchType } from "../../../stores/store"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
+import { client } from "../../../services/mqtt"
+import Select, { SingleValue } from 'react-select'
+import { useTheme } from "../../../theme/ThemeProvider"
+import { mapDefaultValue, mapOptions } from "../../../constants/constants"
+import { Option } from "../../../types/config.type"
 
 interface FirmwareItem {
   fileName: string;
@@ -59,7 +68,9 @@ export default function Uploadfirmware() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
+  const { theme } = useTheme()
   const { searchQuery, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
   const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [showConsole, setShowConsole] = useState(false)
@@ -77,8 +88,105 @@ export default function Uploadfirmware() {
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [cardsPerPage, setCardsPerPage] = useState<number>(10)
+  const [modalSelected, setModalSelected] = useState<boolean>(false)
   const [displayedCards, setDisplayedCards] = useState<firmwareType[]>(dataFiles ? dataFiles.slice(0, cardsPerPage) : [])
+  const [selectedDevices, setSelectedDevices] = useState<string[]>([])
+  const [selectedDevicesOption, setSelectedDevicesOption] = useState(t('selectOTA'))
   const fileTypes = ["BIN"]
+
+  const handleSelectedandClearSelected = (e: SingleValue<Option>) => {
+    const selectedValue = e?.value
+    if (!selectedValue) return
+    setSelectedDevicesOption(selectedValue)
+    setSelectedDevices([])
+  }
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target
+
+    if (checked) {
+      setSelectedDevices([...selectedDevices, value])
+    } else {
+      setSelectedDevices(selectedDevices.filter(device => device !== value))
+    }
+  }
+
+  const handleSelectAll = () => {
+    const filteredDevices = devices
+      .filter((items) => items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase()))
+      .map(device => device.devSerial)
+
+    if (selectedDevices.length === filteredDevices.length) {
+      setSelectedDevices([])
+    } else {
+      setSelectedDevices(filteredDevices)
+    }
+  }
+
+  const publishDeviceUpdate = async (item: string, selectedDevicesOption: string): Promise<void> => {
+    const deviceModel = item.substring(0, 3) === "eTP" ? "etemp" : "items"
+    const version = item.substring(3, 5).toLowerCase()
+
+    if (!client.connected) {
+      throw new Error("Client not connected")
+    }
+
+    return new Promise((resolve) => {
+      client.publish(`siamatic/${deviceModel}/${version}/${item}/firmware`, selectedDevicesOption)
+      setTimeout(resolve, 300)
+    })
+  }
+
+  const handleUpdate = async () => {
+    if (selectedDevices.length > 0) {
+      try {
+        Swal.fire({
+          title: t('alertHeaderUpdating'),
+          html: t('sendingFirmware'),
+          didOpen: () => {
+            Swal.showLoading()
+          },
+          allowOutsideClick: false,
+          showConfirmButton: false
+        })
+
+        for (const item of selectedDevices.sort()) {
+          await publishDeviceUpdate(item, selectedDevicesOption)
+        }
+
+        await Swal.fire({
+          icon: 'success',
+          title: t('alertHeaderSuccess'),
+          text: t('sendingFirmwareSuccess'),
+          timer: 2000,
+          didOpen: () => {
+            Swal.hideLoading()
+          },
+          showConfirmButton: false
+        })
+      } catch (error) {
+        await Swal.fire({
+          icon: 'error',
+          title: t('alertHeaderError'),
+          text: t('sendingFirmwareError'),
+          timer: 2000,
+          didOpen: () => {
+            Swal.hideLoading()
+          },
+          showConfirmButton: false
+        })
+      }
+    } else {
+      Swal.fire({
+        title: t('alertHeaderWarning'),
+        text: t('completeField'),
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+    }
+
+  }
 
   useEffect(() => {
     return () => {
@@ -126,6 +234,16 @@ export default function Uploadfirmware() {
   useEffect(() => {
     fetchFiles()
   }, [])
+
+  const openModalSelected = () => {
+    setModalSelected(true)
+  }
+
+  const closeModalSelected = () => {
+    setModalSelected(false)
+    setSelectedDevices([])
+    setSelectedDevicesOption(t('selectOTA'))
+  }
 
   const openModalConsole = () => {
     setShowConsole(true)
@@ -350,7 +468,7 @@ export default function Uploadfirmware() {
         }
       })
 
-      const file = new File([response.data], 'firmware.bin', { type: 'application/octet-stream' }); // สร้าง File object
+      const file = new File([response.data], 'firmware.bin', { type: 'application/octet-stream' }) // สร้าง File object
 
       const reader = new FileReader()
 
@@ -503,7 +621,6 @@ export default function Uploadfirmware() {
     transport = null as unknown as Transport
   }
 
-  // ส่วนของการค้นหาและเลื่อนหน้าการ์ด
   useEffect(() => {
     setCurrentPage(0)
     setDisplayedCards(dataFiles ? dataFiles.slice(0, cardsPerPage) : [])
@@ -584,11 +701,19 @@ export default function Uploadfirmware() {
     )
     .sort(versionCompare)
 
+  const allFile: firmwareType = { createDate: '', fileName: t('selectOTA'), fileSize: '' }
+
+  const updatedHosData = [allFile, ...combinedList]
+
   return (
     <FirmwareContainer>
       <FirmwareHeader>
         <h3>{t('titleFirmware')}</h3>
         <div>
+          <SelectDevicetoUpdateButton onClick={openModalSelected}>
+            <RiDeviceRecoverLine size={24} />
+            {t('selectToUpdateButton')}
+          </SelectDevicetoUpdateButton>
           <UploadButton onClick={() => navigate('/management/flasher')}>
             <RiCodeSSlashLine size={24} />
             {t('flashButton')}
@@ -660,6 +785,91 @@ export default function Uploadfirmware() {
           ))
         }
       </FirewareContent>
+
+      <Modal size="xl" show={modalSelected} onHide={closeModalSelected} scrollable>
+        <Modal.Header>
+          <ModalHead>
+            <strong>
+              {t('selectToUpdateButton')}
+            </strong>
+            <button onClick={closeModalSelected}>
+              <RiCloseLine />
+            </button>
+          </ModalHead>
+        </Modal.Header>
+        <Modal.Body className="vh-100">
+          <SelectFWFlex>
+            <h3>{t('selectDeviceDrop')}</h3>
+            <Select
+              options={mapOptions<firmwareType, keyof firmwareType>(updatedHosData, 'fileName', 'fileName')}
+              value={mapDefaultValue<firmwareType, keyof firmwareType>(updatedHosData, String(selectedDevicesOption), 'fileName', 'fileName')}
+              onChange={handleSelectedandClearSelected}
+              autoFocus={false}
+              placeholder={t('selectOTA')}
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
+                  borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
+                  boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
+                  borderRadius: "var(--border-radius-big)"
+                }),
+              }}
+              theme={(theme) => ({
+                ...theme,
+                colors: {
+                  ...theme.colors,
+                  primary50: 'var(--main-color-opacity2)',
+                  primary25: 'var(--main-color-opacity2)',
+                  primary: 'var(--main-color)',
+                },
+              })}
+              className="react-select-container"
+              classNamePrefix="react-select"
+            />
+          </SelectFWFlex>
+
+          {selectedDevicesOption !== t('selectOTA') &&
+            <>
+              <CheckBoxFlex>
+                <CheckBoxInput
+                  type="checkbox"
+                  checked={selectedDevices.length === devices.filter((items) =>
+                    items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase())).length}
+                  onChange={handleSelectAll}
+                />
+                <label>{t('selectedAll')}</label>
+              </CheckBoxFlex>
+              <CheckBoxList>
+                {
+                  devices
+                    .filter((items) => items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase()))
+                    .map((device, index) => (
+                      <CheckBoxFlex key={index}>
+                        <CheckBoxInput
+                          type="checkbox"
+                          value={device.devSerial}
+                          checked={selectedDevices.includes(device.devSerial)}
+                          onChange={handleCheckboxChange}
+                        />
+                        <label>{device.devSerial}</label>
+                      </CheckBoxFlex>
+
+                    ))
+                }
+              </CheckBoxList>
+            </>
+          }
+        </Modal.Body>
+        <Modal.Footer>
+          <FormFlexBtn>
+            <SelectDevicetoUpdateButton onClick={handleUpdate}>
+              <RiUploadLine size={20} />
+              {t('updateButton')}
+            </SelectDevicetoUpdateButton>
+          </FormFlexBtn>
+        </Modal.Footer>
+      </Modal>
 
       <Modal size={"xl"} show={showConsole} onHide={closeModalConsole}>
         <Modal.Header>

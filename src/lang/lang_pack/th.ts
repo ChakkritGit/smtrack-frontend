@@ -179,6 +179,7 @@ export default {
     addDeviceButton: 'เพิ่มอุปกรณ์',
     editDeviceButton: 'แก้ไขอุปกรณ์',
     deviceMacAddress: 'Mac Address',
+    selectToUpdateButton: 'อัปเดทแบบเลือกอุปกรณ์',
 
     // probe
     probeName: 'ชื่อโพรบ',
@@ -399,6 +400,7 @@ export default {
     hardReset: 'รีเซ็ต',
     notRegistered: 'ยังไม่ลงทะเบียน',
     transparencyBlur: 'โหมดพื้นหลังเบลอ',
+    selectedAll: 'เลือกทั้งหมด',
 
     // connect
     ipAddress: 'IP',
@@ -417,6 +419,7 @@ export default {
     alertHeaderWarning: 'คำเตือน',
     alertHeaderError: 'ผิดพลาด',
     alertHeaderSuccess: 'สำเร็จ',
+    alertHeaderUpdating: 'กำลังอัปเดท...',
     completeField: 'โปรดป้อนข้อมูลให้ครบ',
     deleteUserTitle: 'คุณต้องการลบผู้ใช้หรือไม่',
     notReverseText: 'คุณจะไม่สามารถย้อนกลับสิ่งนี้ได้',
@@ -442,6 +445,9 @@ export default {
     optimizeChartText: 'เมื่อใช้ฟังก์ชันนี้กราฟจะแสดงผลต่างจากค่าจริงและปรับกราฟให้สมในช่วงของขีดจำกัดสูงสุดและต่ำสุด (tempMin, tempMax) </br> โปรดจำไว้ว่าการดำเนินการดังกล่าวจะไม่มีผลต่อข้อมูลในระบบ</br>เป็นเพียงการปรับแต่งกราฟแค่ชั่วคราว',
     dataNotReady: 'ข้อมูลยังไม่พร้อมสร้าง PDF',
     unSupportFile: 'ไม่สนับสนุนรูปแบบไฟล์',
+    sendingFirmware: 'กรุณารอสักครู่ขณะที่เรากำลังส่งเฟิร์มแวร์ไปยังอุปกรณ์',
+    sendingFirmwareSuccess: 'อุปกรณ์ทั้งหมดได้รับการอัปเดตเรียบร้อยแล้ว!',
+    sendingFirmwareError: 'ไม่สามารถอัปเดตอุปกรณ์บางอย่างได้!',
 
     // time
     thTime: 'th-TH',

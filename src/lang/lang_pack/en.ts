@@ -170,6 +170,7 @@ export default {
     addDeviceButton: 'Add Device',
     editDeviceButton: 'Edit Device',
     deviceMacAddress: 'Mac Address',
+    selectToUpdateButton: 'Update Device Selection',
 
     // probe
     probeName: 'Probe Name',
@@ -399,6 +400,7 @@ export default {
     hardReset: 'Hard Reset',
     notRegistered: 'Not Registered',
     transparencyBlur: 'Transparency blur mode',
+    selectedAll: 'Select All',
 
     // connect
     ipAddress: 'IP',
@@ -417,6 +419,7 @@ export default {
     alertHeaderWarning: 'Warning',
     alertHeaderError: 'Error',
     alertHeaderSuccess: 'Success',
+    alertHeaderUpdating: 'Updating...',
     completeField: 'Please complete this field!',
     deleteUserTitle: 'Do you want to delete a user?',
     notReverseText: 'You will not be able to reverse this',
@@ -442,6 +445,9 @@ export default {
     optimizeChartText: 'When using this function, the graph will display differently from the actual values and adjust the graph to fit within the range of the maximum and minimum limits (tempMin, tempMax). Please note that this operation will not affect the data in the system; it is merely a temporary adjustment of the graph.',
     dataNotReady: 'Data is not ready to generate PDF!',
     unSupportFile: 'Unsupported file format',
+    sendingFirmware: 'Please wait while we are sending firmware to device',
+    sendingFirmwareSuccess: 'All devices have been updated successfully!',
+    sendingFirmwareError: 'Failed to update some devices!',
 
     // time
     thTime: 'en-EN',

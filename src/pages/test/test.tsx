@@ -1,12 +1,12 @@
-import { memo, useEffect, useState } from "react"
 import './css.css'
-import DataTable, { TableColumn } from "react-data-table-component"
+import { ChangeEvent, memo, useEffect, useState } from "react"
 import { SubWardColumnFlex } from "../../style/style"
 import { Modal } from "react-bootstrap"
 import { RootState } from "../../stores/store"
 import { useSelector } from "react-redux"
 import { devicesType } from "../../types/device.type"
 import { notificationType } from "../../types/notification.type"
+import DataTable, { TableColumn } from "react-data-table-component"
 
 function Test() {
   const [cardActive, setCardActive] = useState('')
@@ -15,6 +15,8 @@ function Test() {
   const { devices } = useSelector((state: RootState) => state.devices)
   const devicesFilter = useSelector((state: RootState) => state.arraySlice.device.devicesFilter)
   const { wardId } = useSelector((state: RootState) => state.utilsState)
+  const [selectedDevices, setSelectedDevices] = useState<string[]>([])
+  const [selectedDevicesOption, setSelectedDevicesOption] = useState('')
 
   const filter: devicesType[] = wardId !== '' ? devicesFilter.filter((f) => f.wardId.toLowerCase().includes(wardId.toLowerCase())) : devices
 
@@ -30,8 +32,10 @@ function Test() {
       setNewFilter(devices.filter(dev => dev.noti.some(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1]))))
     } else if (cardActive === '2') {
       setNewFilter(filter.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE'))))
-    } else {
+    } else if (cardActive === '3') {
       setNewFilter(filter.filter(dev => dev._count?.log))
+    } else {
+      setNewFilter(filter)
     }
   }, [cardActive, devices])
 
@@ -76,6 +80,37 @@ function Test() {
       />
     </SubWardColumnFlex>
   ))
+
+  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target
+
+    if (checked) {
+      setSelectedDevices([...selectedDevices, value])
+    } else {
+      setSelectedDevices(selectedDevices.filter(device => device !== value))
+    }
+  }
+
+  const handleSelectAll = () => {
+    const filteredDevices = devices
+      .filter((items) => items.devSerial.substring(0, 3).toLowerCase().includes(selectedDevicesOption.toLowerCase()))
+      .map(device => device.devSerial)
+
+    if (selectedDevices.length === filteredDevices.length) {
+      setSelectedDevices([])
+    } else {
+      setSelectedDevices(filteredDevices)
+    }
+  }
+
+  const handleSave = () => {
+    console.log("Selected Devices:", selectedDevices.sort())
+  }
+
+  const handleSelectedandClearSelected = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedDevicesOption(event.target.value)
+    setSelectedDevices([])
+  }
 
   return (
     <div className="mainContainer">
@@ -144,6 +179,40 @@ function Test() {
             </Modal.Footer>
           </Modal>
         </div>
+      </div>
+
+      <div>
+        <h3>Select Devices</h3>
+        <select onChange={handleSelectedandClearSelected} value={selectedDevicesOption}>
+          <option value="">Select option</option>
+          <option value="eTP">eTEMP</option>
+          <option value="iTS">iTeMS</option>
+        </select>
+
+        <div>
+          <input
+            type="checkbox"
+            checked={selectedDevices.length === devices.filter((items) =>
+              items.devSerial.substring(0, 3).toLowerCase().includes(selectedDevicesOption.toLowerCase())).length}
+            onChange={handleSelectAll}
+          />
+          <label>Select All</label>
+        </div>
+
+        {devices
+          .filter((items) => items.devSerial.substring(0, 3).toLowerCase().includes(selectedDevicesOption.toLowerCase()))
+          .map((device, index) => (
+            <div key={index}>
+              <input
+                type="checkbox"
+                value={device.devSerial}
+                checked={selectedDevices.includes(device.devSerial)}
+                onChange={handleCheckboxChange}
+              />
+              <label>{device.devSerial}</label>
+            </div>
+          ))}
+        <button onClick={handleSave}>Save</button>
       </div>
     </div>
   )

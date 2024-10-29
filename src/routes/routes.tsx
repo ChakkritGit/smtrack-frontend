@@ -1,7 +1,7 @@
 import { HideFlashFW, Hidesetting, Islogout } from '../authen/authen'
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { socket } from '../services/websocket'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { storeDispatchType } from '../stores/store'
 import { setCookieDecode, setSocketData } from '../stores/utilsStateSlice'
@@ -41,7 +41,8 @@ import PreviewPDF from '../components/pdf/preview.pdf'
 import Policy from '../pages/policy/policy'
 import Support from '../pages/contact/support'
 import Logs from '../pages/setting/Logs'
-// import Test from '../pages/test/test'
+
+const LazyTest = lazy(() => import('../pages/test/test'))
 
 export const router = createBrowserRouter([
   {
@@ -134,11 +135,19 @@ export const router = createBrowserRouter([
             element: <Log />,
             errorElement: <SomethingWrong />
           },
-          // {
-          //   path: "test",
-          //   element: <Test />,
-          //   errorElement: <SomethingWrong />
-          // },
+          ...(import.meta.env.VITE_APP_NODE_ENV === 'development'
+            ? [
+              {
+                path: "test",
+                element: (
+                  <Suspense fallback={<div>Loading...</div>}>
+                    <LazyTest />
+                  </Suspense>
+                ),
+                errorElement: <SomethingWrong />
+              }
+            ]
+            : []),
           {
             element: <HideFlashFW />,
             errorElement: <SomethingWrong />,
