@@ -6,7 +6,7 @@ export default function Log() {
       <h2>Change Log</h2>
       <LogSpan className="mt-3 mw-50"><b>Version 1.0.1-OC29</b> <span>29/10/67</span></LogSpan>
       <ul className="mt-2">
-        <li>Add select device feature to update firmware version</li>
+        <li>Added select device feature to update firmware version</li>
         <li>Show SD Card available space details when clicking on the card on the dashboard page</li>
         <li>Bug fixes.</li>
       </ul>
