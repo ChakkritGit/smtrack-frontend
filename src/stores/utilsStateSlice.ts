@@ -24,7 +24,7 @@ const initialState: UtilsStateStore = {
   notiData: [],
   reFetchData: false,
   onFilter: false,
-  transparent: localStorage.getItem('transparent') === 'true',
+  transparent: localStorage.getItem('transparent') ? localStorage.getItem('transparent') === 'true' : true,
 }
 
 const utilsSlice = createSlice({
