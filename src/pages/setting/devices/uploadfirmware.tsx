@@ -12,7 +12,8 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { Form, Modal } from "react-bootstrap"
 import { FormBtn, FormFlexBtn, ModalHead, PaginitionContainer } from "../../../style/style"
 import {
-  RiCloseCircleLine, RiCloseLine, RiCodeSSlashLine, RiDeleteBin2Line, RiDeviceRecoverLine, RiDownloadCloud2Line,
+  RiCheckboxLine,
+  RiCloseCircleLine, RiCloseLine, RiCodeSSlashLine, RiDeleteBin2Line, RiDownloadCloud2Line,
   RiDownloadLine, RiDragDropLine, RiFileCheckLine, RiFileUploadLine,
   RiUploadLine
 } from "react-icons/ri"
@@ -711,7 +712,7 @@ export default function Uploadfirmware() {
         <h3>{t('titleFirmware')}</h3>
         <div>
           <SelectDevicetoUpdateButton onClick={openModalSelected}>
-            <RiDeviceRecoverLine size={24} />
+            <RiCheckboxLine size={24} />
             {t('selectToUpdateButton')}
           </SelectDevicetoUpdateButton>
           <UploadButton onClick={() => navigate('/management/flasher')}>
