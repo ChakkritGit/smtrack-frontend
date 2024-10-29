@@ -5,7 +5,7 @@ import {
   SubSideBottomContainer
 } from "../../style/style"
 import { useTranslation } from "react-i18next"
-import { RiAlarmWarningLine, RiContactsBook2Line, RiFileTextLine, RiLogoutBoxRLine, RiPaletteLine, RiShieldCheckLine, RiTranslate2, RiUser6Line } from "react-icons/ri"
+import { RiAlarmWarningLine, RiApps2AddLine, RiContactsBook2Line, RiFileTextLine, RiLogoutBoxRLine, RiPaletteLine, RiShieldCheckLine, RiTranslate2, RiUser6Line } from "react-icons/ri"
 import { useState } from "react"
 import Color from "./display"
 import { useNavigate } from "react-router-dom"
@@ -21,6 +21,7 @@ import { cookieOptions, cookies } from "../../constants/constants"
 import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
 import { storeDispatchType } from "../../stores/store"
 import Logs from "../setting/Logs"
+import DownloadApp from "./download"
 
 export default function System() {
   const { t } = useTranslation()
@@ -84,6 +85,12 @@ export default function System() {
                   </span>
                 </ListMenu>
               }
+              <ListMenu $primary={pagenumber === '6'} onClick={() => { setPagenumber('6'); localStorage.setItem('settingTab', '6') }}>
+                <RiApps2AddLine />
+                <span>
+                  Apps
+                </span>
+              </ListMenu>
             </div>
             <SubSideBottomContainer>
               <ListPrivacy onClick={() => navigate('/support')}>
@@ -139,7 +146,10 @@ export default function System() {
                     pagenumber === '4' ?
                       <Noti />
                       :
-                      <Logs />
+                      pagenumber === '5' ?
+                        <Logs />
+                        :
+                        <DownloadApp />
             }
           </SettingRightContainer>
         </SettingSystemContainer>

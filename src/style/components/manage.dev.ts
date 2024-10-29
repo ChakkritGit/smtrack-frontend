@@ -142,3 +142,45 @@ ${props => props.$primary && css`
   border: 2px solid var(--main-color);
 `}
 `
+
+export const DowmloadFlex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &>div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &>a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    text-decoration: unset;
+    max-height: 35px;
+    border-radius: var(--border-radius-big);
+    border: 2px solid transparent;
+    background-color: var(--main-color);
+    color: var(--white);
+    font-weight: bold;
+    padding: .5rem .8rem;
+
+&:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+
+  &:hover {
+    background-color: var(--main-color);
+    color: var(--white);
+  }
+}
+
+&:hover {
+  background-color: var(--second-color);
+  transition: .3s;
+}
+}
+`
