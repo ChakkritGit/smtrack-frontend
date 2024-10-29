@@ -165,6 +165,7 @@ export default function Uploadfirmware() {
           },
           showConfirmButton: false
         })
+        setSelectedDevices([])
       } catch (error) {
         await Swal.fire({
           icon: 'error',
