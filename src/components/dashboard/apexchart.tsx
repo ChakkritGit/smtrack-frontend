@@ -207,7 +207,17 @@ const Apexchart = (chart: chartType) => {
       }
     },
     colors: ["rgba(255, 76, 60 , 1)", "rgba(52, 152, 219, .5)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
-    responsive: isExport ? [] : [
+    responsive: isExport ? [
+      {
+        breakpoint: 1185,
+        options: {
+          chart: {
+            height: 600,
+            width: expand ? 1050 : 900
+          },
+        },
+      },
+    ] : [
       {
         breakpoint: 1185,
         options: {

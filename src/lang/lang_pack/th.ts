@@ -401,6 +401,11 @@ export default {
     notRegistered: 'ยังไม่ลงทะเบียน',
     transparencyBlur: 'โหมดพื้นหลังเบลอ',
     selectedAll: 'เลือกทั้งหมด',
+    isExapndText: 'ดูเพิ่มเติม',
+    isCollapseText: 'ย่อข้อความ',
+    appDownload: 'ดาวน์โหลด',
+    sysLogs: 'บันทึกระบบ',
+    appMenu: 'แอปพลิเคชั่น',
 
     // connect
     ipAddress: 'IP',

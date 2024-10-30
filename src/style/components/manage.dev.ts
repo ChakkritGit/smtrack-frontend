@@ -143,15 +143,51 @@ ${props => props.$primary && css`
 `}
 `
 
-export const DowmloadFlex = styled.div`
+export const DowmloadFlex = styled.div<{ $isExpand?: boolean }>`
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
 
-  &>div:nth-child(1) {
+  &>div:nth-child(1)>div:nth-child(1) {
     display: flex;
-    align-items: center;
-    gap: .5rem;
+    align-items: start;
+    gap: 1rem;
+    margin-top: 1rem;
+
+    &>img {
+      max-width: 64px;
+      max-height: 64px;
+      object-fit: cover;
+      border-radius: var(--border-radius-small);
+    }
+
+    &>div {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      gap: .3rem;
+
+      &>span:nth-child(1) {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      &>span:nth-child(2) {
+        color: var(--grey);
+        max-width: 500px;
+        display: -webkit-box;
+        -webkit-line-clamp: ${props => props.$isExpand ? 'unset' : '1'};
+        -webkit-box-orient: vertical;
+        overflow: ${props => props.$isExpand ? 'isExpand' : 'hidden'};
+        text-overflow: ellipsis;
+      }
+
+      &>a {
+        cursor: pointer;
+      }
+    }
   }
 
   &>a {
@@ -182,5 +218,10 @@ export const DowmloadFlex = styled.div`
   background-color: var(--second-color);
   transition: .3s;
 }
+}
+
+@media (max-width: 430px) {
+  justify-content: end;
+  gap: .8rem;
 }
 `

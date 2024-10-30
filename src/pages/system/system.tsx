@@ -81,14 +81,14 @@ export default function System() {
                 <ListMenu $primary={pagenumber === '5'} onClick={() => { setPagenumber('5'); localStorage.setItem('settingTab', '5') }}>
                   <RiFileTextLine />
                   <span>
-                    Logs
+                    {t('sysLogs')}
                   </span>
                 </ListMenu>
               }
               <ListMenu $primary={pagenumber === '6'} onClick={() => { setPagenumber('6'); localStorage.setItem('settingTab', '6') }}>
                 <RiApps2AddLine />
                 <span>
-                  Apps
+                  {t('appMenu')}
                 </span>
               </ListMenu>
             </div>

@@ -1,14 +1,35 @@
-import { RiAndroidLine } from "react-icons/ri"
 import { DowmloadFlex } from "../../style/components/manage.dev"
+import AppLogo from '../../assets/images/app-logo.png'
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 function DownloadApp() {
+  const { t } = useTranslation()
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  const toggleExpandText = () => {
+    setIsExpanded(!isExpanded)
+  }
+
   return (
-    <DowmloadFlex>
+    <DowmloadFlex $isExpand={isExpanded}>
       <div>
-        <RiAndroidLine size={24} />
-        <span>Android</span>
+        <div>
+          <img src={AppLogo} alt="App-Logo" />
+          <div>
+            <span>SMTrak+</span>
+            <span>
+              โปรแกรมสำหรับดูค่าอุณหภูมิ/ความชื้นปัจจุบัน ของตู้แช่ แบบ Real-Time รวมถึงแจ้งเตือนหากเกินค่า Min/Max ที่กำหนดใช้ร่วมกับเครื่องติดตามอุณหภูมิตู้แช่ รุ่น eTEMP/i-TEMS
+            </span>
+            <a onClick={toggleExpandText}>
+              {isExpanded ? t('isCollapseText') : t('isExapndText')}
+            </a>
+          </div>
+        </div>
       </div>
-      <a href="https://api.siamatic.co.th/etemp/media/app-release.apk" rel="noopener noreferrer">Download</a>
+      <a
+        href="https://api.siamatic.co.th/etemp/media/app-release.apk"
+        rel="noopener noreferrer">{t('appDownload')}</a>
     </DowmloadFlex>
   )
 }

@@ -401,6 +401,11 @@ export default {
     notRegistered: 'Not Registered',
     transparencyBlur: 'Transparency blur mode',
     selectedAll: 'Select All',
+    isExapndText: 'Expand',
+    isCollapseText: 'Collapse',
+    appDownload: 'Download',
+    sysLogs: 'Logs',
+    appMenu: 'Apps',
 
     // connect
     ipAddress: 'IP',
