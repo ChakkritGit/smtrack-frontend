@@ -24,10 +24,11 @@ position: relative;
     align-items: center;
     position: relative;
     height: 100dvh;
-    gap: 2rem;
+    gap: .5rem;
 
     &>span {
       font-size: 104px;
+      margin-bottom: 2rem;
 
       @media (max-width: 430px) {
         font-size: 72px;

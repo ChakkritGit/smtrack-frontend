@@ -145,7 +145,7 @@ export default function Uploadfirmware() {
       try {
         Swal.fire({
           title: t('alertHeaderUpdating'),
-          html: `${t('sendingFirmware')}\n${onProgress}/${selectedDevices.length}`,
+          html: `${onProgress}/${selectedDevices.length}<br>${t('sendingFirmware')}`,
           didOpen: () => {
             Swal.showLoading()
           },
@@ -169,16 +169,20 @@ export default function Uploadfirmware() {
         })
         setSelectedDevices([])
       } catch (error) {
-        await Swal.fire({
-          icon: 'error',
-          title: t('alertHeaderError'),
-          text: t('sendingFirmwareError'),
-          timer: 2000,
-          didOpen: () => {
-            Swal.hideLoading()
-          },
-          showConfirmButton: false
-        })
+        if (error instanceof Error) {
+          await Swal.fire({
+            icon: 'error',
+            title: t('alertHeaderError'),
+            html: `${error.message}`,
+            timer: 2000,
+            didOpen: () => {
+              Swal.hideLoading()
+            },
+            showConfirmButton: false
+          })
+        } else {
+          console.error(error)
+        }
       }
     } else {
       Swal.fire({

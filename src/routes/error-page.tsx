@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
 import { ErrorPageStyled } from "../style/components/error.page"
+import { RiEmotionUnhappyFill } from "react-icons/ri"
 
 export default function ErrorPage() {
   const { t, i18n } = useTranslation()
@@ -36,6 +37,7 @@ export default function ErrorPage() {
       <div>
       </div>
       <div>
+        <RiEmotionUnhappyFill size={64} color="Yellow" />
         <span>{t('titleError')}</span>
         <div>
           <span>404</span>
