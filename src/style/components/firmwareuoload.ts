@@ -687,9 +687,11 @@ export const CheckBoxInput = styled.input`
 `
 
 export const CheckBoxFlex = styled.div`
-  display: flex;
-  align-items: center;
-  gap: .5rem;
+  &>label {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
 `
 
 export const CheckBoxList = styled.div`

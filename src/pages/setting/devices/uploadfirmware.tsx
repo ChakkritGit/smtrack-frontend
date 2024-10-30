@@ -93,6 +93,7 @@ export default function Uploadfirmware() {
   const [displayedCards, setDisplayedCards] = useState<firmwareType[]>(dataFiles ? dataFiles.slice(0, cardsPerPage) : [])
   const [selectedDevices, setSelectedDevices] = useState<string[]>([])
   const [selectedDevicesOption, setSelectedDevicesOption] = useState(t('selectOTA'))
+  const [onProgress, setOnProgress] = useState(0)
   const fileTypes = ["BIN"]
 
   const handleSelectedandClearSelected = (e: SingleValue<Option>) => {
@@ -134,6 +135,7 @@ export default function Uploadfirmware() {
 
     return new Promise((resolve) => {
       client.publish(`siamatic/${deviceModel}/${version}/${item}/firmware`, selectedDevicesOption)
+      setOnProgress(onProgress + 1)
       setTimeout(resolve, 300)
     })
   }
@@ -143,7 +145,7 @@ export default function Uploadfirmware() {
       try {
         Swal.fire({
           title: t('alertHeaderUpdating'),
-          html: t('sendingFirmware'),
+          html: `${t('sendingFirmware')}\n${onProgress}/${selectedDevices.length}`,
           didOpen: () => {
             Swal.showLoading()
           },
@@ -648,7 +650,6 @@ export default function Uploadfirmware() {
   const displaySelectDevices = (event: ChangeEvent<HTMLSelectElement>) => {
     setCardsPerPage(Number(event.target.value))
   }
-  // จบส่วนการ์ด
 
   useEffect(() => {
     return () => {
@@ -659,7 +660,7 @@ export default function Uploadfirmware() {
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault()
-      event.returnValue = '' // ตามสเปคของ HTML5
+      event.returnValue = ''
     }
 
     if (flashProgress !== '0') {
@@ -834,13 +835,15 @@ export default function Uploadfirmware() {
           {selectedDevicesOption !== t('selectOTA') &&
             <>
               <CheckBoxFlex>
-                <CheckBoxInput
-                  type="checkbox"
-                  checked={selectedDevices.length === devices.filter((items) =>
-                    items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase())).length}
-                  onChange={handleSelectAll}
-                />
-                <label>{t('selectedAll')}</label>
+                <label>
+                  <CheckBoxInput
+                    type="checkbox"
+                    checked={selectedDevices.length === devices.filter((items) =>
+                      items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase())).length}
+                    onChange={handleSelectAll}
+                  />
+                  {t('selectedAll')}
+                </label>
               </CheckBoxFlex>
               <CheckBoxList>
                 {
@@ -848,13 +851,15 @@ export default function Uploadfirmware() {
                     .filter((items) => items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase()))
                     .map((device, index) => (
                       <CheckBoxFlex key={index}>
-                        <CheckBoxInput
-                          type="checkbox"
-                          value={device.devSerial}
-                          checked={selectedDevices.includes(device.devSerial)}
-                          onChange={handleCheckboxChange}
-                        />
-                        <label>{device.devSerial}</label>
+                        <label>
+                          <CheckBoxInput
+                            type="checkbox"
+                            value={device.devSerial}
+                            checked={selectedDevices.includes(device.devSerial)}
+                            onChange={handleCheckboxChange}
+                          />
+                          {device.devSerial}
+                        </label>
                       </CheckBoxFlex>
 
                     ))
