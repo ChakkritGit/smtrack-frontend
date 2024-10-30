@@ -55,7 +55,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
   }, [cookieEncode, dispatch])
 
   if (isValid === null) {
-    return null // Or a loading spinner
+    return null
   }
 
   return isValid ? children : <Navigate to="/login" />

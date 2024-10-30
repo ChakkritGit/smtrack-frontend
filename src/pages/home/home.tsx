@@ -63,6 +63,7 @@ export default function Home() {
   const [showSettingMute, setShowSettingMute] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [expand, setExpand] = useState(false)
+  const [isFiltering, setIsFiltering] = useState(true)
 
   const openSettingMute = () => {
     setShowSettingMute(true)
@@ -93,11 +94,14 @@ export default function Home() {
   }
 
   let filteredDevicesList = useMemo(() => {
-    return wardId !== ''
+    setIsFiltering(true)
+    const result = wardId !== ''
       ? devices.filter((item) => item.wardId.includes(wardId))
       : hosId && hosId !== ''
         ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
         : devices
+
+    return result
   }, [wardId, devices, hosId])
 
   useEffect(() => {
@@ -109,18 +113,23 @@ export default function Home() {
     switch (cardActive) {
       case '1':
         dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])))))
+        setIsFiltering(false)
         break;
       case '2':
         dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE')))))
+        setIsFiltering(false)
         break;
       case '3':
         dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev._count?.log)))
+        setIsFiltering(false)
         break;
       case '4':
         dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'AC'))))
+        setIsFiltering(false)
         break;
       case '5':
         dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'SD'))))
+        setIsFiltering(false)
         break;
       case '6':
         navigate("/management/logadjust")
@@ -133,6 +142,7 @@ export default function Home() {
         break;
       default:
         dispatch(setFilterDevice(filteredDevicesList))
+        setIsFiltering(false)
         break;
     }
 
@@ -572,7 +582,7 @@ export default function Home() {
                 </DeviceListFlex>
               </DeviceInfoflex>
             </AboutBox>
-            {
+            {!isFiltering ?
               listAndgrid === 1 ?
                 <DatatableHome>
                   <DataTable
@@ -624,6 +634,8 @@ export default function Home() {
                     />
                   </PaginitionContainer>
                 </DevHomeDetails>
+              :
+              <PageLoading />
             }
           </HomeContainerFlex>
           :

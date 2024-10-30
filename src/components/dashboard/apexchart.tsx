@@ -3,6 +3,7 @@ import { logtype } from "../../types/log.type"
 import { useSelector } from "react-redux"
 import { useTheme } from "../../theme/ThemeProvider"
 import { RootState } from "../../stores/store"
+import { useMemo } from "react"
 
 type chartType = {
   chartData: logtype[],
@@ -22,15 +23,17 @@ const Apexchart = (chart: chartType) => {
   const maxTempAvg = Math.max(...tempAvgValues) + 2
   const { theme } = useTheme()
 
-  const mappedData = chartData.map((items) => {
-    const time = new Date(items.sendTime).getTime()
-    return {
-      time,
-      tempAvg: items.tempAvg,
-      humidityAvg: items.humidityAvg,
-      door: items.door1 === '1' || items.door2 === '1' || items.door3 === '1' ? 1 : 0
-    }
-  })
+  const mappedData = useMemo(() => {
+    return chartData.map((items) => {
+      const time = new Date(items.sendTime).getTime()
+      return {
+        time,
+        tempAvg: items.tempAvg,
+        humidityAvg: items.humidityAvg,
+        door: items.door1 === "1" || items.door2 === "1" || items.door3 === "1" ? 1 : 0,
+      }
+    })
+  }, [chartData])
 
   const series: ApexAxisChartSeries = [
     {

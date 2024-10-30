@@ -11,6 +11,7 @@ import { setSearchQuery } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { paginationCardUsers } from "../../constants/constants"
 import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
+import PageLoading from "../../components/loading/page.loading"
 
 export default function Permission() {
   const { t } = useTranslation()
@@ -21,14 +22,16 @@ export default function Permission() {
   const [displayedCards, setDisplayedCards] = useState<usersType[]>(userData ? userData.slice(0, cardsPerPage) : [])
   const { searchQuery, expand, tokenDecode, hosId, wardId } = useSelector((state: RootState) => state.utilsState)
   const { userId } = tokenDecode
-  // Filter Data
+  const [isFiltering, setIsFiltering] = useState(true)
 
   let filteredItems = useMemo(() => {
-    return wardId !== ''
+    const result = wardId !== ''
       ? userData.filter((item) => item.wardId.includes(wardId))
       : hosId && hosId !== ''
         ? userData.filter((item) => item.ward.hosId.includes(hosId))
         : userData
+
+    return result
   }, [wardId, userData, hosId])
 
   const totalPages = Math.ceil(filteredItems.length / cardsPerPage)
@@ -42,8 +45,10 @@ export default function Permission() {
   useEffect(() => {
     if (filteredItems.length > 0) {
       setDisplayedCards(filteredItems.slice(0, cardsPerPage))
+      setIsFiltering(false)
     } else {
       setDisplayedCards(userData)
+      setIsFiltering(false)
     }
     showPage(0, searchQuery)
   }, [searchQuery, cardsPerPage, wardId, hosId, userData])
@@ -58,6 +63,7 @@ export default function Permission() {
     const filteredCards = filteredItems ? (query ? filteredItems.filter(card => [card.displayName, card.userName, card.userId].some(attr => attr.toLowerCase().includes(query.toLowerCase()))) : filteredItems) : []
     const cardsToDisplay = filteredCards ? filteredCards.slice(startIndex, endIndex) : []
     setDisplayedCards(cardsToDisplay)
+    setIsFiltering(false)
   }
 
   const changePage = (change: number) => {
@@ -82,37 +88,46 @@ export default function Permission() {
           </div>
         </div>
       </CardUserHead>
-      <CardUserBody $primary={expand}>
-        {
-          displayedCards.filter((f) => f.userId !== userId).map((item, index) => (
-            <CardUser
-              key={item.userId}
-              keyindex={index}
-              userPic={item.userPic}
-              displayName={item.displayName}
-              userName={item.userName}
-              userLevel={item.userLevel}
-              userId={item.userId}
-              hosId={item.ward.hosId}
-              userStatus={item.userStatus}
-              wardId={item.wardId}
-            />
-          ))
-        }
-      </CardUserBody>
-      <PaginitionContainer>
-        <div></div>
-        <Paginition
-          currentPage={currentPage}
-          cardsPerPage={cardsPerPage}
-          changePage={changePage}
-          displaySelectDevices={displaySelectDevices}
-          displayedCards={displayedCards}
-          userdata={userData}
-          totalPages={totalPages}
-          pagPerpage={paginationCardUsers}
-        />
-      </PaginitionContainer>
+
+      {
+        !isFiltering ?
+          <>
+            <CardUserBody $primary={expand}>
+              {
+                displayedCards.filter((f) => f.userId !== userId).map((item, index) => (
+                  <CardUser
+                    key={item.userId}
+                    keyindex={index}
+                    userPic={item.userPic}
+                    displayName={item.displayName}
+                    userName={item.userName}
+                    userLevel={item.userLevel}
+                    userId={item.userId}
+                    hosId={item.ward.hosId}
+                    userStatus={item.userStatus}
+                    wardId={item.wardId}
+                  />
+                ))
+              }
+            </CardUserBody>
+            <PaginitionContainer>
+              <div></div>
+              <Paginition
+                currentPage={currentPage}
+                cardsPerPage={cardsPerPage}
+                changePage={changePage}
+                displaySelectDevices={displaySelectDevices}
+                displayedCards={displayedCards}
+                userdata={userData}
+                totalPages={totalPages}
+                pagPerpage={paginationCardUsers}
+              />
+            </PaginitionContainer>
+          </>
+          :
+          <PageLoading />
+      }
+
     </Container >
   )
 }
