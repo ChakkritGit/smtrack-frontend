@@ -3229,7 +3229,7 @@ gap: .5rem;
 export const FullchartBody = styled.div<{ $primary?: boolean }>`
 display: flex;
 justify-content: center;
-overflow: hidden;
+/* overflow: hidden; */
 
 ${props => props.$primary &&
     css`

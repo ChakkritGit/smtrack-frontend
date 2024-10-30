@@ -17,7 +17,7 @@ function DownloadApp() {
         <div>
           <img src={AppLogo} alt="App-Logo" />
           <div>
-            <span>SMTrak+</span>
+            <span>SMTrack+</span>
             <span>
               โปรแกรมสำหรับดูค่าอุณหภูมิ/ความชื้นปัจจุบัน ของตู้แช่ แบบ Real-Time รวมถึงแจ้งเตือนหากเกินค่า Min/Max ที่กำหนดใช้ร่วมกับเครื่องติดตามอุณหภูมิตู้แช่ รุ่น eTEMP/i-TEMS
             </span>

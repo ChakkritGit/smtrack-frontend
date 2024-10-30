@@ -185,6 +185,7 @@ export const DowmloadFlex = styled.div<{ $isExpand?: boolean }>`
       }
 
       &>a {
+        width: max-content;
         cursor: pointer;
       }
     }
