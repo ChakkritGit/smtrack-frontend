@@ -389,7 +389,7 @@ export default function Fullchart() {
     } else {
       return <PageLoading reset={pageNumber} />
     }
-  }, [isloading, expand, hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
+  }, [logData, isloading, expand, hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
 
   return (
     <Container fluid>
