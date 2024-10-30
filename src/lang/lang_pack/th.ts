@@ -140,6 +140,8 @@ export default {
     chartWeek: 'สัปดาห์',
     chartCustom: 'กำหนดเอง',
     chartCompare: 'เปรียบเทียบ',
+    showDataLabel: 'แสดงป้ายข้อมูล',
+    hideDataLabel: 'ซ่อนป้ายข้อมูล',
 
     // user
     addUserButton: 'เพิ่มผู้ใช้',

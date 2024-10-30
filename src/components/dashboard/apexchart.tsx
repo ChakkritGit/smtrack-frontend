@@ -9,12 +9,13 @@ type chartType = {
   devicesData: { tempMin: number, tempMax: number },
   tempHeight: number | string | undefined,
   tempWidth: number | string | undefined,
-  isExport: boolean
+  isExport: boolean,
+  showDataLabel: boolean
 }
 
 const Apexchart = (chart: chartType) => {
   const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { chartData, devicesData, isExport } = chart
+  const { chartData, devicesData, isExport, showDataLabel } = chart
   const { tempMax, tempMin } = devicesData
   const tempAvgValues = chartData.map((items) => items.tempAvg)
   const minTempAvg = Math.min(...tempAvgValues) - 2
@@ -47,6 +48,7 @@ const Apexchart = (chart: chartType) => {
       }))
     },
     {
+      hidden: isExport || showDataLabel,
       name: 'Min',
       data: mappedData.map((data) => ({
         x: data.time,
@@ -54,6 +56,7 @@ const Apexchart = (chart: chartType) => {
       }))
     },
     {
+      hidden: isExport || showDataLabel,
       name: 'Max',
       data: mappedData.map((data) => ({
         x: data.time,
@@ -71,6 +74,8 @@ const Apexchart = (chart: chartType) => {
 
   const options: ApexCharts.ApexOptions = {
     chart: {
+      height: isExport ? Math.min(window.innerHeight * 0.8, 600) : undefined,
+      width: isExport ? Math.min(window.innerWidth * 0.8, 1185) : undefined,
       type: 'line',
       animations: {
         enabled: true,
@@ -82,11 +87,11 @@ const Apexchart = (chart: chartType) => {
       stacked: false,
       zoom: {
         type: 'x',
-        enabled: true,
-        autoScaleYaxis: true
+        enabled: isExport ? false : true,
+        autoScaleYaxis: isExport ? false : true
       },
       toolbar: {
-        show: true,
+        show: isExport ? false : true,
         autoSelected: 'zoom',
         tools: {
           download: false,
@@ -116,6 +121,7 @@ const Apexchart = (chart: chartType) => {
       defaultLocale: "en"
     },
     tooltip: {
+      enabled: isExport ? false : true,
       theme: 'apexcharts-tooltip',
       x: {
         format: 'dd MMM yy HH:mm'
@@ -140,7 +146,7 @@ const Apexchart = (chart: chartType) => {
       }
     },
     dataLabels: {
-      enabled: false
+      enabled: showDataLabel
     },
     markers: {
       size: 0
@@ -207,46 +213,53 @@ const Apexchart = (chart: chartType) => {
       }
     },
     colors: ["rgba(255, 76, 60 , 1)", "rgba(52, 152, 219, .5)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
-    responsive: isExport ? [
-      {
-        breakpoint: 1185,
-        options: {
-          chart: {
-            height: 600,
-            width: expand ? 1050 : 900
+    ...(isExport
+      ? {}
+      : {
+        responsive: [
+          {
+            breakpoint: 1185,
+            options: {
+              chart: {
+                height: 600,
+                width: expand ? 1050 : 900,
+              },
+            },
           },
-        },
-      },
-    ] : [
-      {
-        breakpoint: 1185,
-        options: {
-          chart: {
-            height: 600,
-            width: expand ? 1050 : 900
+          {
+            breakpoint: 430,
+            options: {
+              chart: {
+                height: 330,
+                width: 350,
+              },
+            },
           },
-        },
-      },
-      {
-        breakpoint: 430,
-        options: {
-          chart: {
-            height: 330,
-            width: 350
-          },
-        },
-      },
-    ],
+        ],
+      }),
   }
 
   return (
-    <Chart
-      type="line"
-      options={options}
-      series={series}
-      height={chart.tempHeight}
-      width={chart.tempWidth}
-    />
+    <>
+      {showDataLabel ?
+        <Chart
+          key={'1'}
+          type="line"
+          options={options}
+          series={series}
+          height={chart.tempHeight}
+          width={chart.tempWidth}
+        /> :
+        <Chart
+          key={'2'}
+          type="line"
+          options={options}
+          series={series}
+          height={chart.tempHeight}
+          width={chart.tempWidth}
+        />
+      }
+    </>
   )
 }
 

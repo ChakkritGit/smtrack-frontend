@@ -3083,7 +3083,7 @@ export const FullchartHeadExport = styled.button<{ $primary?: boolean }>`
   justify-content: center;
   gap: 0.5rem;
   width: max-content;
-  max-width: 150px;
+  max-width: 200px;
   max-height: 35px;
   border-radius: var(--border-radius-big);
   border: 2px solid transparent;

@@ -131,6 +131,8 @@ export default {
     chartWeek: 'Week',
     chartCustom: 'Custom',
     chartCompare: 'Compare',
+    showDataLabel: 'Show Data Label',
+    hideDataLabel: 'Hide Data Label',
 
     // user
     addUserButton: 'Add User',

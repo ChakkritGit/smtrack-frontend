@@ -13,9 +13,10 @@ import {
 import { BsStars } from "react-icons/bs"
 import {
   RiDashboardFill, RiFilePdf2Line,
-  RiFolderSharedLine, RiImageLine, RiLoader2Line
+  RiFolderSharedLine, RiImageLine, RiLoader2Line,
+  RiPriceTag3Line
 } from "react-icons/ri"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import axios, { AxiosError } from "axios"
 import { logtype } from "../../types/log.type"
 import { devicesType } from "../../types/device.type"
@@ -57,6 +58,7 @@ export default function Fullchart() {
   const tableInfoRef = useRef<HTMLDivElement | null>(null)
   const [validationData, setValidationData] = useState<wardsType>()
   const [isloading, setIsLoading] = useState(false)
+  const [showDataLabel, setShowDataLabel] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -226,7 +228,6 @@ export default function Fullchart() {
   }, [token])
 
   const exportChart = () => {
-    setIsLoading(true);
     return new Promise(async (resolve, reject) => {
       setTimeout(async () => {
         try {
@@ -328,161 +329,179 @@ export default function Fullchart() {
     setLogData(newArray)
   }
 
+  useEffect(() => {
+    if (isloading) {
+      (async () => {
+        try {
+          const waitExport = await exportChart()
+          setIsLoading(false)
+          navigate('/dashboard/chart/preview', {
+            state: {
+              title: 'Chart-Report',
+              ward: validationData?.wardName,
+              image: ImagesOne,
+              hospital: validationData?.hospital.hosName,
+              devSn: devData?.devSerial,
+              devName: devData?.devDetail,
+              chartIMG: waitExport,
+              dateTime: String(new Date).substring(0, 25),
+              hosImg: hosImg,
+              tempMin: tempMin,
+              tempMax: tempMax,
+            },
+          })
+        } catch (error) {
+          setIsLoading(false);
+          Swal.fire({
+            title: t('alertHeaderError'),
+            text: t('descriptionErrorWrong'),
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          })
+        }
+      })()
+    }
+  }, [isloading])
+
+  const chartContent = useMemo(() => {
+    if (logData.length > 0) {
+      return (
+        <FullchartBodyChartCon key={String(isloading)} $primary={expand} ref={canvasChartRef}>
+          <TableInfoDevice ref={tableInfoRef}>
+            <h4>{hosName}</h4>
+            <span>{devData?.devDetail ? devData?.devDetail : '--'} | {devData?.devSerial}</span>
+            <span>{devData?.locInstall ? devData?.locInstall : '- -'}</span>
+          </TableInfoDevice>
+          <Apexchart
+            chartData={logData}
+            devicesData={{
+              tempMin,
+              tempMax
+            }}
+            tempHeight={680}
+            tempWidth={1480}
+            isExport={isloading}
+            showDataLabel={showDataLabel}
+          />
+        </FullchartBodyChartCon>
+      )
+    } else {
+      return <PageLoading reset={pageNumber} />
+    }
+  }, [isloading, expand, hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
 
   return (
     <Container fluid>
-        <Breadcrumbs className="mt-3"
-          separator={<RiArrowRightSLine fontSize={20} />}
-        >
-          <Link to={'/dashboard'}>
-            <RiDashboardFill fontSize={20} />
-          </Link>
-          <Typography color="text.primary">{t('pageChart')}</Typography>
-        </Breadcrumbs>
-        <FullchartHead>
-          <FullchartHeadLeft>
-            <FullchartHeadBtn $primary={pageNumber === 1} onClick={Logday}>{t('chartDay')}</FullchartHeadBtn>
-            <FullchartHeadBtn $primary={pageNumber === 2} onClick={Logweek}>{t('chartWeek')}</FullchartHeadBtn>
-            <FullchartHeadBtn $primary={pageNumber === 3} onClick={Logmonth}>{t('month')}</FullchartHeadBtn>
-            <FullchartHeadBtn $primary={pageNumber === 4} onClick={() => { setPagenumber(4) }}>{t('chartCustom')}</FullchartHeadBtn>
-            <span>|</span>
-            <FullcharComparetHeadBtn onClick={() => navigate('compare')}>{t('chartCompare')}</FullcharComparetHeadBtn>
-          </FullchartHeadLeft>
-          <ExportandAuditFlex>
-            {
-              userLevel !== '3' && <AuditGraphBtn onClick={() => {
-                if (logData) {
-                  swalOptimizeChartButtons
-                    .fire({
-                      title: t('alertHeaderWarning'),
-                      html: t('optimizeChartText'),
-                      icon: "warning",
-                      showCancelButton: true,
-                      confirmButtonText: t('continueButton'),
-                      cancelButtonText: t('closeDialogButton'),
-                      reverseButtons: false,
-                    })
-                    .then((result) => {
-                      if (result.isConfirmed) {
-                        handleShowEdit()
-                      }
-                    })
-                } else {
-                  toast.error("Data not found")
+      <Breadcrumbs className="mt-3"
+        separator={<RiArrowRightSLine fontSize={20} />}
+      >
+        <Link to={'/dashboard'}>
+          <RiDashboardFill fontSize={20} />
+        </Link>
+        <Typography color="text.primary">{t('pageChart')}</Typography>
+      </Breadcrumbs>
+      <FullchartHead>
+        <FullchartHeadLeft>
+          <FullchartHeadBtn $primary={pageNumber === 1} onClick={Logday}>{t('chartDay')}</FullchartHeadBtn>
+          <FullchartHeadBtn $primary={pageNumber === 2} onClick={Logweek}>{t('chartWeek')}</FullchartHeadBtn>
+          <FullchartHeadBtn $primary={pageNumber === 3} onClick={Logmonth}>{t('month')}</FullchartHeadBtn>
+          <FullchartHeadBtn $primary={pageNumber === 4} onClick={() => { setPagenumber(4) }}>{t('chartCustom')}</FullchartHeadBtn>
+          <span>|</span>
+          <FullcharComparetHeadBtn onClick={() => navigate('compare')}>{t('chartCompare')}</FullcharComparetHeadBtn>
+        </FullchartHeadLeft>
+        <ExportandAuditFlex>
+          <FullchartHeadExport onClick={() => setShowDataLabel(!showDataLabel)}>
+            <RiPriceTag3Line size={24} />
+            {showDataLabel ? t('hideDataLabel') : t('showDataLabel')}
+          </FullchartHeadExport>
+          {
+            userLevel !== '3' && <AuditGraphBtn onClick={() => {
+              if (logData) {
+                swalOptimizeChartButtons
+                  .fire({
+                    title: t('alertHeaderWarning'),
+                    html: t('optimizeChartText'),
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: t('continueButton'),
+                    cancelButtonText: t('closeDialogButton'),
+                    reverseButtons: false,
+                  })
+                  .then((result) => {
+                    if (result.isConfirmed) {
+                      handleShowEdit()
+                    }
+                  })
+              } else {
+                toast.error("Data not found")
+              }
+            }}>
+              <BsStars />
+              {t('optimizeGraph')}
+            </AuditGraphBtn>
+          }
+          <Dropdown>
+            <Dropdown.Toggle variant="0" className="border-0 p-0">
+              <FullchartHeadExport>
+                <RiFolderSharedLine />
+                {t('exportFile')}
+              </FullchartHeadExport>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleDownload('png')}>
+                <RiImageLine />
+                <span>PNG</span>
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => handleDownload('jpg')}>
+                <RiImageLine />
+                <span>JPG</span>
+              </Dropdown.Item>
+              <LineHr $mg={.5} />
+              <Dropdown.Item onClick={async () => {
+                setIsLoading(true)
+                if (logData.length === 0) {
+                  Swal.fire({
+                    title: t('alertHeaderWarning'),
+                    text: t('dataNotReady'),
+                    icon: "warning",
+                    timer: 2000,
+                    showConfirmButton: false,
+                  })
+                  setIsLoading(false)
                 }
               }}>
-                <BsStars />
-                {t('optimizeGraph')}
-              </AuditGraphBtn>
-            }
-            <Dropdown>
-              <Dropdown.Toggle variant="0" className="border-0 p-0">
-                <FullchartHeadExport>
-                  <RiFolderSharedLine />
-                  {t('exportFile')}
-                </FullchartHeadExport>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => handleDownload('png')}>
-                  <RiImageLine />
-                  <span>PNG</span>
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => handleDownload('jpg')}>
-                  <RiImageLine />
-                  <span>JPG</span>
-                </Dropdown.Item>
-                <LineHr $mg={.5} />
-                <Dropdown.Item onClick={async () => {
-                  if (logData.length > 0) {
-                    try {
-                      const waitExport = await exportChart()
-                      setIsLoading(false)
-                      navigate('/dashboard/chart/preview', {
-                        state: {
-                          title: 'Chart-Report',
-                          ward: validationData?.wardName,
-                          image: ImagesOne,
-                          hospital: validationData?.hospital.hosName,
-                          devSn: devData?.devSerial,
-                          devName: devData?.devDetail,
-                          chartIMG: waitExport,
-                          dateTime: String(new Date).substring(0, 25),
-                          hosImg: hosImg,
-                          tempMin: tempMin,
-                          tempMax: tempMax
-                        }
-                      })
-                    } catch (error) {
-                      Swal.fire({
-                        title: t('alertHeaderError'),
-                        text: t('descriptionErrorWrong'),
-                        icon: "error",
-                        timer: 2000,
-                        showConfirmButton: false,
-                      })
-                    }
-                  } else {
-                    Swal.fire({
-                      title: t('alertHeaderWarning'),
-                      text: t('dataNotReady'),
-                      icon: "warning",
-                      timer: 2000,
-                      showConfirmButton: false,
-                    })
-                  }
-                }}>
-                  <RiFilePdf2Line />
-                  <span>PDF</span>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </ExportandAuditFlex>
-        </FullchartHead>
-        <FullchartBody $primary={pageNumber !== 4}>
-          <CustomChart>
-            {pageNumber === 4 &&
-              <FilterContainer>
-                <Form.Control
-                  type="date"
-                  min={devData?.dateInstall.split('T')[0]}
-                  max={filterDate.endDate !== '' ? filterDate.endDate : getDateNow()}
-                  value={filterDate.startDate}
-                  onChange={(e) => setFilterDate({ ...filterDate, startDate: e.target.value })} />
-                <Form.Control
-                  type="date"
-                  min={filterDate.startDate}
-                  max={getDateNow()}
-                  value={filterDate.endDate}
-                  onChange={(e) => setFilterDate({ ...filterDate, endDate: e.target.value })} />
-                <FilterSearchBtn onClick={Logcustom}>{t('searchButton')}</FilterSearchBtn>
-              </FilterContainer>}
-            {
-              logData.length > 0 ?
-                <FullchartBodyChartCon $primary={expand} ref={canvasChartRef}>
-                  <TableInfoDevice ref={tableInfoRef}>
-                    <h4>{hosName}</h4>
-                    <span>{devData?.devDetail ? devData?.devDetail : '--'} | {devData?.devSerial}</span>
-                    <span>{devData?.locInstall ? devData?.locInstall : '- -'}</span>
-                  </TableInfoDevice>
-                  <Apexchart
-                    chartData={logData}
-                    devicesData={{
-                      tempMin,
-                      tempMax
-                    }}
-                    tempHeight={680}
-                    tempWidth={1480}
-                    isExport={isloading}
-                  />
-                </FullchartBodyChartCon>
-                :
-                <PageLoading reset={pageNumber} />
-            }
-          </CustomChart>
-        </FullchartBody>
-        {isloading && <WaitExportImage>
-          <Loading loading={true} title={t('loading')} icn={<RiLoader2Line fill="white" />} />
-        </WaitExportImage>}
+                <RiFilePdf2Line />
+                <span>PDF</span>
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </ExportandAuditFlex>
+      </FullchartHead>
+      <FullchartBody $primary={pageNumber !== 4}>
+        <CustomChart>
+          {pageNumber === 4 &&
+            <FilterContainer>
+              <Form.Control
+                type="date"
+                min={devData?.dateInstall.split('T')[0]}
+                max={filterDate.endDate !== '' ? filterDate.endDate : getDateNow()}
+                value={filterDate.startDate}
+                onChange={(e) => setFilterDate({ ...filterDate, startDate: e.target.value })} />
+              <Form.Control
+                type="date"
+                min={filterDate.startDate}
+                max={getDateNow()}
+                value={filterDate.endDate}
+                onChange={(e) => setFilterDate({ ...filterDate, endDate: e.target.value })} />
+              <FilterSearchBtn onClick={Logcustom}>{t('searchButton')}</FilterSearchBtn>
+            </FilterContainer>}
+          {chartContent}
+        </CustomChart>
+      </FullchartBody>
+      {isloading && <WaitExportImage>
+        <Loading loading={true} title={t('loading')} icn={<RiLoader2Line fill="white" />} />
+      </WaitExportImage>}
     </Container>
   )
 }
