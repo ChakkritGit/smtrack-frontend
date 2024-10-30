@@ -3,11 +3,13 @@ import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
 import { ErrorPageStyled } from "../style/components/error.page"
 import { RiEmotionUnhappyFill } from "react-icons/ri"
+import { useTheme } from "../theme/ThemeProvider"
 
 export default function ErrorPage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const langs = localStorage.getItem("lang")
+  const { theme } = useTheme()
 
   useEffect(() => {
     if (langs) {
@@ -37,7 +39,7 @@ export default function ErrorPage() {
       <div>
       </div>
       <div>
-        <RiEmotionUnhappyFill size={64} color="Yellow" />
+        <RiEmotionUnhappyFill size={64} color={theme.mode === 'dark' ? 'Yellow' : 'var(--main-dark-color)'} />
         <span>{t('titleError')}</span>
         <div>
           <span>404</span>

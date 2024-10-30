@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 import { useLocation, useNavigate, useRouteError } from "react-router-dom"
 import { SomethingWrongPageStyled } from "../style/components/error.page"
 import { RiAlertFill } from "react-icons/ri"
+import { useTheme } from "../theme/ThemeProvider"
 
 export default function SomethingWrong() {
   const { t, i18n } = useTranslation()
@@ -11,6 +12,7 @@ export default function SomethingWrong() {
   const error = useRouteError()
   const langs = localStorage.getItem("lang")
   const [errorText, setErrorText] = useState('')
+  const { theme } = useTheme()
 
   useEffect(() => {
     if (langs) {
@@ -29,7 +31,7 @@ export default function SomethingWrong() {
 
   return (
     <SomethingWrongPageStyled>
-      <RiAlertFill size={64} color="Yellow" />
+      <RiAlertFill size={64} color={theme.mode === 'dark' ? 'Yellow' : 'var(--main-dark-color)'} />
       <h1>{t('titleError')}</h1>
       <p>{t('descriptionErrorWrong')}</p>
       <pre>
