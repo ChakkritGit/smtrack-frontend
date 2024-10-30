@@ -93,8 +93,9 @@ export default function Uploadfirmware() {
   const [displayedCards, setDisplayedCards] = useState<firmwareType[]>(dataFiles ? dataFiles.slice(0, cardsPerPage) : [])
   const [selectedDevices, setSelectedDevices] = useState<string[]>([])
   const [selectedDevicesOption, setSelectedDevicesOption] = useState(t('selectOTA'))
-  const [onProgress, setOnProgress] = useState(0)
+  let onCancel = false
   const fileTypes = ["BIN"]
+  let onProgress = 0
 
   const handleSelectedandClearSelected = (e: SingleValue<Option>) => {
     const selectedValue = e?.value
@@ -134,8 +135,15 @@ export default function Uploadfirmware() {
     }
 
     return new Promise((resolve) => {
+      if (onCancel) {
+        resolve()
+        return
+      }
+
       client.publish(`siamatic/${deviceModel}/${version}/${item}/firmware`, selectedDevicesOption)
-      setOnProgress(onProgress + 1)
+      onProgress += 1
+      const onProgressing = document.getElementById('onProgressing')
+      if (onProgressing) onProgressing.innerText = `${onProgress}`
       setTimeout(resolve, 300)
     })
   }
@@ -143,31 +151,65 @@ export default function Uploadfirmware() {
   const handleUpdate = async () => {
     if (selectedDevices.length > 0) {
       try {
+        onProgress = 0
         Swal.fire({
-          title: t('alertHeaderUpdating'),
-          html: `${onProgress}/${selectedDevices.length}<br>${t('sendingFirmware')}`,
+          title: `<div class="swal2-custom-title-container">
+                    <div class="swal2-custom-loading-icon"></div>
+                    <span>${t('alertHeaderUpdating')}</span>
+                  </div>`,
+          html: `<div class="swal2-custom-html"><div><span id="onProgressing">0</span>/<span>${selectedDevices.length}</span></div><span>${t('sendingFirmware')}</span><button id="cancelButton">${t('cancelButton')}</button></div>`,
           didOpen: () => {
-            Swal.showLoading()
+            const cancelButton = document.getElementById("cancelButton")
+            cancelButton?.addEventListener("click", () => {
+              onCancel = true
+              Swal.close()
+            })
           },
           allowOutsideClick: false,
-          showConfirmButton: false
+          showConfirmButton: false,
+          didRender: () => {
+            const loadingIcon = document.querySelector(".swal2-custom-loading-icon")
+            if (loadingIcon) loadingIcon.innerHTML = `<div class="swal2-loading"></div>`
+          }
         })
 
         for (const item of selectedDevices.sort()) {
           await publishDeviceUpdate(item, selectedDevicesOption)
+          if (onCancel) {
+            break
+          }
         }
 
-        await Swal.fire({
-          icon: 'success',
-          title: t('alertHeaderSuccess'),
-          text: t('sendingFirmwareSuccess'),
-          timer: 2000,
-          didOpen: () => {
-            Swal.hideLoading()
-          },
-          showConfirmButton: false
-        })
-        setSelectedDevices([])
+        if (!onCancel) {
+          await Swal.fire({
+            icon: 'success',
+            title: t('alertHeaderSuccess'),
+            text: t('sendingFirmwareSuccess'),
+            timer: 2000,
+            didOpen: () => {
+              Swal.hideLoading()
+            },
+            showConfirmButton: false
+          })
+          onCancel = false
+          onProgress = 0
+          setSelectedDevices([])
+        } else {
+          Swal.close()
+          onCancel = false
+          onProgress = 0
+          setSelectedDevices([])
+          await Swal.fire({
+            icon: 'success',
+            title: t('alertHeaderSuccess'),
+            text: t('onCancel'),
+            timer: 2000,
+            didOpen: () => {
+              Swal.hideLoading()
+            },
+            showConfirmButton: false
+          })
+        }
       } catch (error) {
         if (error instanceof Error) {
           await Swal.fire({
@@ -193,7 +235,6 @@ export default function Uploadfirmware() {
         showConfirmButton: false,
       })
     }
-
   }
 
   useEffect(() => {

@@ -497,6 +497,63 @@ img {
   }
 }
 
+div:where(.swal2-container) div:where(.swal2-loader) {
+    border-color: var(--main-color) rgba(0, 0, 0, 0) var(--main-color) rgba(0, 0, 0, 0) !important;
+}
+
+.swal2-custom-title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: .5rem;
+
+  &>br {
+    display: none;
+  }
+}
+
+.swal2-custom-html {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .8rem;
+
+  &>button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    width: max-content;
+    height: 45;
+    max-height: 45px;
+    border-radius: var(--border-radius-big);
+    border: 2px solid transparent;
+    background-color: var(--main-color);
+    color: var(--white);
+    font-weight: bold;
+    padding: .5rem;
+
+    &:hover {
+      background-color: var(--second-color);
+      transition: .3s;
+    }
+  }
+}
+
+.swal2-loading {
+    border: 8px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--main-color);
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 ${(props) =>
     props.theme.mode === 'dark' ?
       css`

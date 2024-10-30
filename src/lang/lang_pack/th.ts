@@ -408,6 +408,7 @@ export default {
     appDownload: 'ดาวน์โหลด',
     sysLogs: 'บันทึกระบบ',
     appMenu: 'แอปพลิเคชั่น',
+    onCancel: 'ยกเลิกสำเร็จ',
 
     // connect
     ipAddress: 'IP',
@@ -426,7 +427,7 @@ export default {
     alertHeaderWarning: 'คำเตือน',
     alertHeaderError: 'ผิดพลาด',
     alertHeaderSuccess: 'สำเร็จ',
-    alertHeaderUpdating: 'กำลังอัปเดท...',
+    alertHeaderUpdating: 'กำลังอัปเดท',
     completeField: 'โปรดป้อนข้อมูลให้ครบ',
     deleteUserTitle: 'คุณต้องการลบผู้ใช้หรือไม่',
     notReverseText: 'คุณจะไม่สามารถย้อนกลับสิ่งนี้ได้',

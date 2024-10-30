@@ -408,6 +408,7 @@ export default {
     appDownload: 'Download',
     sysLogs: 'Logs',
     appMenu: 'Apps',
+    onCancel: 'Canceled',
 
     // connect
     ipAddress: 'IP',
@@ -426,7 +427,7 @@ export default {
     alertHeaderWarning: 'Warning',
     alertHeaderError: 'Error',
     alertHeaderSuccess: 'Success',
-    alertHeaderUpdating: 'Updating...',
+    alertHeaderUpdating: 'Updating',
     completeField: 'Please complete this field!',
     deleteUserTitle: 'Do you want to delete a user?',
     notReverseText: 'You will not be able to reverse this',
