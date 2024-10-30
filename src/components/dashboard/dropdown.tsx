@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setDeviceId, setSerial } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setDefaultLogs } from "../../stores/LogsSlice"
 import { devicesType } from "../../types/device.type"
 import { cookieOptions, cookies } from "../../constants/constants"
@@ -25,8 +24,8 @@ type Device = {
 export default function Dropdown() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
-  const { deviceId, Serial, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { devices } = useSelector((state: RootState) => state.devices)
+  const { deviceId, Serial, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
   const [val, setVal] = useState(`${deviceId}-${Serial}`)
   const { theme } = useTheme()
 

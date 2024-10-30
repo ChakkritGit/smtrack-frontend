@@ -9,9 +9,8 @@ import WardDropdown from "../../components/dropdown/wardDropdown"
 import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { fetchUserData } from "../../stores/userSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
 import { accessToken, cookieOptions, cookies, resizeImage } from "../../constants/constants"
@@ -35,7 +34,7 @@ export default function Adduser(AdduserProp: adduserProp) {
   const { pagestate, userData } = AdduserProp
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { tokenDecode, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { tokenDecode, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token, displayName, userLevel } = cookieDecode
   const [show, setShow] = useState(false)
   const [showPass, setShowPass] = useState(false)

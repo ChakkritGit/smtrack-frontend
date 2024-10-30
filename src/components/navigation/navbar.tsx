@@ -8,9 +8,8 @@ import Button from 'react-bootstrap/Button'
 import { useEffect } from "react"
 import Globalsearch from "../filter/globalsearch"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setExpand } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 
 type navbar = {
   handleShow: () => void
@@ -18,7 +17,7 @@ type navbar = {
 
 export default function Navbar(navbar: navbar) {
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand, transparent } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand, transparent } = useSelector((state: RootState) => state.utilsState)
   useEffect(() => {
     localStorage.setItem('expandaside', expand.toString())
   }, [expand])

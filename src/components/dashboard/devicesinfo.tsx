@@ -24,9 +24,8 @@ import { client } from "../../services/mqtt"
 import { responseType } from "../../types/response.type"
 import { probeType } from "../../types/probe.type"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { fetchDevicesLog } from "../../stores/LogsSlice"
 import Adjustment from "../adjustments/adjustment"
 import ModalNotification from "../home/modal.noti"
@@ -50,7 +49,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
   const { devicesData } = devicesinfo
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [showPic, setShowpic] = useState(false)

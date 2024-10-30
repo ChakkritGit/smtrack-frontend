@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next"
 import { responseType } from "../../types/response.type"
 import { hospitalsType } from "../../types/hospital.type"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
+import { RootState } from "../../stores/store"
 
 type Option = {
   value: string,
@@ -24,7 +24,7 @@ export default function WardDropdown(DwardProp: dropDownWardProp) {
   const { t } = useTranslation()
   const { groupId, Hosid, setStateWard } = DwardProp
   const [wardData, setWardData] = useState<wardsType[]>([])
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const { theme } = useTheme()
 

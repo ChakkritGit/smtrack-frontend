@@ -5,12 +5,11 @@ import { ModalHead, NotificationBadge, NotificationContainer } from "../../style
 import { Modal } from "react-bootstrap"
 import { CountUp } from "countup.js"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { responseType } from "../../types/response.type"
 import axios, { AxiosError } from "axios"
 import Notificationdata from "../../components/notification/notificationdata"
 import notificationSound from "../../assets/sounds/notification.mp3"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setNotidata, setShowAlert } from "../../stores/utilsStateSlice"
 import { useTranslation } from "react-i18next"
 import toast from "react-hot-toast"
@@ -20,7 +19,7 @@ import { useTheme } from "../../theme/ThemeProvider"
 export default function Notification() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { socketData, soundMode, popUpMode, cookieDecode, notiData } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { socketData, soundMode, popUpMode, cookieDecode, notiData } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [number, setNumber] = useState(0)
   const [show, setShow] = useState(false)

@@ -16,9 +16,8 @@ import axios, { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
 import { responseType } from '../../types/response.type'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeviceStateStore, UtilsStateStore } from '../../types/redux.type'
 import { setRefetchdata, setShowAlert } from '../../stores/utilsStateSlice'
-import { storeDispatchType } from '../../stores/store'
+import { RootState, storeDispatchType } from '../../stores/store'
 
 type addrepairtype = {
   pagestate: string,
@@ -30,7 +29,7 @@ export default function Addrepair(addrepair: addrepairtype) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { devdata, fetchdata, pagestate } = addrepair
-  const { cookieDecode, reFetchData } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token, displayName, hosId, groupId } = cookieDecode
   const [show, setShow] = useState(false)
   const [repairData, setRepairdata] = useState({

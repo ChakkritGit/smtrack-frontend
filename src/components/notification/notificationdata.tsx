@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next"
 import { useState } from "react"
 import { NotiHead, NotiHeadBtn } from "../../style/components/notification"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { RootState } from "../../stores/store"
 
 type notilist = {
   data: notificationType[],
@@ -23,7 +23,7 @@ export default function Notificationdata(notilist: notilist) {
   const { t } = useTranslation()
   const { data, funcfetch } = notilist
   const [pageState, setPageState] = useState(1)
-  const { cookieDecode, transparent } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode, transparent } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
 
   const setRead = async (notiID: string) => {

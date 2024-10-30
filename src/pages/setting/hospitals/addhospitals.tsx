@@ -7,9 +7,8 @@ import Swal from 'sweetalert2'
 import axios, { AxiosError } from 'axios'
 import { addHospitalProp } from '../../../types/prop.type'
 import { useDispatch } from 'react-redux'
-import { storeDispatchType } from '../../../stores/store'
+import { RootState, storeDispatchType } from '../../../stores/store'
 import { useSelector } from 'react-redux'
-import { DeviceStateStore, UtilsStateStore } from '../../../types/redux.type'
 import { fetchHospitals } from '../../../stores/dataArraySlices'
 import { responseType } from '../../../types/response.type'
 import { hospitalsType } from '../../../types/hospital.type'
@@ -21,7 +20,7 @@ export default function Addhospitals(addhosprop: addHospitalProp) {
   const [show, setShow] = useState(false)
   const { pagestate, hosdata } = addhosprop
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [formdata, setFormdata] = useState({
     name: pagestate !== "add" ? hosdata?.hosName as string : '',

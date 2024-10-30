@@ -5,13 +5,12 @@ import { RiAddLine, RiCloseLine, RiEditLine } from "react-icons/ri"
 import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
 import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import { FormBtn, FormFlexBtn, ModalHead } from "../../../style/style"
-import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useDispatch, useSelector } from "react-redux"
 import Swal from "sweetalert2"
 import axios, { AxiosError } from "axios"
 import { responseType } from "../../../types/response.type"
 import { probeType } from "../../../types/probe.type"
-import { storeDispatchType } from "../../../stores/store"
+import { RootState, storeDispatchType } from "../../../stores/store"
 import { fetchProbeData } from "../../../stores/probeSlice"
 import { client } from "../../../services/mqtt"
 import { setRefetchdata, setShowAlert } from "../../../stores/utilsStateSlice"
@@ -38,8 +37,8 @@ export default function Addprobe(addprobe: addprobeProps) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { pagestate, probeData } = addprobe
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { devices } = useSelector((state: RootState) => state.devices)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [formdata, setFormdata] = useState({

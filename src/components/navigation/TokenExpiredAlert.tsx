@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { cookieOptions, cookies } from '../../constants/constants'
 import { setCookieEncode, setDeviceId, setSerial, setShowAlert } from '../../stores/utilsStateSlice'
 import { swalTokenInvalid } from '../dropdown/sweetalertLib'
-import { DeviceStateStore, UtilsStateStore } from '../../types/redux.type'
+import { RootState } from '../../stores/store'
 
 const TokenExpiredAlert = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { showAlert } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { showAlert } = useSelector((state: RootState) => state.utilsState)
 
   useEffect(() => {
     swalTokenInvalid.fire({

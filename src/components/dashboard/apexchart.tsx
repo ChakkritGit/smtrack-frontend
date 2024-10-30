@@ -1,8 +1,8 @@
 import Chart from "react-apexcharts"
 import { logtype } from "../../types/log.type"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { useTheme } from "../../theme/ThemeProvider"
+import { RootState } from "../../stores/store"
 
 type chartType = {
   chartData: logtype[],
@@ -14,7 +14,7 @@ type chartType = {
 }
 
 const Apexchart = (chart: chartType) => {
-  const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand } = useSelector((state: RootState) => state.utilsState)
   const { chartData, devicesData, isExport, showDataLabel } = chart
   const { tempMax, tempMin } = devicesData
   const tempAvgValues = chartData.map((items) => items.tempAvg)

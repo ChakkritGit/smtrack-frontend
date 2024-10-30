@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react"
 import { historyType } from "../../../types/hostory.type"
 import axios, { AxiosError } from "axios"
-import { DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useDispatch, useSelector } from "react-redux"
 import { responseType } from "../../../types/response.type"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { LineHr, ManageHistoryBody, ModalHead } from "../../../style/style"
 import { useTranslation } from "react-i18next"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../../stores/store"
+import { RootState, storeDispatchType } from "../../../stores/store"
 import { Modal } from "react-bootstrap"
 import { RiCloseLine } from "react-icons/ri"
 import { DetailsFlex, LogDetailsButton } from "../../../style/components/log.update"
@@ -16,7 +15,7 @@ import { DetailsFlex, LogDetailsButton } from "../../../style/components/log.upd
 export default function AdjustLog() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode, searchQuery } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode, searchQuery } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [history, setHistory] = useState<historyType[]>([])
   const [detail, setDetail] = useState<historyType>({} as historyType)

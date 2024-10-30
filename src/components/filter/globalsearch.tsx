@@ -6,13 +6,12 @@ import {
 } from "../../style/style"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setSearchQuery } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 
 export default function Globalsearch() {
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery } = useSelector((state: RootState) => state.utilsState)
   const [showSearch, setShowSearch] = useState(false)
   const { t } = useTranslation()
   const searchRef = useRef<HTMLInputElement | null>(null)

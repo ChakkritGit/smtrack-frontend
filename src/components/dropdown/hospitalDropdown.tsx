@@ -1,10 +1,9 @@
-import { hospitalsType } from "../../types/hospital.type"
 import { dropDownHospitalProp } from "../../types/prop.type"
 import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
-import { DeviceStateStore } from "../../types/redux.type"
 import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
+import { RootState } from "../../stores/store"
 
 type Option = {
   value: string,
@@ -20,7 +19,7 @@ export default function HospitalDropdown(hosprop: dropDownHospitalProp) {
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { setHos_id, Hosid, page } = hosprop
-  const hospitalsData = useSelector<DeviceStateStore, hospitalsType[]>((state) => state.arraySlice.hospital.hospitalsData)
+  const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
 
   const setHosId = (e: SingleValue<Option>) => {
     const selectedValue = e?.value

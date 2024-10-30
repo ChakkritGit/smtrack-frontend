@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux"
 import Chart from "react-apexcharts"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { CompareType } from "../../types/log.type"
 import { useTheme } from "../../theme/ThemeProvider"
+import { RootState } from "../../stores/store"
 
 type compareChart = {
   chartData: CompareType[],
@@ -18,7 +18,7 @@ interface seriesType {
 }
 
 const CompareChartComponent = ({ chartData, isExport }: compareChart) => {
-  const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand } = useSelector((state: RootState) => state.utilsState)
   const { theme } = useTheme()
 
   const seriesData = () => {

@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next"
 import { Slider } from "@mui/material"
 import { AdjustRealTimeFlex } from "../../style/components/home.styled"
 import { RiArrowDownLine, RiArrowRightLine } from "react-icons/ri"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { useSelector } from "react-redux"
 import { Dispatch, SetStateAction } from "react"
 import { devicesType } from "../../types/device.type"
+import { RootState } from "../../stores/store"
 
 type AdjustmentType = {
   tempvalue: number[],
@@ -35,7 +35,7 @@ type AdjustmentType = {
 
 function Adjustment(adjustProps: AdjustmentType) {
   const { t } = useTranslation()
-  const { tokenDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { userLevel } = tokenDecode
   const { humvalue, tempvalue, setTempvalue, setHumvalue, handleTempChange,
     handleHumChange, formData, setFormData, handleAdjusttempChange,

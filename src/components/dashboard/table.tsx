@@ -5,9 +5,9 @@ import DataTable, { TableColumn } from "react-data-table-component"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { useSelector } from "react-redux"
 import { cookieOptions, cookies } from "../../constants/constants"
+import { RootState } from "../../stores/store"
 
 type tableType = {
   data: logtype[],
@@ -19,7 +19,7 @@ type tableType = {
 
 export default function Table(tableType: tableType) {
   const { t } = useTranslation()
-  const { searchQuery } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery } = useSelector((state: RootState) => state.utilsState)
   const [tableData, setTableData] = useState<logtype[]>([])
   const navigate = useNavigate()
   const { data, devSn, tempMin, tempMax } = tableType

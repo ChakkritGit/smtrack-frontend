@@ -3,14 +3,14 @@ import Managedev from './managedevices'
 import Probesetting from './probesetting'
 import Uploadfirmware from './uploadfirmware'
 import { useSelector } from 'react-redux'
-import { DeviceStateStore, UtilsStateStore } from '../../../types/redux.type'
 import { useState } from 'react'
 import { cookieOptions, cookies } from '../../../constants/constants'
 import { MainTab, MainTabManageContainer } from '../../../style/components/manage.dev'
+import { RootState } from '../../../stores/store'
 
 export default function Adddevices() {
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userLevel } = cookieDecode
   const [selectedTab, setSelectedTab] = useState<string>(cookies.get('selectTabSub') ?? 'device')
 

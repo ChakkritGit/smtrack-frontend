@@ -4,10 +4,9 @@ import {
   DevCardFooter
 } from '../../style/style'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeviceStateStore, UtilsStateStore } from '../../types/redux.type'
 import { FilterText } from '../../types/component.type'
 import { useTranslation } from 'react-i18next'
-import { storeDispatchType } from '../../stores/store'
+import { RootState, storeDispatchType } from '../../stores/store'
 import { setOnFilter } from '../../stores/utilsStateSlice'
 
 type DevCardProps = {
@@ -23,7 +22,7 @@ type DevCardProps = {
 export default function DevicesCard(DevCard: DevCardProps) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand } = useSelector((state: RootState) => state.utilsState)
   const { switchcase } = DevCard
 
   const handleFilter = useCallback(() => {

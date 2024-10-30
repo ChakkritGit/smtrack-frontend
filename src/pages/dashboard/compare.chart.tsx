@@ -7,7 +7,6 @@ import {
 } from "react-icons/ri"
 import { Link, useNavigate } from "react-router-dom"
 import CompareChartComponent from "../../components/dashboard/compare.chart.component"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { useDispatch, useSelector } from "react-redux"
 import Loading from "../../components/loading/loading"
 import {
@@ -19,7 +18,7 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import toast from "react-hot-toast"
 import html2canvas from "html2canvas"
 import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { wardsType } from "../../types/ward.type"
@@ -35,7 +34,7 @@ const Comparechart = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
-  const { expand, cookieDecode, deviceId, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand, cookieDecode, deviceId, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
   const { hosName, token, hosImg } = cookieDecode
   const [pageNumber, setPagenumber] = useState(1)
   const canvasChartRef = useRef<HTMLDivElement | null>(null)

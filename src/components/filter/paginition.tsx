@@ -45,7 +45,7 @@ export default function Paginition(pagniprop: pagniprop) {
         <PaginitionFlexTwo>
           <PaginitionButton
             disabled={currentPage === 0}
-            onClick={() => changePage(-currentPage)} // ไปหน้าแรก
+            onClick={() => changePage(-currentPage)}
           >
             <RiArrowLeftDoubleFill />
           </PaginitionButton>

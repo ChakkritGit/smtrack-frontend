@@ -7,9 +7,8 @@ import { hospitalsType } from "../../../types/hospital.type"
 import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
 import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine } from "react-icons/ri"
 import { useSelector } from "react-redux"
-import { DataArrayStore, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useDispatch } from "react-redux"
-import { storeDispatchType } from "../../../stores/store"
+import { RootState, storeDispatchType } from "../../../stores/store"
 import { fetchHospitals } from "../../../stores/dataArraySlices"
 import { wardsType } from "../../../types/ward.type"
 import { responseType } from "../../../types/response.type"
@@ -25,9 +24,9 @@ import HospitalDropdown from "../../../components/dropdown/hospitalDropdown"
 export default function ManageHospitals() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode, tokenDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
-  const { hospital } = useSelector<DeviceStateStore, DataArrayStore>((state) => state.arraySlice)
+  const { hospital } = useSelector((state: RootState) => state.arraySlice)
   const { hospitalsData } = hospital
   const { userLevel } = tokenDecode
   const [addwardprop, setAddwardprop] = useState<{ pagestate: string, warddata: wardsType | undefined }>({

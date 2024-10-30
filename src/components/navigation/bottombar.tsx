@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { NavProfile } from "../../style/style"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { RootState } from "../../stores/store"
 
 interface BottombarProps {
   isScrollingDown: boolean
@@ -14,7 +14,7 @@ export default function Bottombar({ isScrollingDown }: BottombarProps) {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
-  const {  cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const {  cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userPicture } = cookieDecode
 
   return (

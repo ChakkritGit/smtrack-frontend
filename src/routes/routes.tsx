@@ -3,13 +3,12 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { socket } from '../services/websocket'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { storeDispatchType } from '../stores/store'
+import { RootState, storeDispatchType } from '../stores/store'
 import { setCookieDecode, setSocketData } from '../stores/utilsStateSlice'
 import { client } from '../services/mqtt'
 import { socketResponseType } from '../types/component.type'
 import { TabConnect } from '../style/style'
 import { useTranslation } from 'react-i18next'
-import { DeviceStateStore, UtilsStateStore } from '../types/redux.type'
 import { AuthRoute } from '../middleware/authprotect'
 import { CookieType } from '../types/cookie.type'
 import toast, { useToasterStore } from 'react-hot-toast'
@@ -190,7 +189,7 @@ export default function RoutesComponent() {
   const dispatch = useDispatch<storeDispatchType>()
   const [status, setStatus] = useState(false)
   const [show, setShow] = useState(false)
-  const { cookieEncode, cookieDecode, tokenDecode, deviceId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieEncode, cookieDecode, tokenDecode, deviceId } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const { userLevel, hosId } = tokenDecode
   const { toasts } = useToasterStore()

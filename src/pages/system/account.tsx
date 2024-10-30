@@ -10,16 +10,15 @@ import { useTranslation } from "react-i18next"
 import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import Swal from "sweetalert2"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
 import { accessToken, cookieOptions, cookies, resizeImage } from "../../constants/constants"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setCookieEncode, setShowAlert } from "../../stores/utilsStateSlice"
 
 export default function Account() {
   const [userpicture, setUserpicture] = useState<string>('')
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()

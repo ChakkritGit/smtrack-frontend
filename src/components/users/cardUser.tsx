@@ -7,9 +7,8 @@ import { swalWithBootstrapButtons } from "../dropdown/sweetalertLib"
 import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { useDispatch, useSelector } from "react-redux"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { fetchUserData } from "../../stores/userSlice"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
 import { setShowAlert } from "../../stores/utilsStateSlice"
@@ -17,7 +16,7 @@ import { setShowAlert } from "../../stores/utilsStateSlice"
 export default function CardUser(userProp: cardType) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const { displayName, userId, userLevel, userName, userPic } = userProp
 

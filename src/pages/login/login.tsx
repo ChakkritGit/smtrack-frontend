@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next'
 import { FormEvent, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { RiLoader3Line } from "react-icons/ri"
-// import { FaLine } from "react-icons/fa"
 import { useEffect } from 'react'
 import { setCookieEncode } from '../../stores/utilsStateSlice'
 import { useDispatch } from 'react-redux'

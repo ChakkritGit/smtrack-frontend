@@ -22,13 +22,12 @@ import * as XLSX from 'xlsx'
 import { RiArrowRightSLine } from "react-icons/ri"
 import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { cookies, getDateNow } from "../../constants/constants"
 import { responseType } from "../../types/response.type"
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import PageLoading from "../../components/loading/page.loading"
 
 export default function Fulltable() {
@@ -41,7 +40,7 @@ export default function Fulltable() {
   const [devData, setDevData] = useState<devicesType>()
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState<logtype[]>([])
-  const { searchQuery, deviceId, expand, cookieDecode, Serial } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery, deviceId, expand, cookieDecode, Serial } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [filterDate, setFilterDate] = useState({
     startDate: '',

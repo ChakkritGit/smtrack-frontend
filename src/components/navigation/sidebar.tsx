@@ -14,9 +14,8 @@ import {
 } from '../../style/style'
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setCookieEncode, setShowAlert, setShowAside } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { AboutVersion } from "../../style/components/sidebar"
 import { responseType } from "../../types/response.type"
 import axios, { AxiosError } from "axios"
@@ -25,7 +24,7 @@ import { accessToken, cookieOptions, cookies } from "../../constants/constants"
 
 export default function sidebar() {
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand, tokenDecode, cookieDecode, notiData } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand, tokenDecode, cookieDecode, notiData } = useSelector((state: RootState) => state.utilsState)
   const { token, hosImg, hosName, userLevel } = cookieDecode
   const { t } = useTranslation()
   const location = useLocation()

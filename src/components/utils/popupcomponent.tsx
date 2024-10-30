@@ -1,10 +1,10 @@
 import { Toaster } from "react-hot-toast"
 import TokenExpiredAlert from "../navigation/TokenExpiredAlert"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { RootState } from "../../stores/store"
 
 export default function Popupcomponent() {
-  const { showAlert } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { showAlert } = useSelector((state: RootState) => state.utilsState)
 
   return (
     <>

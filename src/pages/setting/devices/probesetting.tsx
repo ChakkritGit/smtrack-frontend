@@ -4,11 +4,10 @@ import Addprobe from "./addprobe"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { probeType } from "../../../types/probe.type"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, ProbeState, UtilsStateStore } from "../../../types/redux.type"
 import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
 import { RiDeleteBin2Line } from "react-icons/ri"
 import axios, { AxiosError } from "axios"
-import { storeDispatchType } from "../../../stores/store"
+import { RootState, storeDispatchType } from "../../../stores/store"
 import { fetchProbeData } from "../../../stores/probeSlice"
 import Swal from "sweetalert2"
 import { responseType } from "../../../types/response.type"
@@ -19,8 +18,8 @@ import FilterHosAndWard from "../../../components/dropdown/filter.hos.ward"
 export default function Probesetting() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { probeData } = useSelector<DeviceStateStore, ProbeState>((state) => state.probe)
+  const { searchQuery, cookieDecode, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
+  const { probeData } = useSelector((state: RootState) => state.probe)
   const { token, userLevel } = cookieDecode
 
   useEffect(() => {

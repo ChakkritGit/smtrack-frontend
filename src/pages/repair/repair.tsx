@@ -16,17 +16,16 @@ import Swal from "sweetalert2"
 import { useReactToPrint } from "react-to-print"
 import PrintComponent from "./printComponent"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { responseType } from "../../types/response.type"
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { setRefetchdata, setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 
 export default function Repair() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [repairData, setRepairdata] = useState<repairType[]>([])
   const [repairDataPrint, setRepairdataprint] = useState<repairType[]>([])

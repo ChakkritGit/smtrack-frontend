@@ -1,12 +1,11 @@
 import { ReactElement, useEffect, useState } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeviceStateStore, UtilsStateStore } from '../types/redux.type'
 import { CookieType } from '../types/cookie.type'
 import { cookieOptions, cookies, decodeCookieObject } from '../constants/constants'
 import CryptoJS from "crypto-js"
 import { setCookieEncode } from '../stores/utilsStateSlice'
-import { storeDispatchType } from '../stores/store'
+import { RootState, storeDispatchType } from '../stores/store'
 import { reset } from '../stores/resetAction'
 
 type AuthProps = {
@@ -15,7 +14,7 @@ type AuthProps = {
 
 const ProtectedRoute = ({ children }: AuthProps) => {
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieEncode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieEncode } = useSelector((state: RootState) => state.utilsState)
   const [isValid, setIsValid] = useState<boolean | null>(null)
 
   useEffect(() => {

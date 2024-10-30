@@ -15,9 +15,8 @@ import Adddevform from "./adddevform"
 import Swal from "sweetalert2"
 import toast from "react-hot-toast"
 import { useSelector } from "react-redux"
-import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { useDispatch } from "react-redux"
-import { storeDispatchType } from "../../../stores/store"
+import { RootState, storeDispatchType } from "../../../stores/store"
 import { fetchDevicesData } from "../../../stores/devicesSlices"
 import PageLoading from "../../../components/loading/page.loading"
 import { responseType } from "../../../types/response.type"
@@ -31,9 +30,9 @@ export default function Managedev() {
   const { t, i18n } = useTranslation()
   const langs = localStorage.getItem("lang")
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode, wardId, hosId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery, cookieDecode, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
   const { token, userLevel } = cookieDecode
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
+  const { devices } = useSelector((state: RootState) => state.devices)
 
   useEffect(() => {
     return () => {

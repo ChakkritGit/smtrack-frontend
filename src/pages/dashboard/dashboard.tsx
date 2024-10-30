@@ -4,11 +4,10 @@ import Dropdown from "../../components/dashboard/dropdown"
 import Chart from "../../components/dashboard/chart"
 import Devicesinfo from "../../components/dashboard/devicesinfo"
 import Table from "../../components/dashboard/table"
-import { DeviceState, DeviceStateStore, LogState, UtilsStateStore } from "../../types/redux.type"
 import { useDispatch, useSelector } from "react-redux"
 import PageLoading from "../../components/loading/page.loading"
 import { useEffect } from "react"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setDeviceId, setSearchQuery, setSerial } from "../../stores/utilsStateSlice"
 import { fetchDevicesLog } from "../../stores/LogsSlice"
 import { cookieOptions, cookies } from "../../constants/constants"
@@ -22,9 +21,9 @@ export default function Dashboard() {
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { devicesLogs } = useSelector<DeviceStateStore, LogState>((state) => state.logs)
-  const { expand, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
+  const { devicesLogs } = useSelector((state: RootState) => state.logs)
+  const { expand, cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { devices } = useSelector((state: RootState) => state.devices)
   const { token } = cookieDecode
 
   useEffect(() => {

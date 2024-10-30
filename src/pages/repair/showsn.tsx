@@ -3,9 +3,8 @@ import { devicesType } from "../../types/device.type"
 import axios, { AxiosError } from "axios"
 import { useTranslation } from "react-i18next"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
 
@@ -52,7 +51,7 @@ type RepairOption = {
 export default function Showsn(sntype: sntype) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [devData, setDevData] = useState<devicesType[]>([])
   const [selectedval, setSelectedVal] = useState(sntype.devIdkey ?? '')

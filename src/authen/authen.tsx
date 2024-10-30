@@ -5,7 +5,7 @@ import { DeviceStateStore, UtilsStateStore } from "../types/redux.type"
 import { useSelector } from "react-redux"
 
 export function Islogout() {
-  const { cookieEncode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieEncode } = useSelector((state: RootState) => state.utilsState)
 
   if (cookieEncode !== '') {
     return <Navigate to="/" />
@@ -15,7 +15,7 @@ export function Islogout() {
 }
 
 export function Hidesetting() {
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userLevel } = cookieDecode
   return (
     userLevel === '3' ? <Notacess /> : <Outlet />
@@ -23,7 +23,7 @@ export function Hidesetting() {
 }
 
 export function HideFlashFW() {
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userLevel } = cookieDecode
   return (
     userLevel !== '0' ? <Notacess /> : <Outlet />

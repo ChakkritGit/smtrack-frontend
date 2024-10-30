@@ -1,15 +1,14 @@
 import { useTranslation } from "react-i18next"
 import { LiNoti, NotificationSoundButton, NotificationSoundFlex } from "../../style/components/notification"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setPopUpMode, setSoundMode } from "../../stores/utilsStateSlice"
 import { RiSpeakerLine } from "react-icons/ri"
 
 export default function Noti() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { soundMode, popUpMode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { soundMode, popUpMode } = useSelector((state: RootState) => state.utilsState)
 
   const switchOption = () => {
     dispatch(setSoundMode(!soundMode))

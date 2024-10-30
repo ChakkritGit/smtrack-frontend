@@ -3,12 +3,12 @@ import { BackPre, BR, HeadTitle, NavigateTop, PrivacyContainer } from "../../sty
 import { RiArrowLeftSLine } from "react-icons/ri"
 import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { RootState } from "../../stores/store"
 
 function Policy() {
   const { t } = useTranslation()
   const navagate = useNavigate()
-  const { cookieEncode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieEncode } = useSelector((state: RootState) => state.utilsState)
 
   return (
     <PrivacyContainer>

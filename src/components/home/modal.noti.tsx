@@ -14,10 +14,9 @@ import { scheduleDayArray, scheduleMinuteArray, scheduleTimeArray } from "../../
 import Swal from "sweetalert2"
 import axios, { AxiosError } from "axios"
 import { responseType } from "../../types/response.type"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { useDispatch, useSelector } from "react-redux"
 import { client } from "../../services/mqtt"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
 
 type modalAdjustType = {
@@ -33,7 +32,7 @@ function ModalNotification(modalProps: modalAdjustType) {
   const { fetchData, devicesdata, showSetting, setShowSetting, setShow } = modalProps
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const [muteMode, setMuteMode] = useState({
     choichOne: devicesdata.config.notiTime === 0 ? 'immediately' : 'after',
     choichtwo: devicesdata.config.backToNormal === "0" ? 'send' : 'donotsend',

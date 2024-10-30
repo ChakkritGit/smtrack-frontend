@@ -9,10 +9,9 @@ import { RiMenuFoldLine } from "react-icons/ri"
 import { jwtToken } from "../types/component.type"
 import { jwtDecode } from "jwt-decode"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../types/redux.type"
 import { setRefetchdata, setShowAside, setTokenDecode } from "../stores/utilsStateSlice"
 import { fetchHospitals, fetchWards, filtersDevices } from "../stores/dataArraySlices"
-import { storeDispatchType } from "../stores/store"
+import { RootState, storeDispatchType } from "../stores/store"
 import { fetchDevicesLog } from "../stores/LogsSlice"
 import { fetchDevicesData } from "../stores/devicesSlices"
 import { fetchUserData } from "../stores/userSlice"
@@ -25,7 +24,7 @@ import Popupcomponent from "../components/utils/popupcomponent"
 
 export default function Main() {
   const dispatch = useDispatch<storeDispatchType>()
-  const { socketData, showAside, deviceId, cookieDecode, reFetchData } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { socketData, showAside, deviceId, cookieDecode, reFetchData } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const handleClose = () => dispatch(setShowAside(false))
   const handleShow = () => dispatch(setShowAside(true))

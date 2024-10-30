@@ -9,9 +9,8 @@ import Swal from 'sweetalert2'
 import HospitalDropdown from '../../../components/dropdown/hospitalDropdown'
 import WardDropdown from '../../../components/dropdown/wardDropdown'
 import { useDispatch } from 'react-redux'
-import { storeDispatchType } from '../../../stores/store'
+import { RootState, storeDispatchType } from '../../../stores/store'
 import { useSelector } from 'react-redux'
-import { DeviceStateStore, UtilsStateStore } from '../../../types/redux.type'
 import { fetchDevicesData } from '../../../stores/devicesSlices'
 import { responseType } from '../../../types/response.type'
 import { ManageConfigAdd, ModeNetworkFlex } from '../../../style/components/manage.config'
@@ -52,7 +51,7 @@ export default function Adddevform(managedevices: managedevices) {
     macAddWiFi: pagestate !== "add" ? devdata.config.macAddWiFi : ''
   })
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode, tokenDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { token, userLevel } = cookieDecode
   const [devicePicture, setDevicePicture] = useState<string>(devdata.locPic ? `${import.meta.env.VITE_APP_IMG}${devdata.locPic}` : '')
   const { config } = devdata

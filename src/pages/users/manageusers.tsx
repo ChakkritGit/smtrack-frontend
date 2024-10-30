@@ -7,20 +7,19 @@ import { usersType } from "../../types/user.type"
 import Adduser from "./adduser"
 import Paginition from "../../components/filter/paginition"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UserState, UtilsStateStore } from "../../types/redux.type"
 import { setSearchQuery } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { paginationCardUsers } from "../../constants/constants"
 import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 
 export default function Permission() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { userData } = useSelector<DeviceStateStore, UserState>((state) => state.user)
+  const { userData } = useSelector((state: RootState) => state.user)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [cardsPerPage, setCardsPerPage] = useState<number>(20)
   const [displayedCards, setDisplayedCards] = useState<usersType[]>(userData ? userData.slice(0, cardsPerPage) : [])
-  const { searchQuery, expand, tokenDecode, hosId, wardId } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery, expand, tokenDecode, hosId, wardId } = useSelector((state: RootState) => state.utilsState)
   const { userId } = tokenDecode
   // Filter Data
 

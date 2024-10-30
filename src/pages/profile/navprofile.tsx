@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next"
 import { NavbarProfileDropdown } from "../../style/components/navbar"
 import { cookieOptions, cookies } from "../../constants/constants"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
 import { reset } from "../../stores/resetAction"
 import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
@@ -16,7 +15,7 @@ export default function Navprofile() {
   const navigate = useNavigate()
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userPicture, displayName, userLevel } = cookieDecode
 
   const logOut = () => {

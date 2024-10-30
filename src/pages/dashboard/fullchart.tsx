@@ -29,12 +29,11 @@ import { RiArrowRightSLine } from "react-icons/ri"
 import toast from "react-hot-toast"
 import Apexchart from "../../components/dashboard/apexchart"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { cookies, getDateNow, styleElement } from "../../constants/constants"
 import { responseType } from "../../types/response.type"
 import { wardsType } from "../../types/ward.type"
 import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import PageLoading from "../../components/loading/page.loading"
 import { WaitExportImage } from "../../style/components/page.loading"
 import Loading from "../../components/loading/loading"
@@ -44,7 +43,7 @@ export default function Fullchart() {
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
   const [pageNumber, setPagenumber] = useState(1)
-  const { Serial, deviceId, expand, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { Serial, deviceId, expand, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token, hosName, hosImg, userLevel } = cookieDecode
   const [filterDate, setFilterDate] = useState({
     startDate: '',

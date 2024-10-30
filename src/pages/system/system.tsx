@@ -11,7 +11,6 @@ import Color from "./display"
 import { useNavigate } from "react-router-dom"
 import Account from "./account"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import Lang from "./lang"
 import Noti from "./noti"
 import { motion } from "framer-motion"
@@ -19,14 +18,14 @@ import { items } from "../../animation/animate"
 import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
 import { cookieOptions, cookies } from "../../constants/constants"
 import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import Logs from "../setting/Logs"
 import DownloadApp from "./download"
 
 export default function System() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { expand, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userLevel } = cookieDecode
   const [pagenumber, setPagenumber] = useState(localStorage.getItem('settingTab') ?? '1')
   const navigate = useNavigate()

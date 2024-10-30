@@ -6,11 +6,10 @@ import { Col, Form, InputGroup, Modal, Row } from 'react-bootstrap'
 import { FormBtn, FormFlexBtn, ModalHead } from '../../../style/style'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
-import { DeviceState, DeviceStateStore, UtilsStateStore } from '../../../types/redux.type'
 import Swal from 'sweetalert2'
 import axios, { AxiosError } from 'axios'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
-import { storeDispatchType } from '../../../stores/store'
+import { RootState, storeDispatchType } from '../../../stores/store'
 import { fetchDevicesData } from '../../../stores/devicesSlices'
 import { useTheme } from '../../../theme/ThemeProvider'
 import Select, { SingleValue } from 'react-select'
@@ -33,8 +32,8 @@ type Seq = {
 export default function Moveseqdev({ devData }: moveSeqType) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { devices } = useSelector((state: RootState) => state.devices)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const { devId, devSeq, devSerial } = devData
   const [show, setShow] = useState(false)

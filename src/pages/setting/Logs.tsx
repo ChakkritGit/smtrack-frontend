@@ -1,13 +1,13 @@
 import axios, { AxiosError } from "axios"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { useTranslation } from "react-i18next"
 import { formattedDate, yearMonth } from "../../constants/constants"
 import { LogContainer, LogForm, PreLine } from "../../style/components/log.styled"
 import { Container, Form } from "react-bootstrap"
 import { FilterSearchBtn } from "../../style/style"
 import Swal from "sweetalert2"
+import { RootState } from "../../stores/store"
 
 type isLog = {
   routeLog?: boolean
@@ -15,7 +15,7 @@ type isLog = {
 
 function Logs(isLog: isLog) {
   const { t } = useTranslation()
-  const { cookieDecode, expand } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode, expand } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [text, setText] = useState(t('nodata'))
   const [date, setDate] = useState('')

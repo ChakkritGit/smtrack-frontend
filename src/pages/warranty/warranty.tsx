@@ -8,7 +8,7 @@ import DataTable, { TableColumn } from "react-data-table-component"
 import { useReactToPrint } from "react-to-print"
 import Printwarranty from "./printwarranty"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
+import { DeviceState, DeviceStateStore } from "../../types/redux.type"
 import axios, { AxiosError } from "axios"
 import { warrantyType } from "../../types/warranty.type"
 import { responseType } from "../../types/response.type"
@@ -16,7 +16,7 @@ import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLi
 import Swal from "sweetalert2"
 import Select from 'react-select'
 import { setRefetchdata, setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { useTheme } from "../../theme/ThemeProvider"
 import { SingleValue } from "react-select"
 import { AddWarrantyButton } from "../../style/components/warranty.styled"
@@ -70,7 +70,7 @@ export default function Warranty() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const [pagenumber, setpagenumber] = useState(1)
-  const { searchQuery, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const hospitalsData = useSelector<DeviceStateStore, hospitalsType[]>((state) => state.arraySlice.hospital.hospitalsData)
   const { token, userLevel } = cookieDecode
   const [show, setshow] = useState(false)

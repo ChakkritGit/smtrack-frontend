@@ -7,7 +7,6 @@ import {
   FirmwareHeader, ProgressBar, RowChildren, SelectDevicetoUpdateButton, SelectFWFlex, UploadButton
 } from "../../../style/components/firmwareuoload"
 import { useDispatch, useSelector } from "react-redux"
-import { DeviceState, DeviceStateStore, UtilsStateStore } from "../../../types/redux.type"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { Form, Modal } from "react-bootstrap"
 import { FormBtn, FormFlexBtn, ModalHead, PaginitionContainer } from "../../../style/style"
@@ -33,7 +32,7 @@ import axios, { AxiosError } from "axios"
 import Paginition from "../../../components/filter/paginition"
 import toast from "react-hot-toast"
 import TerminalComponent from "../../../components/settings/terminal"
-import { storeDispatchType } from "../../../stores/store"
+import { RootState, storeDispatchType } from "../../../stores/store"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
 import { client } from "../../../services/mqtt"
 import Select, { SingleValue } from 'react-select'
@@ -70,8 +69,8 @@ export default function Uploadfirmware() {
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { searchQuery, cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
-  const { devices } = useSelector<DeviceStateStore, DeviceState>((state) => state.devices)
+  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { devices } = useSelector((state: RootState) => state.devices)
   const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [showConsole, setShowConsole] = useState(false)

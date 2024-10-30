@@ -8,7 +8,6 @@ import {
   OpenSettingBuzzer
 } from "../../style/components/home.styled"
 import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react"
-import { DeviceStateStore, UtilsStateStore } from "../../types/redux.type"
 import { AsyncThunk } from "@reduxjs/toolkit"
 import { devicesType } from "../../types/device.type"
 import { useDispatch, useSelector } from "react-redux"
@@ -16,7 +15,7 @@ import { useTranslation } from "react-i18next"
 import { responseType } from "../../types/response.type"
 import { client } from "../../services/mqtt"
 import { Option, Ward } from "../../types/config.type"
-import { storeDispatchType } from "../../stores/store"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
 import { useTheme } from "../../theme/ThemeProvider"
 import axios, { AxiosError } from "axios"
@@ -37,7 +36,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
   const { fetchData, devicesdata, show, setShow, openSetting, openSettingMute } = modalProps
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode } = useSelector<DeviceStateStore, UtilsStateStore>((state) => state.utilsState)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const { devSerial } = devicesdata
   const [tempvalue, setTempvalue] = useState<number[]>([Number(devicesdata.probe[0]?.tempMin), Number(devicesdata.probe[0]?.tempMax)])
