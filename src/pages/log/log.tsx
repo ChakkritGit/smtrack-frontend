@@ -4,10 +4,17 @@ export default function Log() {
   return (
     <div className="p-2">
       <h2>Change Log</h2>
+      <LogSpan className="mt-3 mw-50"><b>Version 1.0.2</b> <span>30/10/67</span></LogSpan>
+      <ul className="mt-2">
+        <li>Added a button to show data labels on the full chart page.</li>
+        <li>Added a menu to download the app on the settings page (Android only for now).</li>
+        <li>Optimized the export of chart reports to PDF for responsiveness</li>
+        <li>Bug fixes.</li>
+      </ul>
       <LogSpan className="mt-3 mw-50"><b>Version 1.0.1-OC29</b> <span>29/10/67</span></LogSpan>
       <ul className="mt-2">
-        <li>Added select device feature to update firmware version</li>
-        <li>Show SD Card available space details when clicking on the card on the dashboard page</li>
+        <li>Added a device selection feature to update the firmware version.</li>
+        <li>Display the available space details of the SD card when clicking on the card on the dashboard page.</li>
         <li>Bug fixes.</li>
       </ul>
       <LogSpan className="mt-3 mw-50"><b>Version 1.0.1-OC17</b> <span>17/10/67</span></LogSpan>
