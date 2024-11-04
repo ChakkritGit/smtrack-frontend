@@ -582,60 +582,58 @@ export default function Home() {
                 </DeviceListFlex>
               </DeviceInfoflex>
             </AboutBox>
-            {!isFiltering ?
+            {!isFiltering &&
               listAndgrid === 1 ?
-                <DatatableHome>
-                  <DataTable
-                    responsive={true}
-                    columns={columns}
-                    data={devicesFilter}
-                    paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
-                    paginationPerPage={rowPerPage}
-                    onRowClicked={handleRowClicked}
-                    expandableRowsComponent={ExpandedComponent}
-                    onChangeRowsPerPage={(n) => { setRowPerPage(n); cookies.set('rowperpage', n, cookieOptions) }}
-                    highlightOnHover
-                    pagination
-                    expandableRows
-                    pointerOnHover
-                    fixedHeader
-                    fixedHeaderScrollHeight="calc(100dvh - 450px)"
-                  />
-                </DatatableHome>
-                :
-                <DevHomeDetails $primary={displayedCards.length === 0} $limitListFlex={displayedCards.length < 5 && displayedCards.length > 0}>
-                  <div>
-                    {
-                      displayedCards.length > 0 ?
-                        displayedCards.map((item) =>
-                          <DevicesInfoCard
-                            key={item.devSerial}
-                            devicesdata={item}
-                            onFilter={onFilteres}
-                            setDeviceData={setDeviceData}
-                            setShow={setShow}
-                          />
-                        )
-                        :
-                        <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
-                    }
-                  </div>
-                  <PaginitionContainer>
-                    <div></div>
-                    <Paginition
-                      currentPage={currentPage}
-                      cardsPerPage={cardsPerPage}
-                      changePage={changePage}
-                      displaySelectDevices={displaySelectDevices}
-                      displayedCards={displayedCards}
-                      userdata={devicesFilter}
-                      pagPerpage={paginationCardHome}
-                      totalPages={totalPages}
-                    />
-                  </PaginitionContainer>
-                </DevHomeDetails>
+              <DatatableHome>
+                <DataTable
+                  responsive={true}
+                  columns={columns}
+                  data={devicesFilter}
+                  paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+                  paginationPerPage={rowPerPage}
+                  onRowClicked={handleRowClicked}
+                  expandableRowsComponent={ExpandedComponent}
+                  onChangeRowsPerPage={(n) => { setRowPerPage(n); cookies.set('rowperpage', n, cookieOptions) }}
+                  highlightOnHover
+                  pagination
+                  expandableRows
+                  pointerOnHover
+                  fixedHeader
+                  fixedHeaderScrollHeight="calc(100dvh - 450px)"
+                />
+              </DatatableHome>
               :
-              <PageLoading />
+              <DevHomeDetails $primary={displayedCards.length === 0} $limitListFlex={displayedCards.length < 5 && displayedCards.length > 0}>
+                <div>
+                  {
+                    displayedCards.length > 0 ?
+                      displayedCards.map((item) =>
+                        <DevicesInfoCard
+                          key={item.devSerial}
+                          devicesdata={item}
+                          onFilter={onFilteres}
+                          setDeviceData={setDeviceData}
+                          setShow={setShow}
+                        />
+                      )
+                      :
+                      <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                  }
+                </div>
+                <PaginitionContainer>
+                  <div></div>
+                  <Paginition
+                    currentPage={currentPage}
+                    cardsPerPage={cardsPerPage}
+                    changePage={changePage}
+                    displaySelectDevices={displaySelectDevices}
+                    displayedCards={displayedCards}
+                    userdata={devicesFilter}
+                    pagPerpage={paginationCardHome}
+                    totalPages={totalPages}
+                  />
+                </PaginitionContainer>
+              </DevHomeDetails>
             }
           </HomeContainerFlex>
           :

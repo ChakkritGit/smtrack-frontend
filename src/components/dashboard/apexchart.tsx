@@ -3,7 +3,7 @@ import { logtype } from "../../types/log.type"
 import { useSelector } from "react-redux"
 import { useTheme } from "../../theme/ThemeProvider"
 import { RootState } from "../../stores/store"
-import { useMemo } from "react"
+import { useMemo, useRef } from "react"
 
 type chartType = {
   chartData: logtype[],
@@ -22,6 +22,9 @@ const Apexchart = (chart: chartType) => {
   const minTempAvg = Math.min(...tempAvgValues) - 2
   const maxTempAvg = Math.max(...tempAvgValues) + 2
   const { theme } = useTheme()
+
+  const zoomPanSelection = useRef<any>(null)
+  const chartRef = useRef<any>(null)
 
   const mappedData = useMemo(() => {
     return chartData.map((items) => {
@@ -92,6 +95,22 @@ const Apexchart = (chart: chartType) => {
         type: 'x',
         enabled: isExport ? false : true,
         autoScaleYaxis: isExport ? false : true
+      },
+      events: {
+        mounted: (chart) => {
+          if (zoomPanSelection.current) {
+            chart.zoomX(zoomPanSelection.current.minX, zoomPanSelection.current.maxX)
+          }
+        },
+        updated: (chart) => {
+          const selection = chart.zoomPanSelection
+          if (selection) {
+            zoomPanSelection.current = {
+              minX: selection.minX,
+              maxX: selection.maxX,
+            }
+          }
+        },
       },
       toolbar: {
         show: isExport ? false : true,
@@ -247,6 +266,7 @@ const Apexchart = (chart: chartType) => {
       {showDataLabel ?
         <Chart
           key={'1'}
+          ref={chartRef}
           type="line"
           options={options}
           series={series}
@@ -255,6 +275,7 @@ const Apexchart = (chart: chartType) => {
         /> :
         <Chart
           key={'2'}
+          ref={chartRef}
           type="line"
           options={options}
           series={series}

@@ -1,0 +1,41 @@
+# .gitlab-ci.yml
+
+stages:
+  - build
+  - deploy
+
+variables:
+  NODE_ENV: "production"
+  TARGET_SERVER: "your_server_ip"
+  DEPLOY_PATH: "/var/www/your_project"
+  SSH_PRIVATE_KEY: $SSH_PRIVATE_KEY
+
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  - apk add --no-cache openssh
+
+build_job:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
+
+deploy_job:
+  stage: deploy
+  only:
+    - main
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $TARGET_SERVER >> ~/.ssh/known_hosts
+    - scp -r dist/* $TARGET_SERVER:$DEPLOY_PATH
+    - scp .env.production $TARGET_SERVER:$DEPLOY_PATH/.env
+    - ssh $TARGET_SERVER "cd $DEPLOY_PATH && npm install --production"
