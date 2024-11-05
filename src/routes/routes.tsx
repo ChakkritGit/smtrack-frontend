@@ -40,6 +40,7 @@ import PreviewPDF from '../components/pdf/preview.pdf'
 import Policy from '../pages/policy/policy'
 import Support from '../pages/contact/support'
 import Logs from '../pages/setting/Logs'
+import Terms from '../pages/policy/terms'
 
 const LazyTest = lazy(() => import('../pages/test/test'))
 
@@ -165,6 +166,11 @@ export const router = createBrowserRouter([
   {
     path: "/privacy-policy",
     element: <Policy />,
+    errorElement: <SomethingWrong />
+  },
+  {
+    path: "/terms-conditions",
+    element: <Terms />,
     errorElement: <SomethingWrong />
   },
   {

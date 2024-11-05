@@ -21,7 +21,7 @@ function Policy() {
         <div></div>
       </NavigateTop>
       <HeadTitle>Privacy Policy</HeadTitle>
-      <span>This privacy policy applies to the SMTrack+ app (hereby referred to as "Application") for mobile devices that was created by THANES DEVELOPMENT COMPANY LIMITED (hereby referred to as "Service Provider") as a Free service. This service is intended for use "AS IS".
+      <span>This privacy policy applies to the SMTrack+ app (hereby referred to as "Application") for mobile devices that was created by SIAMATIC COMPANY LIMITED (hereby referred to as "Service Provider") as a Free service. This service is intended for use "AS IS".
       </span>
       <BR />
       <HeadTitle>Information Collection and Use</HeadTitle>
