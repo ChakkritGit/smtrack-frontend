@@ -1,38 +1,59 @@
 import styled, { css } from "styled-components"
 
-export const ToggleButtonWrapper = styled.button`
+export const WrapperSwitch = styled.div`
   position: relative;
-  width: 55px;
-  height: 35px;
-  background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-color)' : '#ddd'};
-  border: 1px solid ${props => props.theme.mode === 'dark' ? 'var(--main-color)' : '#ccc'};
-  border-radius: 20px;
-  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+`
+
+export const IconWrapper = styled.div`
+  position: absolute;
   cursor: pointer;
+
+  &:hover {
+    color: var(--main-color);
+    transition: .3s;
+  }
+`
+
+export const WrapperMenu = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 160px;
+  gap: .5rem;
+  top: 40px;
+  right: 20px;
+  padding: .7rem;
+  background-color: ${props=> props.theme.mode === 'dark' ? `var(--main-last-color)` : `var(--white-grey-1)`};
+  border: 1px solid ${props=> props.theme.mode === 'dark' ? `var(--border-dark-color)` : `var(--grey-25)`};
+  box-shadow: 5px 10px 15px -10px ${props=> props.theme.mode === 'dark' ? `rgba(150, 150, 150, .05)` : `rgba(0, 0, 0, .20)`};
+  color: ${props=> props.theme.mode === 'dark' ? `var(--white)` : `var(--main-last-color)`};
+  border-radius: var(--border-radius-small);
+  z-index: 100;
+`
+
+export const ModeOption = styled.div<{ $active?: boolean }>`
   display: flex;
   align-items: center;
-  padding: 0;
-  overflow: hidden;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
 
-  .icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: ${props => props.theme.mode === 'dark' ? 'var(--white-grey-1)' : 'var(--white-grey-1)'};
-    transition: transform 0.3s ease;
-    transform: ${(propss) =>
-    propss.theme.mode === 'dark' ? 'translateX(21px)' : 'translateX(2px)'};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: ${props => props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--main-last-color)'};
+  &:hover {
+    background-color: var(--main-color);
+    color: white;
     transition: .3s;
   }
 
-  &:hover {
-  border-color: var(--main-color);
-  transition: .3s;
-}
+  ${props => props.$active && css`
+    background-color: var(--main-color);
+    color: white;
+  `}
 `
 
 export const ToggleTransparentButtonWrapper = styled.button<{ $primary?: boolean }>`
@@ -735,7 +756,7 @@ gap: .8rem;
 @media (max-width: 430px) {
   &>div:nth-child(2),
   &>div:nth-child(3),
-  &>button:nth-child(4),
+  &>div:nth-child(4),
   &>div:nth-child(5),
   &>div:nth-child(6) {
     display: none;

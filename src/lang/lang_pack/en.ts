@@ -410,6 +410,9 @@ export default {
     sysLogs: 'Logs',
     appMenu: 'Apps',
     onCancel: 'Canceled',
+    lightMode: 'Light',
+    darkMode: 'Dark',
+    systemMode: 'System',
 
     // connect
     ipAddress: 'IP',

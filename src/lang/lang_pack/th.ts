@@ -410,6 +410,9 @@ export default {
     sysLogs: 'บันทึกระบบ',
     appMenu: 'แอปพลิเคชั่น',
     onCancel: 'ยกเลิกสำเร็จ',
+    lightMode: 'สว่าง',
+    darkMode: 'มืด',
+    systemMode: 'ระบบ',
 
     // connect
     ipAddress: 'IP',

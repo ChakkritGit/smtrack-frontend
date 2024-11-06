@@ -4,13 +4,12 @@ import { RootState } from '../stores/store'
 import { useSelector } from 'react-redux'
 
 interface Theme {
-  mode: 'light' | 'dark'
-  // transparent: boolean
+  mode: 'light' | 'dark' | 'system'
 }
 
 interface ThemeContextProps {
   theme: Theme
-  toggleTheme: () => void
+  toggleTheme: (mode: 'light' | 'dark' | 'system') => void
 }
 
 interface ThemeProvidersProps {
@@ -25,35 +24,46 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
   const { transparent } = useSelector((state: RootState) => state.utilsState)
   const [theme, setTheme] = useState<Theme>(() => {
     const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme['mode']
-    return { mode: storedTheme || 'light', transparent: transparent }
+    return { mode: storedTheme || 'system' }
   })
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => {
-      const newMode = prevTheme.mode === 'light' ? 'dark' : 'light'
-      localStorage.setItem(STORAGE_KEY, newMode)
-      return { ...prevTheme, mode: newMode }
-    })
+  const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+
+  const toggleTheme = (mode: 'light' | 'dark' | 'system') => {
+    if (mode === 'system') {
+      localStorage.removeItem(STORAGE_KEY)
+      setTheme({ mode: getSystemTheme() })
+    } else {
+      localStorage.setItem(STORAGE_KEY, mode)
+      setTheme({ mode })
+    }
+  }
+
+  const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+    if (theme.mode === 'system') {
+      setTheme({ mode: event.matches ? 'dark' : 'light' })
+    }
   }
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme['mode']
-    const defaultTheme = typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: dark)').matches
-      ? 'dark'
-      : 'light'
-    setTheme({ mode: storedTheme || defaultTheme })
-  }, [])
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
-  // Use effect to update the status bar color based on the theme
+    if (theme.mode === 'system') {
+      setTheme({ mode: getSystemTheme() })
+    }
+
+    mediaQuery.addEventListener('change', handleSystemThemeChange)
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleSystemThemeChange)
+    }
+  }, [theme.mode])
+
   useEffect(() => {
     const themeColorMetaTag = document.querySelector('meta[name="theme-color"]')
     const currentColor = theme.mode === 'light'
-  ? transparent
-    ? '#ffffff'
-    : '#fcfcfc'
-  : transparent
-    ? '#353535'
-    : '#2f2f2f'
+      ? transparent ? '#ffffff' : '#fcfcfc'
+      : transparent ? '#353535' : '#2f2f2f'
 
     if (themeColorMetaTag) {
       themeColorMetaTag.setAttribute('content', currentColor)
@@ -64,7 +74,6 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
       document.head.appendChild(newMetaTag)
     }
 
-    // For iOS Safari
     const statusBarMetaTag = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
     if (statusBarMetaTag) {
       statusBarMetaTag.setAttribute('content', currentColor)
@@ -74,11 +83,11 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
       newStatusBarMetaTag.setAttribute('content', currentColor)
       document.head.appendChild(newStatusBarMetaTag)
     }
-  }, [theme.mode])
+  }, [theme.mode, transparent])
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <StyledThemeProvider theme={{ mode: theme.mode, transparent: transparent }}>
+      <StyledThemeProvider theme={{ mode: theme.mode, transparent }}>
         {children}
       </StyledThemeProvider>
     </ThemeContext.Provider>
@@ -88,7 +97,7 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
 const useTheme = () => {
   const context = useContext(ThemeContext)
   if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider')
+    throw new Error('useTheme must be used within a ThemeProviders')
   }
   return context
 }
