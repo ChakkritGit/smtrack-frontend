@@ -12,6 +12,7 @@ export default {
     showAllBox: 'Event of Day',
     detailAllBox: 'All Device Details',
     deviceFilter: 'Filters',
+    deviceFilterNotUpdate: 'Not updated yet',
 
     // card count
     countProbe: 'Temperatures',

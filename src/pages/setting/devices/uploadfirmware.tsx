@@ -917,7 +917,7 @@ export default function Uploadfirmware() {
                     checked={filterUpdated}
                     onChange={filterFirmwareUpdated}
                   />
-                  {t('กรอง')}
+                  {t('deviceFilterNotUpdate')}
                 </label>
               </CheckBoxFlex>
               <CheckBoxList>

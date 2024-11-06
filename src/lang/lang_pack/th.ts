@@ -12,6 +12,7 @@ export default {
     showAllBox: 'รวมสถานะประจำวัน',
     detailAllBox: 'ข้อมูลกล่องทั้งหมด',
     deviceFilter: 'กรอง',
+    deviceFilterNotUpdate: 'ยังไม่อัพเดท',
 
     // card count
     countProbe: 'อุหณภูมิ',
