@@ -39,6 +39,7 @@ import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../../theme/ThemeProvider"
 import { mapDefaultValue, mapOptions } from "../../../constants/constants"
 import { Option } from "../../../types/config.type"
+import { devicesType } from "../../../types/device.type"
 
 interface FirmwareItem {
   fileName: string;
@@ -92,6 +93,8 @@ export default function Uploadfirmware() {
   const [displayedCards, setDisplayedCards] = useState<firmwareType[]>(dataFiles ? dataFiles.slice(0, cardsPerPage) : [])
   const [selectedDevices, setSelectedDevices] = useState<string[]>([])
   const [selectedDevicesOption, setSelectedDevicesOption] = useState(t('selectOTA'))
+  const [filterUpdated, setFilterUpdated] = useState(false)
+  const [deviceFwFiltered, setDeviceFwFiltered] = useState<devicesType[]>([])
   let onCancel = false
   const fileTypes = ["BIN"]
   let onProgress = 0
@@ -123,6 +126,10 @@ export default function Uploadfirmware() {
     } else {
       setSelectedDevices(filteredDevices)
     }
+  }
+
+  const filterFirmwareUpdated = () => {
+    setFilterUpdated(!filterUpdated)
   }
 
   const publishDeviceUpdate = async (item: string, selectedDevicesOption: string): Promise<void> => {
@@ -748,9 +755,25 @@ export default function Uploadfirmware() {
     )
     .sort(versionCompare)
 
+  const combinedListTwo = dataFiles
+    .filter((filter) =>
+      !filter.fileName.startsWith('bootloader') &&
+      !filter.fileName.startsWith('partition')
+    )
+    .sort(versionCompare)
+
   const allFile: firmwareType = { createDate: '', fileName: t('selectOTA'), fileSize: '' }
 
-  const updatedHosData = [allFile, ...combinedList]
+  const updatedDevData = [allFile, ...combinedListTwo]
+
+  useEffect(() => {
+    const newFilter = selectedDevicesOption.endsWith('bin') ? selectedDevicesOption.split('v')[1].split('.b')[0] : ''
+    if (filterUpdated) {
+      setDeviceFwFiltered(devices.filter((items) => items.firmwareVersion?.toLowerCase() !== newFilter.toLowerCase()))
+    } else {
+      setDeviceFwFiltered(devices)
+    }
+  }, [filterUpdated, selectedDevicesOption])
 
   return (
     <FirmwareContainer>
@@ -848,8 +871,8 @@ export default function Uploadfirmware() {
           <SelectFWFlex>
             <h3>{t('selectDeviceDrop')}</h3>
             <Select
-              options={mapOptions<firmwareType, keyof firmwareType>(updatedHosData, 'fileName', 'fileName')}
-              value={mapDefaultValue<firmwareType, keyof firmwareType>(updatedHosData, String(selectedDevicesOption), 'fileName', 'fileName')}
+              options={mapOptions<firmwareType, keyof firmwareType>(updatedDevData, 'fileName', 'fileName')}
+              value={mapDefaultValue<firmwareType, keyof firmwareType>(updatedDevData, String(selectedDevicesOption), 'fileName', 'fileName')}
               onChange={handleSelectedandClearSelected}
               autoFocus={false}
               placeholder={t('selectOTA')}
@@ -888,10 +911,18 @@ export default function Uploadfirmware() {
                   />
                   {t('selectedAll')}
                 </label>
+                <label>
+                  <CheckBoxInput
+                    type="checkbox"
+                    checked={filterUpdated}
+                    onChange={filterFirmwareUpdated}
+                  />
+                  {t('กรอง')}
+                </label>
               </CheckBoxFlex>
               <CheckBoxList>
                 {
-                  devices
+                  deviceFwFiltered
                     .filter((items) => items.devSerial.substring(0, 1).toLowerCase().includes(selectedDevicesOption.substring(0, 1).toLowerCase()))
                     .map((device, index) => (
                       <CheckBoxFlex key={index}>
