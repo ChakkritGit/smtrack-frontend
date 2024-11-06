@@ -2,7 +2,9 @@ import styled, { css } from "styled-components"
 import bg from '../../assets/images/bg-not-found.jpeg'
 
 export const ErrorPageStyled = styled.div`
-position: relative;
+  position: relative;
+
+  ${props => props.theme.mode === 'dark' ? css`color: var(--white);` : css`color: var(--main-dark-color);`}
 
   &>div:nth-child(1) {
     width: 100%;
@@ -83,6 +85,8 @@ export const SomethingWrongPageStyled = styled.div`
   align-items: center;
   gap: 1rem;
   height: calc(100dvh - 150px);
+
+  ${props => props.theme.mode === 'dark' ? css`color: var(--white);` : css`color: var(--main-dark-color);`}
 
   &>p>i {
     text-underline-offset: 8px;

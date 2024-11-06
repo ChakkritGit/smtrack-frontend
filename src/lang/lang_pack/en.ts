@@ -462,6 +462,7 @@ export default {
     thTime: 'en-EN',
     backToPre: 'Back',
     privacy: 'Privacy & Policy',
+    terms: 'Terms & Conditions',
     resetHour: 'Hour',
     resetMinute: 'Minute',
 

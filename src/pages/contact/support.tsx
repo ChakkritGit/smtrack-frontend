@@ -4,15 +4,20 @@ import { LoginContact } from "../../style/components/login"
 import { LineHr } from "../../style/style"
 import { Col, Form, Row } from "react-bootstrap"
 import { FormEvent, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { countryCodes, supportInitData } from "../../constants/constants"
-import { RiFacebookCircleFill, RiMailFill, RiPhoneFill } from "react-icons/ri"
+import { RiArrowLeftSLine, RiFacebookCircleFill, RiMailFill, RiPhoneFill } from "react-icons/ri"
 import { FaLine } from "react-icons/fa"
 import Swal from "sweetalert2"
 import axios from "axios"
+import { BackPre, NavigateTop } from "../../style/components/policy"
+import { useSelector } from "react-redux"
+import { RootState } from "../../stores/store"
 
 function Support() {
   const { t } = useTranslation()
+  const navagate = useNavigate()
+  const { cookieEncode } = useSelector((state: RootState) => state.utilsState)
   const [supportData, setSupportData] = useState(supportInitData)
   const { details, email, firstName, hospitalName, lastName, codePhone, phone, wardName } = supportData
 
@@ -46,7 +51,14 @@ function Support() {
 
   return (
     <ContactContainer>
-      <h1>{t('contactSupport')}</h1>
+      <NavigateTop $primary={cookieEncode === undefined}>
+        {cookieEncode ? <BackPre onClick={() => navagate('/settings')}>
+          <RiArrowLeftSLine size={24} />
+          <span>{t('backToPre')}</span>
+        </BackPre> : <div></div>}
+        <h1>{t('contactSupport')}</h1>
+        <div></div>
+      </NavigateTop>
       <ListGrid>
         <div>
           <h3>{t('getInTouch')}</h3>

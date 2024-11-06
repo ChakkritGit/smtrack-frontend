@@ -104,6 +104,12 @@ export default function System() {
                   {t('privacy')}
                 </span>
               </ListPrivacy>
+              <ListPrivacy onClick={() => navigate('/terms-conditions')}>
+                <RiShieldCheckLine />
+                <span>
+                  {t('terms')}
+                </span>
+              </ListPrivacy>
               <ListMenu $logout onClick={() =>
                 swalWithBootstrapButtons
                   .fire({
