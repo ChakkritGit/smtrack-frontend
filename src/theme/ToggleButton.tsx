@@ -1,4 +1,4 @@
-import { RiColorFilterLine, RiMoonLine, RiSunLine } from 'react-icons/ri'
+import { TbMoon, TbSun, TbSunMoon } from "react-icons/tb"
 import { useTheme } from './ThemeProvider'
 import { useEffect, useRef, useState } from 'react'
 import { IconWrapper, ModeOption, WrapperMenu, WrapperSwitch } from '../style/style'
@@ -40,25 +40,25 @@ export default function ToggleButton() {
     <WrapperSwitch>
       <IconWrapper onClick={() => setOpenMenu(!openMenu)} ref={iconRef}>
         {storeLocalTheme === 'light' && mode === 'light' ?
-          <RiSunLine size={24} />
+          <TbSun size={24} />
           : storeLocalTheme === 'dark' && mode === 'dark' ?
-            <RiMoonLine size={24} />
+            <TbMoon size={24} />
             :
-            <RiColorFilterLine size={24} />
+            <TbSunMoon size={24} />
         }
       </IconWrapper>
 
       {openMenu && <WrapperMenu ref={menuRef}>
         <ModeOption onClick={() => toggleTheme('light')} $active={storeLocalTheme === 'light' && mode === 'light'}>
-          <RiSunLine size={24} />
+          <TbSun size={24} />
           <span>{t('lightMode')}</span>
         </ModeOption>
         <ModeOption onClick={() => toggleTheme('dark')} $active={storeLocalTheme === 'dark' && mode === 'dark'}>
-          <RiMoonLine size={24} />
+          <TbMoon size={24} />
           <span>{t('darkMode')}</span>
         </ModeOption>
         <ModeOption onClick={() => toggleTheme('system')} $active={!isSystemActive && !storeLocalTheme}>
-          <RiColorFilterLine size={24} />
+          <TbSunMoon size={24} />
           <span>{t('systemMode')}</span>
         </ModeOption>
       </WrapperMenu>}
