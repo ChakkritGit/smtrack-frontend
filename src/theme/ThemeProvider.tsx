@@ -49,12 +49,6 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
   mediaQuery.addEventListener('change', handleSystemThemeChange)
 
   useEffect(() => {
-    return () => {
-      mediaQuery.removeEventListener('change', handleSystemThemeChange)
-    }
-  }, [])
-
-  useEffect(() => {
     if (theme.mode === 'system') {
       setTheme({ mode: getSystemTheme() })
     }
