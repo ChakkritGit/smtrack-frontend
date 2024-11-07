@@ -36,7 +36,7 @@ export default function Notificationdata(notilist: notilist) {
           headers: { authorization: `Bearer ${token}` }
         })
       funcfetch()
-    } catch (error) { //up
+    } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.response?.data.message)
       } else {
@@ -72,6 +72,8 @@ export default function Notificationdata(notilist: notilist) {
       } else {
         return t('SdCardBackToNormal')
       }
+    } else if (text.split('/')[0] === 'REPORT') {
+      return text.split('/')[1]
     } else {
       return text
     }

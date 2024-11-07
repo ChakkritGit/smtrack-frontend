@@ -32,7 +32,7 @@ export const WrapperMenu = styled.div`
   border: 1px solid ${props=> props.theme.mode === 'dark' ? `var(--border-dark-color)` : `var(--grey-25)`};
   box-shadow: 5px 10px 15px -10px ${props=> props.theme.mode === 'dark' ? `rgba(150, 150, 150, .05)` : `rgba(0, 0, 0, .20)`};
   color: ${props=> props.theme.mode === 'dark' ? `var(--white)` : `var(--main-last-color)`};
-  border-radius: var(--border-radius-small);
+  border-radius: var(--border-radius-big);
   z-index: 100;
 `
 
@@ -1928,17 +1928,11 @@ export const HomeContainerFlex = styled.div<{ $primary?: boolean }>`
 export const DevHomeDetails = styled.div<{ $primary?: boolean, $limitListFlex?: boolean }>`
 display: flex;
 align-items: center;
-/* justify-content: center; */
 flex-direction: column;
 gap: .5rem;
 margin-top: 1rem;
 
 ${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? 'justify-content: center;' : 'justify-content: center;'}
-
-/* &>div:nth-child(1) {
-  height: calc(100dvh - 450px);
-  overflow-y: scroll;
-} */
 
 & > div:nth-child(2) {
   margin-top: 1rem;
