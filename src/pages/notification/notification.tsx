@@ -19,7 +19,7 @@ import { useTheme } from "../../theme/ThemeProvider"
 export default function Notification() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { socketData, soundMode, popUpMode, cookieDecode, notiData } = useSelector((state: RootState) => state.utilsState)
+  const { socketData, soundMode, popUpMode, cookieDecode, notiData, transparent } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const [number, setNumber] = useState(0)
   const [show, setShow] = useState(false)
@@ -112,11 +112,11 @@ export default function Notification() {
         icon: <RiAlarmWarningFill size={24} fill='var(--danger-color)' />,
         duration: 10000,
         style: {
-          backgroundColor: theme.mode === 'dark' ? 'rgba(53, 53, 53, .8)' : 'rgba(255, 255, 255, .8)',
+          backgroundColor: theme.mode === 'dark' ? transparent ? 'rgba(53, 53, 53, .8)' : 'rgba(53, 53, 53, 1)' : transparent ? 'rgba(255, 255, 255, .8)' : 'rgba(255, 255, 255, 1)',
           borderRadius: 'var(--border-radius-small)',
           padding: '.5rem .7rem',
-          backdropFilter: 'blur(13px)',
-          WebkitBackdropFilter: 'blur(13px)',
+          backdropFilter: transparent ? 'blur(13px)' : 'unset',
+          WebkitBackdropFilter: transparent ? 'blur(13px)' : 'unset',
           width: 'max-content'
         }
       })
