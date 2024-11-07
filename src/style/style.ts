@@ -2464,17 +2464,21 @@ opacity: .3;
 
 // Dashboard
 export const DashboardFlex = styled.div<{ $primary?: boolean }>`
-width: 100%;
+  width: 100%;
 `
 
 export const ExpandPicture = styled.div<{ $primary?: boolean }>`
-display: flex;
-justify-content: center;
-align-items: center;
-width: 100%;
-max-width: 1110px;
-border-radius: .8rem;
-overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1110px;
+  border-radius: .8rem;
+  overflow: hidden;
+
+  &>img {
+    max-width: 700px;
+  }
 
 @media (max-width: 430px) {
   img {
