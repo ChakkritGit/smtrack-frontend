@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CookieType } from '../types/cookie.type'
 import { cookieOptions, cookies, decodeCookieObject } from '../constants/constants'
 import CryptoJS from "crypto-js"
-import { setCookieEncode } from '../stores/utilsStateSlice'
+import { setCookieEncode, setDeviceId, setSerial } from '../stores/utilsStateSlice'
 import { RootState, storeDispatchType } from '../stores/store'
 import { reset } from '../stores/resetAction'
 
@@ -31,6 +31,8 @@ const ProtectedRoute = ({ children }: AuthProps) => {
           cookies.remove('selectWard', cookieOptions)
           cookies.update()
           dispatch(reset())
+          dispatch(setDeviceId(''))
+          dispatch(setSerial(''))
           dispatch(setCookieEncode(''))
           setIsValid(false)
         }
@@ -42,6 +44,8 @@ const ProtectedRoute = ({ children }: AuthProps) => {
         cookies.remove('selectWard', cookieOptions)
         cookies.update()
         dispatch(reset())
+        dispatch(setDeviceId(''))
+        dispatch(setSerial(''))
         dispatch(setCookieEncode(''))
         setIsValid(false)
       }

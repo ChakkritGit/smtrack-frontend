@@ -21,6 +21,7 @@ import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsState
 import { RootState, storeDispatchType } from "../../stores/store"
 import Logs from "../setting/Logs"
 import DownloadApp from "./download"
+import { reset } from "../../stores/resetAction"
 
 export default function System() {
   const { t } = useTranslation()
@@ -31,6 +32,7 @@ export default function System() {
   const navigate = useNavigate()
 
   const logOut = () => {
+    dispatch(reset())
     dispatch(setCookieEncode(''))
     dispatch(setDeviceId(''))
     dispatch(setSerial(''))

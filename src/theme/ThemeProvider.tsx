@@ -26,6 +26,7 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
     const storedTheme = localStorage.getItem(STORAGE_KEY) as Theme['mode']
     return { mode: storedTheme || 'system' }
   })
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
   const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 
@@ -45,17 +46,17 @@ const ThemeProviders: React.FC<ThemeProvidersProps> = ({ children }) => {
     }
   }
 
+  mediaQuery.addEventListener('change', handleSystemThemeChange)
+
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-
-    if (theme.mode === 'system') {
-      setTheme({ mode: getSystemTheme() })
-    }
-
-    mediaQuery.addEventListener('change', handleSystemThemeChange)
-
     return () => {
       mediaQuery.removeEventListener('change', handleSystemThemeChange)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (theme.mode === 'system') {
+      setTheme({ mode: getSystemTheme() })
     }
   }, [theme.mode])
 
