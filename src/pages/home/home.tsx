@@ -16,7 +16,7 @@ import {
 } from "../../style/style"
 import DevicesInfoCard from "../../components/home/devicesInfoCard"
 import { useTranslation } from "react-i18next"
-import { ChangeEvent, useMemo, useState } from "react"
+import { ChangeEvent, useCallback, useRef, useState } from "react"
 import { useEffect } from "react"
 import { devicesType } from "../../types/device.type"
 import Loading from "../../components/loading/loading"
@@ -64,6 +64,7 @@ export default function Home() {
   const [scrolled, setScrolled] = useState(false)
   const [expand, setExpand] = useState(false)
   const [isFiltering, setIsFiltering] = useState(true)
+  const filteredRef = useRef<devicesType[]>([])
 
   const openSettingMute = () => {
     setShowSettingMute(true)
@@ -93,60 +94,57 @@ export default function Home() {
     window.scrollTo(0, 0)
   }
 
-  let filteredDevicesList = useMemo(() => {
+  const filterDevices = useCallback(() => {
     setIsFiltering(true)
-    const result = wardId !== ''
+
+    const baseFilteredDevices = wardId !== ''
       ? devices.filter((item) => item.wardId.includes(wardId))
       : hosId && hosId !== ''
         ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
         : devices
 
-    return result
-  }, [wardId, devices, hosId])
-
-  useEffect(() => {
-    filteredDevicesList = filteredDevicesList.filter((item) =>
+    const result = baseFilteredDevices.filter((item) =>
       item.devSerial?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.devDetail?.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
     switch (cardActive) {
       case '1':
-        dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])))))
-        setIsFiltering(false)
+        filteredRef.current = result.filter(dev => dev.noti.some(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])))
         break;
       case '2':
-        dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE')))))
-        setIsFiltering(false)
+        filteredRef.current = result.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE')))
         break;
       case '3':
-        dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev._count?.log)))
-        setIsFiltering(false)
+        filteredRef.current = result.filter(dev => dev._count?.log)
         break;
       case '4':
-        dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'AC'))))
-        setIsFiltering(false)
+        filteredRef.current = result.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'AC'))
         break;
       case '5':
-        dispatch(setFilterDevice(filteredDevicesList.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'SD'))))
-        setIsFiltering(false)
+        filteredRef.current = result.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'SD'))
         break;
       case '6':
         navigate("/management/logadjust")
-        break;
+        return;
       case '7':
         navigate("/repair")
-        break;
+        return;
       case '8':
         navigate("/warranty")
-        break;
+        return;
       default:
-        dispatch(setFilterDevice(filteredDevicesList))
-        setIsFiltering(false)
+        filteredRef.current = result
         break;
     }
 
-  }, [searchQuery, devices, wardId, cardActive, filteredDevicesList])
+    dispatch(setFilterDevice(filteredRef.current))
+    setIsFiltering(false)
+  }, [searchQuery, wardId, hosId, devices, cardActive])
+
+  useEffect(() => {
+    filterDevices()
+  }, [filterDevices])
 
   const isLeapYear = (year: number): boolean => {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
@@ -460,10 +458,9 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // setCurrentPage(0)
-    setDisplayedCards(filteredDevicesList ? filteredDevicesList.slice(0, cardsPerPage) : [])
+    setDisplayedCards(filteredRef.current ? filteredRef.current.slice(0, cardsPerPage) : [])
     showPage(0, searchQuery)
-  }, [searchQuery, filteredDevicesList, cardsPerPage, rowPerPage])
+  }, [searchQuery, filteredRef.current, cardsPerPage, rowPerPage])
 
   useEffect(() => {
     showPage(currentPage, searchQuery)
@@ -582,59 +579,64 @@ export default function Home() {
                 </DeviceListFlex>
               </DeviceInfoflex>
             </AboutBox>
-            {!isFiltering &&
-              listAndgrid === 1 ?
-              <DatatableHome>
-                <DataTable
-                  responsive={true}
-                  columns={columns}
-                  data={devicesFilter}
-                  paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
-                  paginationPerPage={rowPerPage}
-                  onRowClicked={handleRowClicked}
-                  expandableRowsComponent={ExpandedComponent}
-                  onChangeRowsPerPage={(n) => { setRowPerPage(n); cookies.set('rowperpage', n, cookieOptions) }}
-                  highlightOnHover
-                  pagination
-                  expandableRows
-                  pointerOnHover
-                  fixedHeader
-                  fixedHeaderScrollHeight="calc(100dvh - 450px)"
-                />
-              </DatatableHome>
-              :
-              <DevHomeDetails $primary={displayedCards.length === 0} $limitListFlex={displayedCards.length < 5 && displayedCards.length > 0}>
-                <div>
-                  {
-                    displayedCards.length > 0 ?
-                      displayedCards.map((item) =>
-                        <DevicesInfoCard
-                          key={item.devSerial}
-                          devicesdata={item}
-                          onFilter={onFilteres}
-                          setDeviceData={setDeviceData}
-                          setShow={setShow}
-                        />
-                      )
-                      :
-                      <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
-                  }
-                </div>
-                <PaginitionContainer>
-                  <div></div>
-                  <Paginition
-                    currentPage={currentPage}
-                    cardsPerPage={cardsPerPage}
-                    changePage={changePage}
-                    displaySelectDevices={displaySelectDevices}
-                    displayedCards={displayedCards}
-                    userdata={devicesFilter}
-                    pagPerpage={paginationCardHome}
-                    totalPages={totalPages}
-                  />
-                </PaginitionContainer>
-              </DevHomeDetails>
-            }
+            <>
+              {!isFiltering && (
+                listAndgrid === 1 ? (
+                  <DatatableHome>
+                    <DataTable
+                      responsive={true}
+                      columns={columns}
+                      data={filteredRef.current}
+                      paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+                      paginationPerPage={rowPerPage}
+                      onRowClicked={handleRowClicked}
+                      expandableRowsComponent={ExpandedComponent}
+                      onChangeRowsPerPage={(n) => {
+                        setRowPerPage(n);
+                        cookies.set('rowperpage', n, cookieOptions);
+                      }}
+                      highlightOnHover
+                      pagination
+                      expandableRows
+                      pointerOnHover
+                      fixedHeader
+                      fixedHeaderScrollHeight="calc(100dvh - 450px)"
+                    />
+                  </DatatableHome>
+                ) : (
+                  <DevHomeDetails $primary={displayedCards.length === 0} $limitListFlex={displayedCards.length < 5 && displayedCards.length > 0}>
+                    <div>
+                      {displayedCards.length > 0 ? (
+                        displayedCards.map((item) => (
+                          <DevicesInfoCard
+                            key={item.devSerial}
+                            devicesdata={item}
+                            onFilter={onFilteres}
+                            setDeviceData={setDeviceData}
+                            setShow={setShow}
+                          />
+                        ))
+                      ) : (
+                        <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                      )}
+                    </div>
+                    <PaginitionContainer>
+                      <div></div>
+                      <Paginition
+                        currentPage={currentPage}
+                        cardsPerPage={cardsPerPage}
+                        changePage={changePage}
+                        displaySelectDevices={displaySelectDevices}
+                        displayedCards={displayedCards}
+                        userdata={filteredRef.current}
+                        pagPerpage={paginationCardHome}
+                        totalPages={totalPages}
+                      />
+                    </PaginitionContainer>
+                  </DevHomeDetails>
+                )
+              )}
+            </>
           </HomeContainerFlex>
           :
           <PageLoading />

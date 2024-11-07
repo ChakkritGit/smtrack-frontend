@@ -4,6 +4,12 @@ export default function Log() {
   return (
     <div className="p-2">
       <h2>Change Log</h2>
+      <LogSpan className="mt-3 mw-50"><b>Version 1.0.3</b> <span>07/11/67</span></LogSpan>
+      <ul className="mt-2">
+        <li>Updated theme mode to include a system option that follows the OS theme when it changes.</li>
+        <li>Added a firmware update filter to display only devices with versions different from the selected version.</li>
+        <li>Bug fixes and performance improvements.</li>
+      </ul>
       <LogSpan className="mt-3 mw-50"><b>Version 1.0.2</b> <span>30/10/67</span></LogSpan>
       <ul className="mt-2">
         <li>Added a button to show data labels on the full chart page.</li>
