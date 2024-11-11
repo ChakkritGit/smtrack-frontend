@@ -413,6 +413,7 @@ export default {
     lightMode: 'Light',
     darkMode: 'Dark',
     systemMode: 'System',
+    reportText: 'Report',
 
     // connect
     ipAddress: 'IP',

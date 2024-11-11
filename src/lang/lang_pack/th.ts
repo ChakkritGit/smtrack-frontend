@@ -413,6 +413,7 @@ export default {
     lightMode: 'สว่าง',
     darkMode: 'มืด',
     systemMode: 'ระบบ',
+    reportText: 'รายงาน',
 
     // connect
     ipAddress: 'IP',
