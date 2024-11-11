@@ -89,7 +89,7 @@ export default function Notification() {
         <ToastContainer>
           <div>
             <span>{socketData.device}</span>
-            <span>{socketData.message}</span>
+            <span>{subTextNotiDetails(socketData.message)}</span>
             <span>
               {new Date(socketData.time).toLocaleString('th-TH', {
                 day: '2-digit',
@@ -129,6 +129,54 @@ export default function Notification() {
       numAnim.start()
     }
   }, [number])
+
+  const subTextNotiDetails = (text: string) => {
+    if (text.split('/')[0] === 'PROBE1') {
+      const probe = text.split('/')
+      const probeNumber = probe[0].replace('PROBE', '')
+      const doorNumber = probe[1].replace('DOOR', '')
+      const status = probe[2] === 'ON' ? t('stateOn') : t('stateOff')
+      return `${t('deviceProbeTb')} ${probeNumber} ${t('doorNum')} ${doorNumber} ${status}`
+    } else if (text.split('/')[0] === 'TEMP') {
+      if (text.split('/')[1] === 'OVER') {
+        return t('tempHigherLimmit')
+      } else if (text.split('/')[1] === 'LOWER') {
+        return t('tempBelowLimmit')
+      } else {
+        return t('tempBackToNormal')
+      }
+    } else if (text.split('/')[0] === 'AC') {
+      if (text.split('/')[1] === 'ON') {
+        return t('plugProblem')
+      } else {
+        return t('plugBackToNormal')
+      }
+    } else if (text.split('/')[0] === 'SD') {
+      if (text.split('/')[1] === 'ON') {
+        return t('SdCardProblem')
+      } else {
+        return t('SdCardBackToNormal')
+      }
+    } else if (text.split('/')[0] === 'REPORT') {
+      return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity}%`
+    } else {
+      return text
+    }
+  }
+
+  const extractValues = (text: string) => {
+    if (text.split('/')[0] === 'REPORT') {
+      const matches = text.match(/(-?\d+(\.\d+)?)/g)
+
+      if (matches && matches.length >= 2) {
+        const temperature = parseFloat(matches[0])
+        const humidity = parseFloat(matches[1])
+        return { temperature, humidity }
+      }
+    }
+
+    return null
+  }
 
   return (
     <>
