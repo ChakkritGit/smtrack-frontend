@@ -88,7 +88,7 @@ export default function Notification() {
       toast((_t) => (
         <ToastContainer>
           <div>
-            <span>{socketData.device}</span>
+            <span>{socketData.device ? socketData.device : '- -'}</span>
             <span>{socketData.message}</span>
             <span>
               {new Date(socketData.time).toLocaleString('th-TH', {
