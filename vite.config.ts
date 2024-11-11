@@ -10,12 +10,14 @@ export default defineConfig(({ }) => {
       react(),
       VitePWA({
         devOptions: {
-          enabled: true
+          enabled: true,
+          type: 'module'
         },
         strategies: 'injectManifest',
         srcDir: 'src',
         filename: 'sw.ts',
         registerType: 'autoUpdate',
+        injectRegister: 'auto',
         injectManifest: {
           swDest: 'dist/sw.js',
           maximumFileSizeToCacheInBytes: 100 * 1024 * 1024 // 100MB
