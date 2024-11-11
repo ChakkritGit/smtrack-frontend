@@ -34,6 +34,7 @@ export const WrapperMenu = styled.div`
   color: ${props=> props.theme.mode === 'dark' ? `var(--white)` : `var(--main-last-color)`};
   border-radius: var(--border-radius-big);
   z-index: 100;
+  transition: .3s ease;
 `
 
 export const ModeOption = styled.div<{ $active?: boolean }>`
@@ -47,7 +48,7 @@ export const ModeOption = styled.div<{ $active?: boolean }>`
   &:hover {
     background-color: var(--main-color);
     color: white;
-    transition: .3s;
+    transition: .3s ease;
   }
 
   ${props => props.$active && css`
