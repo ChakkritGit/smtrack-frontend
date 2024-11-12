@@ -41,14 +41,14 @@ export default function Adddevform(managedevices: managedevices) {
   const [show, setShow] = useState(false)
   const [showConfig, setShowConfig] = useState(false)
   const [formdata, setFormdata] = useState({
-    devZone: pagestate !== "add" ? devdata.devZone : '',
-    devLocation: pagestate !== "add" ? devdata.locInstall : '',
-    groupId: pagestate !== "add" ? devdata.wardId || '' : '',
-    devId: pagestate !== "add" ? devdata.devId : '',
-    devName: pagestate !== "add" ? devdata.devDetail : '',
-    devSn: pagestate !== "add" ? devdata.devSerial : '',
+    devZone: '',
+    devLocation: '',
+    groupId: '',
+    devId: '',
+    devName: '',
+    devSn: '',
     locationPic: null as File | null,
-    macAddWiFi: pagestate !== "add" ? devdata.config.macAddWiFi : ''
+    macAddWiFi: '',
   })
   const dispatch = useDispatch<storeDispatchType>()
   const { cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
@@ -108,6 +108,32 @@ export default function Adddevform(managedevices: managedevices) {
       }
     }
   }
+
+  useEffect(() => {
+    if (pagestate !== "add") {
+      setFormdata({
+        devZone: devdata.devZone,
+        devLocation: devdata.locInstall,
+        groupId: devdata.wardId || '',
+        devId: devdata.devId,
+        devName: devdata.devDetail,
+        devSn: devdata.devSerial,
+        locationPic: null,
+        macAddWiFi: devdata.config.macAddWiFi,
+      });
+    } else {
+      setFormdata({
+        devZone: '',
+        devLocation: '',
+        groupId: '',
+        devId: '',
+        devName: '',
+        devSn: '',
+        locationPic: null,
+        macAddWiFi: '',
+      });
+    }
+  }, [pagestate, devdata])
 
   useEffect(() => {
     setNetConfig({ ...netConfig, hardReset: `${resetHour}${resetMinute}` })
@@ -200,7 +226,7 @@ export default function Adddevform(managedevices: managedevices) {
     if (formdata.locationPic) {
       formData.append('fileupload', formdata.locationPic as File)
     }
-    if (formdata.devLocation === null || formdata.devLocation === "null" || formdata.devZone === null || formdata.devZone === "null") {
+    if (formdata.devLocation === null || formdata.devLocation === "null" || formdata.devLocation === '' || formdata.devZone === null || formdata.devZone === "null" || formdata.devZone === '') {
       formData.set('devZone', '- -')
       formData.set('locInstall', '- -')
     }

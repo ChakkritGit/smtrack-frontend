@@ -156,9 +156,10 @@ export default function Managedev() {
     },
     {
       name: t('action'),
-      cell: ((item) => (
+      cell: ((item, index) => (
         <Actiontabledev key={item.devId}>
           <Adddevform
+            key={`${item.devId}${index}`}
             pagestate={'edit'}
             devdata={item}
           />
