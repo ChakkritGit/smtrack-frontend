@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components"
+import styled, { css, keyframes } from "styled-components"
 
 export const WrapperSwitch = styled.div`
   position: relative;
@@ -19,7 +19,7 @@ export const IconWrapper = styled.div`
   }
 `
 
-export const WrapperMenu = styled.div`
+export const WrapperMenu = styled.div<{$openMenu?: boolean}>`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -28,14 +28,42 @@ export const WrapperMenu = styled.div`
   top: 40px;
   right: 20px;
   padding: .7rem;
-  background-color: ${props=> props.theme.mode === 'dark' ? `var(--main-last-color)` : `var(--white-grey-1)`};
-  border: 1px solid ${props=> props.theme.mode === 'dark' ? `var(--border-dark-color)` : `var(--grey-25)`};
-  box-shadow: 5px 10px 15px -10px ${props=> props.theme.mode === 'dark' ? `rgba(150, 150, 150, .05)` : `rgba(0, 0, 0, .20)`};
-  color: ${props=> props.theme.mode === 'dark' ? `var(--white)` : `var(--main-last-color)`};
+  background-color: ${props => props.theme.mode === 'dark' ? `var(--main-last-color)` : `var(--white-grey-1)`};
+  border: 1px solid ${props => props.theme.mode === 'dark' ? `var(--border-dark-color)` : `var(--grey-25)`};
+  box-shadow: 5px 10px 15px -10px ${props => props.theme.mode === 'dark' ? `rgba(150, 150, 150, .05)` : `rgba(0, 0, 0, .20)`};
+  color: ${props => props.theme.mode === 'dark' ? `var(--white)` : `var(--main-last-color)`};
   border-radius: var(--border-radius-big);
   z-index: 100;
-  transition: .3s ease;
+  transition: background-color 0.3s ease-in-out;
+  animation: ${props => props.$openMenu ? expand : collapse} 0.3s ease forwards;
 `
+
+const expand = keyframes`
+  from {
+    opacity: 0;
+    scale: 0.9;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(0);
+  }
+`
+
+const collapse = keyframes`
+  from {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 0;
+    scale: 0.9;
+    transform: translateY(0);
+  }
+`
+
 
 export const ModeOption = styled.div<{ $active?: boolean }>`
   display: flex;

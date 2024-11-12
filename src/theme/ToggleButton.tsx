@@ -48,7 +48,7 @@ export default function ToggleButton() {
         }
       </IconWrapper>
 
-      {openMenu && <WrapperMenu ref={menuRef}>
+      {openMenu && <WrapperMenu ref={menuRef} $openMenu={openMenu} >
         <ModeOption onClick={() => toggleTheme('light')} $active={storeLocalTheme === 'light' && mode === 'light'}>
           <TbSun size={24} />
           <span>{t('lightMode')}</span>
