@@ -73,7 +73,7 @@ export default function Notificationdata(notilist: notilist) {
         return t('SdCardBackToNormal')
       }
     } else if (text.split('/')[0] === 'REPORT') {
-      return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity}%`
+      return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature ? extractValues(text)?.temperature : '- -'}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity ? extractValues(text)?.humidity : '- -'}%`
     } else {
       return text
     }
