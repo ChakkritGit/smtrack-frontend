@@ -200,6 +200,13 @@ export default function Adddevform(managedevices: managedevices) {
     if (formdata.locationPic) {
       formData.append('fileupload', formdata.locationPic as File)
     }
+    if (formdata.devLocation === null || formdata.devLocation === "null" || formdata.devZone === null || formdata.devZone === "null") {
+      formData.set('devZone', '- -')
+      formData.set('locInstall', '- -')
+    }
+    if (formdata.devName === null || formdata.devName === 'null') {
+      formData.set('devDetail', formdata.devSn)
+    }
     if (formdata.devId !== '') {
       try {
         const response = await axios.put<responseType<devicesType>>(url, formData, {
