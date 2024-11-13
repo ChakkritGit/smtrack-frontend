@@ -6,7 +6,7 @@ import Devicesinfo from "../../components/dashboard/devicesinfo"
 import Table from "../../components/dashboard/table"
 import { useDispatch, useSelector } from "react-redux"
 import PageLoading from "../../components/loading/page.loading"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { setDeviceId, setSearchQuery, setSerial } from "../../stores/utilsStateSlice"
 import { fetchDevicesLog } from "../../stores/LogsSlice"
@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom"
 import { OfflineDataFlex } from "../../style/components/dashboard.styled"
 import { RiBarChartBoxLine, RiTableView } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
-import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
+import FilterHosWardTemporary from "../../components/dropdown/filter.hos.ward.temp"
 
 export default function Dashboard() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -25,6 +25,11 @@ export default function Dashboard() {
   const { expand, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { devices } = useSelector((state: RootState) => state.devices)
   const { token } = cookieDecode
+  const [filterById, setFilterById] = useState({
+    hosId: '',
+    wardId: ''
+  })
+  const { hosId, wardId } = filterById
 
   useEffect(() => {
     return () => {
@@ -46,8 +51,14 @@ export default function Dashboard() {
     <Container fluid>
       <DashboardFlex>
         <DashboardHeadFilter $primary={expand}>
-          <Dropdown />
-          <FilterHosAndWard />
+          <Dropdown
+            hosId={hosId}
+            wardId={wardId}
+          />
+          <FilterHosWardTemporary
+            filterById={filterById}
+            setFilterById={setFilterById}
+          />
         </DashboardHeadFilter>
         {
           devicesLogs.log?.length > 0 ?

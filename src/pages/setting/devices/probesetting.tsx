@@ -12,15 +12,21 @@ import { fetchProbeData } from "../../../stores/probeSlice"
 import Swal from "sweetalert2"
 import { responseType } from "../../../types/response.type"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
-import { useEffect, useMemo } from "react"
-import FilterHosAndWard from "../../../components/dropdown/filter.hos.ward"
+import { useEffect, useMemo, useState } from "react"
+
+import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
 
 export default function Probesetting() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { probeData } = useSelector((state: RootState) => state.probe)
   const { token, userLevel } = cookieDecode
+  const [filterById, setFilterById] = useState({
+    hosId: '',
+    wardId: ''
+  })
+  const { hosId, wardId } = filterById
 
   useEffect(() => {
     return () => {
@@ -156,7 +162,10 @@ export default function Probesetting() {
         <h3>{t('titleManageProbe')}</h3>
         <div>
           {
-            userLevel !== '4' && <FilterHosAndWard />
+            userLevel !== '4' && <FilterHosWardTemporary
+              filterById={filterById}
+              setFilterById={setFilterById}
+            />
           }
           {
             userLevel !== '2' && userLevel !== '3' &&

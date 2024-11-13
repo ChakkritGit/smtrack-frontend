@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { setSearchQuery } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { paginationCardUsers } from "../../constants/constants"
-import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 import PageLoading from "../../components/loading/page.loading"
+import FilterHosWardTemporary from "../../components/dropdown/filter.hos.ward.temp"
 
 export default function Permission() {
   const { t } = useTranslation()
@@ -20,9 +20,14 @@ export default function Permission() {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [cardsPerPage, setCardsPerPage] = useState<number>(20)
   const [displayedCards, setDisplayedCards] = useState<usersType[]>(userData ? userData.slice(0, cardsPerPage) : [])
-  const { searchQuery, expand, tokenDecode, hosId, wardId } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, expand, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { userId } = tokenDecode
   const [isFiltering, setIsFiltering] = useState(true)
+  const [filterById, setFilterById] = useState({
+    hosId: '',
+    wardId: ''
+  })
+  const { hosId, wardId } = filterById
 
   let filteredItems = useMemo(() => {
     const result = wardId !== ''
@@ -83,7 +88,10 @@ export default function Permission() {
         <div>
           <h3>{t('sidePermission')}</h3>
           <div>
-            <FilterHosAndWard />
+            <FilterHosWardTemporary
+              filterById={filterById}
+              setFilterById={setFilterById}
+            />
             <Adduser pagestate={"add"} />
           </div>
         </div>

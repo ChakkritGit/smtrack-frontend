@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { useTranslation } from "react-i18next"
 import { devicesType } from "../../../types/device.type"
@@ -24,15 +24,21 @@ import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
 import Moveseqdev from "./moveseqdev"
 import { socket } from "../../../services/websocket"
 import { AdjustTime } from "../../../style/components/manage.dev"
-import FilterHosAndWard from "../../../components/dropdown/filter.hos.ward"
+import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
 
 export default function Managedev() {
   const { t, i18n } = useTranslation()
   const langs = localStorage.getItem("lang")
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token, userLevel } = cookieDecode
   const { devices } = useSelector((state: RootState) => state.devices)
+
+  const [filterById, setFilterById] = useState({
+    hosId: '',
+    wardId: ''
+  })
+  const { hosId, wardId } = filterById
 
   useEffect(() => {
     return () => {
@@ -229,7 +235,10 @@ export default function Managedev() {
       <ManageHospitalsHeader className="mb-3 mt-3">
         <h3>{t('titleManageDevices')}</h3>
         <DevHomeHead>
-          <FilterHosAndWard />
+          <FilterHosWardTemporary
+            filterById={filterById}
+            setFilterById={setFilterById}
+          />
           {
             userLevel !== '2' && userLevel !== '3' && <div>
               <Adddevform

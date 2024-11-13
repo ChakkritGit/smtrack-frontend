@@ -1,15 +1,13 @@
-import { RiCloseLine, RiFilter3Line } from "react-icons/ri"
-import { DevHomeHead, DeviceInfoSpan, DeviceInfoSpanClose, FilterHomeHOSWARD } from "../../style/style"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState, storeDispatchType } from "../../stores/store"
-import { useEffect, useState } from "react"
-import { useTranslation } from "react-i18next"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { RootState } from "../../stores/store"
+import { useSelector } from "react-redux"
+import { wardsType } from "../../types/ward.type"
 import { useTheme } from "../../theme/ThemeProvider"
+import { DevHomeHead, DeviceInfoSpan, DeviceInfoSpanClose, FilterHomeHOSWARD } from "../../style/style"
+import { RiCloseLine, RiFilter3Line } from "react-icons/ri"
+import { useTranslation } from "react-i18next"
 import Select from "react-select"
 import { hospitalsType } from "../../types/hospital.type"
-import { wardsType } from "../../types/ward.type"
-import { cookieOptions, cookies } from "../../constants/constants"
-import { setHosId, setWardId } from "../../stores/utilsStateSlice"
 
 interface Hospital {
   hosId: string,
@@ -26,17 +24,32 @@ type Option = {
   label: string,
 }
 
-function FilterHosAndWard() {
+interface FilterProps {
+  filterById: {
+    hosId: string;
+    wardId: string;
+  };
+  setFilterById: Dispatch<SetStateAction<{
+    hosId: string;
+    wardId: string;
+  }>>
+}
+
+function FilterHosWardTemporary(filterProps: FilterProps) {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const dispatch = useDispatch<storeDispatchType>()
-  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
-  const { hosId, wardId } = useSelector((state: RootState) => state.utilsState)
-  const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
   const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
-  const { userLevel } = tokenDecode
-  const [filterdata, setFilterdata] = useState(false)
+  const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { userLevel } = cookieDecode
   const [wardName, setWardname] = useState<wardsType[]>([])
+  const [filterdata, setFilterdata] = useState(false)
+  const { filterById, setFilterById } = filterProps
+  const { hosId, wardId } = filterById
+
+  useEffect(() => {
+    setWardname(wardData.filter((items) => hosId ? items.hospital.hosId.includes(hosId) : items))
+  }, [wardData, hosId])
 
   const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
     data.map(item => ({
@@ -52,29 +65,18 @@ function FilterHosAndWard() {
 
   const getHospital = (hospitalID: string | undefined) => {
     if (hospitalID !== '') {
-      updateLocalStorageAndDispatch('selectHos', hospitalID, setHosId)
+      setFilterById({ ...filterById, hosId: String(hospitalID) })
       setWardname(wardData.filter((items) => hospitalID ? items.hospital.hosId.includes(hospitalID) : items))
     } else {
-      cookies.remove('selectHos', cookieOptions)
-      dispatch(setHosId(''))
+      setFilterById({ ...filterById, hosId: '' })
     }
   }
 
-  const updateLocalStorageAndDispatch = (key: string, id: string | undefined, action: Function) => {
-    cookies.set(key, String(id), cookieOptions)
-    dispatch(action(String(id)))
-  }
-
-  useEffect(() => {
-    setWardname(wardData.filter((items) => hosId ? items.hospital.hosId.includes(hosId) : items))
-  }, [wardData, hosId])
-
   const getWard = (wardID: string | undefined) => {
     if (wardID !== '') {
-      updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
+      setFilterById({ ...filterById, wardId: String(wardID) })
     } else {
-      cookies.remove('selectWard', cookieOptions)
-      dispatch(setWardId(''))
+      setFilterById({ ...filterById, wardId: '' })
     }
   }
 
@@ -168,4 +170,4 @@ function FilterHosAndWard() {
   )
 }
 
-export default FilterHosAndWard
+export default FilterHosWardTemporary

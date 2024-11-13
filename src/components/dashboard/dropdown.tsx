@@ -21,13 +21,19 @@ type Device = {
   devDetail: string,
 }
 
-export default function Dropdown() {
+interface FilterProps {
+  hosId: string;
+  wardId: string;
+}
+
+export default function Dropdown(filterProps: FilterProps) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { deviceId, Serial, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
+  const { deviceId, Serial } = useSelector((state: RootState) => state.utilsState)
   const [val, setVal] = useState(`${deviceId}-${Serial}`)
   const { theme } = useTheme()
+  const { hosId, wardId } = filterProps
 
   const selectchang = (e: SingleValue<Option>) => {
     const selectedValue = e?.value

@@ -62,7 +62,7 @@ export default function Main() {
 
   useEffect(() => {
     if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId, token }))
-  }, [deviceId, token, socketData])
+  }, [deviceId, token, socketData, reFetchData])
 
   const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
     // e.preventDefault()
