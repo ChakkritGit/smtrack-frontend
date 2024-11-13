@@ -150,7 +150,7 @@ export default function Uploadfirmware() {
       onProgress += 1
       const onProgressing = document.getElementById('onProgressing')
       if (onProgressing) onProgressing.innerText = `${onProgress}`
-      setTimeout(resolve, 300)
+      setTimeout(resolve, 100)
     })
   }
 
