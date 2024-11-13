@@ -122,6 +122,10 @@ export const resizeImage = (file: File, targetDPI: number = 300): Promise<File> 
 
 export const scheduleDayArray: Schedule[] = [
   {
+    scheduleKey: 'OFF',
+    scheduleLabel: 'OFF'
+  },
+  {
     scheduleKey: 'MON',
     scheduleLabel: 'MON'
   },
@@ -608,8 +612,14 @@ export const minutesOptions = Array.from({ length: 60 }, (_, i) => ({
   label: String(i).padStart(2, '0'),
 }))
 
-export const generateOptions = () => {
+export const generateOptions = (userLevel: string) => {
   let option = []
+  if (userLevel === '0' || userLevel === '1') {
+    option.push({
+      value: 'OFF',
+      label: 'OFF'
+    })
+  }
   for (let i = 5; i <= 120; i += 5) {
     option.push({
       value: String(i),

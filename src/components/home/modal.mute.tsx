@@ -10,6 +10,8 @@ import { cookies, generateOptions, mapDefaultValue, mapOptions } from "../../con
 import { client } from "../../services/mqtt"
 import Select from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
+import { useSelector } from "react-redux"
+import { RootState } from "../../stores/store"
 
 type selectOption = {
   value: string,
@@ -31,6 +33,8 @@ type modalAdjustType = {
 
 function ModalMute(modalProps: modalAdjustType) {
   const { devicesdata, setShow, setShowSettingMute, showSettingMute } = modalProps
+  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { userLevel } = cookieDecode
   const { devSerial, config } = devicesdata
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -162,8 +166,8 @@ function ModalMute(modalProps: modalAdjustType) {
                     <Select
                       id="hours-one"
                       key={JSON.stringify(muteDoorSelect)}
-                      options={mapOptions<selectOption, keyof selectOption>(generateOptions(), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(), muteDoorSelect.always, 'value', 'label')}
+                      options={mapOptions<selectOption, keyof selectOption>(generateOptions(userLevel), 'value', 'label')}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.always, 'value', 'label')}
                       onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, always: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, always: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}
@@ -209,8 +213,8 @@ function ModalMute(modalProps: modalAdjustType) {
                     <Select
                       id="hours-two"
                       key={JSON.stringify(muteDoorSelect)}
-                      options={mapOptions<selectOption, keyof selectOption>(generateOptions(), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(), muteDoorSelect.alert, 'value', 'label')}
+                      options={mapOptions<selectOption, keyof selectOption>(generateOptions(userLevel), 'value', 'label')}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.alert, 'value', 'label')}
                       onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, alert: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, alert: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}

@@ -184,7 +184,9 @@ function ModalNotification(modalProps: modalAdjustType) {
   }
 
   const filterOptions = (options: Option[], selectedValues: string[]) => {
-    return options.filter(option => !selectedValues.includes(option.value))
+    return options.filter(option =>
+      option.value === 'OFF' || !selectedValues.includes(option.value)
+    )
   }
 
   const closeSetting = () => {
@@ -347,32 +349,6 @@ function ModalNotification(modalProps: modalAdjustType) {
                 </Row>
               </Row>
             </Col>
-            {/* <Col lg={12}>
-                <ScheduleContainer>
-                  <Form.Label className="w-100 mt-3">
-                    <span><b>{t('scheduleTile')}</b></span>
-                  </Form.Label>
-                  <div onClick={() => {
-                    setScheduleTime({
-                      firstMinute: '',
-                      firstTime: '',
-                      seccondMinute: '',
-                      secondTime: '',
-                      thirdMinute: '',
-                      thirdTime: ''
-                    });
-
-                    setScheduleDay({
-                      firstDay: '',
-                      seccondDay: '',
-                      thirdDay: ''
-                    });
-                  }}>
-                    <RiFormatClear size={20} />
-                    <span>{t('clearShedule')}</span>
-                  </div>
-                </ScheduleContainer>
-              </Col> */}
             <Col lg={12}>
               <ScheduleFlec>
                 <LineHr />
