@@ -1191,7 +1191,7 @@ height: 60px;
 &>span>img {
   width: 60px;
   height: 60px;
-  border-radius: var(--border-radius-big);
+  border-radius: var(--border-radius-small);
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, .05);
   background-color: var(--white-grey-1);
   object-fit: cover;
