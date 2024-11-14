@@ -13,7 +13,7 @@ import { fetchUserData } from "../../stores/userSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies, resizeImage } from "../../constants/constants"
+import { accessToken, cookieOptions, cookies, ImageComponent, resizeImage } from "../../constants/constants"
 import { setCookieEncode, setShowAlert } from "../../stores/utilsStateSlice"
 import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
@@ -76,13 +76,13 @@ export default function Adduser(AdduserProp: adduserProp) {
     openModal()
   }
 
-  const fileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+  const fileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
     let reader = new FileReader()
     const fileInput = e.target
     if (e.target && fileInput.files && e.target.files && e.target.files.length > 0) {
       const selectedFile = fileInput.files[0]
 
-      resizeImage(selectedFile)
+      await resizeImage(selectedFile)
         .then((resizedFile) => {
           reader.readAsDataURL(resizedFile)
           reader.onload = (event) => {
@@ -525,7 +525,7 @@ export default function Adduser(AdduserProp: adduserProp) {
                     {t('userPicture')}
                     <ProfileFlex $radius={10} $dimension={250} $imageFit>
                       <div>
-                        <img src={userPicture ? userPicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
+                        <ImageComponent src={userPicture ? userPicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
                         <label htmlFor={'user-file-upload'} >
                           <RiEditLine />
                           <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={fileSelect} />

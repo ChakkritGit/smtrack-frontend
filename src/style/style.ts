@@ -19,7 +19,7 @@ export const IconWrapper = styled.div`
   }
 `
 
-export const WrapperMenu = styled.div<{$openMenu?: boolean}>`
+export const WrapperMenu = styled.div<{ $openMenu?: boolean }>`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -324,18 +324,22 @@ ${props => props.$primary &&
 `}
 `
 
-export const SidebarLogo = styled.img<{ $primary?: boolean }>`
+export const SidebarLogo = styled.div<{ $primary?: boolean }>`
   width: 100px;
+  height: 100px;
   max-width: 100px;
   max-height: 100px;
   margin-bottom: .5rem;
-  overflow: hidden;
+
+&>span>img {
+  width: 100px;
+  height: 100px;
 
   ${porps => porps.$primary && css`
     width: 80px;
-    max-width: 80px;
-    max-height: 80px;
+    height: 80px;
   `}
+}
 `
 
 export const HospitalName = styled.span<{ $primary?: boolean }>`
@@ -886,10 +890,14 @@ color: var(--white-grey-1);
 export const NavProfileFlex = styled.div<{ $primary?: boolean }>`
 `
 
-export const NavProfile = styled.img<{ $primary?: boolean }>`
-  background-color: var(--white-grey-1);
+export const NavProfile = styled.div<{ $primary?: boolean }>`
   max-width: 35px;
   max-height: 35px;
+  width: 35px;
+  height: 35px;
+
+&>span>img {
+  background-color: var(--white-grey-1);
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -901,6 +909,7 @@ export const NavProfile = styled.img<{ $primary?: boolean }>`
   max-width: 24px;
   max-height: 24px;
   `}
+}
 `
 
 export const LangSwitch = styled.div<{ $primary?: boolean }>`
@@ -1173,15 +1182,20 @@ export const UsercardFlex = styled.div<{ $primary?: boolean }> `
   }
 `
 
-export const Userimage = styled.img<{ $primary?: boolean }> `
+export const Userimage = styled.div<{ $primary?: boolean }> `
 max-width: 60px;
 max-height: 60px;
 width: 60px;
 height: 60px;
-border-radius: var(--border-radius-big);
-box-shadow: 0 0 5px 2px rgba(0, 0, 0, .05);
-background-color: var(--white-grey-1);
-object-fit: cover;
+
+&>span>img {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--border-radius-big);
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .05);
+  background-color: var(--white-grey-1);
+  object-fit: cover;
+}
 `
 
 export const UserDetails = styled.div<{ $primary?: boolean }> `
@@ -1325,10 +1339,18 @@ export const ManageHospitalsContainer = styled.div<{ $primary?: boolean }>`
 
 `
 
-export const HosTableImage = styled.img<{ $primary?: boolean }>`
+export const HosTableImage = styled.div<{ $primary?: boolean }>`
 width: 45px;
 height: 45px;
-padding: 5px;
+max-width: 45px;
+max-height: 45px;
+
+&>span>img {
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  border-radius: var(--border-radius-small);
+}
 `
 
 export const ManageHospitalsAdd = styled.button<{ $primary?: boolean }>`
@@ -1796,15 +1818,6 @@ export const CardSpan = styled.span<{ $primary?: boolean }>`
   text-overflow: ellipsis;
 `
 
-export const CardHomeFlex = styled.div`
-display: block;
-aspect-ratio: 100 / 130;
-border-radius: .5rem;
-max-width: 100px;
-max-height: 130px;
-overflow: hidden;
-`
-
 export const DevHomeSecctionOne = styled.div<{ $primary?: boolean, $expand?: boolean, $inList?: boolean, $transparent?: boolean }>`
 display: flex;
 justify-content: center;
@@ -2168,10 +2181,19 @@ export const CardDoorSection = styled.div<{ $primary?: boolean }>`
   gap: 5px;
 `
 
-export const DeviceCardHeadImg = styled.img<{ $primary?: boolean }>`
+export const DeviceCardHeadImg = styled.div<{ $primary?: boolean }>`
+aspect-ratio: 100 / 130;
+max-width: 100px;
+max-height: 130px;
 width: 100px;
 height: 130px;
-object-fit: cover;
+
+&>span>img {
+  width: 100px;
+  height: 130px;
+  border-radius: .5rem;
+  object-fit: cover;
+}
 `
 
 export const DeviceCardHeadStatus = styled.div<{ $primary?: boolean }>`
@@ -2499,13 +2521,13 @@ export const ExpandPicture = styled.div<{ $primary?: boolean }>`
   border-radius: .8rem;
   overflow: hidden;
 
-  &>img {
+  &>span>img {
     max-width: 700px;
   }
 
-@media (max-width: 430px) {
-  img {
-    max-width: 330px;
+  @media (max-width: 430px) {
+    &>span>img {
+      max-width: 330px;
   }
 }
 `
@@ -2642,23 +2664,34 @@ gap: 1rem;
 }
 `
 
-export const DeviceDetailsBodyimg = styled.img<{ $primary?: boolean }>`
-width: 100%;
-height: 180px;
-aspect-ratio: 3/4;
-border-radius: var(--border-radius-big);
-padding: 3px;
-box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 25%)'};
-cursor: pointer;
-overflow: hidden;
+export const DeviceDetailsBodyimg = styled.div<{ $primary?: boolean }>`
+  aspect-ratio: 3/4;
+  width: 100%;
+  height: 180px;
+  max-height: 180px;
+  overflow: hidden;
+  cursor: pointer;
 
-&:hover {
-  transform: scale(.95);
-  transition: transform ease .3s;
+  &>span {
+  display: flex !important;
 }
 
-@media (max-width: 1185px) {
-  height: 200px;
+&>span>img {
+  object-fit: contain;
+  width: 100%;
+  height: 180px;
+  padding: 3px;
+  border-radius: var(--border-radius-big);
+  box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 25%)'};
+
+  &:hover {
+    transform: scale(.95);
+    transition: transform ease .3s;
+  }
+
+  @media (max-width: 1185px) {
+    height: 200px;
+  }
 }
 `
 
@@ -4609,11 +4642,9 @@ margin: 1rem 0;
   max-width: ${props => props.$dimension + 'px'};
   max-height: ${props => props.$dimension + 'px'};
   aspect-ratio: 150 / 150;
-  overflow: hidden;
 }
 
-&>div:nth-child(1)>div:nth-child(1)>img {
-  position: absolute;
+&>div:nth-child(1)>div:nth-child(1)>span>img {
   width: ${props => props.$dimension + 'px'};
   height: ${props => props.$dimension + 'px'};
   max-width: ${props => props.$dimension + 'px'};
@@ -4623,7 +4654,6 @@ margin: 1rem 0;
   object-fit: ${props => props.$imageFit ? 'cover' : 'contain'};
   aspect-ratio: 1/1;
   border: 3px solid var(--white-grey-1);
-  overflow: hidden;
 }
 
 &>div:nth-child(1)>div:nth-child(1)>label {
@@ -4639,7 +4669,6 @@ margin: 1rem 0;
   background-color: var(--main-color);
   border: 3px solid var(--white-grey-1);
   cursor: pointer;
-  overflow: hidden;
 
   &>svg {
     font-size: 18px;
@@ -5199,7 +5228,7 @@ export const WCDC1 = styled.div<{ $primary?: boolean }>`
   justify-content: space-between;
   border: 1px solid black;
 
-  &>div:nth-child(1)>div:nth-child(1)>img {
+  &>div:nth-child(1)>div:nth-child(1)>span>img {
   height: 100px;
   position: relative;
   left: 35px;
@@ -5376,7 +5405,7 @@ export const WCDC2 = styled.div<{ $primary?: boolean }>`
   width: 20%;
 }
 
-&>div:nth-child(3)>div:nth-child(1)>img {
+&>div:nth-child(3)>div:nth-child(1)>span>img {
   width: 130px;
   transform: translateY(20px);
 }
@@ -5556,18 +5585,17 @@ gap: 2rem;
 margin: 1rem 0;
 justify-content: center;
 
-&>div {
+&>div>span {
   display: block;
   position: relative;
   width: ${props => props.$dimension + 'px'};
   height: ${props => props.$dimension + 'px'};
   max-width: ${props => props.$dimension + 'px'};
   max-height: ${props => props.$dimension + 'px'};
-  aspect-ratio: 150 / 150;
   overflow: hidden;
 }
 
-&>div>img {
+&>div>span>img {
   position: absolute;
   width: ${props => props.$dimension + 'px'};
   height: ${props => props.$dimension + 'px'};

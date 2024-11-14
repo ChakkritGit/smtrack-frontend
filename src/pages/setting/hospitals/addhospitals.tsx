@@ -13,7 +13,7 @@ import { fetchHospitals } from '../../../stores/dataArraySlices'
 import { responseType } from '../../../types/response.type'
 import { hospitalsType } from '../../../types/hospital.type'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
-import { resizeImage } from '../../../constants/constants'
+import { ImageComponent, resizeImage } from '../../../constants/constants'
 
 export default function Addhospitals(addhosprop: addHospitalProp) {
   const { t } = useTranslation()
@@ -274,7 +274,7 @@ export default function Addhospitals(addhosprop: addHospitalProp) {
                     {t('hosPicture')}
                     <ProfileFlex $radius={10} $dimension={250}>
                       <div>
-                        <img src={hosPicture ? hosPicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
+                        <ImageComponent src={hosPicture ? hosPicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
                         <label htmlFor={'user-file-upload'} >
                           <RiEditLine />
                           <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={fileSelect} />

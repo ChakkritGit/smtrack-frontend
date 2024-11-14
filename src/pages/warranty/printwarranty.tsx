@@ -6,6 +6,7 @@ import LogoTwo from '../../assets/images/Thanesscience_Logo.png'
 import LogofooterTwo from '../../assets/images/Thanesscience.png'
 // import QRCode from "react-qr-code"
 import { warrantyType } from "../../types/warranty.type"
+import { ImageComponent } from "../../constants/constants"
 
 type warrantytype = {
   data: warrantyType[],
@@ -38,7 +39,8 @@ export default function Printwarranty(warrantytype: warrantytype) {
               <WCDC1>
                 <div>
                   <div>
-                    <img src={items.saleDept === 'SCI 1' ? Logo : LogoTwo} alt="ts-logo" />
+                    <ImageComponent src={items.saleDept === 'SCI 1' ? Logo : LogoTwo} alt="ts-logo" />
+                    {/* <img src={items.saleDept === 'SCI 1' ? Logo : LogoTwo} alt="ts-logo" /> */}
                   </div>
                   <div>
                     <span>บัตรรับประกันผลิตภัณฑ์</span>
@@ -181,7 +183,8 @@ export default function Printwarranty(warrantytype: warrantytype) {
                 </div>
                 <div>
                   <div>
-                    <img src={items.saleDept === 'SCI 1' ? Logofooter : LogofooterTwo} alt="ts-logo" />
+                    <ImageComponent src={items.saleDept === 'SCI 1' ? Logofooter : LogofooterTwo} alt="ts-logo" />
+                    {/* <img src={items.saleDept === 'SCI 1' ? Logofooter : LogofooterTwo} alt="ts-logo" /> */}
                   </div>
                   <div>
                     <span>61/34 ซ.อมรพันธ์ 4 (วิภาวดี 42) ถ.วิภาวดีรังสิต แขวงลาดยาว เขตจตุจักร กรุงเทพฯ 10900</span>

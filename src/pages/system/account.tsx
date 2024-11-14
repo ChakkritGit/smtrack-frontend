@@ -12,7 +12,7 @@ import Swal from "sweetalert2"
 import { useDispatch, useSelector } from "react-redux"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies, resizeImage } from "../../constants/constants"
+import { accessToken, cookieOptions, cookies, ImageComponent, resizeImage } from "../../constants/constants"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { setCookieEncode, setShowAlert } from "../../stores/utilsStateSlice"
 
@@ -256,7 +256,7 @@ export default function Account() {
       <ProfileFlexSetting $radius={50} $dimension={150} $imageFit>
         <div>
           <div>
-            <img src={userpicture ? userpicture : cookieDecode.userPicture ? `${import.meta.env.VITE_APP_IMG}${cookieDecode.userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="user-picture" />
+            <ImageComponent src={userpicture ? userpicture : cookieDecode.userPicture ? `${import.meta.env.VITE_APP_IMG}${cookieDecode.userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="user-picture" />
             <label htmlFor={'user-file-upload'} >
               <RiEditLine />
               <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={handleChang} />

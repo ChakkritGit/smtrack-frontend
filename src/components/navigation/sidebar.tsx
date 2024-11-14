@@ -20,7 +20,7 @@ import { AboutVersion } from "../../style/components/sidebar"
 import { responseType } from "../../types/response.type"
 import axios, { AxiosError } from "axios"
 import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies } from "../../constants/constants"
+import { accessToken, cookieOptions, cookies, ImageComponent } from "../../constants/constants"
 
 export default function sidebar() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -114,7 +114,9 @@ export default function sidebar() {
       <Link to="/" onClick={resetAsideandCardcount} className="d-flex flex-column align-items-center mb-3 mb-md-0 link-dark text-decoration-none">
         <SidebarLogo
           $primary={expand}
-          src={hosImg ? `${import.meta.env.VITE_APP_IMG}${hosImg}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="hos-logo" />
+        >
+          <ImageComponent src={hosImg ? `${import.meta.env.VITE_APP_IMG}${hosImg}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="hos-logo" />
+        </SidebarLogo>
         <HospitalName $primary={expand}>{hosName}</HospitalName>
       </Link>
       <LineHr $primary />

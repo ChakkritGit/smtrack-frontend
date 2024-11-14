@@ -21,7 +21,7 @@ import { wardsType } from '../../../types/ward.type'
 import { SendOTAtoBoard, UploadButton } from '../../../style/components/firmwareuoload'
 import { firmwareType } from '../../../types/component.type'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
-import { hoursOptions, mapDefaultValue, mapOptions, minutesOptions, resizeImage } from '../../../constants/constants'
+import { hoursOptions, ImageComponent, mapDefaultValue, mapOptions, minutesOptions, resizeImage } from '../../../constants/constants'
 import { TabButton, TabContainer } from '../../../style/components/manage.dev'
 import Select from 'react-select'
 import { useTheme } from '../../../theme/ThemeProvider'
@@ -844,7 +844,7 @@ export default function Adddevform(managedevices: managedevices) {
                           {t('devicePicture')}
                           <ProfileFlex $radius={10} $dimension={250}>
                             <div>
-                              <img src={devicePicture ? devicePicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
+                              <ImageComponent src={devicePicture ? devicePicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
                               <label htmlFor={'user-file-upload'}>
                                 <RiEditLine />
                                 <input

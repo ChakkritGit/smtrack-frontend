@@ -12,6 +12,7 @@ import { fetchUserData } from "../../stores/userSlice"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
 import { setShowAlert } from "../../stores/utilsStateSlice"
+import { ImageComponent } from "../../constants/constants"
 
 export default function CardUser(userProp: cardType) {
   const { t } = useTranslation()
@@ -63,9 +64,12 @@ export default function CardUser(userProp: cardType) {
   return (
     <UsercardFlex>
       <div>
-        <Userimage
-          src={userPic ? `${import.meta.env.VITE_APP_IMG}${userPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
-          alt="user-picture" />
+        <Userimage>
+          <ImageComponent
+            src={userPic ? `${import.meta.env.VITE_APP_IMG}${userPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
+            alt="user-picture"
+          />
+        </Userimage>
         <UserDetails>
           <span>{displayName}</span>
           <span>@{userName}</span>

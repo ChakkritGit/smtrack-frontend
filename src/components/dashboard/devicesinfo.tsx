@@ -32,6 +32,7 @@ import ModalNotification from "../home/modal.noti"
 import ModalMute from "../home/modal.mute"
 import { filtersDevices } from "../../stores/dataArraySlices"
 import { MuteFlex, OpenSettingBuzzer } from "../../style/components/home.styled"
+import { ImageComponent } from "../../constants/constants"
 
 type devicesinfo = {
   devicesData: devicesType,
@@ -293,11 +294,11 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           </CardDevBtn>
         </DeviceDetailsHead>
         <DeviceDetailsBody>
-          <DeviceDetailsBodyimg
-            onClick={openPicmodal}
-            src={devicesData?.locPic ? `${import.meta.env.VITE_APP_IMG}${devicesData?.locPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
-            alt="device_pic"
-            loading="lazy" />
+          <DeviceDetailsBodyimg onClick={openPicmodal}>
+            <ImageComponent
+              src={devicesData?.locPic ? `${import.meta.env.VITE_APP_IMG}${devicesData?.locPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
+              alt="device_pic" />
+          </DeviceDetailsBodyimg>
           <DeviceDetailsBodyInfo>
             <div>
               <li><b title={devicesData?.locInstall && devicesData?.locInstall !== null && devicesData?.locInstall !== "null" ? devicesData?.locInstall : '- -'}>{devicesData?.locInstall && devicesData?.locInstall !== null && devicesData?.locInstall !== "null" ? devicesData?.locInstall : '- -'}</b></li>
@@ -494,9 +495,10 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
         <Form>
           <Modal.Body>
             <ExpandPicture>
-              <img
+              <ImageComponent
                 src={devicesData?.locPic ? `${import.meta.env.VITE_APP_IMG}${devicesData?.locPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
-                alt="device_pic" />
+                alt="device_pic"
+              />
             </ExpandPicture>
           </Modal.Body>
         </Form>

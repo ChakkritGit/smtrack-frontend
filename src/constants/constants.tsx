@@ -1,8 +1,9 @@
 import { CookieType } from "../types/cookie.type"
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import 'react-lazy-load-image-component/src/effects/blur.css'
 import Cookies, { CookieSetOptions } from "universal-cookie"
 import CryptoJS from "crypto-js"
 import { Option, Schedule, ScheduleHour, ScheduleMinute } from "../types/config.type"
-import piexif from 'piexifjs'
 
 export const getDateNow = () => {
   let date = new Date()
@@ -44,78 +45,33 @@ export const cookieOptions: CookieSetOptions = {
   sameSite: 'strict' // ตัวเลือก 'strict', 'lax', หรือ 'none'
 }
 
-export const resizeImage = (file: File, targetDPI: number = 300): Promise<File> => {
+export const resizeImage = (file: File): Promise<File> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-
     reader.onload = (e: ProgressEvent<FileReader>) => {
       const image: HTMLImageElement = new Image()
       image.src = e.target?.result as string
-
       image.onload = () => {
         const canvas = document.createElement('canvas')
-        const context: CanvasRenderingContext2D | null = canvas.getContext('2d')
-
         const maxDimensions = { width: 720, height: 720 }
         const scaleFactor = Math.min(maxDimensions.width / image.width, maxDimensions.height / image.height)
-
-        const originalWidth = image.width * scaleFactor;
-        const originalHeight = image.height * scaleFactor;
-
-        const dpiScale = targetDPI / 96
-        canvas.width = originalWidth * dpiScale
-        canvas.height = originalHeight * dpiScale
-
-        canvas.style.width = `${originalWidth}px`
-        canvas.style.height = `${originalHeight}px`
-
-        context?.scale(dpiScale, dpiScale)
-
-        context?.drawImage(image, 0, 0, originalWidth, originalHeight)
-
-        const mimeString = file.type
-
-        if (mimeString === 'image/jpeg') {
-          const originalData = e.target?.result as string
-          const exifObj = piexif.load(originalData)
-
-          exifObj['0th'] = exifObj['0th'] || {}
-          exifObj['0th'][piexif.ImageIFD.Copyright] = 'SMTrack+ Copyright - Thanes Development Co., Ltd.'
-
-          const exifStr = piexif.dump(exifObj)
-          const newImageData = piexif.insert(exifStr, canvas.toDataURL(file.type))
-
-          const byteString = atob(newImageData.split(',')[1])
-          const ab = new ArrayBuffer(byteString.length)
-          const ia = new Uint8Array(ab)
-          for (let i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i)
-          }
-
-          const blob = new Blob([ab], { type: mimeString })
-          const resizedFile = new File([blob], file.name, { type: file.type })
-          resolve(resizedFile)
-
-        } else if (mimeString === 'image/png' || mimeString === 'image/gif') {
-          canvas.toBlob((blob) => {
-            if (blob) {
-              const resizedFile = new File([blob], file.name, { type: file.type })
-              resolve(resizedFile)
-            } else {
-              reject(new Error('Failed to convert canvas to Blob for PNG/GIF'))
-            }
-          }, mimeString)
-
-        } else {
-          reject(new Error('Unsupported file format'))
-        }
+        canvas.width = image.width * scaleFactor
+        canvas.height = image.height * scaleFactor
+        const context: CanvasRenderingContext2D | null = canvas.getContext('2d')
+        context?.drawImage(image, 0, 0, canvas.width, canvas.height)
+        canvas.toBlob(
+          (blob: Blob | null) => {
+            const resizedFile = new File([blob as Blob], file.name, { type: file.type })
+            resolve(resizedFile)
+          },
+          file.type,
+          1
+        )
       }
     }
-
     reader.onerror = (error) => {
       reject(error)
     }
-
     reader.readAsDataURL(file)
   })
 }
@@ -668,4 +624,14 @@ export const supportInitData = {
   hospitalName: '',
   wardName: '',
   details: ''
+}
+
+export const ImageComponent = ({ src, alt }: { src: string, alt: string }) => {
+  return (
+    <LazyLoadImage
+      src={src}
+      alt={alt}
+      effect="blur"
+    />
+  )
 }

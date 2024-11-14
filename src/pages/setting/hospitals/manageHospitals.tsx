@@ -20,6 +20,7 @@ import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
 import { FormEvent, memo, useEffect, useState } from "react"
 import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import HospitalDropdown from "../../../components/dropdown/hospitalDropdown"
+import { ImageComponent } from "../../../constants/constants"
 
 export default function ManageHospitals() {
   const { t } = useTranslation()
@@ -138,9 +139,11 @@ export default function ManageHospitals() {
       name: t('hosPicture'),
       cell: (item) => (
         <div>
-          <HosTableImage
-            src={item.hosPic ? `${import.meta.env.VITE_APP_IMG}${item.hosPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
-            alt="hos-logo" />
+          <HosTableImage>
+            <ImageComponent
+              src={item.hosPic ? `${import.meta.env.VITE_APP_IMG}${item.hosPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
+              alt="hos-logo" />
+          </HosTableImage>
         </div>
       ),
       center: true,

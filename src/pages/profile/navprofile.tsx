@@ -4,7 +4,7 @@ import { Dropdown } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { NavbarProfileDropdown } from "../../style/components/navbar"
-import { cookieOptions, cookies } from "../../constants/constants"
+import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
@@ -37,7 +37,9 @@ export default function Navprofile() {
       <Dropdown.Toggle variant="0" className="border-0 p-0">
         <NavProfileFlex>
           <NavProfileContainer className="profile-name-dark">
-            <NavProfile src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
+            <NavProfile>
+              <ImageComponent src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
+            </NavProfile>
             <div>
               <span>{displayName}</span>
               <span>{userLevel === '0' ? t('levelSuper') : userLevel === '1' ? t('levelService') : userLevel === '2' ? t('levelAdmin') : t('levelUser')}</span>
@@ -49,7 +51,9 @@ export default function Navprofile() {
       <Dropdown.Menu>
         <NavbarProfileDropdown>
           <NavProfileContainer onClick={() => navigate("/settings")}>
-            <NavProfile src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
+            <NavProfile>
+              <ImageComponent src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
+            </NavProfile>
             <div style={{ display: 'flex', flexDirection: 'column', width: '100px', maxWidth: '100px' }}>
               <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{displayName}</span>
               <strong style={{ width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : t('levelUser')}</strong>

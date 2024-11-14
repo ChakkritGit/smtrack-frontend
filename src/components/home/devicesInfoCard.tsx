@@ -1,7 +1,6 @@
 import {
   CardDevBtn,
   CardDoorSection,
-  CardHomeFlex,
   DeviceCard, DeviceCardBody, DeviceCardFooter, DeviceCardFooterDoor,
   DeviceCardFooterDoorFlex, DeviceCardFooterI, DeviceCardFooterInfo, DeviceCardFooterTemp,
   DeviceCardFooterTempT, DeviceCardHead, DeviceCardHeadHandle, DeviceCardHeadImg,
@@ -19,7 +18,7 @@ import { useNavigate } from "react-router-dom"
 import { setDeviceId, setSerial } from "../../stores/utilsStateSlice"
 import { useDispatch } from "react-redux"
 import { storeDispatchType } from "../../stores/store"
-import { cookieOptions, cookies } from "../../constants/constants"
+import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
 import { logtype } from "../../types/log.type"
 import { Dispatch, SetStateAction } from "react"
 
@@ -67,13 +66,11 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
     <>
       <DeviceCard>
         <DeviceCardHead>
-          <CardHomeFlex>
-            <DeviceCardHeadImg
+          <DeviceCardHeadImg>
+            <ImageComponent
               src={locPic ? `${import.meta.env.VITE_APP_IMG}${locPic}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`}
-              alt="device-picture"
-              $primary={locPic ? true : false}
-              loading="lazy" />
-          </CardHomeFlex>
+              alt="device-picture" />
+          </DeviceCardHeadImg >
           <DeviceCardHeadStatus>
             <DeviceCardHeadHandle>
               <CardDevBtn onClick={() => openDashboard({
