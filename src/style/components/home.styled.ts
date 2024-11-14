@@ -128,7 +128,7 @@ export const NotiActionFlex = styled.div<{ $primary?: boolean }>`
   padding: 1rem;
     `}
 
-  & > div:nth-child(2) {
+  /* & > div:nth-child(2) {
     & > button:nth-child(2) {
       background-color: var(--main-color);
       padding: .5rem .7rem;
@@ -141,12 +141,13 @@ export const NotiActionFlex = styled.div<{ $primary?: boolean }>`
         transition: .3s;
       }
     }
-  }
+  } */
 
   & > div {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 1rem;
 
     & > div:nth-child(1) {
       display: flex;
