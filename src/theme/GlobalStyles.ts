@@ -550,6 +550,10 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     animation: spin 1s linear infinite;
 }
 
+.icon {
+  font-weight: bold;
+}
+
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
