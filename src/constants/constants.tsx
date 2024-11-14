@@ -637,6 +637,9 @@ export const ImageComponent = ({ src, alt }: { src: string, alt: string }) => {
       src={src}
       alt={alt}
       effect="blur"
+      wrapperProps={{
+        style: {transitionDelay: ".15s"},
+    }}
     />
   )
 }
