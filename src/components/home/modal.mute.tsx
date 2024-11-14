@@ -1,12 +1,12 @@
 import { Modal } from "react-bootstrap"
-import { ModalHead } from "../../style/style"
+import { LineHr, ModalHead } from "../../style/style"
 import { ModalMuteHead, NotiActionFlex } from "../../style/components/home.styled"
 import { useTranslation } from "react-i18next"
 import { RiArrowLeftSLine, RiVolumeUpLine, RiVolumeVibrateLine } from "react-icons/ri"
 import { devicesType } from "../../types/device.type"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { MuteEtemp } from "../../style/components/sound.setting"
-import { cookies, generateOptions, mapDefaultValue, mapOptions } from "../../constants/constants"
+import { cookies, generateOptions, generateOptionsTwo, mapDefaultValue, mapOptions } from "../../constants/constants"
 import { client } from "../../services/mqtt"
 import Select from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
@@ -19,8 +19,9 @@ type selectOption = {
 }
 
 type MqttType = {
-  always: string,
-  alert: string
+  tempDuration: string,
+  doorAlarm: string,
+  doorDuration: string
 }
 
 
@@ -41,19 +42,21 @@ function ModalMute(modalProps: modalAdjustType) {
   const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
   const [muteDoorSelect, setMuteDoorSelect] = useState<MqttType>({
-    always: '',
-    alert: ''
+    tempDuration: '',
+    doorAlarm: '',
+    doorDuration: ''
   })
   const [muteDoor, setMuteDoor] = useState<MqttType>({
-    always: '',
-    alert: ''
+    tempDuration: '',
+    doorAlarm: '',
+    doorDuration: ''
   })
 
-  const { alert, always } = muteDoor
+  const { doorAlarm, doorDuration, tempDuration } = muteDoor
 
   const [muteEtemp, setMuteEtemp] = useState({
     temporary: false,
-    always: cookies.get(devSerial) === 'always' || false,
+    duration: cookies.get(devSerial) === 'duration' || false,
     door: config.muteDoor === '0' ? false : true,
   })
 
@@ -65,11 +68,11 @@ function ModalMute(modalProps: modalAdjustType) {
   const muteTemporary = () => {
     setMuteEtemp({ ...muteEtemp, temporary: !muteEtemp.temporary })
     if (muteEtemp.temporary) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temporary`, 'on')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temp/temporary`, 'on')
       client.publish(`${devSerial}/mute/short`, 'on')
     } else {
       console.log('off')
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temporary`, 'off')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temp/temporary`, 'off')
       client.publish(`${devSerial}/mute/short`, 'off')
     }
   }
@@ -77,34 +80,43 @@ function ModalMute(modalProps: modalAdjustType) {
   const muteAlarm = () => {
     setMuteEtemp({ ...muteEtemp, door: !muteEtemp.door })
     if (muteEtemp.door) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alarm`, 'on')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/sound`, 'on')
       client.publish(`${devSerial}/mute/long`, 'on')
     } else {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alarm`, 'off')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/sound`, 'off')
       client.publish(`${devSerial}/mute/long`, 'off')
     }
   }
 
   const muteAlways = (status: boolean) => {
     if (status) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/always`, muteDoorSelect.always)
-      resetSelct('always')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temp/duration`, muteDoorSelect.tempDuration)
+      resetSelct('tempDuration')
     } else {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/always`, '0')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temp/duration`, '0')
     }
   }
 
   const muteAlert = (status: boolean) => {
     if (status) {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alert`, muteDoorSelect.alert)
-      resetSelct('alert')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alarm`, muteDoorSelect.doorAlarm)
+      resetSelct('doorAlarm')
     } else {
-      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alert`, '0')
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/alarm`, '0')
+    }
+  }
+
+  const muteDoorDuration = (status: boolean) => {
+    if (status) {
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/door/alarm/duration`, muteDoorSelect.doorDuration)
+      resetSelct('doorDuration')
+    } else {
+      client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/door/alarm/duration`, '0')
     }
   }
 
   const resetSelct = (text: string) => {
-    text === 'always' ? setMuteDoorSelect({ ...muteDoorSelect, always: '' }) : setMuteDoorSelect({ ...muteDoorSelect, alert: '' })
+    text === 'tempDuration' ? setMuteDoorSelect({ ...muteDoorSelect, tempDuration: '' }) : text === 'doorAlarm' ? setMuteDoorSelect({ ...muteDoorSelect, doorAlarm: '' }) : setMuteDoorSelect({ ...muteDoorSelect, doorDuration: '' })
   }
 
   useEffect(() => {
@@ -147,10 +159,11 @@ function ModalMute(modalProps: modalAdjustType) {
         </ModalHead>
       </Modal.Header>
       <Modal.Body>
-        <NotiActionFlex $primary={alert === '' && always === ''}>
+        <NotiActionFlex $primary={doorAlarm === '' && tempDuration === ''}>
           {
-            alert !== '' && always !== '' ?
+            doorAlarm !== '' && tempDuration !== '' ?
               <>
+                <h5 className="text-decoration-underline">{t('countProbe')}</h5>
                 {deviceModel === 'etemp' && <div>
                   <span>{t('muteTemporary')}</span>
                   <button onClick={muteTemporary}>
@@ -160,15 +173,15 @@ function ModalMute(modalProps: modalAdjustType) {
                 <div>
                   <div>
                     <span>{t('muteAlways')}</span>
-                    <span>{always}</span>
+                    <span>{tempDuration}</span>
                   </div>
                   <div>
                     <Select
                       id="hours-one"
                       key={JSON.stringify(muteDoorSelect)}
                       options={mapOptions<selectOption, keyof selectOption>(generateOptions(userLevel), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.always, 'value', 'label')}
-                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, always: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, always: String(e?.value) })) }}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.tempDuration, 'value', 'label')}
+                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, tempDuration: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, tempDuration: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}
                       styles={{
@@ -196,6 +209,8 @@ function ModalMute(modalProps: modalAdjustType) {
                     <button onClick={() => muteAlways(false)}>{t('cancelButton')}</button>
                   </div>
                 </div>
+                <LineHr $mg={.5} />
+                <h5 className="text-decoration-underline">{t('countDoor')}</h5>
                 <div>
                   <span>{t('muteDoor')}</span>
                   <MuteEtemp type="button" onClick={muteAlarm} $primary={!muteEtemp.door}>
@@ -206,16 +221,55 @@ function ModalMute(modalProps: modalAdjustType) {
                 </div>
                 <div>
                   <div>
-                    <span>{t('muteAlert')}</span>
-                    <span>{alert}</span>
+                    <span>{t('muteDoorDuration')}</span>
+                    <span>{doorDuration}</span>
                   </div>
                   <div>
                     <Select
                       id="hours-two"
                       key={JSON.stringify(muteDoorSelect)}
+                      options={mapOptions<selectOption, keyof selectOption>(generateOptionsTwo(userLevel), 'value', 'label')}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptionsTwo(userLevel), muteDoorSelect.doorDuration, 'value', 'label')}
+                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, doorDuration: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, doorDuration: String(e?.value) })) }}
+                      autoFocus={false}
+                      placeholder={'เลือกเวลา'}
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          backgroundColor: theme.mode === 'dark' ? "var(--main-last-color)" : "var(--white-grey-1)",
+                          borderColor: theme.mode === 'dark' ? "var(--border-dark-color)" : "var(--grey)",
+                          boxShadow: state.isFocused ? "0 0 0 1px var(--main-color)" : "",
+                          borderRadius: "var(--border-radius-big)"
+                        }),
+                      }}
+                      theme={(theme) => ({
+                        ...theme,
+                        colors: {
+                          ...theme.colors,
+                          primary50: 'var(--main-color-opacity2)',
+                          primary25: 'var(--main-color-opacity2)',
+                          primary: 'var(--main-color)',
+                        },
+                      })}
+                      className="react-select-container"
+                      classNamePrefix="react-select"
+                    />
+                    <button onClick={() => muteDoorDuration(true)}>{t('messageSend')}</button>
+                    <button onClick={() => muteDoorDuration(false)}>{t('cancelButton')}</button>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <span>{t('muteAlert')}</span>
+                    <span>{doorAlarm}</span>
+                  </div>
+                  <div>
+                    <Select
+                      id="hours-three"
+                      key={JSON.stringify(muteDoorSelect)}
                       options={mapOptions<selectOption, keyof selectOption>(generateOptions(userLevel), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.alert, 'value', 'label')}
-                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, alert: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, alert: String(e?.value) })) }}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.doorAlarm, 'value', 'label')}
+                      onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, doorAlarm: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, doorAlarm: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}
                       styles={{

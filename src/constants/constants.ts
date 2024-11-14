@@ -629,6 +629,23 @@ export const generateOptions = (userLevel: string) => {
   return option
 }
 
+export const generateOptionsTwo = (userLevel: string) => {
+  let option = []
+  if (userLevel === '0' || userLevel === '1') {
+    option.push({
+      value: 'OFF',
+      label: 'OFF'
+    })
+  }
+  for (let i = 5; i <= 30; i += 5) {
+    option.push({
+      value: String(i),
+      label: String(i)
+    })
+  }
+  return option
+}
+
 
 export const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
   data.map(item => ({
