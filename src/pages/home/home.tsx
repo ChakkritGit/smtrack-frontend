@@ -97,11 +97,13 @@ export default function Home() {
   const filterDevices = useCallback(() => {
     setIsFiltering(true)
 
-    const baseFilteredDevices = wardId !== ''
+    const baseFilteredDevices = wardId
       ? devices.filter((item) => item.wardId.includes(wardId))
-      : hosId && hosId !== ''
+      : hosId
         ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
         : devices
+
+        console.log(hosId)
 
     const result = baseFilteredDevices.filter((item) =>
       item.devSerial?.toLowerCase().includes(searchQuery.toLowerCase()) ||

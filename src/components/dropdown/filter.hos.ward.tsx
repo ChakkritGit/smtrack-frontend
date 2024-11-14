@@ -79,11 +79,9 @@ function FilterHosAndWard() {
   }
 
   const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
-
-  const updatedWardData = [allWard, ...wardName]
-
   const allHos = { hosId: '', hosName: 'ALL', createAt: '', updateAt: '', hospital: {} as hospitalsType }
 
+  const updatedWardData = [allWard, ...wardName]
   const updatedHosData = [allHos, ...hospitalsData]
 
   return (

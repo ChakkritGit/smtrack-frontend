@@ -9,7 +9,7 @@ import { RiMenuFoldLine } from "react-icons/ri"
 import { jwtToken } from "../types/component.type"
 import { jwtDecode } from "jwt-decode"
 import { useDispatch, useSelector } from "react-redux"
-import { setRefetchdata, setShowAside, setTokenDecode } from "../stores/utilsStateSlice"
+import { setHosId, setRefetchdata, setShowAside, setTokenDecode } from "../stores/utilsStateSlice"
 import { fetchHospitals, fetchWards, filtersDevices } from "../stores/dataArraySlices"
 import { RootState, storeDispatchType } from "../stores/store"
 import { fetchDevicesLog } from "../stores/LogsSlice"
@@ -34,6 +34,7 @@ export default function Main() {
   const decodeToken = async () => {
     const decoded: jwtToken = await jwtDecode(token)
     dispatch(setTokenDecode(decoded))
+    if (decoded.userLevel !== '0') dispatch(setHosId(decoded.hosId))
   }
 
   useEffect(() => {
