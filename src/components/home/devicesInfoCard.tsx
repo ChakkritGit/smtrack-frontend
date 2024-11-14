@@ -13,7 +13,6 @@ import {
 } from "react-icons/ri"
 import { devicesType } from "../../types/device.type"
 import { useTranslation } from "react-i18next"
-import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import { setDeviceId, setSerial } from "../../stores/utilsStateSlice"
 import { useDispatch } from "react-redux"
@@ -40,21 +39,12 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
     devid: string,
     devsn: string
   }) => {
-    if (log.length === 0) {
-      Swal.fire({
-        icon: "warning",
-        title: "No data",
-        showConfirmButton: false,
-        timer: 1500
-      })
-    } else {
-      dispatch(setDeviceId(data.devid))
-      dispatch(setSerial(data.devsn))
-      cookies.set('devid', data.devid, cookieOptions)
-      cookies.set('devSerial', data.devsn, cookieOptions)
-      navigate('/dashboard')
-      window.scrollTo(0, 0)
-    }
+    dispatch(setDeviceId(data.devid))
+    dispatch(setSerial(data.devsn))
+    cookies.set('devid', data.devid, cookieOptions)
+    cookies.set('devSerial', data.devsn, cookieOptions)
+    navigate('/dashboard')
+    window.scrollTo(0, 0)
   }
 
   const openmodal = (deviceData: devicesType) => {
