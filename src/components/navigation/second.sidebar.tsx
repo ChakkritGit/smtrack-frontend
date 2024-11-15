@@ -1,34 +1,24 @@
-import {
-  RiDashboardFill, RiDashboardLine,
-  RiFileSettingsFill, RiFileSettingsLine, RiHome3Fill, RiHome3Line,
-  RiListSettingsFill, RiListSettingsLine, RiSettings3Fill, RiSettings3Line, RiShieldCheckFill,
-  RiShieldCheckLine, RiUser6Fill, RiUser6Line
-} from "react-icons/ri"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
-import {
-  HospitalName, Li, LineHr,
-  MainMenuSide,
-  SettingSystem,
-  Sidebar, SidebarLogo, SpanAside, ToggleTmsButtonWrapper, TooltipSpan, Ul
-} from '../../style/style'
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { setCookieEncode, setShowAlert, setShowAside, setSwitchTms } from "../../stores/utilsStateSlice"
-import { RootState, storeDispatchType } from "../../stores/store"
-import { AboutVersion } from "../../style/components/sidebar"
-import { responseType } from "../../types/response.type"
-import axios, { AxiosError } from "axios"
-import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies, ImageComponent } from "../../constants/constants"
+import { useDispatch, useSelector } from "react-redux";
+import { HospitalName, Li, LineHr, MainMenuSide, SettingSystem, Sidebar, SidebarLogo, SpanAside, ToggleTmsButtonWrapper, TooltipSpan, Ul } from "../../style/style";
+import { RootState, storeDispatchType } from "../../stores/store";
+import { Link, useNavigate } from "react-router-dom";
+import { accessToken, cookieOptions, cookies, ImageComponent } from "../../constants/constants";
+import { setCookieEncode, setShowAlert, setShowAside, setSwitchTms } from "../../stores/utilsStateSlice";
+import { RiDashboardFill, RiDashboardLine, RiHome3Fill, RiHome3Line, RiListSettingsFill, RiListSettingsLine, RiSettings3Fill, RiSettings3Line } from "react-icons/ri";
+import { AboutVersion } from "../../style/components/sidebar";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import axios, { AxiosError } from "axios";
+import { usersType } from "../../types/user.type";
+import { responseType } from "../../types/response.type";
 
-export default function sidebar() {
+const SecondSidebar = () => {
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand, tokenDecode, cookieDecode, notiData, isTms } = useSelector((state: RootState) => state.utilsState)
-  const { token, hosImg, hosName, userLevel } = cookieDecode
-  const { t } = useTranslation()
-  const location = useLocation()
   const navigate = useNavigate()
+  const { t } = useTranslation()
+  const { expand, cookieDecode, tokenDecode, notiData, isTms } = useSelector((state: RootState) => state.utilsState)
+  const { token, hosImg, hosName } = cookieDecode
+  const { userLevel } = tokenDecode
   let isFirstLoad = true
 
   const reFetchdata = async () => {
@@ -155,97 +145,29 @@ export default function sidebar() {
             </TooltipSpan>
           </Li>
           {
-            userLevel !== '3' ?
-              <>
-                <Li $primary={expand}>
-                  <Link to="/permission" onClick={resetAsideandCardcount} className={location.pathname === "/permission" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
-                    {
-                      location.pathname === "/permission" ?
-                        <RiUser6Fill />
-                        :
-                        <RiUser6Line />
-                    }
-                    <SpanAside $primary={expand}>
-                      {t('sidePermission')}
-                    </SpanAside>
-                  </Link>
-                  <TooltipSpan $primary={expand}>
-                    {t('sidePermission')}
-                  </TooltipSpan>
-                </Li>
-                <Li $primary={expand}>
-                  <Link to="/management" onClick={resetAsideandCardcount} className={location.pathname === "/management" || location.pathname === "/management/logadjust" || location.pathname === "/management/flasher" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
-                    {
-                      location.pathname === "/management" || location.pathname === "/management/logadjust" || location.pathname === '/management/flasher' ?
-                        <RiListSettingsFill />
-                        :
-                        <RiListSettingsLine />
-                    }
-                    <SpanAside $primary={expand}>
-                      {t('sideManage')}
-                    </SpanAside>
-                  </Link>
-                  <TooltipSpan $primary={expand}>
-                    {t('sideManage')}
-                  </TooltipSpan>
-                </Li> </>
-              :
-              <></>
+            userLevel === "0" &&
+            <Li $primary={expand}>
+              <Link to="/management" onClick={resetAsideandCardcount} className={location.pathname === "/management" || location.pathname === "/management/logadjust" || location.pathname === "/management/flasher" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
+                {
+                  location.pathname === "/management" || location.pathname === "/management/logadjust" || location.pathname === '/management/flasher' ?
+                    <RiListSettingsFill />
+                    :
+                    <RiListSettingsLine />
+                }
+                <SpanAside $primary={expand}>
+                  {t('sideManage')}
+                </SpanAside>
+              </Link>
+              <TooltipSpan $primary={expand}>
+                {t('sideManage')}
+              </TooltipSpan>
+            </Li>
           }
         </MainMenuSide>
-        <LineHr />
-        <Li $primary={expand}>
-          <Link to="/warranty" onClick={resetAsideandCardcount} className={location.pathname === "/warranty" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
-            {
-              location.pathname === "/warranty" ?
-                <RiShieldCheckFill />
-                :
-                <RiShieldCheckLine />
-            }
-            <SpanAside $primary={expand}>
-              {t('sideWarranty')}
-            </SpanAside>
-          </Link>
-          <TooltipSpan $primary={expand}>
-            {t('sideWarranty')}
-          </TooltipSpan>
-        </Li>
-        <Li $primary={expand}>
-          <Link to="/repair" onClick={resetAsideandCardcount} className={location.pathname === "/repair" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
-            {
-              location.pathname === "/repair" ?
-                <RiFileSettingsFill />
-                :
-                <RiFileSettingsLine />
-            }
-            <SpanAside $primary={expand}>
-              {t('sideRepair')}
-            </SpanAside>
-          </Link>
-          <TooltipSpan $primary={expand}>
-            {t('sideRepair')}
-          </TooltipSpan>
-        </Li>
       </Ul>
       <LineHr />
       <SettingSystem >
         <Ul className="nav nav-pills">
-          {/* <Li $primary={expand}>
-            <Link to="/contact" onClick={resetAsideandCardcount} className={location.pathname === "/contact" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
-              {
-                location.pathname === "/contact" ?
-                  <RiContactsBook2Fill />
-                  :
-                  <RiContactsBook2Line />
-              }
-              <SpanAside $primary={expand}>
-                {t('sideContact')}
-              </SpanAside>
-            </Link>
-            <TooltipSpan $primary={expand}>
-              {t('sideContact')}
-            </TooltipSpan>
-          </Li> */}
           {
             userLevel === "0" && <Li>
               <ToggleTmsButtonWrapper onClick={() => { dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions) }} $primary={isTms}>
@@ -274,7 +196,8 @@ export default function sidebar() {
         </Ul>
       </SettingSystem>
       <AboutVersion $primary={expand} $click onClick={() => { navigate('/changeLog'); resetAsideandCardcount() }}>{import.meta.env.VITE_APP_VERSION}</AboutVersion>
-      {/* <AboutVersion $primary={expand} $click={import.meta.env.VITE_APP_NODE_ENV === 'development'} onClick={() => { import.meta.env.VITE_APP_NODE_ENV === 'development' ? navigate('/changeLog') : null; resetAsideandCardcount() }}>{import.meta.env.VITE_APP_VERSION}</AboutVersion> */}
     </Sidebar>
   )
 }
+
+export default SecondSidebar

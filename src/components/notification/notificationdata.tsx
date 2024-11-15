@@ -4,7 +4,7 @@ import { notificationType } from "../../types/notification.type"
 import Loading from "../loading/loading"
 import { RiFileCloseLine } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { NotiHead, NotiHeadBtn } from "../../style/components/notification"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
@@ -23,8 +23,9 @@ export default function Notificationdata(notilist: notilist) {
   const { t } = useTranslation()
   const { data, funcfetch } = notilist
   const [pageState, setPageState] = useState(1)
+  const [filterNoti, setFilterNoti] = useState<notificationType[]>([])
   const { cookieDecode, transparent } = useSelector((state: RootState) => state.utilsState)
-  const { token } = cookieDecode
+  const { token, hosId } = cookieDecode
 
   const setRead = async (notiID: string) => {
     try {
@@ -109,6 +110,11 @@ export default function Notificationdata(notilist: notilist) {
     </Noticontainer>
   }
 
+  useEffect(() => {
+    const filtered = data.filter((f) => f)
+    setFilterNoti(filtered)
+  }, [hosId, data])
+
   return (
     <>
       <NotiHead $primary={transparent}>
@@ -118,9 +124,9 @@ export default function Notificationdata(notilist: notilist) {
       </NotiHead>
       {
         pageState === 1 ?
-          data.length > 0 ?
+          filterNoti.length > 0 ?
             (() => {
-              const filteredData = data.filter(items => items.notiStatus === false)
+              const filteredData = filterNoti.filter(items => items.notiStatus === false)
               return filteredData.length > 0 ? (
                 filteredData.map((items, index) => (
                   <ListNotiTSX
@@ -136,9 +142,9 @@ export default function Notificationdata(notilist: notilist) {
             <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
           :
           pageState === 2 ?
-            data.length > 0 ?
+            filterNoti.length > 0 ?
               (() => {
-                const filteredData = data.filter(items => items.notiStatus === true)
+                const filteredData = filterNoti.filter(items => items.notiStatus === true)
                 return filteredData.length > 0 ? (
                   filteredData.map((items, index) => (
                     <ListNotiTSX
@@ -153,10 +159,10 @@ export default function Notificationdata(notilist: notilist) {
               :
               <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
             :
-            data.length > 0 ?
+            filterNoti.length > 0 ?
               (() => {
-                return data.length > 0 ? (
-                  data.map((items, index) => (
+                return filterNoti.length > 0 ? (
+                  filterNoti.map((items, index) => (
                     <ListNotiTSX
                       key={index}
                       index={index}

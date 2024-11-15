@@ -36,7 +36,7 @@ export const CardContainer = styled.div`
 export const CardFlex = styled.div`
 background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--white-grey-1)'};
 color: ${props => props.theme.mode === 'dark' ? 'var(--white-grey-1)' : 'var(--main-last-color)'};
-box-shadow: 0 12px 28px rgb(190 190 190 / 25%);
+box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 25%)'};
 border-radius: var(--border-radius-big);
 padding: 2rem;
 width: 570px;
@@ -151,7 +151,7 @@ margin-top: 1rem;
   height: 120px;
   border-radius: var(--border-radius-small);
   object-fit: cover;
-  box-shadow: 0 12px 28px rgb(190 190 190 / 50%);
+  box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 50%)'};
 }
 
 &>div:nth-child(2) {

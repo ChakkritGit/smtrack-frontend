@@ -6,6 +6,7 @@ import utilsSlice from './utilsStateSlice'
 import dataArraySlices from './dataArraySlices'
 import userSlice from './userSlice'
 import probeSlice from './probeSlice'
+import tmsDeviceSlice from './second.deviceSlice'
 
 const combinedReducer = combineReducers({
   devices: deviceSlice,
@@ -14,6 +15,7 @@ const combinedReducer = combineReducers({
   arraySlice: dataArraySlices,
   user: userSlice,
   probe: probeSlice,
+  tmsDevice: tmsDeviceSlice
 })
 
 const rootReducer = (state: ReturnType<typeof combinedReducer> | undefined, action: { type: string }) => {

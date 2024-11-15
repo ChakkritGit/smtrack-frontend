@@ -4,6 +4,7 @@ import { devicesType } from "./device.type"
 import { hospitalsType } from "./hospital.type"
 import { notificationType } from "./notification.type"
 import { probeType } from "./probe.type"
+import { TmsDeviceType } from "./tms.type"
 import { usersType } from "./user.type"
 import { wardsType } from "./ward.type"
 
@@ -20,6 +21,12 @@ interface DataArrayStore extends ArrayStore {
 
 type DeviceState = {
   devices: devicesType[],
+  devicesLoading: boolean,
+  devicesError: string
+}
+
+type TmsDeviceState = {
+  devices: TmsDeviceType[],
   devicesLoading: boolean,
   devicesError: string
 }
@@ -49,7 +56,8 @@ type UtilsStateStore = {
   notiData: notificationType[],
   reFetchData: boolean,
   onFilter: boolean,
-  transparent: boolean
+  transparent: boolean,
+  isTms: boolean
 }
 
 type DeviceStateStore = {
@@ -59,6 +67,7 @@ type DeviceStateStore = {
   arraySlice: DataArrayStore,
   user: UserState,
   probe: ProbeState
+  tmsDevice: TmsDeviceState
 }
 
 type ArrayStore = {
@@ -88,5 +97,5 @@ type ProbeState = {
 export type {
   DeviceState, LogState, DataArrayStore,
   UtilsStateStore, DeviceStateStore, ArrayStore, payloadError, UserState,
-  ProbeState
+  ProbeState, TmsDeviceState
 }

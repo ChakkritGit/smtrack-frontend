@@ -5,7 +5,7 @@ import {
   SubSideBottomContainer
 } from "../../style/style"
 import { useTranslation } from "react-i18next"
-import { RiAlarmWarningLine, RiApps2AddLine, RiContactsBook2Line, RiFileTextLine, RiLogoutBoxRLine, RiPaletteLine, RiShieldCheckLine, RiTranslate2, RiUser6Line } from "react-icons/ri"
+import { RiAlarmWarningLine, RiContactsBook2Line, RiFileTextLine, RiLogoutBoxRLine, RiPaletteLine, RiShieldCheckLine, RiTranslate2, RiUser6Line } from "react-icons/ri"
 import { useState } from "react"
 import Color from "./display"
 import { useNavigate } from "react-router-dom"
@@ -86,12 +86,12 @@ export default function System() {
                   </span>
                 </ListMenu>
               }
-              <ListMenu $primary={pagenumber === '6'} onClick={() => { setPagenumber('6'); localStorage.setItem('settingTab', '6') }}>
+              {/* <ListMenu $primary={pagenumber === '6'} onClick={() => { setPagenumber('6'); localStorage.setItem('settingTab', '6') }}>
                 <RiApps2AddLine />
                 <span>
                   {t('appMenu')}
                 </span>
-              </ListMenu>
+              </ListMenu> */}
             </div>
             <SubSideBottomContainer>
               <ListPrivacy onClick={() => navigate('/support')}>

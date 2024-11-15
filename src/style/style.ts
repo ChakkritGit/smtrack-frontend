@@ -119,6 +119,41 @@ export const ToggleTransparentButtonWrapper = styled.button<{ $primary?: boolean
 }
 `
 
+export const ToggleTmsButtonWrapper = styled.button<{ $primary?: boolean }>`
+  position: relative;
+  width: 60px;
+  height: 35px;
+  background-color: ${props => props.$primary ? 'var(--main-color)' : '#ddd'};
+  border: 1px solid ${props => props.$primary ? 'var(--main-color)' : '#ccc'};
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+
+  .icon {
+    width: 30px;
+    height: 29px;
+    border-radius: 8px;
+    font-size: 12px;
+    background-color: ${props => props.$primary ? 'var(--white-grey-1)' : 'var(--white-grey-1)'};
+    transition: transform 0.3s ease;
+    transform: ${props => props.$primary ? 'translateX(25.3px)' : 'translateX(3px)'};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: ${props => props.$primary ? 'var(--main-last-color)' : 'var(--main-last-color)'};
+    transition: .3s;
+  }
+
+  &:hover {
+  border-color: var(--main-color);
+  transition: .3s;
+}
+`
+
 /* global btn */
 export const GlobalButton = styled.button<{ $color?: boolean }>`
   display: flex;
@@ -219,7 +254,7 @@ height: 53px;
 }
 `
 
-export const SideParent = styled.div<{ $primary?: boolean }>`
+export const SideParent = styled.div<{ $primary?: boolean, $isNewRole?: boolean }>`
 display: flex;
 height: 100%;
 padding: 0;
@@ -325,6 +360,9 @@ ${props => props.$primary &&
 `
 
 export const SidebarLogo = styled.div<{ $primary?: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100px;
   height: 100px;
   max-width: 100px;
@@ -778,7 +816,7 @@ export const GlobalsearchMBIcon = styled.div<{ $primary?: boolean }> `
   & svg {
     font-size: 24px;
   }
-  }
+}
 `
 
 export const NavRight = styled.div<{ $primary?: boolean }> `
@@ -904,11 +942,18 @@ export const NavProfile = styled.div<{ $primary?: boolean }>`
   padding: 1px;
   box-sizing: border-box;
   object-fit: cover;
+}
 
-  ${props => props.$primary && css`
+@media (max-width: 430px) {
   max-width: 24px;
   max-height: 24px;
-  `}
+  width: 24px;
+  height: 24px;
+
+  &>span>img {
+    width: 24px;
+    height: 24px;
+}
 }
 `
 

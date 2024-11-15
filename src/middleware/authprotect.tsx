@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CookieType } from '../types/cookie.type'
 import { cookieOptions, cookies, decodeCookieObject } from '../constants/constants'
 import CryptoJS from "crypto-js"
-import { setCookieEncode, setDeviceId, setSerial } from '../stores/utilsStateSlice'
+import { setCookieDecode, setCookieEncode, setDeviceId, setSerial } from '../stores/utilsStateSlice'
 import { RootState, storeDispatchType } from '../stores/store'
 import { reset } from '../stores/resetAction'
 
@@ -16,6 +16,16 @@ const ProtectedRoute = ({ children }: AuthProps) => {
   const dispatch = useDispatch<storeDispatchType>()
   const { cookieEncode } = useSelector((state: RootState) => state.utilsState)
   const [isValid, setIsValid] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    if (!cookieEncode) return
+    try {
+      const CookieObject: CookieType = JSON.parse(decodeCookieObject(cookieEncode).toString(CryptoJS.enc.Utf8))
+      dispatch(setCookieDecode(CookieObject))
+    } catch (error) {
+      console.error('Decoded error: ', error)
+    }
+  }, [cookieEncode])
 
   useEffect(() => {
     const verifyToken = async (cookieEncode: string) => {
