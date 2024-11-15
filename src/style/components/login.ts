@@ -17,18 +17,26 @@ export const LangContainer = styled.div`
 `
 
 export const CardContainer = styled.div`
-  height: calc(100dvh - 100px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  margin-top: 1rem;
+
+  &>div:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
 `
 
 export const CardFlex = styled.div`
 background-color: ${props => props.theme.mode === 'dark' ? 'var(--main-last-color)' : 'var(--white-grey-1)'};
 color: ${props => props.theme.mode === 'dark' ? 'var(--white-grey-1)' : 'var(--main-last-color)'};
-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+box-shadow: 0 12px 28px rgb(190 190 190 / 25%);
 border-radius: var(--border-radius-big);
 padding: 2rem;
 width: 570px;
@@ -130,4 +138,74 @@ export const LoginContact = styled.div<{ $primary?: boolean }>`
   &>span {
     color: var(--grey);
   }
+`
+
+export const StoreContainer = styled.div`
+display: flex;
+align-items: center;
+gap: .5rem;
+margin-top: 1rem;
+
+&>div:nth-child(1)>img {
+  width: 120px;
+  height: 120px;
+  border-radius: var(--border-radius-small);
+  object-fit: cover;
+  box-shadow: 0 12px 28px rgb(190 190 190 / 50%);
+}
+
+&>div:nth-child(2) {
+  height: 120px;
+  width: 1px;
+  margin: 0 1.5rem;
+  background-color: var(--grey);
+  border-radius: var(--border-radius-small);
+}
+
+&>div:nth-child(3) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+
+  &>span {
+    color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--main-dark-color)'};
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: .5rem;
+  }
+
+  &>div {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: .5rem;
+  }
+}
+
+@media (max-width: 430px) {
+  flex-direction: column;
+  align-items: center;
+
+  &>div:nth-child(2) {
+    display: none;
+  }
+  &>div:nth-child(3) {
+    align-items: center;
+
+    &>span {
+    font-size: 18px;
+  }
+  }
+}
+`
+
+export const StoreBanner = styled.img`
+  width: 170px;
+  height: 50px;
+  object-fit: contain;
+
+  @media (max-width: 430px) {
+    width: 120px;
+}
 `

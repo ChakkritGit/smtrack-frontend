@@ -103,8 +103,6 @@ export default function Home() {
         ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
         : devices
 
-        console.log(hosId)
-
     const result = baseFilteredDevices.filter((item) =>
       item.devSerial?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.devDetail?.toLowerCase().includes(searchQuery.toLowerCase())

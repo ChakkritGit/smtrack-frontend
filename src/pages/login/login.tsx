@@ -20,11 +20,16 @@ import {
   CardContainer, CardFlex, HeaderText, LangContainer, LoadingButton,
   LoginButton,
   LoginContact,
+  StoreBanner,
+  StoreContainer,
   TimeStap
 } from '../../style/components/login'
 import { LineHr } from '../../style/style'
 import { Helmet } from 'react-helmet'
 import { AgreeSection } from '../../style/components/contact.styled'
+import playStore from '../../assets/images/playstore.png'
+import appStore from '../../assets/images/appstore.png'
+import LogoBanner from '../../assets/images/app-logo.png'
 
 export default function Login() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -136,7 +141,7 @@ export default function Login() {
   })
 
   return (
-    <Container className='p-3'>
+    <Container className='p-3 d-flex flex-column gap-3'>
       <Helmet>
         <title>Login</title>
       </Helmet>
@@ -144,70 +149,89 @@ export default function Login() {
         <LangguageSelector />
       </LangContainer>
       <CardContainer>
-        <CardFlex>
+        <div>
+          <CardFlex>
+            <div>
+              <HeaderText>SMTrack+</HeaderText>
+              <span>Real-time temperature monitoring with alerts for exceeding limits</span>
+            </div>
+            {/* <h3 className="mb-3 text-center">{t('loginHeader')}</h3> */}
+            <Form onSubmit={submitForm} id='form-login' className='mt-4'>
+              <InputGroup className="mb-3">
+                <FloatingLabel
+                  controlId="floatingInputUsername"
+                  label={t('loginUsername')}
+                  className="mb-2"
+                >
+                  <Form.Control
+                    placeholder="Username"
+                    aria-label="Username"
+                    aria-describedby="user-input"
+                    className='login-form-input'
+                    autoComplete='off'
+                    autoFocus
+                    type='text'
+                    value={loginform.username}
+                    onChange={(e) => setLoginform({ ...loginform, username: e.target.value })}
+                  />
+                </FloatingLabel>
+              </InputGroup>
+              <InputGroup className="mb-3">
+                <FloatingLabel
+                  controlId="floatingInputPassword"
+                  label={t('loginPassword')}
+                  className="mb-2"
+                >
+                  <Form.Control
+                    placeholder="Password"
+                    aria-label="Password"
+                    aria-describedby="user-input"
+                    autoComplete='off'
+                    type='password'
+                    value={loginform.password}
+                    onChange={(e) => setLoginform({ ...loginform, password: e.target.value })}
+                  />
+                </FloatingLabel>
+              </InputGroup>
+              <LoginButton
+                $primary={isloading}
+                disabled={isloading}
+                type="submit"
+              >{isloading ? <LoadingButton>
+                <RiLoader3Line />
+                {t('loginButtonLoading')}</LoadingButton> : t('loginButton')}
+              </LoginButton>
+              <LoginContact>
+                <LineHr />
+                <span className=''>{t('contactUs')}</span>
+                <LineHr />
+              </LoginContact>
+              <AgreeSection>
+                <span>{t('neddHelp')} <Link to={'/support'}>{t('contactSupport')}</Link></span>
+              </AgreeSection>
+            </Form>
+          </CardFlex>
+          <TimeStap>
+            <span>{`${formattedDate} ${formattedTime}`}</span>
+          </TimeStap>
+        </div>
+        <StoreContainer>
           <div>
-            <HeaderText>SMTrack+</HeaderText>
-            <span>Real-time temperature monitoring with alerts for exceeding limits</span>
+            <img src={LogoBanner} alt="Logo-banner" />
           </div>
-          {/* <h3 className="mb-3 text-center">{t('loginHeader')}</h3> */}
-          <Form onSubmit={submitForm} id='form-login' className='mt-4'>
-            <InputGroup className="mb-3">
-              <FloatingLabel
-                controlId="floatingInputUsername"
-                label={t('loginUsername')}
-                className="mb-2"
-              >
-                <Form.Control
-                  placeholder="Username"
-                  aria-label="Username"
-                  aria-describedby="user-input"
-                  className='login-form-input'
-                  autoComplete='off'
-                  autoFocus
-                  type='text'
-                  value={loginform.username}
-                  onChange={(e) => setLoginform({ ...loginform, username: e.target.value })}
-                />
-              </FloatingLabel>
-            </InputGroup>
-            <InputGroup className="mb-3">
-              <FloatingLabel
-                controlId="floatingInputPassword"
-                label={t('loginPassword')}
-                className="mb-2"
-              >
-                <Form.Control
-                  placeholder="Password"
-                  aria-label="Password"
-                  aria-describedby="user-input"
-                  autoComplete='off'
-                  type='password'
-                  value={loginform.password}
-                  onChange={(e) => setLoginform({ ...loginform, password: e.target.value })}
-                />
-              </FloatingLabel>
-            </InputGroup>
-            <LoginButton
-              $primary={isloading}
-              disabled={isloading}
-              type="submit"
-            >{isloading ? <LoadingButton>
-              <RiLoader3Line />
-              {t('loginButtonLoading')}</LoadingButton> : t('loginButton')}
-            </LoginButton>
-            <LoginContact>
-              <LineHr />
-              <span className=''>{t('contactUs')}</span>
-              <LineHr />
-            </LoginContact>
-            <AgreeSection>
-              <span>{t('neddHelp')} <Link to={'/support'}>{t('contactSupport')}</Link></span>
-            </AgreeSection>
-          </Form>
-        </CardFlex>
-        <TimeStap>
-          <span>{`${formattedDate} ${formattedTime}`}</span>
-        </TimeStap>
+          <div></div>
+          <div>
+            <span>{t('appDownload')} SMTrack+</span>
+            <div>
+              <a href="https://apps.apple.com/th/app/smtrack/id6670781090" target="_blank" rel="noopener noreferrer">
+                <StoreBanner src={appStore} alt="app-store" />
+              </a>
+              <a href="https://siamatic.co.th/" rel="noopener noreferrer">
+                <StoreBanner src={playStore} alt="play-store" />
+              </a>
+            </div>
+          </div>
+        </StoreContainer>
       </CardContainer>
     </Container>
   )
