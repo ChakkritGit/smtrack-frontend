@@ -1,6 +1,6 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
-export const MuteEtemp = styled.button<{ $primary?: boolean }>`
+export const MuteEtemp = styled.button<{ $primary?: boolean | string, $disable?: boolean }>`
   position: relative;
   width: 60px;
   height: 35px;
@@ -33,4 +33,13 @@ export const MuteEtemp = styled.button<{ $primary?: boolean }>`
   border-color: var(--main-color);
   transition: .3s;
 }
+
+${props => props.$disable && css`
+  opacity: .5;
+  cursor: unset;
+
+  &:hover {
+    border-color: #ccc;
+  }
+`}
 `

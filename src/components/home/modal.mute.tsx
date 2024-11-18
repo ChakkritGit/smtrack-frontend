@@ -19,7 +19,7 @@ type selectOption = {
 }
 
 type MqttType = {
-  temTemporary: string | boolean;
+  tempTemporary: string | boolean;
   tempDuration: string,
   doorAlarm: string,
   doorDuration: string
@@ -43,25 +43,25 @@ function ModalMute(modalProps: modalAdjustType) {
   const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
   const [muteDoorSelect, setMuteDoorSelect] = useState<MqttType>({
-    temTemporary: true,
+    tempTemporary: false,
     tempDuration: '',
     doorAlarm: '',
     doorDuration: ''
   })
   const [muteDoor, setMuteDoor] = useState<MqttType>({
-    temTemporary: '',
+    tempTemporary: '',
     tempDuration: '',
     doorAlarm: '',
     doorDuration: '',
   })
 
-  const { doorAlarm, doorDuration, tempDuration, temTemporary } = muteDoor
+  const { doorAlarm, doorDuration, tempDuration, tempTemporary } = muteDoor
 
   useEffect(() => {
-    if (temTemporary === 'on') {
-      setMuteDoorSelect({ ...muteDoorSelect, temTemporary: !temTemporary })
+    if (tempTemporary === 'on') {
+      setMuteDoorSelect({ ...muteDoorSelect, tempTemporary: !tempTemporary })
     }
-  }, [temTemporary])
+  }, [tempTemporary])
 
   const [muteEtemp, setMuteEtemp] = useState({
     duration: cookies.get(devSerial) === 'duration' || false,
@@ -74,8 +74,8 @@ function ModalMute(modalProps: modalAdjustType) {
   }
 
   const muteTemporary = () => {
-    setMuteDoorSelect({ ...muteDoorSelect, temTemporary: !muteDoorSelect.temTemporary })
-    if (muteDoorSelect.temTemporary) {
+    setMuteDoorSelect({ ...muteDoorSelect, tempTemporary: !muteDoorSelect.tempTemporary })
+    if (!muteDoorSelect.tempTemporary) {
       client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temp/temporary`, 'on')
       client.publish(`${devSerial}/mute/short`, 'on')
     } else {
@@ -86,7 +86,7 @@ function ModalMute(modalProps: modalAdjustType) {
 
   const muteAlarm = () => {
     setMuteEtemp({ ...muteEtemp, door: !muteEtemp.door })
-    if (muteEtemp.door) {
+    if (!muteEtemp.door) {
       client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/sound`, 'on')
       client.publish(`${devSerial}/mute/long`, 'on')
     } else {
@@ -174,9 +174,9 @@ function ModalMute(modalProps: modalAdjustType) {
                   {/* <button onClick={muteTemporary}>
                     {muteEtemp.temporary ? <RiVolumeVibrateLine size={24} /> : <RiVolumeUpLine size={24} />}
                   </button> */}
-                  <MuteEtemp type="button" onClick={muteTemporary} $primary={!muteDoorSelect.temTemporary}>
+                  <MuteEtemp type="button" onClick={muteTemporary} $primary={muteDoorSelect.tempTemporary} $disable={devicesdata.log[0]?.tempAvg <= devicesdata.probe[0]?.tempMax} disabled={devicesdata.log[0]?.tempAvg <= devicesdata.probe[0]?.tempMax}>
                     <div className="icon">
-                      {!muteDoorSelect.temTemporary ? t('stateOn') : t('stateOff')}
+                      {muteDoorSelect.tempTemporary ? t('stateOn') : t('stateOff')}
                     </div>
                   </MuteEtemp>
                 </div>}
@@ -223,9 +223,9 @@ function ModalMute(modalProps: modalAdjustType) {
                 <h5 className="text-decoration-underline">{t('countDoor')}</h5>
                 <div>
                   <span>{t('muteDoor')}</span>
-                  <MuteEtemp type="button" onClick={muteAlarm} $primary={!muteEtemp.door}>
+                  <MuteEtemp type="button" onClick={muteAlarm} $primary={muteEtemp.door}>
                     <div className="icon">
-                      {!muteEtemp.door ? t('stateOn') : t('stateOff')}
+                      {muteEtemp.door ? t('stateOn') : t('stateOff')}
                     </div>
                   </MuteEtemp>
                 </div>

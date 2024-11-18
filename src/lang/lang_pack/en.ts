@@ -70,7 +70,7 @@ export default {
     muteTemporary: 'Mute alarm (Temporary)',
     muteAlways: 'Mute alarm (Duration)',
     muteAlert: 'Mute door alarm (Refill Inventory)',
-    muteDoor: 'Mute status sound',
+    muteDoor: 'Mute Sound',
     muteDoorDuration: 'Door alarm (Duration)',
     adjustHumGreater: 'The humidity range cannot be set beyond 0-100%',
     clearShedule: 'Clear',
