@@ -1,6 +1,42 @@
 import styled, { css } from "styled-components"
 import bg from '../../assets/images/bg-not-found.jpeg'
 
+export const TabLightPage = styled.div<{ $bgColor?: string, $shadowColor?: string, $disbleBg?: boolean }>`
+  width: 100%;
+  position: fixed;
+  ${props => props.$disbleBg ? css`
+    height: 60px;
+    background-color: props.$bgColor;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    top: 0;
+    ` : css`
+    height: 100px;
+    top: -100px;
+    `}
+  box-shadow: 0px 15px 300px ${props => props.$shadowColor};
+  z-index: 10;
+`
+
+export const AccessDenied = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  height: calc(100dvh - 80px);
+
+  &>p>i {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 5px;
+      transition: .3s;
+    }
+  }
+`
+
 export const ErrorPageStyled = styled.div`
   position: relative;
 

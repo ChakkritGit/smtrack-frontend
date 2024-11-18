@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
-import { ErrorPageStyled } from "../style/components/error.page"
+import { ErrorPageStyled, TabLightPage } from "../style/components/error.page"
 import { RiEmotionUnhappyFill } from "react-icons/ri"
 import { useTheme } from "../theme/ThemeProvider"
 
@@ -39,6 +39,7 @@ export default function ErrorPage() {
       <div>
       </div>
       <div>
+        <TabLightPage $bgColor="rgba(200, 200, 0, 0.4)" $shadowColor="rgba(200, 200, 0, 0.7)" $disbleBg={false} />
         <RiEmotionUnhappyFill size={64} color={theme.mode === 'dark' ? 'Yellow' : 'var(--main-dark-color)'} />
         <span>{t('titleError')}</span>
         <div>

@@ -24,7 +24,7 @@ import Policy from '../pages/policy/policy'
 import Support from '../pages/contact/support'
 import Logs from '../pages/setting/Logs'
 import Terms from '../pages/policy/terms'
-import SeccondMain from '../main/second.main'
+import TmsMain from '../main/second.main'
 import TmsHome from '../pages/home/tms.home'
 import { setTokenDecode } from '../stores/utilsStateSlice'
 import toast, { useToasterStore } from 'react-hot-toast'
@@ -174,7 +174,7 @@ export default function RoutesComponent() {
       ] : [
         {
           path: "/",
-          element: <SeccondMain />,
+          element: <TmsMain />,
           errorElement: <SomethingWrong />,
           children: [
             {

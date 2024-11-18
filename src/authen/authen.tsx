@@ -1,8 +1,8 @@
 import { Outlet, Navigate } from "react-router-dom"
 import Login from "../pages/login/login"
 import Notacess from "../components/permission/notacess"
-import { DeviceStateStore, UtilsStateStore } from "../types/redux.type"
 import { useSelector } from "react-redux"
+import { RootState } from "../stores/store"
 
 export function Islogout() {
   const { cookieEncode } = useSelector((state: RootState) => state.utilsState)
@@ -18,7 +18,7 @@ export function Hidesetting() {
   const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { userLevel } = cookieDecode
   return (
-    userLevel === '3' ? <Notacess /> : <Outlet />
+    userLevel === '3' || userLevel === '4' ? <Notacess /> : <Outlet />
   )
 }
 

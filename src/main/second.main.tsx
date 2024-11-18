@@ -16,7 +16,7 @@ import { fetchTmsDevice } from "../stores/second.deviceSlice"
 import { socket } from "../services/websocket"
 import { socketResponseType } from "../types/component.type"
 
-const SeccondMain = () => {
+const TmsMain = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { showAside, cookieDecode, reFetchData, socketData } = useSelector((state: RootState) => state.utilsState)
@@ -162,4 +162,4 @@ const SeccondMain = () => {
   )
 }
 
-export default SeccondMain
+export default TmsMain
