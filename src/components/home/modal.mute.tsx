@@ -189,8 +189,8 @@ function ModalMute(modalProps: modalAdjustType) {
                     <Select
                       id="hours-one"
                       key={JSON.stringify(muteDoorSelect)}
-                      options={mapOptions<selectOption, keyof selectOption>(generateOptionsOne(), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptionsOne(), muteDoorSelect.tempDuration, 'value', 'label')}
+                      options={mapOptions<selectOption, keyof selectOption>(generateOptionsOne(userLevel), 'value', 'label')}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptionsOne(userLevel), muteDoorSelect.tempDuration, 'value', 'label')}
                       onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, tempDuration: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, tempDuration: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}

@@ -596,12 +596,18 @@ export const minutesOptions = Array.from({ length: 60 }, (_, i) => ({
   label: String(i).padStart(2, '0'),
 }))
 
-export const generateOptionsOne = () => {
+export const generateOptionsOne = (userLevel: string) => {
   let option = []
   for (let i = 5; i <= 120; i += 5) {
     option.push({
       value: String(i),
       label: String(i)
+    })
+  }
+  if (userLevel === '0' || userLevel === '1') {
+    option.push({
+      value: 'OFF',
+      label: 'OFF'
     })
   }
   return option
