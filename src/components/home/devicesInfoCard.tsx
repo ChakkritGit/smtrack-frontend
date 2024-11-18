@@ -7,9 +7,13 @@ import {
   DeviceCardHeadStatus, DeviceStateNetwork, TooltipSpan
 } from "../../style/style"
 import {
+  RiAlertLine,
   RiBatteryChargeLine,
+  RiBatteryFill,
+  RiBatteryLine,
+  RiBatteryLowLine,
   RiDashboardLine, RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
-  RiPlugLine, RiSdCardMiniLine, RiSettings3Line, RiTempColdLine
+  RiSettings3Line, RiTempColdLine
 } from "react-icons/ri"
 import { devicesType } from "../../types/device.type"
 import { useTranslation } from "react-i18next"
@@ -20,6 +24,8 @@ import { storeDispatchType } from "../../stores/store"
 import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
 import { logtype } from "../../types/log.type"
 import { Dispatch, SetStateAction } from "react"
+import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
+import { TbPlug, TbPlugX } from "react-icons/tb"
 
 type DevicesInfoCard = {
   devicesdata: devicesType,
@@ -173,11 +179,19 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
             >
               {
                 !onFilter ?
-                  <RiPlugLine />
+                  log[0]?.ac === '1' ?
+                    <TbPlugX />
+                    :
+                    <TbPlug />
                   :
                   <div>
                     <span>{`${noti.filter((n) => n.notiDetail.split('/')[0] === 'AC').length}`}</span>
-                    <RiPlugLine size={16} />
+                    {
+                      log[0]?.ac === '1' ?
+                        <TbPlugX size={16} />
+                        :
+                        <TbPlug size={16} />
+                    }
                   </div>
               }
               <TooltipSpan>
@@ -191,11 +205,19 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
             >
               {
                 !onFilter ?
-                  <RiSdCardMiniLine />
+                  log[0]?.sdCard === "1" ?
+                    <MdOutlineSdCardAlert />
+                    :
+                    <MdOutlineSdCard />
                   :
                   <div>
                     <span>{`${noti.filter((n) => n.notiDetail.split('/')[0] === 'SD').length}`}</span>
-                    <RiSdCardMiniLine size={16} />
+                    {
+                      log[0]?.sdCard === "1" ?
+                        <MdOutlineSdCardAlert size={16} />
+                        :
+                        <MdOutlineSdCard size={16} />
+                    }
                   </div>
               }
               <TooltipSpan>
@@ -208,13 +230,41 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
               {
                 !onFilter ?
                   <>
-                    <RiBatteryChargeLine />
+                    {
+                      log[0]?.ac === '0' ?
+                        <RiBatteryChargeLine />
+                        :
+                        log[0]?.battery === 0 ?
+                          <RiBatteryLine />
+                          :
+                          log[0]?.battery <= 50 ?
+                            <RiBatteryLowLine />
+                            :
+                            log[0]?.battery <= 100 ?
+                              <RiBatteryFill />
+                              :
+                              <RiAlertLine />
+                    }
                     <span>{log[0]?.battery && log[0]?.battery + '%' || '- -'}</span>
                   </>
                   :
                   <div>
                     <span>{log[0]?.battery && log[0]?.battery + '%' || '- -'}</span>
-                    <RiBatteryChargeLine size={16} />
+                    {
+                      log[0]?.ac === '0' ?
+                        <RiBatteryChargeLine size={16} />
+                        :
+                        log[0]?.battery === 0 ?
+                          <RiBatteryLine size={16} />
+                          :
+                          log[0]?.battery <= 50 ?
+                            <RiBatteryLowLine size={16} />
+                            :
+                            log[0]?.battery <= 100 ?
+                              <RiBatteryFill size={16} />
+                              :
+                              <RiAlertLine size={16} />
+                    }
                   </div>
               }
               <TooltipSpan>

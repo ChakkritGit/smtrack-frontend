@@ -19,6 +19,7 @@ type selectOption = {
 }
 
 type MqttType = {
+  tempAlarm: string,
   tempTemporary: string | boolean;
   tempDuration: string,
   doorAlarm: string,
@@ -43,19 +44,20 @@ function ModalMute(modalProps: modalAdjustType) {
   const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
   const [muteDoorSelect, setMuteDoorSelect] = useState<MqttType>({
+    tempAlarm: '',
     tempTemporary: false,
     tempDuration: '',
     doorAlarm: '',
     doorDuration: ''
   })
   const [muteDoor, setMuteDoor] = useState<MqttType>({
+    tempAlarm: '',
     tempTemporary: '',
     tempDuration: '',
     doorAlarm: '',
     doorDuration: '',
   })
-
-  const { doorAlarm, doorDuration, tempDuration, tempTemporary } = muteDoor
+  const { doorAlarm, doorDuration, tempDuration, tempTemporary, tempAlarm } = muteDoor
 
   useEffect(() => {
     if (tempTemporary === 'on') {
@@ -174,9 +176,9 @@ function ModalMute(modalProps: modalAdjustType) {
                   {/* <button onClick={muteTemporary}>
                     {muteEtemp.temporary ? <RiVolumeVibrateLine size={24} /> : <RiVolumeUpLine size={24} />}
                   </button> */}
-                  <MuteEtemp type="button" onClick={muteTemporary} $primary={muteDoorSelect.tempTemporary} $disable={devicesdata.log[0]?.tempAvg <= devicesdata.probe[0]?.tempMax} disabled={devicesdata.log[0]?.tempAvg <= devicesdata.probe[0]?.tempMax}>
+                  <MuteEtemp type="button" onClick={muteTemporary} $primary={muteDoorSelect.tempTemporary} $disable={tempAlarm === "normal"} disabled={tempAlarm === "normal"}>
                     <div className="icon">
-                      {muteDoorSelect.tempTemporary ? t('stateOn') : t('stateOff')}
+                      {/* {muteDoorSelect.tempTemporary ? t('stateOn') : t('stateOff')} */}
                     </div>
                   </MuteEtemp>
                 </div>}
@@ -225,7 +227,7 @@ function ModalMute(modalProps: modalAdjustType) {
                   <span>{t('muteDoor')}</span>
                   <MuteEtemp type="button" onClick={muteAlarm} $primary={muteEtemp.door}>
                     <div className="icon">
-                      {muteEtemp.door ? t('stateOn') : t('stateOff')}
+                      {/* {muteEtemp.door ? t('stateOn') : t('stateOff')} */}
                     </div>
                   </MuteEtemp>
                 </div>

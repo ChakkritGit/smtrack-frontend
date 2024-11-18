@@ -27,7 +27,7 @@ export default function Noti() {
         <span>{t('notificationPopup')}</span>
         <NotificationSoundButton onClick={turnOffPopup} $primary={!popUpMode}>
           <div className="icon">
-            {popUpMode ? t('stateOff') : t('stateOn')}
+            {/* {popUpMode ? t('stateOff') : t('stateOn')} */}
           </div>
         </NotificationSoundButton>
       </NotificationSoundFlex>
@@ -37,7 +37,7 @@ export default function Noti() {
             <span><RiSpeakerLine size={24} />{t('notificationSound')}</span>
             <NotificationSoundButton disabled={popUpMode} onClick={switchOption} $primary={!soundMode}>
               <div className="icon">
-                {soundMode ? t('stateOff') : t('stateOn')}
+                {/* {soundMode ? t('stateOff') : t('stateOn')} */}
               </div>
             </NotificationSoundButton>
           </NotificationSoundFlex>

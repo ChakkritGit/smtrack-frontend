@@ -170,7 +170,7 @@ const SecondSidebar = () => {
         <Ul className="nav nav-pills">
           {
             userLevel === "0" && <Li>
-              <ToggleTmsButtonWrapper onClick={() => { dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions) }} $primary={isTms}>
+              <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions); }} $primary={isTms}>
                 <div className="icon">
                   {isTms ? 'TMS' : 'E/I'}
                 </div>

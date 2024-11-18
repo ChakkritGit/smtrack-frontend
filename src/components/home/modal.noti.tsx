@@ -473,7 +473,7 @@ function ModalNotification(modalProps: modalAdjustType) {
                     }
                   }}>
                     <div className="icon">
-                      {scheduleDay.firstDay === 'ALL' && scheduleDay.seccondDay === 'ALL' && scheduleDay.thirdDay === 'ALL' ? t('messageOn') : t('messageOff')}
+                      {/* {scheduleDay.firstDay === 'ALL' && scheduleDay.seccondDay === 'ALL' && scheduleDay.thirdDay === 'ALL' ? t('messageOn') : t('messageOff')} */}
                     </div>
                   </ToggleButtonAllDays>
                 </div>
