@@ -111,7 +111,7 @@ ${props => props.theme.mode === 'dark' && css`
   }
 
   &:hover {
-    border-color: ${props.$primary ? 'var(--main-color)' : 'var(--border-dark-color)'};
+    border-color: var(--main-color);
   }
 `}
 `
