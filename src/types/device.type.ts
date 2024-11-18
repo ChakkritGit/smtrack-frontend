@@ -2,6 +2,7 @@ import { configType } from "./config.type"
 import { logtype } from "./log.type"
 import { notificationType } from "./notification.type"
 import { probeType } from "./probe.type"
+import { TmsDeviceType } from "./tms.type"
 
 type devices = {
   devId: string,
@@ -61,6 +62,11 @@ type managedevices = {
   devdata: devicesType
 }
 
+type TmsManagedevices = {
+  pagestate: string,
+  devdata: TmsDeviceType
+}
+
 type deviceLog = {
   logId: string,
   devId: string,
@@ -93,4 +99,4 @@ type cardFilterType = {
   warranty: boolean
 }
 
-export type { devices, devicesType, managedevices, deviceLog, cardFilterType, ProbeDeviceType }
+export type { devices, devicesType, managedevices, deviceLog, cardFilterType, ProbeDeviceType, TmsManagedevices }

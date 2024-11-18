@@ -266,6 +266,16 @@ export const ToggleButtonAllDays = styled.button<{ $primary?: boolean }>`
   border-color: var(--main-color);
   transition: .3s;
 }
+
+${props => props.theme.mode === 'dark' && css`
+  background-color: ${props.$primary ? 'var(--main-color)' : 'var(--main-seccond-color)'};
+  border: 1px solid ${props.$primary ? 'var(--main-color)' : 'var(--border-dark-color)'};
+
+  .icon {
+    background-color: ${props.$primary ? 'var(--main-last-color)' : 'var(--toggle-dark-color)'};
+    color: var(--white-grey-1);
+  }
+`}
 `
 
 export const ScheduleItemFlex = styled.div`

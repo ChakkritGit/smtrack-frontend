@@ -552,6 +552,7 @@ div:where(.swal2-container) div:where(.swal2-loader) {
 
 .icon {
   font-weight: bold;
+  font-size: 14px;
 }
 
 @keyframes spin {
@@ -786,6 +787,11 @@ div:where(.swal2-container).swal2-center>.swal2-popup {
   &>li>p {
     color: white !important;
 }
+}
+
+.form-check-input {
+  background-color: var(--main-last-color);
+  border-color: var(--border-dark-color);
 }
 `
       :

@@ -42,4 +42,18 @@ ${props => props.$disable && css`
     border-color: #ccc;
   }
 `}
+
+${props => props.theme.mode === 'dark' && css`
+  background-color: ${props.$primary ? 'var(--main-color)' : 'var(--main-seccond-color)'};
+  border: 1px solid ${props.$primary ? 'var(--main-color)' : 'var(--border-dark-color)'};
+
+  .icon {
+    background-color: ${props.$primary ? 'var(--main-last-color)' : 'var(--toggle-dark-color)'};
+    color: var(--white-grey-1);
+  }
+
+  &:hover {
+    border-color: ${props.$primary ? 'var(--main-color)' : 'var(--border-dark-color)'};
+  }
+`}
 `
