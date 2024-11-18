@@ -1,9 +1,13 @@
 import {
   RiAlarmWarningFill,
+  RiAlertLine,
   RiBatteryChargeLine,
+  RiBatteryFill,
+  RiBatteryLine,
+  RiBatteryLowLine,
   RiBellFill,
-  RiCloseLine, RiCollageLine, RiCpuLine, RiDoorClosedLine, RiFolderSettingsLine,
-  RiPlugLine, RiSdCardMiniLine, RiSettings3Line, RiShieldCheckLine,
+  RiCloseLine, RiCollageLine, RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine, RiFolderSettingsLine,
+  RiPlugLine, RiSettings3Line, RiShieldCheckLine,
   RiSignalWifi1Line, RiTempColdLine
 } from "react-icons/ri"
 import {
@@ -33,6 +37,8 @@ import ModalMute from "../home/modal.mute"
 import { filtersDevices } from "../../stores/dataArraySlices"
 import { MuteFlex, OpenSettingBuzzer } from "../../style/components/home.styled"
 import { ImageComponent } from "../../constants/constants"
+import { HiOutlineArrowsUpDown } from "react-icons/hi2"
+import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
 
 type devicesinfo = {
   devicesData: devicesType,
@@ -314,7 +320,9 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
       <DevicesBodyStatus>
         <CardstatusSpecial
           title={t('dashProbe')}
-          svg={<RiCpuLine />}
+          svg={Number(devicesData?.log[0]?.tempAvg.toFixed(2)) >= probe[0]?.tempMax || Number(devicesData?.log[0]?.tempAvg.toFixed(2)) <= probe[0]?.tempMin ? <RiErrorWarningLine />
+            :
+            <RiTempColdLine />}
           valuesone={`Temp: ${Number(devicesData?.log[0]?.tempAvg.toFixed(2)) <= probe[0]?.tempMin ? '↓' : Number(devicesData?.log[0]?.tempAvg.toFixed(2)) >= probe[0]?.tempMax ? '↑' : ''} ${devicesData?.log[0]?.tempAvg ? devicesData?.log[0]?.tempAvg.toFixed(2) : '- -'}`}
           valuestwo={`Hum: ${devicesData?.log[0]?.humidityAvg ? devicesData?.log[0]?.humidityAvg.toFixed(2) : '- -'}`}
           pipeone={'°C'}
@@ -336,7 +344,9 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
             devicesData?.log[0]?.door1 === '1' ||
               devicesData?.log[0]?.door2 === '1' ||
               devicesData?.log[0]?.door3 === '1' ? t('doorOpen') : t('doorClose')}
-          svg={<RiDoorClosedLine />}
+          svg={devicesData?.log[0]?.door1 === '1' ||
+            devicesData?.log[0]?.door2 === '1' ||
+            devicesData?.log[0]?.door3 === '1' ? <RiDoorOpenLine /> : <RiDoorClosedLine />}
           alertone={
             devicesData?.log[0]?.door1 === '1' ||
             devicesData?.log[0]?.door2 === '1' ||
@@ -358,13 +368,25 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           valuestext={
             `${devicesData?.log[0]?.battery ? devicesData?.log[0]?.battery : '- -'} %`
           }
-          svg={<RiBatteryChargeLine />}
+          svg={devicesData?.log[0]?.ac === '0' ?
+            <RiBatteryChargeLine />
+            :
+            devicesData?.log[0]?.battery === 0 ?
+              <RiBatteryLine />
+              :
+              devicesData?.log[0]?.battery <= 50 ?
+                <RiBatteryLowLine />
+                :
+                devicesData?.log[0]?.battery <= 100 ?
+                  <RiBatteryFill />
+                  :
+                  <RiAlertLine />}
           alertone={devicesData?.log[0]?.battery === 0 || devicesData?.log[0]?.battery === undefined}
           onClick={() => { }}
         />
         <CardstatusSpecial
           title={t('dashTempofDay')}
-          svg={<RiTempColdLine />}
+          svg={<HiOutlineArrowsUpDown />}
           valuesone={`↑ ${devicesData?.log.length > 0 ? Number(Math.max(...(devicesData?.log.map((items) => items.tempAvg)))).toFixed(2) : '- -'}`}
           valuestwo={`↓ ${devicesData?.log.length > 0 ? Number(Math.min(...(devicesData?.log.map((items) => items.tempAvg)))).toFixed(2) : '- -'}`}
           pipeone={'°C'}
@@ -375,7 +397,10 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           valuestext={
             devicesData?.log[0]?.sdCard === '0' ? t('stateNormal') : t('stateProblem')
           }
-          svg={<RiSdCardMiniLine />}
+          svg={devicesData?.log[0]?.sdCard === "1" ?
+            <MdOutlineSdCardAlert />
+            :
+            <MdOutlineSdCard />}
           alertone={devicesData?.log[0]?.sdCard !== '0'}
           onClick={onShowDetail}
           showSdDetail={showSdDetail}
