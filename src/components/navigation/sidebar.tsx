@@ -230,22 +230,6 @@ export default function sidebar() {
       <LineHr />
       <SettingSystem >
         <Ul className="nav nav-pills">
-          {/* <Li $primary={expand}>
-            <Link to="/contact" onClick={resetAsideandCardcount} className={location.pathname === "/contact" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
-              {
-                location.pathname === "/contact" ?
-                  <RiContactsBook2Fill />
-                  :
-                  <RiContactsBook2Line />
-              }
-              <SpanAside $primary={expand}>
-                {t('sideContact')}
-              </SpanAside>
-            </Link>
-            <TooltipSpan $primary={expand}>
-              {t('sideContact')}
-            </TooltipSpan>
-          </Li> */}
           {
             userLevel === "0" && <Li>
               <ToggleTmsButtonWrapper onClick={() => { dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions) }} $primary={isTms}>

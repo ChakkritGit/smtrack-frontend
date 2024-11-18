@@ -5273,7 +5273,7 @@ export const WCDC1 = styled.div<{ $primary?: boolean }>`
   justify-content: space-between;
   border: 1px solid black;
 
-  &>div:nth-child(1)>div:nth-child(1)>span>img {
+  &>div:nth-child(1)>div:nth-child(1)>img {
   height: 100px;
   position: relative;
   left: 35px;
@@ -5450,7 +5450,7 @@ export const WCDC2 = styled.div<{ $primary?: boolean }>`
   width: 20%;
 }
 
-&>div:nth-child(3)>div:nth-child(1)>span>img {
+&>div:nth-child(3)>div:nth-child(1)>img {
   width: 130px;
   transform: translateY(20px);
 }
