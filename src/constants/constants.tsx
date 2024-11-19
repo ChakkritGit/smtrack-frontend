@@ -606,7 +606,7 @@ export const generateOptionsOne = (userLevel: string) => {
   }
   if (userLevel === '0' || userLevel === '1') {
     option.push({
-      value: 'OFF',
+      value: 'off',
       label: 'OFF'
     })
   }
@@ -623,7 +623,7 @@ export const generateOptions = (userLevel: string) => {
   }
   if (userLevel === '0' || userLevel === '1') {
     option.push({
-      value: 'OFF',
+      value: 'off',
       label: 'OFF'
     })
   }

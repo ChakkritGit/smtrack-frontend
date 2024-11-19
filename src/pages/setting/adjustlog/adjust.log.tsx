@@ -16,6 +16,7 @@ export default function AdjustLog() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { cookieDecode, searchQuery } = useSelector((state: RootState) => state.utilsState)
+  const { userData } = useSelector((state: RootState) => state.user)
   const { token } = cookieDecode
   const [history, setHistory] = useState<historyType[]>([])
   const [detail, setDetail] = useState<historyType>({} as historyType)
@@ -84,7 +85,7 @@ export default function AdjustLog() {
   },
   {
     name: t('hisUsername'),
-    selector: (items) => items.user?.displayName,
+    selector: ({ userId }) => userData.find(({ userId: id }) => id === userId)?.displayName || "- -",
     sortable: false,
     center: true
   },
@@ -106,7 +107,7 @@ export default function AdjustLog() {
   ]
 
   // Filter Data
-  const filteredItems = history.length > 0 ? history.filter(item => item.devSerial && item.devSerial.toLowerCase().includes(searchQuery.toLowerCase()) || item.user?.displayName.toLowerCase().includes(searchQuery.toLowerCase())) : []
+  const filteredItems = history.length > 0 ? history.filter(item => item.devSerial && item.devSerial.toLowerCase().includes(searchQuery.toLowerCase())) : []
 
   // format json
   const formatJson = (jsonStr: string) => {
@@ -149,7 +150,7 @@ export default function AdjustLog() {
         <Modal.Body>
           <DetailsFlex>
             <span>{t('deviceSnBox')}: {detail.devSerial}</span>
-            <span>{t('userDisplayName')}: {detail.user?.displayName}</span>
+            <span>{t('userDisplayName')}: {userData.find(({ userId: id }) => id === detail.userId)?.displayName || "- -"}</span>
             <span>{t('deviceDate')}: {`${new Date(detail.createAt).toLocaleString('th-TH', {
               day: '2-digit',
               month: '2-digit',

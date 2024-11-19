@@ -427,3 +427,7 @@ export const OnErrorFlex = styled.div<{ $primary?: boolean }>`
     color: var(--danger-color);
   }
 `
+
+export const HomeContainer = styled.div`
+  padding: 0 1rem;
+`

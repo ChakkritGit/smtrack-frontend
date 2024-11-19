@@ -1,10 +1,8 @@
 type historyType = {
+  createAt: string,
   detail: string,
   devSerial: string,
-  user: {
-    displayName: string
-  },
-  createAt: string
+  userId: string,
 }
 
 export type { historyType }

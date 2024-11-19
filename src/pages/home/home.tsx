@@ -1,4 +1,3 @@
-import { Container } from "react-bootstrap"
 import {
   RiArrowDownWideLine,
   RiArrowUpWideLine,
@@ -29,7 +28,7 @@ import DataTable, { TableColumn } from "react-data-table-component"
 import PageLoading from "../../components/loading/page.loading"
 import { probeType } from "../../types/probe.type"
 import { cookieOptions, cookies, paginationCardHome } from "../../constants/constants"
-import { FloatingTop, TagCurrentHos } from "../../style/components/home.styled"
+import { FloatingTop, HomeContainer, TagCurrentHos } from "../../style/components/home.styled"
 import HomeCard from "../../components/home/home.card"
 import Paginition from "../../components/filter/paginition"
 import { DoorKey } from "../../types/log.type"
@@ -582,7 +581,7 @@ export default function Home() {
   ), [isFiltering, listAndgrid, columns, filteredRef.current, rowPerPage, displayedCards, currentPage, cardsPerPage, changePage, displaySelectDevices, paginationCardHome, totalPages])
 
   return (
-    <Container className="home-lg">
+    <HomeContainer>
       {
         devices.length > 0 ?
           <HomeContainerFlex>
@@ -682,6 +681,6 @@ export default function Home() {
           setShowSettingMute={setShowSettingMute}
         />
       }
-    </Container>
+    </HomeContainer>
   )
 }

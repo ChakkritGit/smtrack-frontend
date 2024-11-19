@@ -193,7 +193,7 @@ export default function Fulltable() {
 
   useEffect(() => {
     const filtered = logData.filter((items) =>
-      items.sendTime && items.sendTime.substring(11, 16).toLowerCase().includes(searchQuery.toLowerCase()))
+      items.sendTime && items.sendTime.toLowerCase().includes(searchQuery.toLowerCase()))
     setTableData(filtered)
   }, [searchQuery, pageNumber, logData])
 
