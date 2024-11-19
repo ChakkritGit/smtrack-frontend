@@ -682,7 +682,6 @@ border-radius: var(--border-radius-big);
 background-color: ${props => props.theme.mode === 'dark' ? 'rgba(37, 37, 37, .5)' : 'rgba(235, 235, 235, .5)'};
 border: unset;
 border: 2px solid transparent;
-cursor: pointer;
 
 &:hover {
   border-color: var(--main-color);
@@ -2052,7 +2051,7 @@ ${props => props.$limitListFlex ? 'justify-content: start;' : props.$primary ? '
 
 & > div:nth-child(1) {
   display: ${props => props.$primary ? 'flex' : 'grid'};
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
   max-width: 1480px;
 
@@ -3861,7 +3860,7 @@ export const NotiflexOne = styled.div<{ $primary?: boolean }>`
 display: flex;
 align-items: center;
 justify-content: space-between;
-padding: 5px .5rem;
+margin: 5px .5rem;
 
 &>div {
   display: flex;
@@ -3875,10 +3874,14 @@ padding: 5px .5rem;
   ${props => props.$primary && css`
   &>div {
     display: flex;
-    width: 12px;
-    height: 12px;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background-color: var(--main-color);
+    background-color: var(--main-color-opacity1);
+    color: var(--main-color);
+    padding: 5px;
   }
     `}
 }

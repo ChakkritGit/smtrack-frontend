@@ -72,7 +72,7 @@ export default {
     muteAlert: 'ปิดเสียงแจ้งเตือนประตู (สำหรับเติมยา)',
     muteDoor: 'ปิดเสียงสถานะ',
     muteDoorDuration: 'ช่วงเวลาปิดเสียงแจ้งเตือนตอนประตูเปิดค้าง',
-    adjustHumGreater: 'ช่วงความชื่นไม่สามารถตั้งได้เกินช่วง 0-100%',
+    adjustHumGreater: 'ช่วงความชื้นไม่สามารถตั้งได้เกินช่วง 0-100%',
     clearShedule: 'ล้าง',
     everyDays: 'ทุกวัน',
 

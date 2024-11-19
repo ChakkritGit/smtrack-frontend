@@ -333,8 +333,8 @@ export const companyList = [
 
 export const paginationCardHome = [
   {
-    key: 10,
-    value: '10'
+    key: 12,
+    value: '12'
   },
   {
     key: 20,
@@ -599,6 +599,10 @@ export const minutesOptions = Array.from({ length: 60 }, (_, i) => ({
 
 export const generateOptionsOne = (userLevel: string) => {
   let option = []
+  option.push({
+    value: '1',
+    label: '1'
+  })
   for (let i = 5; i <= 120; i += 5) {
     option.push({
       value: String(i),

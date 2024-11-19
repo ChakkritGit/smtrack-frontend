@@ -559,6 +559,12 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     to { transform: rotate(360deg); }
 }
 
+.go2072408551 {
+  &>svg {
+    margin: 0 .5rem;
+  }
+}
+
 ${(props) =>
     props.theme.mode === 'dark' ?
       css`

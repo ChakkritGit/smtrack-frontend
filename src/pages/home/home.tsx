@@ -49,10 +49,10 @@ export default function Home() {
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
   const { userLevel, hosName } = cookieDecode
   const [onFilteres, setOnFilteres] = useState(false)
-  const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 10)
+  const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 12)
   const [cardActive, setCardActive] = useState('')
   const [currentPage, setCurrentPage] = useState<number>(0)
-  const [cardsPerPage, setCardsPerPage] = useState<number>(cookies.get('rowperpage') ?? 10)
+  const [cardsPerPage, setCardsPerPage] = useState<number>(cookies.get('rowperpage') ?? 12)
   const [displayedCards, setDisplayedCards] = useState<devicesType[]>(devicesFilter ? devicesFilter.slice(0, cardsPerPage) : [])
   const totalPages = Math.ceil(devicesFilter.length / cardsPerPage)
   const [visible, setVisible] = useState(false)
@@ -489,7 +489,7 @@ export default function Home() {
               responsive={true}
               columns={columns}
               data={filteredRef.current}
-              paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              paginationRowsPerPageOptions={[12, 20, 40, 60, 80, 100]}
               paginationPerPage={rowPerPage}
               onRowClicked={handleRowClicked}
               expandableRowsComponent={ExpandedComponent}

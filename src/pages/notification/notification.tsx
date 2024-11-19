@@ -1,4 +1,4 @@
-import { RiAlarmWarningFill, RiCloseLargeFill, RiCloseLine, RiNotification2Line } from "react-icons/ri"
+import { RiAlarmWarningFill, RiCloseLargeFill, RiCloseLine, RiDoorClosedFill, RiDoorOpenFill, RiNotification2Line } from "react-icons/ri"
 import { useEffect, useRef, useState } from "react"
 import { notificationType } from "../../types/notification.type"
 import { ModalHead, NotificationBadge, NotificationContainer } from "../../style/style"
@@ -15,6 +15,9 @@ import { useTranslation } from "react-i18next"
 import toast from "react-hot-toast"
 import { ToastContainer } from "../../style/components/toast.styled"
 import { useTheme } from "../../theme/ThemeProvider"
+import { TbPlugConnected, TbPlugConnectedX } from "react-icons/tb"
+import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
+import { FaTemperatureArrowUp, FaTemperatureEmpty } from "react-icons/fa6"
 
 export default function Notification() {
   const { t } = useTranslation()
@@ -109,7 +112,7 @@ export default function Notification() {
           </button>
         </ToastContainer>
       ), {
-        icon: <RiAlarmWarningFill size={24} fill='var(--danger-color)' />,
+        icon: changIcon(socketData.message),
         duration: 10000,
         style: {
           backgroundColor: theme.mode === 'dark' ? transparent ? 'rgba(53, 53, 53, .8)' : 'rgba(53, 53, 53, 1)' : transparent ? 'rgba(255, 255, 255, .8)' : 'rgba(255, 255, 255, 1)',
@@ -122,6 +125,36 @@ export default function Notification() {
       })
     }
   }, [socketData])
+
+  const changIcon = (text: string) => {
+    if (text.split(":")[1]?.substring(1, 5) === "DOOR") {
+      if (text.split(" ")[3] === "opened") {
+        return <RiDoorOpenFill size={28} fill='var(--danger-color)' />
+      } else {
+        return <RiDoorClosedFill size={28} fill='var(--main-color)' />
+      }
+    } else if (text.split(" ")[0] === "Power") {
+      if (text.split(" ")[1] === "off") {
+        return <TbPlugConnectedX size={28} fill='var(--danger-color)' />
+      } else {
+        return <TbPlugConnected size={28} fill='var(--main-color)' />
+      }
+    } else if (text.split(" ")[0] === "SDCard") {
+      if (text.split(" ")[1] === "failed") {
+        <MdOutlineSdCardAlert size={28} fill='var(--danger-color)' />
+      } else {
+        <MdOutlineSdCard size={28} fill='var(--main-color)' />
+      }
+    } else if (text.split(" ")[0]?.substring(0, 5) === "PROBE") {
+      if (text.split(" ")[4] === "high") {
+        return <FaTemperatureArrowUp size={28} fill='var(--danger-color)' />
+      } else {
+        return <FaTemperatureEmpty size={28} fill='var(--main-color)' />
+      }
+    } else {
+      return <RiAlarmWarningFill size={28} fill='var(--danger-color)' />
+    }
+  }
 
   useEffect(() => {
     if (countupRef.current) {

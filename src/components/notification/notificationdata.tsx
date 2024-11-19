@@ -2,12 +2,15 @@ import axios, { AxiosError } from "axios"
 import { Noticontainer, NotiflexOne, NotiflexTwo } from "../../style/style"
 import { notificationType } from "../../types/notification.type"
 import Loading from "../loading/loading"
-import { RiFileCloseLine } from "react-icons/ri"
+import { RiAlarmWarningFill, RiDoorClosedFill, RiDoorOpenFill, RiFileCloseLine } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
 import { useEffect, useState } from "react"
 import { NotiHead, NotiHeadBtn } from "../../style/components/notification"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
+import { FaTemperatureArrowDown, FaTemperatureArrowUp } from "react-icons/fa6"
+import { TbPlugConnected, TbPlugConnectedX, TbReportAnalytics } from "react-icons/tb"
+import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
 
 type notilist = {
   data: notificationType[],
@@ -63,9 +66,9 @@ export default function Notificationdata(notilist: notilist) {
       }
     } else if (text.split('/')[0] === 'AC') {
       if (text.split('/')[1] === 'ON') {
-        return t('plugProblem')
-      } else {
         return t('plugBackToNormal')
+      } else {
+        return t('plugProblem')
       }
     } else if (text.split('/')[0] === 'SD') {
       if (text.split('/')[1] === 'ON') {
@@ -77,6 +80,37 @@ export default function Notificationdata(notilist: notilist) {
       return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature ? extractValues(text)?.temperature : '- -'}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity ? extractValues(text)?.humidity : '- -'}%`
     } else {
       return text
+    }
+  }
+
+  const subTextNotiDetailsIcon = (text: string) => {
+    if (text.split('/')[0] === 'PROBE1') {
+      const probe = text.split('/')
+      return probe[2] === 'ON' ? <RiDoorOpenFill size={24} /> : <RiDoorClosedFill size={24} />
+    } else if (text.split('/')[0] === 'TEMP') {
+      if (text.split('/')[1] === 'OVER') {
+        return <FaTemperatureArrowUp size={24} />
+      } else if (text.split('/')[1] === 'LOWER') {
+        return <FaTemperatureArrowDown size={24} />
+      } else {
+        return <RiAlarmWarningFill size={24} />
+      }
+    } else if (text.split('/')[0] === 'AC') {
+      if (text.split('/')[1] === 'ON') {
+        return <TbPlugConnected size={24} />
+      } else {
+        return <TbPlugConnectedX size={24} />
+      }
+    } else if (text.split('/')[0] === 'SD') {
+      if (text.split('/')[1] === 'ON') {
+        return <MdOutlineSdCardAlert size={24} />
+      } else {
+        return <MdOutlineSdCard size={24} />
+      }
+    } else if (text.split('/')[0] === 'REPORT') {
+      return <TbReportAnalytics size={24} />
+    } else {
+      return
     }
   }
 
@@ -99,7 +133,9 @@ export default function Notificationdata(notilist: notilist) {
     return <Noticontainer $primary={!notiStatus} $readed={!notiStatus} key={index} onClick={() => !notiStatus && setRead(notiId)}>
       <NotiflexOne $primary={!notiStatus}>
         <div>
-          <div></div>
+          <div>
+            {subTextNotiDetailsIcon(notiDetail)}
+          </div>
           <strong>{subTextNotiDetails(notiDetail)}</strong>
         </div>
         <span>{createAt.substring(11, 16)}</span>

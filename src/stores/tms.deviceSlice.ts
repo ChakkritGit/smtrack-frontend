@@ -5,7 +5,7 @@ import { responseType } from "../types/response.type"
 import { TmsDeviceType } from "../types/tms.type"
 
 export const fetchTmsDevice = createAsyncThunk<TmsDeviceType[], string>('newDev/fetchNewDevice', async (token) => {
-  const response = await axios.get<responseType<TmsDeviceType[]>>(`${import.meta.env.VITE_APP_API}/device`, {
+  const response = await axios.get<responseType<TmsDeviceType[]>>(`${import.meta.env.VITE_APP_API}/`, {
     headers: { authorization: `Bearer ${token}` }
   })
   return response.data.data
