@@ -142,6 +142,10 @@ export default function Home() {
   }, [searchQuery, wardId, hosId, devices, cardActive])
 
   useEffect(() => {
+    dispatch(setSearchQuery(''))
+  }, [cardActive])
+
+  useEffect(() => {
     filterDevices()
   }, [filterDevices])
 

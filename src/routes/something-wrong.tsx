@@ -25,6 +25,7 @@ export default function SomethingWrong() {
       setErrorText(String(error.message))
       console.error(error)
     } else {
+      setErrorText(String(error))
       console.error(error)
     }
   }, [error])
