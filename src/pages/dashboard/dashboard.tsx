@@ -39,12 +39,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!token) return
-    if (cookies.get('devid') !== 'undefined') return
-    if (devices.length === 0) return
-    dispatch(fetchDevicesLog({ deviceId: devices[0]?.devId, token }))
-    dispatch(setSerial(devices[0]?.devSerial))
-    dispatch(setDeviceId(devices[0]?.devId))
-    cookies.set('devid', String(devices[0]?.devId), cookieOptions)
+    if (cookies.get('devid')) return
+    if (devices.length > 0) {
+      dispatch(fetchDevicesLog({ deviceId: devices[0]?.devId, token }))
+      dispatch(setSerial(devices[0]?.devSerial))
+      dispatch(setDeviceId(devices[0]?.devId))
+      cookies.set('devid', String(devices[0]?.devId), cookieOptions)
+    }
   }, [devices, token])
 
   return (
