@@ -12,7 +12,7 @@ import { Outlet } from "react-router-dom"
 import SecondSidebar from "../components/navigation/second.sidebar"
 import SecondBottombar from "../components/navigation/second.bottombar"
 import { useTranslation } from "react-i18next"
-import { fetchTmsDevice } from "../stores/second.deviceSlice"
+import { fetchTmsDevice } from "../stores/tms.deviceSlice"
 import { socket } from "../services/websocket"
 import { socketResponseType } from "../types/component.type"
 

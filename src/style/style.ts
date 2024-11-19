@@ -135,7 +135,7 @@ ${props => props.theme.mode === 'dark' && css`
 
 export const ToggleTmsButtonWrapper = styled.button<{ $primary?: boolean }>`
   position: relative;
-  width: 60px;
+  width: 58px;
   height: 35px;
   background-color: ${props => props.$primary ? 'var(--main-color)' : '#ddd'};
   border: 1px solid ${props => props.$primary ? 'var(--main-color)' : '#ccc'};
@@ -154,7 +154,7 @@ export const ToggleTmsButtonWrapper = styled.button<{ $primary?: boolean }>`
     font-size: 12px;
     background-color: ${props => props.$primary ? 'var(--white-grey-1)' : 'var(--white-grey-1)'};
     transition: transform 0.3s ease;
-    transform: ${props => props.$primary ? 'translateX(25.3px)' : 'translateX(3px)'};
+    transform: ${props => props.$primary ? 'translateX(23.5px)' : 'translateX(3px)'};
     display: flex;
     align-items: center;
     justify-content: center;

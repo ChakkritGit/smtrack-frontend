@@ -218,7 +218,9 @@ function ModalMute(modalProps: modalAdjustType) {
                       classNamePrefix="react-select"
                     />
                     <button onClick={() => muteAlways(true)}>{t('messageSend')}</button>
-                    <button onClick={() => muteAlways(false)}>{t('cancelButton')}</button>
+                    {
+                      tempDuration !== "- -" && <button onClick={() => muteAlways(false)}>{t('cancelButton')}</button>
+                    }
                   </div>
                 </div>
                 <LineHr $mg={.5} />
@@ -305,7 +307,9 @@ function ModalMute(modalProps: modalAdjustType) {
                       classNamePrefix="react-select"
                     />
                     <button onClick={() => muteAlert(true)}>{t('messageSend')}</button>
-                    <button onClick={() => muteAlert(false)}>{t('cancelButton')}</button>
+                    {
+                      doorAlarm !== "- -" && <button onClick={() => muteAlert(false)}>{t('cancelButton')}</button>
+                    }
                   </div>
                 </div>
               </>

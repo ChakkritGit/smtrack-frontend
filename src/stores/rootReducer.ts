@@ -6,7 +6,7 @@ import utilsSlice from './utilsStateSlice'
 import dataArraySlices from './dataArraySlices'
 import userSlice from './userSlice'
 import probeSlice from './probeSlice'
-import tmsDeviceSlice from './second.deviceSlice'
+import tmsDeviceSlice from './tms.deviceSlice'
 
 const combinedReducer = combineReducers({
   devices: deviceSlice,
