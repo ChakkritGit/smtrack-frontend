@@ -1,4 +1,4 @@
-import { RiAlarmWarningFill, RiCloseLargeFill, RiCloseLine, RiDoorClosedFill, RiDoorOpenFill, RiNotification2Line } from "react-icons/ri"
+import { RiAlarmWarningFill, RiCloseLargeFill, RiCloseLine, RiDoorClosedLine, RiDoorOpenLine, RiNotification2Line } from "react-icons/ri"
 import { useEffect, useRef, useState } from "react"
 import { notificationType } from "../../types/notification.type"
 import { ModalHead, NotificationBadge, NotificationContainer } from "../../style/style"
@@ -15,9 +15,9 @@ import { useTranslation } from "react-i18next"
 import toast from "react-hot-toast"
 import { ToastContainer } from "../../style/components/toast.styled"
 import { useTheme } from "../../theme/ThemeProvider"
-import { TbPlugConnected, TbPlugConnectedX } from "react-icons/tb"
+import { TbPlugConnected, TbPlugConnectedX, TbReportAnalytics } from "react-icons/tb"
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
-import { FaTemperatureArrowUp, FaTemperatureEmpty } from "react-icons/fa6"
+import { FaTemperatureArrowDown, FaTemperatureArrowUp, FaTemperatureEmpty } from "react-icons/fa6"
 
 export default function Notification() {
   const { t } = useTranslation()
@@ -129,9 +129,9 @@ export default function Notification() {
   const changIcon = (text: string) => {
     if (text.split(":")[1]?.substring(1, 5) === "DOOR") {
       if (text.split(" ")[3] === "opened") {
-        return <RiDoorOpenFill size={28} fill='var(--danger-color)' />
+        return <RiDoorOpenLine size={28} fill='var(--danger-color)' />
       } else {
-        return <RiDoorClosedFill size={28} fill='var(--main-color)' />
+        return <RiDoorClosedLine size={28} fill='var(--main-color)' />
       }
     } else if (text.split(" ")[0] === "Power") {
       if (text.split(" ")[1] === "off") {
@@ -148,9 +148,13 @@ export default function Notification() {
     } else if (text.split(" ")[0]?.substring(0, 5) === "PROBE") {
       if (text.split(" ")[4] === "high") {
         return <FaTemperatureArrowUp size={28} fill='var(--danger-color)' />
+      } else if (text.split(" ")[4] === "low") {
+        return <FaTemperatureArrowDown size={28} fill='var(--danger-color)' />
       } else {
         return <FaTemperatureEmpty size={28} fill='var(--main-color)' />
       }
+    } else if (text.split("/")[0] === "REPORT") {
+      return <TbReportAnalytics size={28} fill='var(--main-color)' />
     } else {
       return <RiAlarmWarningFill size={28} fill='var(--danger-color)' />
     }

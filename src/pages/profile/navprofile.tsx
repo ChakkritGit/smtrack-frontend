@@ -28,6 +28,7 @@ export default function Navprofile() {
     cookies.remove('devid', cookieOptions)
     cookies.remove('selectHos', cookieOptions)
     cookies.remove('selectWard', cookieOptions)
+    cookies.remove('isTms', cookieOptions)
     cookies.update()
     navigate("/login")
   }

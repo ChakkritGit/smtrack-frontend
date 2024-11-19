@@ -44,17 +44,6 @@ const deviceSlice = createSlice({
         (action) => action.type.endsWith("/rejected"),
         (state: DeviceState, action: payloadError) => {
           state.devicesLoading = false
-          // if (Number(action.error.message.split(' ')[action.error.message.split(' ').length - 1]) === 401) {
-          //   cookies.remove('localDataObject', cookieOptions)
-          //   cookies.remove('devSerial', cookieOptions)
-          //   cookies.remove('devid', cookieOptions)
-          //   cookies.remove('selectHos', cookieOptions)
-          //   cookies.remove('selectWard', cookieOptions)
-          //   cookies.update()
-          //   window.location.href = '/login'
-          // } else {
-          //   state.devicesError = action.error.message
-          // }
           state.devicesError = action.error.message
         },
       )

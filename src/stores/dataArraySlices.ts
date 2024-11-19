@@ -84,17 +84,6 @@ const arraySlice = createSlice({
         (action: PayloadAction) => action.type.endsWith("/rejected"),
         (state: DataArrayStore, action: payloadError) => {
           state.arrayLoading = false
-          // if (Number(action.error.message.split(' ')[action.error.message.split(' ').length - 1]) === 401) {
-          //   cookies.remove('localDataObject', cookieOptions)
-          //   cookies.remove('devSerial', cookieOptions)
-          //   cookies.remove('devid', cookieOptions)
-          //   cookies.remove('selectHos', cookieOptions)
-          //   cookies.remove('selectWard', cookieOptions)
-          //   cookies.update()
-          //   window.location.href = '/login'
-          // } else {
-          //   state.arrayError = action.error.message
-          // }
           state.arrayError = action.error.message
         },
       )

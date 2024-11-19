@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios"
 import { Noticontainer, NotiflexOne, NotiflexTwo } from "../../style/style"
 import { notificationType } from "../../types/notification.type"
 import Loading from "../loading/loading"
-import { RiAlarmWarningFill, RiDoorClosedFill, RiDoorOpenFill, RiFileCloseLine } from "react-icons/ri"
+import { RiAlarmWarningFill, RiDoorClosedLine, RiDoorOpenLine, RiFileCloseLine, RiSignalWifi3Line, RiSignalWifiErrorLine } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
 import { useEffect, useState } from "react"
 import { NotiHead, NotiHeadBtn } from "../../style/components/notification"
@@ -78,6 +78,12 @@ export default function Notificationdata(notilist: notilist) {
       }
     } else if (text.split('/')[0] === 'REPORT') {
       return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature ? extractValues(text)?.temperature : '- -'}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity ? extractValues(text)?.humidity : '- -'}%`
+    } else if (text.split('/')[0] === "INTERNET") {
+      if (text.split('/')[1] === "ON") {
+        return t('InternetProblem')
+      } else {
+        return t('InternetBackToNormal')
+      }
     } else {
       return text
     }
@@ -86,7 +92,7 @@ export default function Notificationdata(notilist: notilist) {
   const subTextNotiDetailsIcon = (text: string) => {
     if (text.split('/')[0] === 'PROBE1') {
       const probe = text.split('/')
-      return probe[2] === 'ON' ? <RiDoorOpenFill size={24} /> : <RiDoorClosedFill size={24} />
+      return probe[2] === 'ON' ? <RiDoorOpenLine size={24} /> : <RiDoorClosedLine size={24} />
     } else if (text.split('/')[0] === 'TEMP') {
       if (text.split('/')[1] === 'OVER') {
         return <FaTemperatureArrowUp size={24} />
@@ -109,8 +115,14 @@ export default function Notificationdata(notilist: notilist) {
       }
     } else if (text.split('/')[0] === 'REPORT') {
       return <TbReportAnalytics size={24} />
+    } else if (text.split('/')[0] === "INTERNET") {
+      if (text.split('/')[1] === "ON") {
+        return <RiSignalWifiErrorLine size={24} />
+      } else {
+        return <RiSignalWifi3Line size={24} />
+      }
     } else {
-      return
+      return <RiAlarmWarningFill size={24} />
     }
   }
 

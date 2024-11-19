@@ -6,6 +6,7 @@ import { cookieOptions, cookies } from '../../constants/constants'
 import { setCookieEncode, setDeviceId, setSerial, setShowAlert } from '../../stores/utilsStateSlice'
 import { swalTokenInvalid } from '../dropdown/sweetalertLib'
 import { RootState } from '../../stores/store'
+import { reset } from '../../stores/resetAction'
 
 const TokenExpiredAlert = () => {
   const dispatch = useDispatch()
@@ -33,7 +34,9 @@ const TokenExpiredAlert = () => {
           cookies.remove('devid', cookieOptions)
           cookies.remove('selectHos', cookieOptions)
           cookies.remove('selectWard', cookieOptions)
+          cookies.remove('isTms', cookieOptions)
           cookies.update()
+          dispatch(reset())
           dispatch(setShowAlert(false))
           navigate("/login")
         }

@@ -97,6 +97,8 @@ export default {
     plugBackToNormal: 'ปลั๊กกลับมาปกติ',
     SdCardProblem: 'เอสดีการ์ดมีปัญหา',
     SdCardBackToNormal: 'เอสดีการ์ดกลับมาปกติ',
+    InternetProblem: 'อินเทอร์เน็ตมีปัญหา',
+    InternetBackToNormal: 'อินเทอร์เน็ตกลับมาปกติ',
     doorNum: 'ประตู',
     doorAlertText: 'ตั้งค่าเสียงประตู',
 

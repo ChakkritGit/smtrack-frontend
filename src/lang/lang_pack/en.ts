@@ -297,6 +297,8 @@ export default {
     plugBackToNormal: 'The power plug is back to normal',
     SdCardProblem: 'There is an issue with the SD card',
     SdCardBackToNormal: 'The SD card is back to normal',
+    InternetProblem: 'There is an issue with the Internet',
+    InternetBackToNormal: 'The Internet is back to normal',
     doorNum: 'Door',
     doorAlertText: 'Door Alert Settings',
 

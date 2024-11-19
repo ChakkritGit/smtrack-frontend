@@ -48,17 +48,6 @@ const logSlice = createSlice({
         (action) => action.type.endsWith("/rejected"),
         (state: LogState, action: payloadError) => {
           state.logLoading = false
-          // if (Number(action.error.message.split(' ')[action.error.message.split(' ').length - 1]) === 401) {
-          //   cookies.remove('localDataObject', cookieOptions)
-          //   cookies.remove('devSerial', cookieOptions)
-          //   cookies.remove('devid', cookieOptions)
-          //   cookies.remove('selectHos', cookieOptions)
-          //   cookies.remove('selectWard', cookieOptions)
-          //   cookies.update()
-          //   window.location.href = '/login'
-          // } else {
-          //   state.logError = action.error.message
-          // }
           state.logError = action.error.message
         },
       )
