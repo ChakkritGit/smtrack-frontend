@@ -17,7 +17,7 @@ import {
   DeviceDetailsHead, DevicesBodyStatus, ExpandPicture, FormBtn,
   FormFlexBtn, LineHr, ModalHead, SpanCardDash, TooltipSpanLeft
 } from "../../style/style"
-import { devicesType } from "../../types/device.type"
+import { dateCalType, devicesType } from "../../types/device.type"
 import { CardstatusNomal, CardstatusSpecial } from "./cardstatus"
 import { FormEvent, useEffect, useState } from "react"
 import { Form, Modal, Row } from "react-bootstrap"
@@ -36,20 +36,13 @@ import ModalNotification from "../home/modal.noti"
 import ModalMute from "../home/modal.mute"
 import { filtersDevices } from "../../stores/dataArraySlices"
 import { MuteFlex, OpenSettingBuzzer } from "../../style/components/home.styled"
-import { ImageComponent } from "../../constants/constants"
+import { calulateDate, ImageComponent } from "../../constants/constants"
 import { HiOutlineArrowsUpDown } from "react-icons/hi2"
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
 
 type devicesinfo = {
   devicesData: devicesType,
   index: number
-}
-
-type dateCalType = {
-  daysRemaining: number,
-  years: number,
-  months: number,
-  remainingDays: number
 }
 
 export default function Devicesinfo(devicesinfo: devicesinfo) {
@@ -192,62 +185,6 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
       })
     }
   }, [show])
-
-  const isLeapYear = (year: number): boolean => {
-    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
-  }
-
-  const calulateDate = (devicesData: devicesType) => {
-    const { warranty } = devicesData
-    const today = new Date()
-    const expiredDate = new Date(String(warranty[0]?.expire))
-    // Use the expiredDate directly
-    const timeDifference = expiredDate.getTime() - today.getTime()
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
-
-    let remainingDays = daysRemaining
-    let years = 0
-    let months = 0
-
-    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-    while (remainingDays >= 365) {
-      if (isLeapYear(today.getFullYear() + years)) {
-        if (remainingDays >= 366) {
-          remainingDays -= 366
-          years++
-        } else {
-          break
-        }
-      } else {
-        remainingDays -= 365
-        years++
-      }
-    }
-
-    let currentMonth = today.getMonth()
-    while (remainingDays >= daysInMonth[currentMonth]) {
-      if (currentMonth === 1 && isLeapYear(today.getFullYear() + years)) {
-        if (remainingDays >= 29) {
-          remainingDays -= 29
-          months++
-        } else {
-          break
-        }
-      } else {
-        remainingDays -= daysInMonth[currentMonth]
-        months++
-      }
-      currentMonth = (currentMonth + 1) % 12
-    }
-
-    return {
-      daysRemaining,
-      years,
-      months,
-      remainingDays
-    }
-  }
 
   useEffect(() => {
     setDateData(calulateDate(devicesData))

@@ -5,6 +5,7 @@ import Cookies, { CookieSetOptions } from "universal-cookie"
 import CryptoJS from "crypto-js"
 import { Option, Schedule, ScheduleHour, ScheduleMinute } from "../types/config.type"
 import piexif from "piexifjs"
+import { devicesType } from "../types/device.type"
 
 export const getDateNow = () => {
   let date = new Date()
@@ -676,4 +677,60 @@ export const ImageComponent = ({ src, alt }: { src: string, alt: string }) => {
       }}
     />
   )
+}
+
+const isLeapYear = (year: number): boolean => {
+  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
+}
+
+export const calulateDate = (devicesData: devicesType) => {
+  const { warranty } = devicesData
+  const today = new Date()
+  const expiredDate = new Date(String(warranty[0]?.expire))
+  // Use the expiredDate directly
+  const timeDifference = expiredDate.getTime() - today.getTime()
+  const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
+
+  let remainingDays = daysRemaining
+  let years = 0
+  let months = 0
+
+  const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+
+  while (remainingDays >= 365) {
+    if (isLeapYear(today.getFullYear() + years)) {
+      if (remainingDays >= 366) {
+        remainingDays -= 366
+        years++
+      } else {
+        break
+      }
+    } else {
+      remainingDays -= 365
+      years++
+    }
+  }
+
+  let currentMonth = today.getMonth()
+  while (remainingDays >= daysInMonth[currentMonth]) {
+    if (currentMonth === 1 && isLeapYear(today.getFullYear() + years)) {
+      if (remainingDays >= 29) {
+        remainingDays -= 29
+        months++
+      } else {
+        break
+      }
+    } else {
+      remainingDays -= daysInMonth[currentMonth]
+      months++
+    }
+    currentMonth = (currentMonth + 1) % 12
+  }
+
+  return {
+    daysRemaining,
+    years,
+    months,
+    remainingDays
+  }
 }

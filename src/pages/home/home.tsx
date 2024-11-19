@@ -27,7 +27,7 @@ import { RootState, storeDispatchType } from "../../stores/store"
 import DataTable, { TableColumn } from "react-data-table-component"
 import PageLoading from "../../components/loading/page.loading"
 import { probeType } from "../../types/probe.type"
-import { cookieOptions, cookies, paginationCardHome } from "../../constants/constants"
+import { calulateDate, cookieOptions, cookies, paginationCardHome } from "../../constants/constants"
 import { FloatingTop, HomeContainer, TagCurrentHos } from "../../style/components/home.styled"
 import HomeCard from "../../components/home/home.card"
 import Paginition from "../../components/filter/paginition"
@@ -144,10 +144,6 @@ export default function Home() {
   useEffect(() => {
     filterDevices()
   }, [filterDevices])
-
-  const isLeapYear = (year: number): boolean => {
-    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
-  }
 
   const columns: TableColumn<devicesType>[] = [
     {
@@ -269,56 +265,17 @@ export default function Home() {
     {
       name: t('deviceWarrantyTb'),
       cell: items => {
-        const today = new Date()
-        const expiredDate = new Date(String(items.warranty[0]?.expire))
-        // Use the expiredDate directly
-        const timeDifference = expiredDate.getTime() - today.getTime()
-        const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
-
-        let remainingDays = daysRemaining
-        let years = 0
-        let months = 0
-
-        const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-
-        while (remainingDays >= 365) {
-          if (isLeapYear(today.getFullYear() + years)) {
-            if (remainingDays >= 366) {
-              remainingDays -= 366
-              years++
-            } else {
-              break
-            }
-          } else {
-            remainingDays -= 365
-            years++
-          }
-        }
-
-        let currentMonth = today.getMonth()
-        while (remainingDays >= daysInMonth[currentMonth]) {
-          if (currentMonth === 1 && isLeapYear(today.getFullYear() + years)) {
-            if (remainingDays >= 29) {
-              remainingDays -= 29
-              months++
-            } else {
-              break
-            }
-          } else {
-            remainingDays -= daysInMonth[currentMonth]
-            months++
-          }
-          currentMonth = (currentMonth + 1) % 12
-        }
 
         return <span>
-          {daysRemaining > 0
-            ? years > 0
-              ? `${years} ${t('year')} ${months} ${t('month')} ${remainingDays} ${t('day')}`
-              : months > 0
-                ? `${months} ${t('month')} ${remainingDays} ${t('day')}`
-                : `${remainingDays} ${t('day')}`
-            : t('tabWarrantyExpired')}
+          {items.warranty[0]?.expire ?
+            calulateDate(items).daysRemaining > 0
+              ? calulateDate(items).years > 0
+                ? `${calulateDate(items).years} ${t('year')} ${calulateDate(items).months} ${t('month')} ${calulateDate(items).remainingDays} ${t('day')}`
+                : calulateDate(items).months > 0
+                  ? `${calulateDate(items).months} ${t('month')} ${calulateDate(items).remainingDays} ${t('day')}`
+                  : `${calulateDate(items).remainingDays} ${t('day')}`
+              : t('tabWarrantyExpired')
+            : t('notRegistered')}
         </span>
       },
       sortable: false,

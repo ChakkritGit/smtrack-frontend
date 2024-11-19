@@ -99,4 +99,11 @@ type cardFilterType = {
   warranty: boolean
 }
 
-export type { devices, devicesType, managedevices, deviceLog, cardFilterType, ProbeDeviceType, TmsManagedevices }
+type dateCalType = {
+  daysRemaining: number,
+  years: number,
+  months: number,
+  remainingDays: number
+}
+
+export type { devices, devicesType, managedevices, deviceLog, cardFilterType, ProbeDeviceType, TmsManagedevices, dateCalType }
