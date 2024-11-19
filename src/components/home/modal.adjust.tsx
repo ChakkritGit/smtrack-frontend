@@ -257,6 +257,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
               setHumvalue={setHumvalue}
               setTempvalue={setTempvalue}
               tempvalue={tempvalue}
+              showAdjust={true}
             />
             <Col lg={12}>
               <Form.Label className="w-100">

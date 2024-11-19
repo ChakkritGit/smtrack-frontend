@@ -108,6 +108,17 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const url: string = `${import.meta.env.VITE_APP_API}/probe/${devicesData?.probe[0]?.probeId}`
+    if (Number((mqttData.humi + formdata.adjustHum - devicesData.probe[0]?.adjustHum).toFixed(2)) > 100.00 || Number((mqttData.humi + formdata.adjustHum - devicesData.probe[0]?.adjustHum).toFixed(2)) < -100) {
+      Swal.fire({
+        title: t('alertHeaderWarning'),
+        text: t('adjustHumGreater'),
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+      return
+    }
+
     try {
       const response = await axios.put<responseType<probeType>>(url, {
         tempMin: tempvalue[0],
@@ -121,6 +132,12 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
           authorization: `Bearer ${token}`
         }
       })
+      if (deviceModel === 'etemp') {
+        client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/adj`, 'on')
+      } else {
+        client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/adj`, 'on')
+      }
+      client.publish(`${devicesData.devSerial}/adj`, 'on')
       setShow(false)
       dispatch(fetchDevicesLog({ deviceId: devicesData.devId, token: token }))
       dispatch(setRefetchdata(true))
@@ -413,6 +430,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
                 setHumvalue={setHumvalue}
                 setTempvalue={setTempvalue}
                 tempvalue={tempvalue}
+                showAdjust={true}
               />
               <Form.Label className="w-100 form-label">
                 <span><b>{t('muteSetting')}</b></span>

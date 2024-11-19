@@ -46,13 +46,15 @@ export default function Addprobe(addprobe: addprobeProps) {
     probeType: pagestate !== "add" ? probeData?.probeType : '',
     probeCh: pagestate !== "add" ? probeData?.probeCh : '',
     devSerial: pagestate !== "add" ? probeData?.devSerial : '',
-    adjustTemp: pagestate !== "add" ? probeData?.adjustTemp : '',
-    adjustHum: pagestate !== "add" ? probeData?.adjustHum : '',
     delay_time: pagestate !== "add" ? probeData?.delayTime : '',
     door: pagestate !== "add" ? probeData?.door : '',
     location: pagestate !== "add" ? probeData?.location : '',
     tempvalue: [pagestate !== "add" ? Number(probeData?.tempMin) : 0, pagestate !== "add" ? Number(probeData?.tempMax) : 0],
     humvalue: [pagestate !== "add" ? Number(probeData?.humMin) : 0, pagestate !== "add" ? Number(probeData?.humMax) : 0]
+  })
+  const [formDataTwo, setFormDataTwo] = useState({
+    adjustTemp: pagestate !== "add" ? probeData?.adjustTemp : '',
+    adjustHum: pagestate !== "add" ? probeData?.adjustHum : '',
   })
   const [mqttData, setMqttData] = useState({ temp: 0, humi: 0 })
   const { theme } = useTheme()
@@ -81,8 +83,8 @@ export default function Addprobe(addprobe: addprobeProps) {
       probeType: formdata.probeType,
       probeCh: formdata.probeCh,
       devSerial: formdata.devSerial,
-      adjustTemp: formdata.adjustTemp,
-      adjustHum: formdata.adjustHum,
+      adjustTemp: formDataTwo.adjustTemp,
+      adjustHum: formDataTwo.adjustHum,
       delayTime: formdata.delay_time,
       door: Number(formdata.door),
       location: formdata.location,
@@ -91,7 +93,7 @@ export default function Addprobe(addprobe: addprobeProps) {
       humMin: formdata.humvalue[0],
       humMax: formdata.humvalue[1],
     }
-    if (formdata.devSerial !== '' && formdata.adjustTemp !== '' && formdata.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
+    if (formdata.devSerial !== '' && formDataTwo.adjustTemp !== '' && formDataTwo.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
       && formdata.probeName !== '' && formdata.probeType !== '' && formdata.probeCh !== '' && formdata.location !== '' && formdata.tempvalue !== null && formdata.humvalue !== null) {
       try {
         const response = await axios.post<responseType<probeType>>(url, bodyData, {
@@ -150,8 +152,8 @@ export default function Addprobe(addprobe: addprobeProps) {
       probeType: formdata.probeType,
       probeCh: formdata.probeCh,
       devId: formdata.devSerial,
-      adjustTemp: formdata.adjustTemp,
-      adjustHum: formdata.adjustHum,
+      adjustTemp: formDataTwo.adjustTemp,
+      adjustHum: formDataTwo.adjustHum,
       delayTime: formdata.delay_time,
       door: Number(formdata.door),
       location: formdata.location,
@@ -160,7 +162,17 @@ export default function Addprobe(addprobe: addprobeProps) {
       humMin: formdata.humvalue[0],
       humMax: formdata.humvalue[1],
     }
-    if (formdata.devSerial !== '' && formdata.adjustTemp !== '' && formdata.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
+    if (Number((mqttData.humi + Number(formDataTwo.adjustHum) - Number(probeData?.adjustHum)).toFixed(2)) > 100.00 || Number((mqttData.humi + Number(formDataTwo.adjustHum) - Number(probeData?.adjustHum)).toFixed(2)) < -100) {
+      Swal.fire({
+        title: t('alertHeaderWarning'),
+        text: t('adjustHumGreater'),
+        icon: "warning",
+        timer: 2000,
+        showConfirmButton: false,
+      })
+      return
+    }
+    if (formdata.devSerial !== '' && formDataTwo.adjustTemp !== '' && formDataTwo.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
       && formdata.probeName !== '' && formdata.probeType !== '' && formdata.probeCh !== '' && formdata.location !== null && formdata.tempvalue !== null && formdata.humvalue !== null) {
       try {
         const response = await axios.put<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeData?.probeId}`, bodyData, {
@@ -224,10 +236,10 @@ export default function Addprobe(addprobe: addprobeProps) {
     setFormdata({ ...formdata, humvalue: newValue as number[] })
   }
   const handleAdjusttempChange = (_event: Event, newValue: number | number[]) => {
-    setFormdata({ ...formdata, adjustTemp: newValue as number })
+    setFormDataTwo({ ...formDataTwo, adjustTemp: newValue as number })
   }
   const handleAdjusthumChange = (_event: Event, newValue: number | number[]) => {
-    setFormdata({ ...formdata, adjustHum: newValue as number })
+    setFormDataTwo({ ...formDataTwo, adjustHum: newValue as number })
   }
 
   const delayTime = (e: SingleValue<Option>) => {
@@ -337,13 +349,15 @@ export default function Addprobe(addprobe: addprobeProps) {
         probeType: pagestate !== "add" ? probeData?.probeType : '',
         probeCh: pagestate !== "add" ? probeData?.probeCh : '',
         devSerial: pagestate !== "add" ? probeData?.devSerial : '',
-        adjustTemp: pagestate !== "add" ? probeData?.adjustTemp : '',
-        adjustHum: pagestate !== "add" ? probeData?.adjustHum : '',
         delay_time: pagestate !== "add" ? probeData?.delayTime : '',
         door: pagestate !== "add" ? probeData?.door : '',
         location: pagestate !== "add" ? probeData?.location : '',
         tempvalue: [pagestate !== "add" ? Number(probeData?.tempMin) : 0, pagestate !== "add" ? Number(probeData?.tempMax) : 0],
         humvalue: [pagestate !== "add" ? Number(probeData?.humMin) : 0, pagestate !== "add" ? Number(probeData?.humMax) : 0]
+      })
+      setFormDataTwo({
+        adjustTemp: pagestate !== "add" ? probeData?.adjustTemp : '',
+        adjustHum: pagestate !== "add" ? probeData?.adjustHum : ''
       })
     }
   }, [show])
@@ -576,8 +590,8 @@ export default function Addprobe(addprobe: addprobeProps) {
                   probe: [{ adjustTemp: probeData?.adjustTemp, adjustHum: probeData?.adjustHum }]
                 } as devicesType}
                 formData={{
-                  adjustTemp: Number(formdata.adjustTemp),
-                  adjustHum: Number(formdata.adjustHum)
+                  adjustTemp: Number(formDataTwo.adjustTemp),
+                  adjustHum: Number(formDataTwo.adjustHum)
                 }}
                 handleAdjusthumChange={handleAdjusthumChange}
                 handleAdjusttempChange={handleAdjusttempChange}
@@ -586,12 +600,13 @@ export default function Addprobe(addprobe: addprobeProps) {
                 humvalue={formdata.humvalue}
                 tempvalue={formdata.tempvalue}
                 mqttData={mqttData}
-                setFormData={setFormdata as Dispatch<SetStateAction<{
+                setFormData={setFormDataTwo as Dispatch<SetStateAction<{
                   adjustTemp: number;
                   adjustHum: number;
                 }>>}
                 setTempvalue={setTempvalue}
                 setHumvalue={setHumvalue}
+                showAdjust={pagestate === 'edit'}
               />
             </Row>
           </Modal.Body>
