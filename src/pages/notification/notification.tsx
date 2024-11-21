@@ -18,6 +18,7 @@ import { useTheme } from "../../theme/ThemeProvider"
 import { TbPlugConnected, TbPlugConnectedX, TbReportAnalytics } from "react-icons/tb"
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
 import { FaTemperatureArrowDown, FaTemperatureArrowUp, FaTemperatureEmpty } from "react-icons/fa6"
+import { extractValues } from "../../constants/constants"
 
 export default function Notification() {
   const { t } = useTranslation()
@@ -92,7 +93,7 @@ export default function Notification() {
         <ToastContainer>
           <div>
             <span>{socketData.device ? socketData.device : '- -'}</span>
-            <span>{socketData.message}</span>
+            <span>{changText(socketData.message)}</span>
             <span>
               {new Date(socketData.time).toLocaleString('th-TH', {
                 day: '2-digit',
@@ -141,9 +142,9 @@ export default function Notification() {
       }
     } else if (text.split(" ")[0] === "SDCard") {
       if (text.split(" ")[1] === "failed") {
-        <MdOutlineSdCardAlert size={28} fill='var(--danger-color)' />
+        return <MdOutlineSdCardAlert size={28} fill='var(--danger-color)' />
       } else {
-        <MdOutlineSdCard size={28} fill='var(--main-color)' />
+        return <MdOutlineSdCard size={28} fill='var(--main-color)' />
       }
     } else if (text.split(" ")[0]?.substring(0, 5) === "PROBE") {
       if (text.split(" ")[4] === "high") {
@@ -157,6 +158,40 @@ export default function Notification() {
       return <TbReportAnalytics size={28} fill='var(--main-color)' />
     } else {
       return <RiAlarmWarningFill size={28} fill='var(--danger-color)' />
+    }
+  }
+
+  const changText = (text: string) => {
+    if (text.split(":")[1]?.substring(1, 5) === "DOOR") {
+      const probe = text.split(' ')
+      const probeNumber = probe[0].replace('PROBE', '')?.substring(0, 1)
+      const doorNumber = probe[1].replace('DOOR', '')
+      const status = probe[3] === 'opened' ? t('stateOn') : t('stateOff')
+      return `${t('deviceProbeTb')} ${probeNumber} ${t('doorNum')} ${doorNumber} ${status}`
+    } else if (text.split(" ")[0] === "Power") {
+      if (text.split(" ")[1] === "off") {
+        return t('plugProblem')
+      } else {
+        return t('plugBackToNormal')
+      }
+    } else if (text.split(" ")[0] === "SDCard") {
+      if (text.split(" ")[1] === "failed") {
+        return t('SdCardProblem')
+      } else {
+        return t('SdCardBackToNormal')
+      }
+    } else if (text.split(" ")[0]?.substring(0, 5) === "PROBE") {
+      if (text.split(" ")[4] === "high") {
+        return t('tempHigherLimmit')
+      } else if (text.split(" ")[4] === "low") {
+        return t('tempBelowLimmit')
+      } else {
+        return t('tempBackToNormal')
+      }
+    } else if (text.split("/")[0] === "REPORT") {
+      return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature ? extractValues(text)?.temperature : '- -'}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity ? extractValues(text)?.humidity : '- -'}%`
+    } else {
+      return text
     }
   }
 

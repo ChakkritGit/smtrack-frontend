@@ -738,3 +738,17 @@ export const calulateDate = (devicesData: devicesType) => {
     remainingDays
   }
 }
+
+export const extractValues = (text: string) => {
+  if (text.split('/')[0] === 'REPORT') {
+    const matches = text.match(/(-?\d+(\.\d+)?)/g)
+
+    if (matches && matches.length >= 2) {
+      const temperature = parseFloat(matches[0])
+      const humidity = parseFloat(matches[1])
+      return { temperature, humidity }
+    }
+  }
+
+  return null
+}

@@ -11,6 +11,7 @@ import { RootState } from "../../stores/store"
 import { FaTemperatureArrowDown, FaTemperatureArrowUp } from "react-icons/fa6"
 import { TbPlugConnected, TbPlugConnectedX, TbReportAnalytics } from "react-icons/tb"
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
+import { extractValues } from "../../constants/constants"
 
 type notilist = {
   data: notificationType[],
@@ -124,20 +125,6 @@ export default function Notificationdata(notilist: notilist) {
     } else {
       return <RiAlarmWarningFill size={24} />
     }
-  }
-
-  const extractValues = (text: string) => {
-    if (text.split('/')[0] === 'REPORT') {
-      const matches = text.match(/(-?\d+(\.\d+)?)/g)
-
-      if (matches && matches.length >= 2) {
-        const temperature = parseFloat(matches[0])
-        const humidity = parseFloat(matches[1])
-        return { temperature, humidity }
-      }
-    }
-
-    return null
   }
 
   const ListNotiTSX = ({ notiData, index }: listNotiProps) => {
