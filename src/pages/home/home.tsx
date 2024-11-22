@@ -211,7 +211,7 @@ export default function Home() {
     {
       name: t('deviceDoorTb'),
       cell: items => {
-        const doorCount: number = items.probe[0]?.door || 0
+        const doorCount: number = items.probe[0]?.door || 1
         const doors: DoorKey[] = ['door1', 'door2', 'door3']
 
         return !onFilteres ? (
@@ -239,7 +239,7 @@ export default function Home() {
             {items.backupStatus === '0' ? t('deviceOffline') : t('deviceOnline')}
           </DeviceStateNetwork>
         ) : (
-          <div>{`${items._count?.log} ${t('countNormalUnit')}`}</div>
+          <div>{`${items._count?.noti} ${t('countNormalUnit')}`}</div>
         )
       ),
       sortable: false,

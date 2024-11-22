@@ -91,7 +91,7 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
                   backupStatus === '0' ? t('deviceOffline') : t('deviceOnline')
                   :
                   <div>
-                    {`${_count?.log} ${t('countNormalUnit')}`}
+                    {`${_count?.noti} ${t('countNormalUnit')}`}
                   </div>
               }
             </DeviceStateNetwork>
