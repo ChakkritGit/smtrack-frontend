@@ -44,7 +44,7 @@ function HomeCard({ cardActive, deviceData, wardId, setCardActive, setOnFilteres
   const countState = {
     temp: getFilteredCount(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])),
     door: getFilteredCount(n => n.notiDetail.startsWith('PROBE') && n.notiDetail.split('/')[2].startsWith('ON')),
-    connect: getSum('log'),
+    connect: getSum('noti'),
     plug: getFilteredCount(n => n.notiDetail.split('/')[0] === 'AC'),
     scCard: getFilteredCount(n => n.notiDetail.split('/')[0] === 'SD'),
     adjust: getSum('history'),

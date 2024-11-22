@@ -115,7 +115,7 @@ export default function Home() {
         filteredRef.current = result.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0].startsWith('PROBE')))
         break;
       case '3':
-        filteredRef.current = result.filter(dev => dev._count?.log)
+        filteredRef.current = result.filter(dev => dev._count?.noti)
         break;
       case '4':
         filteredRef.current = result.filter(dev => dev.noti.some(n => n.notiDetail.split('/')[0] === 'AC'))
