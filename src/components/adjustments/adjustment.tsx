@@ -54,7 +54,8 @@ function Adjustment(adjustProps: AdjustmentType) {
               <SliderLabelFlex>
                 <span>{t('tempMin')}</span>
                 <div>
-                  <RangeInputText type="number"
+                  <RangeInputText
+                    type="number"
                     min={-40}
                     max={tempvalue[1]}
                     step={.1}
