@@ -9,17 +9,18 @@ import { setShowAside, setSocketData } from "../stores/utilsStateSlice"
 import Navbar from "../components/navigation/navbar"
 import { BottomNavigateWrapper } from "../style/components/bottom.navigate"
 import { Outlet } from "react-router-dom"
-import SecondSidebar from "../components/navigation/second.sidebar"
-import SecondBottombar from "../components/navigation/second.bottombar"
+import SecondSidebar from "../components/navigation/tms.sidebar"
+import SecondBottombar from "../components/navigation/tms.bottombar"
 import { useTranslation } from "react-i18next"
 import { fetchTmsDevice } from "../stores/tms.deviceSlice"
 import { socket } from "../services/websocket"
 import { socketResponseType } from "../types/component.type"
+import { fetchHospitals, fetchWards } from "../stores/dataArraySlices"
 
 const TmsMain = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { showAside, cookieDecode, reFetchData, socketData } = useSelector((state: RootState) => state.utilsState)
+  const { showAside, cookieDecode, reFetchData, socketData, isTms } = useSelector((state: RootState) => state.utilsState)
   const { token, userLevel, hosId } = cookieDecode
   const [isScrollingDown, setIsScrollingDown] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
@@ -81,7 +82,15 @@ const TmsMain = () => {
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4") {
+    if (userLevel === "4" || isTms) {
+      dispatch(fetchHospitals(token))
+      dispatch(fetchWards(token))
+    }
+  }, [token, userLevel])
+
+  useEffect(() => {
+    if (!token) return
+    if (userLevel === "4" || isTms) {
       dispatch(fetchTmsDevice(token))
     }
   }, [socketData, token, userLevel])
@@ -93,7 +102,7 @@ const TmsMain = () => {
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4" && reFetchData) {
+    if (userLevel === "4" && reFetchData || isTms) {
       dispatch(fetchTmsDevice(token))
     }
   }, [token, reFetchData, userLevel])

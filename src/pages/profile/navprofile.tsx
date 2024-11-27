@@ -43,7 +43,7 @@ export default function Navprofile() {
             </NavProfile>
             <div>
               <span>{displayName}</span>
-              <span>{userLevel === '0' ? t('levelSuper') : userLevel === '1' ? t('levelService') : userLevel === '2' ? t('levelAdmin') : t('levelUser')}</span>
+              <span>{userLevel === '0' ? t('levelSuper') : userLevel === '1' ? t('levelService') : userLevel === '2' ? t('levelAdmin') : userLevel === "3" ? t('levelUser') : "TMS"}</span>
             </div>
             <RiArrowDropDownLine size={28} />
           </NavProfileContainer>
@@ -57,7 +57,7 @@ export default function Navprofile() {
             </NavProfile>
             <div style={{ display: 'flex', flexDirection: 'column', width: '100px', maxWidth: '100px' }}>
               <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{displayName}</span>
-              <strong style={{ width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : t('levelUser')}</strong>
+              <strong style={{ width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : userLevel === "3" ? t('levelUser') : "TMS"}</strong>
             </div>
           </NavProfileContainer>
           <LineHr />

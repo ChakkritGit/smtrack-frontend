@@ -351,7 +351,8 @@ export default function Adduser(AdduserProp: adduserProp) {
       [{ value: '0', name: t('levelSuper') },
       { value: '1', name: t('levelService') },
       { value: '2', name: t('levelAdmin') },
-      { value: '3', name: t('levelUser') },]
+      { value: '3', name: t('levelUser') },
+      { value: '4', name: "TMS" },]
       :
       userLevel === '1' ?
         [{ value: '1', name: t('levelService') },

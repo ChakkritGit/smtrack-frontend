@@ -87,7 +87,7 @@ function FilterHosAndWard() {
   return (
     <div>
       {
-        userLevel !== '3' &&
+        userLevel !== '3' && userLevel !== '4' &&
         <>
           {!filterdata &&
             <DeviceInfoSpan onClick={() => setFilterdata(true)}>

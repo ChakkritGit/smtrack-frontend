@@ -463,7 +463,7 @@ export const Ul = styled.ul<{ $primary?: boolean, $maxheight?: boolean }>`
 align-items: center;
 flex-direction: column;
 margin-bottom: auto;
-gap: 5px;
+gap: .8rem;
 
 ${props => props.$primary &&
     css`
@@ -4465,6 +4465,11 @@ div>input:checked {
 
 /* System setting */
 export const SettingSystem = styled.div<{ $primary?: boolean }>`
+&>ul>span {
+  font-size: 12px;
+  color: var(--grey);
+}
+
 @media (max-width: 430px) {
   &>ul>li:nth-child(2) {
     display: none;

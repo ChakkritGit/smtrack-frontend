@@ -417,6 +417,7 @@ export default {
     darkMode: 'Dark',
     systemMode: 'System',
     reportText: 'Report',
+    switchModeMain: '*Switch mode eTEMP and TMS',
 
     // connect
     ipAddress: 'IP',

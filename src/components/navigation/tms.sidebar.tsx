@@ -169,6 +169,9 @@ const SecondSidebar = () => {
       <SettingSystem >
         <Ul className="nav nav-pills">
           {
+            userLevel === "0" && !expand && <span>{t('switchModeMain')}</span>
+          }
+          {
             userLevel === "0" && <Li>
               <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions); }} $primary={isTms}>
                 <div className="icon">
