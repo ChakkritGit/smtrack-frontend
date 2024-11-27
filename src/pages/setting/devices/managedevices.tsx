@@ -6,6 +6,7 @@ import { devicesType } from "../../../types/device.type"
 import {
   Actiontabledev, DelUserButton, DevHomeHead, ManageDevSpanUnsetUserSelect, ManageDeviceBody,
   ManageDevicesContainer, ManageHospitalsHeader,
+  NavRightPipe,
   Reactive,
   SpanStatusDev
 } from "../../../style/style"
@@ -245,6 +246,7 @@ export default function Managedev() {
                 pagestate={'add'}
                 devdata={{} as devicesType}
               />
+              <NavRightPipe />
               <AdjustTime onClick={() => socket.emit('send_schedule', 'time', (val: any) => {
                 if (val === 'OK') Swal.fire({
                   title: t('alertHeaderSuccess'),

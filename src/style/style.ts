@@ -1968,7 +1968,8 @@ z-index: 99;
 
 &>div:nth-child(2) {
   display: flex;
-  gap: .5rem;
+  align-items: center;
+  gap: .7rem;
 }
 
 @media (max-width: 430px) {

@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react"
 import { Form, Modal } from "react-bootstrap"
-import { FormBtn, FormFlexBtn, ModalHead, PaginitionContainer } from "../../../style/style"
+import { FormBtn, FormFlexBtn, ModalHead, NavRightPipe, PaginitionContainer } from "../../../style/style"
 import {
   RiCheckboxLine,
   RiCloseCircleLine, RiCloseLine, RiCodeSSlashLine, RiDeleteBin2Line, RiDownloadCloud2Line,
@@ -784,13 +784,14 @@ export default function Uploadfirmware() {
             <RiCheckboxLine size={24} />
             {t('selectToUpdateButton')}
           </SelectDevicetoUpdateButton>
-          <UploadButton onClick={() => navigate('/management/flasher')}>
-            <RiCodeSSlashLine size={24} />
-            {t('flashButton')}
-          </UploadButton>
           <UploadButton onClick={openModal}>
             <RiFileUploadLine size={24} />
             {t('uploadButton')}
+          </UploadButton>
+          <NavRightPipe />
+          <UploadButton onClick={() => navigate('/management/flasher')}>
+            <RiCodeSSlashLine size={24} />
+            {t('flashButton')}
           </UploadButton>
         </div>
       </FirmwareHeader>
