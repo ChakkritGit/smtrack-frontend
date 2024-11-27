@@ -126,6 +126,19 @@ export default defineConfig(({ }) => {
               "label": "Dashboard",
             }
           ],
+          prefer_related_applications: true,
+          related_applications: [
+            {
+              platform: "play",
+              url: "https://play.google.com/store/apps/details?id=com.thanes.temp_noti",
+              id: "com.thanes.temp_noti"
+            },
+            {
+              platform: "",
+              url: "",
+              id: ""
+            }
+          ],
           description: "The system show all etemp box detect temperature realtime and nofi when temperture higher then limit.",
           theme_color: '#fdfdfd',
           background_color: '#fdfdfd',

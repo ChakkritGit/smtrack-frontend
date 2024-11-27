@@ -161,6 +161,7 @@ export default function Home() {
       cell: items => items.devSerial,
       sortable: false,
       center: true,
+      width: '200px',
     },
     {
       name: t('deviceLocationTb'),

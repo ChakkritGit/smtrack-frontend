@@ -154,7 +154,7 @@ export const ToggleTmsButtonWrapper = styled.button<{ $primary?: boolean }>`
     font-size: 12px;
     background-color: ${props => props.$primary ? 'var(--white-grey-1)' : 'var(--white-grey-1)'};
     transition: transform 0.3s ease;
-    transform: ${props => props.$primary ? 'translateX(23.5px)' : 'translateX(3px)'};
+    transform: ${props => props.$primary ? 'translateX(23.5px)' : 'translateX(2.5px)'};
     display: flex;
     align-items: center;
     justify-content: center;
