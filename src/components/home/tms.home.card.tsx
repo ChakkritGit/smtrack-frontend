@@ -56,12 +56,7 @@ function TmsHomeCard({ cardActive, deviceData, wardId, setCardActive, setOnFilte
   const cardItems = [
     { key: '1', label: t('countProbe'), count: countState.temp, icon: <RiTempColdLine /> },
     { key: '2', label: t('countDoor'), count: countState.door, icon: <RiDoorClosedLine /> },
-    { key: '3', label: t('countConnect'), count: countState.connect, icon: <RiSignalWifi1Line /> },
-    { key: '4', label: t('countPlug'), count: countState.plug, icon: <RiPlugLine /> },
-    { key: '5', label: t('countSdCard'), count: countState.scCard, icon: <RiSdCardMiniLine /> },
-    { key: '6', label: t('countAdjust'), count: countState.adjust, icon: <RiListSettingsLine /> },
-    { key: '7', label: t('countRepair'), count: countState.repair, icon: <RiFolderSettingsLine /> },
-    { key: '8', label: t('countWarranty'), count: countState.warranties, icon: <RiShieldCheckLine /> },
+    { key: '3', label: t('countPlug'), count: countState.plug, icon: <RiPlugLine /> },
   ]
 
   const handleCardClick = (key: string) => {
@@ -73,7 +68,6 @@ function TmsHomeCard({ cardActive, deviceData, wardId, setCardActive, setOnFilte
       setOnFilteres(true)
     }
   }
-
 
   return (
     <>
