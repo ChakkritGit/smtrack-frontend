@@ -201,7 +201,7 @@ margin-top: 1rem;
 `
 
 export const StoreBanner = styled.img`
-  width: 170px;
+  width: 150px;
   height: 50px;
   object-fit: contain;
 
