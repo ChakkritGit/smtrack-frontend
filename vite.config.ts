@@ -134,9 +134,9 @@ export default defineConfig(({ }) => {
               id: "com.thanes.temp_noti"
             },
             {
-              platform: "",
-              url: "",
-              id: ""
+              "platform": "ios",
+              "url": "https://apps.apple.com/th/app/smtrack/id6670781090",
+              "id": "id6670781090"
             }
           ],
           description: "The system show all etemp box detect temperature realtime and nofi when temperture higher then limit.",
