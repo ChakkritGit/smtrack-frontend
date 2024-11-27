@@ -226,7 +226,7 @@ export default function Login() {
               <a href="https://apps.apple.com/th/app/smtrack/id6670781090" target="_blank" rel="noopener noreferrer">
                 <StoreBanner src={appStore} alt="app-store" />
               </a>
-              <a href="https://play.google.com/store/apps/details?id=com.thanes.temp_noti&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
+              <a href="https://play.google.com/store/apps/details?id=com.thanes.temp_noti" target="_blank" rel="noopener noreferrer">
                 <StoreBanner src={playStore} alt="play-store" />
               </a>
             </div>
