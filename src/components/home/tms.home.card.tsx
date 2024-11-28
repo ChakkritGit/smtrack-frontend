@@ -3,12 +3,7 @@ import { devicesType } from "../../types/device.type"
 import { useTranslation } from "react-i18next"
 import {
   RiDoorClosedLine,
-  RiFolderSettingsLine,
-  RiListSettingsLine,
   RiPlugLine,
-  RiSdCardMiniLine,
-  RiShieldCheckLine,
-  RiSignalWifi1Line,
   RiTempColdLine,
 } from "react-icons/ri"
 import { notificationType } from "../../types/notification.type"

@@ -52,7 +52,7 @@ export default function Fullchart() {
   const [logData, setLogData] = useState<logtype[]>([])
   const [devData, setDevData] = useState<devicesType>()
   const { state } = useLocation()
-  const { tempMin, tempMax } = state
+  const { tempMin, tempMax } = state ?? { tempMin: 0, tempMax: 0 }
   const canvasChartRef = useRef<HTMLDivElement | null>(null)
   const tableInfoRef = useRef<HTMLDivElement | null>(null)
   const [validationData, setValidationData] = useState<wardsType>()

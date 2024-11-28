@@ -34,7 +34,7 @@ export default function Fulltable() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { state } = useLocation()
-  const { tempMin, tempMax } = state
+  const { tempMin, tempMax } = state ?? { tempMin: 0, tempMax: 0 }
   const [pageNumber, setPagenumber] = useState(1)
   const [logData, setLogData] = useState<logtype[]>([])
   const [devData, setDevData] = useState<devicesType>()
