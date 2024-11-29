@@ -2896,9 +2896,6 @@ align-items: center;
 font-weight: bold;
 font-size: 18px;
 gap: 5px;
-overflow: hidden;
-white-space: nowrap;
-text-overflow: ellipsis;
 
 
 ${props => props.$alertone &&

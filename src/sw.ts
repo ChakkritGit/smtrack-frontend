@@ -2,10 +2,9 @@ import { NavigationRoute, Route, registerRoute } from "workbox-routing"
 import { cleanupOutdatedCaches, precacheAndRoute } from "workbox-precaching"
 import { CacheFirst, NetworkFirst, NetworkOnly } from "workbox-strategies"
 import { BackgroundSyncPlugin } from "workbox-background-sync"
-import { v4 as uuidv4 } from 'uuid'
 
 declare let self: ServiceWorkerGlobalScope
-const CACHE_NAME = import.meta.env.VITE_APP_VERSION ? import.meta.env.VITE_APP_VERSION : uuidv4()
+const CACHE_NAME = import.meta.env.VITE_APP_VERSION
 
 cleanupOutdatedCaches()
 

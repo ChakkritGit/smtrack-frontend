@@ -4,6 +4,10 @@ export default function Log() {
   return (
     <div className="p-2">
       <h2>Change Log</h2>
+      <LogSpan className="mt-3 mw-50"><b>Version 1.0.3-a</b> <span>29/11/67</span></LogSpan>
+      <ul className="mt-2">
+        <li>.</li>
+      </ul>
       <LogSpan className="mt-3 mw-50"><b>Version 1.0.3</b> <span>07/11/67</span></LogSpan>
       <ul className="mt-2">
         <li>Updated theme mode to include a system option that follows the OS theme when it changes.</li>
