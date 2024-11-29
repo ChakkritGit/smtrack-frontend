@@ -113,15 +113,13 @@ const SecondSidebar = () => {
 
         ctx.drawImage(img, 0, 0, size, size)
 
-        if (notiData.filter((n) => n.notiStatus === false).length > 0) {
-          const dotSize = 24
-          const x = size - dotSize + 8
-          const y = dotSize / 5 + 10
-          ctx.fillStyle = 'red'
-          ctx.beginPath()
-          ctx.arc(x, y, dotSize / 2, 0, Math.PI * 2)
-          ctx.fill()
-        }
+        const dotSize = 24
+        const x = size - dotSize + 10
+        const y = dotSize / 5 + 10
+        ctx.fillStyle = 'red'
+        ctx.beginPath()
+        ctx.arc(x, y, dotSize / 2, 0, Math.PI * 2)
+        ctx.fill()
 
         changeFavicon(canvas.toDataURL('image/png'))
       }
