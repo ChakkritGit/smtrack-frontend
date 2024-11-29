@@ -36,6 +36,7 @@ import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 import ModalAdjust from "../../components/home/modal.adjust"
 import ModalNotification from "../../components/home/modal.noti"
 import ModalMute from "../../components/home/modal.mute"
+import { WarrantySpan } from "../../style/components/warranty.styled"
 
 export default function Home() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -155,6 +156,7 @@ export default function Home() {
       selector: items => items.devDetail || 'Name is not assigned',
       sortable: false,
       center: true,
+      width: '200px',
     },
     {
       name: t('deviceSerialTb'),
@@ -168,6 +170,7 @@ export default function Home() {
       cell: items => <span title={items.locInstall || '- -'}>{items.locInstall || '- -'}</span>,
       sortable: false,
       center: true,
+      width: '200px',
     },
     {
       name: t('deviceTempTb'),
@@ -271,7 +274,7 @@ export default function Home() {
       name: t('deviceWarrantyTb'),
       cell: items => {
 
-        return <span>
+        return <WarrantySpan $expired={calulateDate(items).remainingDays <= 0}>
           {items.warranty[0]?.expire ?
             calulateDate(items).daysRemaining > 0
               ? calulateDate(items).years > 0
@@ -281,7 +284,7 @@ export default function Home() {
                   : `${calulateDate(items).remainingDays} ${t('day')}`
               : t('tabWarrantyExpired')
             : t('notRegistered')}
-        </span>
+        </WarrantySpan>
       },
       sortable: false,
       center: true,

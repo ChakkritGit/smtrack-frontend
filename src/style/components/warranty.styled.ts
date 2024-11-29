@@ -38,3 +38,12 @@ export const PrintButton = styled.button<{ $primary?: boolean }>`
   background-color: unset;
   color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--black)'};
 `
+
+export const WarrantySpan = styled.span<{ $expired?: boolean }>`
+${props => props.$expired && css`
+  padding: .3rem .5rem;
+  border-radius: var(--border-radius-small);
+  background-color: var(--danger-primary);
+  color: var(--white);
+`}
+`

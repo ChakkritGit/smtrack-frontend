@@ -561,8 +561,8 @@ export const DeviceStateNetwork = styled.span<{ $primary?: boolean }>`
   height: 30px;
   background-color: #2ecc71;
   color: var(--white);
-  padding: 5px;
-  border-radius: .5rem;
+  padding: .3rem .5rem;
+  border-radius: var(--border-radius-small);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
