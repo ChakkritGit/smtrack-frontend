@@ -82,16 +82,61 @@ const SecondSidebar = () => {
       link.rel = 'icon'
       link.href = href
 
-      document.getElementsByTagName('head')[0].appendChild(link)
-      document.title = (notiData.filter((n) => n.notiStatus === false).length > 0 ? `(${notiData.filter((n) => n.notiStatus === false).length}) ` : '') + hosName + " - " + `${location.pathname.split("/")[1] !== '' ? location.pathname.split("/")[1] : 'home'}`
+      document.getElementsByTagName('head')[0].appendChild(link);
+      document.title =
+        (notiData.filter((n) => n.notiStatus === false).length > 0
+          ? `(${notiData.filter((n) => n.notiStatus === false).length}) `
+          : '') +
+        hosName +
+        ' - ' +
+        `${location.pathname.split('/')[1] !== '' ? location.pathname.split('/')[1] : 'home'}`
     }
 
-    if (hosImg) {
-      changeFavicon(`${import.meta.env.VITE_APP_IMG}${hosImg}`)
+    const addNotificationDotToFavicon = async () => {
+      const baseImageSrc = hosImg
+        ? `${import.meta.env.VITE_APP_IMG}${hosImg}`
+        : 'Logo_SM_WBG.jpg'
+
+      const img = new Image()
+      img.src = baseImageSrc
+      img.crossOrigin = 'anonymous'
+
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+
+        if (!ctx) return
+
+        const size = 64;
+        canvas.width = size
+        canvas.height = size
+
+        ctx.drawImage(img, 0, 0, size, size)
+
+        if (notiData.filter((n) => n.notiStatus === false).length > 0) {
+          const dotSize = 24
+          const x = size - dotSize + 8
+          const y = dotSize / 5 + 10
+          ctx.fillStyle = 'red'
+          ctx.beginPath()
+          ctx.arc(x, y, dotSize / 2, 0, Math.PI * 2)
+          ctx.fill()
+        }
+
+        changeFavicon(canvas.toDataURL('image/png'))
+      }
+    }
+
+    if (notiData.filter((n) => n.notiStatus === false).length > 0) {
+      addNotificationDotToFavicon()
+    } else {
+      if (hosImg) {
+        changeFavicon(`${import.meta.env.VITE_APP_IMG}${hosImg}`)
+      }
     }
 
     return () => {
-      changeFavicon('Logo_SM_WBG.jpg')
+      changeFavicon('Logo_SM_WBG.jpg');
     }
   }, [location, cookieDecode, hosImg, notiData])
 
