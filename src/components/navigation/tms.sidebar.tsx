@@ -132,10 +132,6 @@ const SecondSidebar = () => {
         changeFavicon(`${import.meta.env.VITE_APP_IMG}${hosImg}`)
       }
     }
-
-    return () => {
-      changeFavicon('Logo_SM_WBG.jpg');
-    }
   }, [location, cookieDecode, hosImg, notiData])
 
   const resetAsideandCardcount = () => {
