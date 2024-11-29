@@ -50,15 +50,14 @@ export default function Login() {
       link.rel = 'icon'
       link.href = href
 
+      const pathSegment = location.pathname.split('/')[1]
+      const capitalized = pathSegment.charAt(0).toUpperCase() + pathSegment.slice(1)
+
       document.getElementsByTagName('head')[0].appendChild(link)
-      document.title = `${location.pathname.split("/")[1] !== '' ? location.pathname.split("/")[1] : 'home'}`
+      document.title = `${location.pathname.split("/")[1] !== '' ? capitalized : 'Home'}`
     }
 
     changeFavicon('Logo_SM_WBG.jpg')
-
-    return () => {
-      changeFavicon('Logo_SM_WBG.jpg')
-    }
   }, [location])
 
   const submitForm = async (e: FormEvent) => {

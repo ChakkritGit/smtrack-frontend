@@ -82,6 +82,9 @@ const SecondSidebar = () => {
       link.rel = 'icon'
       link.href = href
 
+      const pathSegment = location.pathname.split('/')[1]
+      const capitalized = pathSegment.charAt(0).toUpperCase() + pathSegment.slice(1)
+
       document.getElementsByTagName('head')[0].appendChild(link);
       document.title =
         (notiData.filter((n) => n.notiStatus === false).length > 0
@@ -89,7 +92,7 @@ const SecondSidebar = () => {
           : '') +
         hosName +
         ' - ' +
-        `${location.pathname.split('/')[1] !== '' ? location.pathname.split('/')[1] : 'home'}`
+        `${location.pathname.split('/')[1] !== '' ? capitalized : 'Home'}`
     }
 
     const addNotificationDotToFavicon = async () => {

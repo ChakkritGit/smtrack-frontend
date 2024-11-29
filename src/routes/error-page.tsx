@@ -28,10 +28,6 @@ export default function ErrorPage() {
     }
 
     changeFavicon('Logo_SM_WBG.jpg')
-
-    return () => {
-      changeFavicon('Logo_SM_WBG.jpg')
-    }
   }, [])
 
   return (
