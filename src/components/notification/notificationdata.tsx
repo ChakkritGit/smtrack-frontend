@@ -169,7 +169,8 @@ export default function Notificationdata(notilist: notilist) {
   }, [hosId, data])
 
   const readAllNoti = () => {
-    filterNoti.map(async (items) => {
+    if (filterNoti.length === 0) return
+    filterNoti.forEach(async (items) => {
       if (items.notiStatus === false) {
         await setReadAll(items.notiId)
       }

@@ -48,9 +48,7 @@ const TmsHome = () => {
               </h5>
               {
                 userLevel === '0' && <TagCurrentHos>
-                  {
-                    `${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`
-                  }
+                  {`${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
                 </TagCurrentHos>
               }
             </DevHomeHeadTile>
