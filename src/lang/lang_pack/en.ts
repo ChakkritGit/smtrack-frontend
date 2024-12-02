@@ -418,6 +418,7 @@ export default {
     systemMode: 'System',
     reportText: 'Report',
     switchModeMain: '*Switch mode eTEMP and TMS',
+    readAll: 'Read All',
 
     // connect
     ipAddress: 'IP',

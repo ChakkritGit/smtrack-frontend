@@ -50,6 +50,24 @@ export default function Notificationdata(notilist: notilist) {
     }
   }
 
+  const setReadAll = async (notiID: string) => {
+    try {
+      await axios
+        .patch(`${import.meta.env.VITE_APP_API}/notification/${notiID}`,
+          {
+            notiStatus: true
+          }, {
+          headers: { authorization: `Bearer ${token}` }
+        })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error(error.response?.data.message)
+      } else {
+        console.error('Unknown Error: ', error)
+      }
+    }
+  }
+
   const subTextNotiDetails = (text: string) => {
     if (text.split('/')[0] === 'PROBE1') {
       const probe = text.split('/')
@@ -150,12 +168,28 @@ export default function Notificationdata(notilist: notilist) {
     setFilterNoti(filtered)
   }, [hosId, data])
 
+  const readAllNoti = () => {
+    filterNoti.map(async (items) => {
+      if (items.notiStatus === false) {
+        await setReadAll(items.notiId)
+      }
+    })
+    funcfetch()
+  }
+
   return (
     <>
       <NotiHead $primary={transparent}>
-        <NotiHeadBtn $primary={pageState === 1} onClick={() => setPageState(1)}>{t('notRead')}</NotiHeadBtn>
-        <NotiHeadBtn $primary={pageState === 2} onClick={() => setPageState(2)}>{t('Readed')}</NotiHeadBtn>
-        <NotiHeadBtn $primary={pageState === 3} onClick={() => setPageState(3)}>{t('notificationAll')}</NotiHeadBtn>
+        <div>
+          <NotiHeadBtn $primary={pageState === 1} onClick={() => setPageState(1)}>{t('notRead')}</NotiHeadBtn>
+          <NotiHeadBtn $primary={pageState === 2} onClick={() => setPageState(2)}>{t('Readed')}</NotiHeadBtn>
+          <NotiHeadBtn $primary={pageState === 3} onClick={() => setPageState(3)}>{t('notificationAll')}</NotiHeadBtn>
+        </div>
+        <div>
+          {
+            pageState !== 2 && <button onClick={readAllNoti}>{t('readAll')}</button>
+          }
+        </div>
       </NotiHead>
       {
         pageState === 1 ?

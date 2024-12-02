@@ -3,6 +3,8 @@ import styled, { css } from "styled-components"
 export const NotiHead = styled.div<{ $primary?: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
   gap: .5rem;
   padding: 1rem .5rem;
   background-color: ${props => props.theme.mode === 'dark' ? props.$primary ? 'rgba(53, 53, 53, .4)' : 'rgba(53, 53, 53, 1)' : props.$primary ? 'rgba(255, 255, 255, .5)' : 'rgba(255, 255, 255, 1)'};
@@ -10,6 +12,27 @@ export const NotiHead = styled.div<{ $primary?: boolean }>`
   -webkit-backdrop-filter: ${props => props.theme.mode === 'dark' ? props.$primary ? 'blur(35px)' : 'unset' : props.$primary ? 'blur(20px)' : 'unset'};
   position: sticky;
   top: 0;
+
+  &>div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &>div:nth-child(2)>button {
+    background-color: unset;
+    border: unset;
+    color: ${props => props.theme.mode === 'dark' ? "var(--white)" : "var(--main-dark-color)"};
+
+    &:hover {
+      color: var(--grey);
+      transition: .3s;
+    }
+
+    &:focus {
+      outline: unset;
+    }
+  }
 `
 
 export const NotiHeadBtn = styled.button<{ $primary?: boolean }>`

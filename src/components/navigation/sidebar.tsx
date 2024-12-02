@@ -129,7 +129,7 @@ export default function sidebar() {
         const dotSize = 24
         const x = size - dotSize + 10
         const y = dotSize / 5 + 10
-        ctx.fillStyle = 'red'
+        ctx.fillStyle = '#e74c3c'
         ctx.beginPath()
         ctx.arc(x, y, dotSize / 2, 0, Math.PI * 2)
         ctx.fill()
