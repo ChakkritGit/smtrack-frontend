@@ -2,7 +2,6 @@ import axios from "axios"
 import { store } from "../stores/store"
 import { setCookieEncode } from "../stores/utilsStateSlice"
 import { accessToken } from "./constants"
-import { reset } from "../stores/resetAction"
 
 const BASE_URL = import.meta.env.VITE_APP_API
 
@@ -61,8 +60,6 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest)
       } catch (refreshError) {
         console.error("Refresh token expired or invalid:", refreshError)
-        store.dispatch(reset())
-        window.location.href = "/login"
         return Promise.reject(refreshError)
       }
     }

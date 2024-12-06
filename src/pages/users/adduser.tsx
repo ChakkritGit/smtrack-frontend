@@ -20,6 +20,7 @@ import { useTheme } from "../../theme/ThemeProvider"
 import { ModalMuteHead } from "../../style/components/home.styled"
 import { OpenResetPasswordModalButton } from "../../style/components/manage.user"
 import axiosInstance from "../../constants/axiosInstance"
+import DefualtUserPic from "../../assets/images/default-user.jpg"
 
 type Option = {
   value: string,
@@ -508,7 +509,7 @@ export default function Adduser(AdduserProp: adduserProp) {
                     {t('userPicture')}
                     <ProfileFlex $radius={10} $dimension={250} $imageFit>
                       <div>
-                        <ImageComponent src={userPicture ? userPicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
+                        <ImageComponent src={userPicture ? userPicture : DefualtUserPic} alt="down-picture" />
                         <label htmlFor={'user-file-upload'} >
                           <RiEditLine />
                           <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={fileSelect} />

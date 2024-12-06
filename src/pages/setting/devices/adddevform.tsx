@@ -26,6 +26,7 @@ import { TabButton, TabContainer } from '../../../style/components/manage.dev'
 import Select from 'react-select'
 import { useTheme } from '../../../theme/ThemeProvider'
 import axiosInstance from '../../../constants/axiosInstance'
+import DefualtPic from "../../../assets/images/default-pic.png"
 
 interface FirmwareItem {
   fileName: string,
@@ -818,7 +819,7 @@ export default function Adddevform(managedevices: managedevices) {
                           {t('devicePicture')}
                           <ProfileFlex $radius={10} $dimension={250}>
                             <div>
-                              <ImageComponent src={devicePicture ? devicePicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
+                              <ImageComponent src={devicePicture ? devicePicture : DefualtPic} alt="down-picture" />
                               <label htmlFor={'user-file-upload'}>
                                 <RiEditLine />
                                 <input

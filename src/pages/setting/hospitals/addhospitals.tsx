@@ -15,6 +15,7 @@ import { hospitalsType } from '../../../types/hospital.type'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
 import { ImageComponent, resizeImage } from '../../../constants/constants'
 import axiosInstance from '../../../constants/axiosInstance'
+import DefualtPic from "../../../assets/images/default-pic.png"
 
 export default function Addhospitals(addhosprop: addHospitalProp) {
   const { t } = useTranslation()
@@ -271,7 +272,7 @@ export default function Addhospitals(addhosprop: addHospitalProp) {
                     {t('hosPicture')}
                     <ProfileFlex $radius={10} $dimension={250}>
                       <div>
-                        <ImageComponent src={hosPicture ? hosPicture : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="down-picture" />
+                        <ImageComponent src={hosPicture ? hosPicture : DefualtPic} alt="down-picture" />
                         <label htmlFor={'user-file-upload'} >
                           <RiEditLine />
                           <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={fileSelect} />
