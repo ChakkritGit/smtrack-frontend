@@ -1909,7 +1909,7 @@ transition: height .3s;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: .5rem;
+  gap: .8rem;
 }
 
 &>div:nth-child(2) {
