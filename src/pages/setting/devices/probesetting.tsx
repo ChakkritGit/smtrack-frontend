@@ -6,7 +6,7 @@ import { probeType } from "../../../types/probe.type"
 import { useDispatch, useSelector } from "react-redux"
 import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
 import { RiDeleteBin2Line } from "react-icons/ri"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { RootState, storeDispatchType } from "../../../stores/store"
 import { fetchProbeData } from "../../../stores/probeSlice"
 import Swal from "sweetalert2"
@@ -15,13 +15,15 @@ import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
 import { useEffect, useMemo, useState } from "react"
 
 import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
+import axiosInstance from "../../../constants/axiosInstance"
 
 export default function Probesetting() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { probeData } = useSelector((state: RootState) => state.probe)
-  const { token, userLevel } = cookieDecode
+  const { token } = cookieDecode
+  const { role } = tokenDecode
   const [filterById, setFilterById] = useState({
     hosId: '',
     wardId: ''
@@ -36,9 +38,7 @@ export default function Probesetting() {
 
   const deleteProbe = async (probeId: string) => {
     try {
-      const response = await axios.delete<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeId}`, {
-        headers: { authorization: `Bearer ${token}` }
-      })
+      const response = await axiosInstance.delete<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeId}`)
       dispatch(fetchProbeData(token))
       Swal.fire({
         title: t('alertHeaderSuccess'),
@@ -119,7 +119,7 @@ export default function Probesetting() {
             key={items.probeId}
           />
           {
-            userLevel !== '2' && userLevel !== '3' && <DelProbeButton onClick={() =>
+            role !== 'ADMIN' && role !== 'USER' && <DelProbeButton onClick={() =>
               swalWithBootstrapButtons
                 .fire({
                   title: t('deleteProbe'),
@@ -162,13 +162,13 @@ export default function Probesetting() {
         <h3>{t('titleManageProbe')}</h3>
         <div>
           {
-            userLevel !== '4' && <FilterHosWardTemporary
+            role !== 'LEGACY_ADMIN' && <FilterHosWardTemporary
               filterById={filterById}
               setFilterById={setFilterById}
             />
           }
           {
-            userLevel !== '2' && userLevel !== '3' &&
+            role !== 'ADMIN' && role !== 'USER' &&
             <Addprobe
               pagestate={'add'}
             />

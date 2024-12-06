@@ -3,9 +3,8 @@ import { wardsType } from "../types/ward.type"
 import { devicesType } from "../types/device.type"
 import { hospitalsType } from "../types/hospital.type"
 import { DataArrayStore, payloadError } from "../types/redux.type"
-import axios from "axios"
 import { responseType } from "../types/response.type"
-// import { cookieOptions, cookies } from "../constants/constants"
+import axiosInstance from "../constants/axiosInstance"
 
 const initialState: DataArrayStore = {
   device: {
@@ -21,24 +20,18 @@ const initialState: DataArrayStore = {
   arrayError: ''
 }
 
-export const filtersDevices = createAsyncThunk<devicesType[], string>('array/filters', async (token) => {
-  const response = await axios.get<responseType<devicesType[]>>(`${import.meta.env.VITE_APP_API}/device`, {
-    headers: { authorization: `Bearer ${token}` }
-  })
+export const filtersDevices = createAsyncThunk<devicesType[], string>('array/filters', async () => {
+  const response = await axiosInstance.get<responseType<devicesType[]>>(`${import.meta.env.VITE_APP_API}/device`)
   return response.data.data
 })
 
-export const fetchHospitals = createAsyncThunk<hospitalsType[], string>('array/fetchHospitals', async (token) => {
-  const response = await axios.get<responseType<hospitalsType[]>>(`${import.meta.env.VITE_APP_API}/hospital`, {
-    headers: { authorization: `Bearer ${token}` }
-  })
+export const fetchHospitals = createAsyncThunk<hospitalsType[], string>('array/fetchHospitals', async () => {
+  const response = await axiosInstance.get<responseType<hospitalsType[]>>(`${import.meta.env.VITE_APP_API}/hospital`)
   return response.data.data
 })
 
-export const fetchWards = createAsyncThunk<wardsType[], string>('array/fetchWards', async (token) => {
-  const response = await axios.get<responseType<wardsType[]>>(`${import.meta.env.VITE_APP_API}/ward`, {
-    headers: { authorization: `Bearer ${token}` }
-  })
+export const fetchWards = createAsyncThunk<wardsType[], string>('array/fetchWards', async () => {
+  const response = await axiosInstance.get<responseType<wardsType[]>>(`${import.meta.env.VITE_APP_API}/ward`)
   return response.data.data
 })
 

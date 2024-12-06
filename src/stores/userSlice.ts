@@ -1,14 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { usersType } from "../types/user.type"
 import { responseType } from "../types/response.type"
-import axios from "axios"
 import { UserState, payloadError } from "../types/redux.type"
-// import { cookieOptions, cookies } from "../constants/constants"
+import axiosInstance from "../constants/axiosInstance"
 
-export const fetchUserData = createAsyncThunk<usersType[], string>('user/fetchUserData', async (token) => {
-  const response = await axios.get<responseType<usersType[]>>(`${import.meta.env.VITE_APP_API}/user`, {
-    headers: { authorization: `Bearer ${token}` }
-  })
+export const fetchUserData = createAsyncThunk<usersType[], string>('user/fetchUserData', async () => {
+  const response = await axiosInstance.get<responseType<usersType[]>>(`${import.meta.env.VITE_APP_API}/user`)
   return response.data.data
 })
 

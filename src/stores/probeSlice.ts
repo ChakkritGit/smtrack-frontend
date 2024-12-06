@@ -1,14 +1,12 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { responseType } from "../types/response.type"
-import axios from "axios"
 import { ProbeState, payloadError } from "../types/redux.type"
 import { probeType } from "../types/probe.type"
+import axiosInstance from "../constants/axiosInstance"
 // import { cookieOptions, cookies } from "../constants/constants"
 
-export const fetchProbeData = createAsyncThunk<probeType[], string>('probe/fetchProbeData', async (token) => {
-  const response = await axios.get<responseType<probeType[]>>(`${import.meta.env.VITE_APP_API}/probe`, {
-    headers: { authorization: `Bearer ${token}` }
-  })
+export const fetchProbeData = createAsyncThunk<probeType[], string>('probe/fetchProbeData', async () => {
+  const response = await axiosInstance.get<responseType<probeType[]>>(`${import.meta.env.VITE_APP_API}/probe`)
   return response.data.data
 })
 

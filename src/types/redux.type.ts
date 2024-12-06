@@ -5,7 +5,7 @@ import { hospitalsType } from "./hospital.type"
 import { notificationType } from "./notification.type"
 import { probeType } from "./probe.type"
 import { TmsDeviceType } from "./tms.type"
-import { usersType } from "./user.type"
+import { UserProfileType, usersType } from "./user.type"
 import { wardsType } from "./ward.type"
 
 interface payloadError {
@@ -52,6 +52,7 @@ type UtilsStateStore = {
   wardId: string,
   cookieEncode: string,
   cookieDecode: CookieType,
+  userProfile?: UserProfileType,
   showAlert: boolean,
   notiData: notificationType[],
   reFetchData: boolean,

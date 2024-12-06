@@ -4,7 +4,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import LangguageSelector from '../../components/lang/LangguageSelector'
 import Swal from "sweetalert2"
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { FormEvent, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
@@ -30,18 +30,20 @@ import { AgreeSection } from '../../style/components/contact.styled'
 import playStore from '../../assets/images/playstore.png'
 import appStore from '../../assets/images/appstore.png'
 import LogoBanner from '../../assets/images/app-logo.png'
+import axiosInstance from '../../constants/axiosInstance'
 
 export default function Login() {
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
-  const [loginform, setLoginform] = useState({
+  const [loginForm, setLoginForm] = useState({
     username: '',
     password: ''
   })
   const [isloading, setIsloading] = useState(false)
   const [currentDate, setCurrentDate] = useState(new Date())
+  const { username, password } = loginForm
 
   useEffect(() => {
     const changeFavicon = (href: string) => {
@@ -62,26 +64,18 @@ export default function Login() {
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault()
-    if (loginform.username !== '' && loginform.password !== '') {
+    if (username !== '' && password !== '') {
       try {
         setIsloading(true)
         const url: string = `${import.meta.env.VITE_APP_API}/auth/login`
-        const data = {
-          username: loginform.username,
-          password: loginform.password,
-        }
-        const response = await axios.post<responseType<LoginResponse>>(url, data)
-        const { displayName, hosId, hosName, hosPic, token, userId, userLevel, userPic, wardId } = response.data.data
+        const response = await axiosInstance.post<responseType<LoginResponse>>(url, loginForm)
+        const { hosId, token, refreshToken, id, wardId } = response.data.data
         const localDataObject = {
-          userId: userId,
           hosId: hosId,
-          displayName: displayName,
-          userPicture: userPic,
-          userLevel: userLevel,
-          hosImg: hosPic,
-          hosName: hosName,
-          groupId: wardId,
-          token: token
+          refreshToken: refreshToken,
+          token: token,
+          id: id,
+          wardId: wardId,
         }
         cookies.set('localDataObject', String(accessToken(localDataObject)), cookieOptions)
         dispatch(setCookieEncode(String(accessToken(localDataObject))))
@@ -170,8 +164,8 @@ export default function Login() {
                     autoComplete='off'
                     autoFocus
                     type='text'
-                    value={loginform.username}
-                    onChange={(e) => setLoginform({ ...loginform, username: e.target.value })}
+                    value={username}
+                    onChange={(e) => setLoginForm({ ...loginForm, username: e.target.value })}
                   />
                 </FloatingLabel>
               </InputGroup>
@@ -187,8 +181,8 @@ export default function Login() {
                     aria-describedby="user-input"
                     autoComplete='off'
                     type='password'
-                    value={loginform.password}
-                    onChange={(e) => setLoginform({ ...loginform, password: e.target.value })}
+                    value={password}
+                    onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                   />
                 </FloatingLabel>
               </InputGroup>

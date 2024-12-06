@@ -6,6 +6,7 @@ import CryptoJS from "crypto-js"
 import { Option, Schedule, ScheduleHour, ScheduleMinute } from "../types/config.type"
 import piexif from "piexifjs"
 import { devicesType } from "../types/device.type"
+import { UserRole } from "../types/user.type"
 
 export const getDateNow = () => {
   let date = new Date()
@@ -747,4 +748,23 @@ export const extractValues = (text: string) => {
   }
 
   return null
+}
+
+export const getRoleLabel = (role: UserRole, t: (key: string) => string): string => {
+  switch (role) {
+    case UserRole.SUPER:
+      return t('levelSuper')
+    case UserRole.SERVICE:
+      return t('levelService')
+    case UserRole.ADMIN:
+      return t('levelAdmin')
+    case UserRole.USER:
+      return t('levelUser')
+    case UserRole.LEGACY_ADMIN:
+      return 'LEGACY_ADMIN'
+    case UserRole.LEGACY_USER:
+      return 'LEGACY_USER'
+    default:
+      return 'GUEST'
+  }
 }

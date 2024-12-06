@@ -4,19 +4,20 @@ import { Dropdown } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { NavbarProfileDropdown } from "../../style/components/navbar"
-import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
+import { cookieOptions, cookies, getRoleLabel, ImageComponent } from "../../constants/constants"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
 import { reset } from "../../stores/resetAction"
 import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
+import DefualtUserPic from "../../assets/images/default-user.jpg"
 
 export default function Navprofile() {
   const navigate = useNavigate()
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userPicture, displayName, userLevel } = cookieDecode
+  const { userProfile, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const {role} = tokenDecode
 
   const logOut = () => {
     dispatch(reset())
@@ -39,11 +40,11 @@ export default function Navprofile() {
         <NavProfileFlex>
           <NavProfileContainer className="profile-name-dark">
             <NavProfile>
-              <ImageComponent src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
+              <ImageComponent src={userProfile?.pic ? `${userProfile.pic}` : DefualtUserPic} alt="profile" />
             </NavProfile>
             <div>
-              <span>{displayName}</span>
-              <span>{userLevel === '0' ? t('levelSuper') : userLevel === '1' ? t('levelService') : userLevel === '2' ? t('levelAdmin') : userLevel === "3" ? t('levelUser') : "TMS"}</span>
+              <span>{userProfile?.display}</span>
+              <span>{getRoleLabel(role, t)}</span>
             </div>
             <RiArrowDropDownLine size={28} />
           </NavProfileContainer>
@@ -53,11 +54,11 @@ export default function Navprofile() {
         <NavbarProfileDropdown>
           <NavProfileContainer onClick={() => navigate("/settings")}>
             <NavProfile>
-              <ImageComponent src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" />
+              <ImageComponent src={userProfile?.pic ? `${userProfile.pic}` : DefualtUserPic} alt="profile" />
             </NavProfile>
             <div style={{ display: 'flex', flexDirection: 'column', width: '100px', maxWidth: '100px' }}>
-              <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{displayName}</span>
-              <strong style={{ width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : userLevel === "3" ? t('levelUser') : "TMS"}</strong>
+              <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userProfile?.display}</span>
+              <strong style={{ width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{getRoleLabel(role, t)}</strong>
             </div>
           </NavProfileContainer>
           <LineHr />

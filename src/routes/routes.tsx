@@ -37,7 +37,7 @@ export default function RoutesComponent() {
   const dispatch = useDispatch<storeDispatchType>()
   const { tokenDecode, cookieDecode, isTms } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
-  const { userLevel } = tokenDecode
+  const { role } = tokenDecode
   const { toasts } = useToasterStore()
   const toastLimit = 5
   const LazyTest = lazy(() => import('../pages/test/test'))
@@ -63,7 +63,7 @@ export default function RoutesComponent() {
     {
       path: "/",
       element: <AuthRoute />,
-      children: (userLevel !== "4" && !isTms) || (userLevel === "0" && !isTms) ? [
+      children: (role !== "LEGACY_ADMIN" && !isTms) || (role !== "LEGACY_USER" && !isTms) || (role === "SUPER" && !isTms) ? [
         {
           path: "/",
           element: <Main />,
@@ -242,9 +242,6 @@ export default function RoutesComponent() {
   return (
     <RouterProvider
       router={router}
-      future={{
-        v7_startTransition: true,
-      }}
     />
   )
 }

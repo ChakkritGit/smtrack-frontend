@@ -7,7 +7,7 @@ import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import { FormBtn, FormFlexBtn, ModalHead } from "../../../style/style"
 import { useDispatch, useSelector } from "react-redux"
 import Swal from "sweetalert2"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { responseType } from "../../../types/response.type"
 import { probeType } from "../../../types/probe.type"
 import { RootState, storeDispatchType } from "../../../stores/store"
@@ -18,6 +18,7 @@ import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../../theme/ThemeProvider"
 import Adjustment from "../../../components/adjustments/adjustment"
 import { devicesType } from "../../../types/device.type"
+import axiosInstance from "../../../constants/axiosInstance"
 
 type Option = {
   value: string,
@@ -96,11 +97,7 @@ export default function Addprobe(addprobe: addprobeProps) {
     if (formdata.devSerial !== '' && formDataTwo.adjustTemp !== '' && formDataTwo.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
       && formdata.probeName !== '' && formdata.probeType !== '' && formdata.probeCh !== '' && formdata.location !== '' && formdata.tempvalue !== null && formdata.humvalue !== null) {
       try {
-        const response = await axios.post<responseType<probeType>>(url, bodyData, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
+        const response = await axiosInstance.post<responseType<probeType>>(url, bodyData)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,
@@ -175,11 +172,7 @@ export default function Addprobe(addprobe: addprobeProps) {
     if (formdata.devSerial !== '' && formDataTwo.adjustTemp !== '' && formDataTwo.adjustHum !== '' && formdata.door !== '' && formdata.delay_time !== ''
       && formdata.probeName !== '' && formdata.probeType !== '' && formdata.probeCh !== '' && formdata.location !== null && formdata.tempvalue !== null && formdata.humvalue !== null) {
       try {
-        const response = await axios.put<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeData?.probeId}`, bodyData, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
+        const response = await axiosInstance.put<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeData?.probeId}`, bodyData)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,

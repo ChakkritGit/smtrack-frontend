@@ -4,6 +4,7 @@ import { jwtToken, socketResponseType } from "../types/component.type"
 import { cookies } from "../constants/constants"
 import { CookieType } from "../types/cookie.type"
 import { notificationType } from "../types/notification.type"
+import { UserProfileType } from "../types/user.type"
 
 const initialState: UtilsStateStore = {
   deviceId: String(cookies.get('devid')),
@@ -20,6 +21,7 @@ const initialState: UtilsStateStore = {
   wardId: cookies.get('selectWard') ?? '',
   cookieEncode: cookies.get('localDataObject'),
   cookieDecode: false as unknown as CookieType,
+  userProfile: undefined,
   showAlert: false,
   notiData: [],
   reFetchData: false,
@@ -74,6 +76,9 @@ const utilsSlice = createSlice({
     setCookieDecode: (state, action: PayloadAction<CookieType>) => {
       state.cookieDecode = action.payload
     },
+    setUserProfile: (state, action: PayloadAction<UserProfileType>) => {
+      state.userProfile = action.payload
+    },
     setShowAlert: (state, action: PayloadAction<boolean>) => {
       state.showAlert = action.payload
     },
@@ -97,6 +102,6 @@ const utilsSlice = createSlice({
 
 export const { setDeviceId, setSerial, setSocketData, setSearchQuery, setExpand, setShowAside, setNotidata,
   setTokenDecode, setSoundMode, setPopUpMode, setHosId, setWardId, setCookieEncode, setCookieDecode,
-  setShowAlert, setRefetchdata, setOnFilter, setTransparent, setSwitchTms } = utilsSlice.actions
+  setShowAlert, setRefetchdata, setOnFilter, setTransparent, setSwitchTms, setUserProfile } = utilsSlice.actions
 
 export default utilsSlice.reducer

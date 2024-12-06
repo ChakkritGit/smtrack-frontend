@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
@@ -8,6 +8,7 @@ import { Container, Form } from "react-bootstrap"
 import { FilterSearchBtn } from "../../style/style"
 import Swal from "sweetalert2"
 import { RootState } from "../../stores/store"
+import axiosInstance from "../../constants/axiosInstance"
 
 type isLog = {
   routeLog?: boolean
@@ -38,11 +39,7 @@ function Logs(isLog: isLog) {
 
   const fetchText = async (date: string, datetime: string) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_APP_API}/logs/${date}/log_${datetime}.log`, {
-        headers: {
-          authorization: `Bearer ${token}`
-        }
-      })
+      const response = await axiosInstance.get(`${import.meta.env.VITE_APP_API}/logs/${date}/log_${datetime}.log`)
       setText(response.data)
     } catch (error) {
       if (error instanceof AxiosError) {

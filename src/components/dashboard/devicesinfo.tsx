@@ -21,15 +21,15 @@ import { dateCalType, devicesType } from "../../types/device.type"
 import { CardstatusNomal, CardstatusSpecial } from "./cardstatus"
 import { FormEvent, useEffect, useState } from "react"
 import { Form, Modal, Row } from "react-bootstrap"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { useTranslation } from "react-i18next"
 import Swal from "sweetalert2"
 import { client } from "../../services/mqtt"
 import { responseType } from "../../types/response.type"
 import { probeType } from "../../types/probe.type"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
-import { RootState, storeDispatchType } from "../../stores/store"
+import { storeDispatchType } from "../../stores/store"
 import { fetchDevicesLog } from "../../stores/LogsSlice"
 import Adjustment from "../adjustments/adjustment"
 import ModalNotification from "../home/modal.noti"
@@ -39,6 +39,7 @@ import { MuteFlex, OpenSettingBuzzer } from "../../style/components/home.styled"
 import { calulateDate, ImageComponent } from "../../constants/constants"
 import { HiOutlineArrowsUpDown } from "react-icons/hi2"
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
+import axiosInstance from "../../constants/axiosInstance"
 
 type devicesinfo = {
   devicesData: devicesType,
@@ -49,8 +50,6 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
   const { devicesData } = devicesinfo
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [showPic, setShowpic] = useState(false)
   const { probe, devSerial } = devicesData
@@ -120,17 +119,13 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
     }
 
     try {
-      const response = await axios.put<responseType<probeType>>(url, {
+      const response = await axiosInstance.put<responseType<probeType>>(url, {
         tempMin: tempvalue[0],
         tempMax: tempvalue[1],
         humMin: humvalue[0],
         humMax: humvalue[1],
         adjustTemp: formdata.adjustTemp,
         adjustHum: formdata.adjustHum,
-      }, {
-        headers: {
-          authorization: `Bearer ${token}`
-        }
       })
       if (deviceModel === 'etemp') {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/adj`, 'on')
@@ -139,7 +134,7 @@ export default function Devicesinfo(devicesinfo: devicesinfo) {
       }
       client.publish(`${devicesData.devSerial}/adj`, 'on')
       setShow(false)
-      dispatch(fetchDevicesLog({ deviceId: devicesData.devId, token: token }))
+      dispatch(fetchDevicesLog({ deviceId: devicesData.devId }))
       dispatch(setRefetchdata(true))
       Swal.fire({
         title: t('alertHeaderSuccess'),

@@ -68,7 +68,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
     } else {
       setIsValid(false)
     }
-  }, [cookieEncode, dispatch])
+  }, [cookieEncode])
 
   if (isValid === null) {
     return null

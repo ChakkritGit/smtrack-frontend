@@ -37,14 +37,16 @@ import { RootState, storeDispatchType } from "../../stores/store"
 import PageLoading from "../../components/loading/page.loading"
 import { WaitExportImage } from "../../style/components/page.loading"
 import Loading from "../../components/loading/loading"
+import axiosInstance from "../../constants/axiosInstance"
 
 export default function Fullchart() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
   const [pageNumber, setPagenumber] = useState(1)
-  const { Serial, deviceId, expand, cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token, hosName, hosImg, userLevel } = cookieDecode
+  const { Serial, deviceId, expand, cookieDecode, tokenDecode, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const { token } = cookieDecode
+  const { role } = tokenDecode
   const [filterDate, setFilterDate] = useState({
     startDate: '',
     endDate: ''
@@ -67,7 +69,7 @@ export default function Fullchart() {
 
   const fetchWard = async () => {
     try {
-      const response = await axios.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devData?.wardId}`, { headers: { authorization: `Bearer ${token}` } })
+      const response = await axiosInstance.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devData?.wardId}`)
       setValidationData(response.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -87,9 +89,7 @@ export default function Fullchart() {
   const fetchData = async () => {
     try {
       const responseData = await axios
-        .get(`${import.meta.env.VITE_APP_API}/device/${deviceId ? deviceId : cookies.get('devid')}`, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        .get(`${import.meta.env.VITE_APP_API}/device/${deviceId ? deviceId : cookies.get('devid')}`)
       setDevData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -109,9 +109,7 @@ export default function Fullchart() {
     setLogData([])
     try {
       const responseData = await axios
-        .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=day&devSerial=${Serial ? Serial : cookies.get('devSerial')}`, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=day&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -131,9 +129,7 @@ export default function Fullchart() {
     setLogData([])
     try {
       const responseData = await axios
-        .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=week&devSerial=${Serial ? Serial : cookies.get('devSerial')}`, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=week&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -153,9 +149,7 @@ export default function Fullchart() {
     setLogData([])
     try {
       const responseData = await axios
-        .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=month&devSerial=${Serial ? Serial : cookies.get('devSerial')}`, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=month&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -181,9 +175,7 @@ export default function Fullchart() {
         try {
           setLogData([])
           const responseData = await axios
-            .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=${filterDate.startDate},${filterDate.endDate}&devSerial=${Serial ? Serial : cookies.get('devSerial')}`, {
-              headers: { authorization: `Bearer ${token}` }
-            })
+            .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=${filterDate.startDate},${filterDate.endDate}&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
           setLogData(responseData.data.data)
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -344,7 +336,7 @@ export default function Fullchart() {
               devName: devData?.devDetail,
               chartIMG: waitExport,
               dateTime: String(new Date).substring(0, 25),
-              hosImg: hosImg,
+              hosImg: userProfile?.ward.hospital.hosPic,
               tempMin: tempMin,
               tempMax: tempMax,
             },
@@ -368,7 +360,7 @@ export default function Fullchart() {
       return (
         <FullchartBodyChartCon key={String(isloading)} $primary={expand} ref={canvasChartRef}>
           <TableInfoDevice ref={tableInfoRef}>
-            <h4>{hosName}</h4>
+            <h4>{userProfile?.ward.hospital.hosName}</h4>
             <span>{devData?.devDetail ? devData?.devDetail : '--'} | {devData?.devSerial}</span>
             <span>{devData?.locInstall ? devData?.locInstall : '- -'}</span>
           </TableInfoDevice>
@@ -388,7 +380,7 @@ export default function Fullchart() {
     } else {
       return <PageLoading reset={pageNumber} />
     }
-  }, [logData, isloading, expand, hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
+  }, [logData, isloading, expand, userProfile?.ward.hospital.hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
 
   return (
     <Container fluid>
@@ -415,7 +407,7 @@ export default function Fullchart() {
             {showDataLabel ? t('hideDataLabel') : t('showDataLabel')}
           </FullchartHeadExport>
           {
-            userLevel !== '3' && <AuditGraphBtn onClick={() => {
+            role !== 'USER' && <AuditGraphBtn onClick={() => {
               if (logData) {
                 swalOptimizeChartButtons
                   .fire({

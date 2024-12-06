@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { historyType } from "../../../types/hostory.type"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { useDispatch, useSelector } from "react-redux"
 import { responseType } from "../../../types/response.type"
 import DataTable, { TableColumn } from "react-data-table-component"
@@ -11,6 +11,7 @@ import { RootState, storeDispatchType } from "../../../stores/store"
 import { Modal } from "react-bootstrap"
 import { RiCloseLine } from "react-icons/ri"
 import { DetailsFlex, LogDetailsButton } from "../../../style/components/log.update"
+import axiosInstance from "../../../constants/axiosInstance"
 
 export default function AdjustLog() {
   const { t } = useTranslation()
@@ -43,9 +44,7 @@ export default function AdjustLog() {
 
   const fetchHistory = async () => {
     try {
-      const response = await axios.get<responseType<historyType[]>>(`${import.meta.env.VITE_APP_API}/utils/history`, {
-        headers: { authorization: `Bearer ${token}` }
-      })
+      const response = await axiosInstance.get<responseType<historyType[]>>(`${import.meta.env.VITE_APP_API}/utils/history`)
       setHistory(response.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {

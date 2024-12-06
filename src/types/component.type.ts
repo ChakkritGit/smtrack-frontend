@@ -1,4 +1,5 @@
 import { ChangeEventHandler, MouseEventHandler } from "react"
+import { UserRole } from "./user.type"
 
 // userComponent
 interface cardType {
@@ -57,13 +58,15 @@ type dataTableLog = {
 
 // jwtToken
 type jwtToken = {
+  exp: number
   hosId: string
   iat: number
-  userId: string
-  userLevel: string
+  id: string
+  role: UserRole
+  wardId: string
 }
-// jwtTokenComponent
 
+// jwtTokenComponent
 type FilterText = 'probe' | 'door' | 'connect' | 'plug' | 'sd' | 'adjust' | 'repair' | 'warranty'
 
 type cardFilter = {

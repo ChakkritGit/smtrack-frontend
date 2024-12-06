@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import axios from "axios"
 import { devicesType } from "../types/device.type"
 import { LogState, payloadError } from "../types/redux.type"
 import { responseType } from "../types/response.type"
+import axiosInstance from "../constants/axiosInstance"
 // import { cookieOptions, cookies } from "../constants/constants"
 
-export const fetchDevicesLog = createAsyncThunk<devicesType, { deviceId: string, token: string }>('deviceLogs/fetchDevicesLog', async ({ deviceId, token }) => {
-  const response = await axios.get<responseType<devicesType>>(`${import.meta.env.VITE_APP_API}/device/${deviceId}`, {
-    headers: { authorization: `Bearer ${token}` }
-  })
+export const fetchDevicesLog = createAsyncThunk<devicesType, { deviceId: string }>('deviceLogs/fetchDevicesLog', async ({ deviceId }) => {
+  const response = await axiosInstance.get<responseType<devicesType>>(`${import.meta.env.VITE_APP_API}/device/${deviceId}`)
   return response.data.data
 })
 

@@ -6,17 +6,11 @@ type responseType<T> = {
 
 // logInResponse
 type LoginResponse = {
-  token: string,
-  userId: string,
   hosId: string,
+  refreshToken: string,
+  token: string,
+  id: string,
   wardId: string,
-  userLevel: string,
-  hosPic: string,
-  hosName: string,
-  userStatus: boolean,
-  userName: string,
-  displayName: string,
-  userPic: string
 }
 // closrLogInResponse
 

@@ -9,10 +9,10 @@ import { countryCodes, supportInitData } from "../../constants/constants"
 import { RiArrowLeftSLine, RiFacebookCircleFill, RiMailFill, RiPhoneFill } from "react-icons/ri"
 import { FaLine } from "react-icons/fa"
 import Swal from "sweetalert2"
-import axios from "axios"
 import { BackPre, NavigateTop } from "../../style/components/policy"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
+import axiosInstance from "../../constants/axiosInstance"
 
 function Support() {
   const { t } = useTranslation()
@@ -27,7 +27,7 @@ function Support() {
 
       const combineText = `\n *** SUPPORT *** \n\n Name: ${firstName} ${lastName} \n Hospitals: ${hospitalName} \n Ward: ${wardName} \n Tel: ${codePhone}${phone} \n Email: ${email} \n Details: ${details} \n\n ----------------------- END -----------------------`
 
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_APP_API}/utils/ticket`,
         { text: combineText })
       Swal.fire({

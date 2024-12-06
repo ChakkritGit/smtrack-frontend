@@ -18,10 +18,11 @@ import { Option, Ward } from "../../types/config.type"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
 import { useTheme } from "../../theme/ThemeProvider"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import Select, { SingleValue } from 'react-select'
 import Swal from "sweetalert2"
 import Adjustment from "../adjustments/adjustment"
+import axiosInstance from "../../constants/axiosInstance"
 
 type modalAdjustType = {
   fetchData: AsyncThunk<devicesType[], string, {}>,
@@ -90,7 +91,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
         return
       }
 
-      const response = await axios.put<responseType<devicesType>>(url, bodyData, { headers: { authorization: `Bearer ${token}` } })
+      const response = await axiosInstance.put<responseType<devicesType>>(url, bodyData)
       // setShow(false)
       Swal.fire({
         title: t('alertHeaderSuccess'),

@@ -14,44 +14,31 @@ import {
 } from '../../style/style'
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { setCookieEncode, setShowAlert, setShowAside, setSwitchTms } from "../../stores/utilsStateSlice"
+import { setShowAlert, setShowAside, setSwitchTms, setUserProfile } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { AboutVersion } from "../../style/components/sidebar"
 import { responseType } from "../../types/response.type"
-import axios, { AxiosError } from "axios"
-import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies, ImageComponent } from "../../constants/constants"
+import { AxiosError } from "axios"
+import { UserProfileType } from "../../types/user.type"
+import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
+import axiosInstance from "../../constants/axiosInstance"
+import DefualtPic from "../../assets/images/default-pic.png"
 
 export default function sidebar() {
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand, tokenDecode, cookieDecode, notiData, isTms } = useSelector((state: RootState) => state.utilsState)
-  const { token, hosImg, hosName, userLevel } = cookieDecode
+  const { expand, tokenDecode, cookieDecode, notiData, isTms, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const { token } = cookieDecode
+  const { role } = tokenDecode
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   let isFirstLoad = true
 
   const reFetchdata = async () => {
-    if (tokenDecode.userId) {
+    if (tokenDecode.id) {
       try {
-        const response = await axios
-          .get<responseType<usersType>>(`${import.meta.env.VITE_APP_API}/user/${tokenDecode.userId}`, { headers: { authorization: `Bearer ${token}` } })
-        const { displayName, userId, userLevel, userPic, ward, wardId } = response.data.data
-        const { hosId, hospital } = ward
-        const { hosPic, hosName } = hospital
-        const localDataObject = {
-          userId: userId,
-          hosId: hosId,
-          displayName: displayName,
-          userPicture: userPic,
-          userLevel: userLevel,
-          hosImg: hosPic,
-          hosName: hosName,
-          groupId: wardId,
-          token: token
-        }
-        cookies.set('localDataObject', String(accessToken(localDataObject)), cookieOptions)
-        dispatch(setCookieEncode(String(accessToken(localDataObject))))
+        const response = await axiosInstance.get<responseType<UserProfileType>>(`/auth/user/${tokenDecode.id}`)
+        dispatch(setUserProfile(response.data.data))
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -95,19 +82,19 @@ export default function sidebar() {
       const pathSegment = location.pathname.split('/')[1]
       const capitalized = pathSegment.charAt(0).toUpperCase() + pathSegment.slice(1)
 
-      document.getElementsByTagName('head')[0].appendChild(link);
+      document.getElementsByTagName('head')[0].appendChild(link)
       document.title =
         (notiData.filter((n) => n.notiStatus === false).length > 0
           ? `(${notiData.filter((n) => n.notiStatus === false).length}) `
           : '') +
-        hosName +
+        userProfile?.ward.hospital.hosName +
         ' - ' +
         `${location.pathname.split('/')[1] !== '' ? capitalized : 'Home'}`
     }
 
     const addNotificationDotToFavicon = async () => {
-      const baseImageSrc = hosImg
-        ? `${import.meta.env.VITE_APP_IMG}${hosImg}`
+      const baseImageSrc = userProfile?.ward.hospital.hosPic
+        ? `${userProfile.ward.hospital.hosPic}`
         : 'Logo_SM_WBG.jpg'
 
       const img = new Image()
@@ -141,11 +128,11 @@ export default function sidebar() {
     if (notiData.filter((n) => n.notiStatus === false).length > 0) {
       addNotificationDotToFavicon()
     } else {
-      if (hosImg) {
-        changeFavicon(`${import.meta.env.VITE_APP_IMG}${hosImg}`)
+      if (userProfile?.ward.hospital.hosPic) {
+        changeFavicon(`${userProfile.ward.hospital.hosPic}`)
       }
     }
-  }, [location, cookieDecode, hosImg, notiData])
+  }, [location, cookieDecode, userProfile?.ward.hospital.hosPic, notiData])
 
   const resetAsideandCardcount = () => {
     dispatch(setShowAside(false))
@@ -157,9 +144,9 @@ export default function sidebar() {
         <SidebarLogo
           $primary={expand}
         >
-          <ImageComponent src={hosImg ? `${import.meta.env.VITE_APP_IMG}${hosImg}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="hos-logo" />
+          <ImageComponent src={userProfile?.ward.hospital.hosPic ? `${userProfile.ward.hospital.hosPic}` : DefualtPic} alt="hos-logo" />
         </SidebarLogo>
-        <HospitalName $primary={expand}>{hosName}</HospitalName>
+        <HospitalName $primary={expand}>{userProfile?.ward.hospital.hosName}</HospitalName>
       </Link>
       <LineHr $primary />
       <Ul $primary={expand} $maxheight className="nav nav-pills">
@@ -197,7 +184,7 @@ export default function sidebar() {
             </TooltipSpan>
           </Li>
           {
-            userLevel !== '3' ?
+            role !== 'USER' ?
               <>
                 <Li $primary={expand}>
                   <Link to="/permission" onClick={resetAsideandCardcount} className={location.pathname === "/permission" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
@@ -273,10 +260,10 @@ export default function sidebar() {
       <SettingSystem>
         <Ul className="nav nav-pills">
           {
-            userLevel === "0" && !expand && <span>{t('switchModeMain')}</span>
+            role === "SUPER" && !expand && <span>{t('switchModeMain')}</span>
           }
           {
-            userLevel === "0" && <Li>
+            role === "SUPER" && <Li>
               <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions); }} $primary={isTms}>
                 <div className="icon">
                   {isTms ? 'TMS' : 'E/I'}

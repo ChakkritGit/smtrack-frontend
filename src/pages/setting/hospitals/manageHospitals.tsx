@@ -21,6 +21,7 @@ import { FormEvent, memo, useEffect, useState } from "react"
 import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import HospitalDropdown from "../../../components/dropdown/hospitalDropdown"
 import { ImageComponent } from "../../../constants/constants"
+import axiosInstance from "../../../constants/axiosInstance"
 
 export default function ManageHospitals() {
   const { t } = useTranslation()
@@ -29,7 +30,7 @@ export default function ManageHospitals() {
   const { token } = cookieDecode
   const { hospital } = useSelector((state: RootState) => state.arraySlice)
   const { hospitalsData } = hospital
-  const { userLevel } = tokenDecode
+  const { role } = tokenDecode
   const [addwardprop, setAddwardprop] = useState<{ pagestate: string, warddata: wardsType | undefined }>({
     pagestate: 'add',
     warddata: undefined
@@ -183,7 +184,7 @@ export default function ManageHospitals() {
             key={item.hosId}
           />
           {
-            item.hosId !== "HID-DEVELOPMENT" && userLevel !== '2' && userLevel !== '3' && <DelUserButton onClick={() =>
+            item.hosId !== "HID-DEVELOPMENT" && role !== 'ADMIN' && role !== 'USER' && <DelUserButton onClick={() =>
               swalWithBootstrapButtons
                 .fire({
                   title: t('deleteHosTitle'),
@@ -283,13 +284,9 @@ export default function ManageHospitals() {
     const url: string = `${import.meta.env.VITE_APP_API}/ward`
     if (hosid !== '' && formdata !== '') {
       try {
-        const response = await axios.post<responseType<wardsType>>(url, {
+        const response = await axiosInstance.post<responseType<wardsType>>(url, {
           hosId: String(hosid),
           wardName: String(formdata)
-        }, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
         })
         setShow(false)
         Swal.fire({
@@ -343,12 +340,8 @@ export default function ManageHospitals() {
     const url: string = `${import.meta.env.VITE_APP_API}/ward/${warddata?.wardId}`
     if (formdata !== '') {
       try {
-        const response = await axios.put<responseType<wardsType>>(url, {
+        const response = await axiosInstance.put<responseType<wardsType>>(url, {
           wardName: String(formdata)
-        }, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
         })
         setShow(false)
         Swal.fire({
@@ -404,7 +397,7 @@ export default function ManageHospitals() {
         <h3>{t('titleManageHosandWard')}</h3>
         <ManageHospitalsHeaderAction>
           {
-            userLevel !== "3" && userLevel !== "2" &&
+            role !== "USER" && role !== "ADMIN" &&
             <Addhospitals
               pagestate={'add'}
             />

@@ -11,14 +11,16 @@ import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import Swal from "sweetalert2"
 import { useDispatch, useSelector } from "react-redux"
 import { responseType } from "../../types/response.type"
-import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies, ImageComponent, resizeImage } from "../../constants/constants"
+import { UserProfileType, usersType } from "../../types/user.type"
+import { ImageComponent, resizeImage } from "../../constants/constants"
 import { RootState, storeDispatchType } from "../../stores/store"
-import { setCookieEncode, setShowAlert } from "../../stores/utilsStateSlice"
+import { setShowAlert, setUserProfile } from "../../stores/utilsStateSlice"
+import axiosInstance from "../../constants/axiosInstance"
+import DefualtUserPic from "../../assets/images/default-user.jpg"
 
 export default function Account() {
   const [userpicture, setUserpicture] = useState<string>('')
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { cookieDecode, tokenDecode, userProfile } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
@@ -30,9 +32,9 @@ export default function Account() {
   })
   const { oldPassword, newPassword } = pass
   const [showpassword, setShowpassword] = useState(false)
-  const [userData, setUserData] = useState<usersType>()
+  const [userData, setUserData] = useState<UserProfileType>()
   const [userDisplayName, setUserDisplayName] = useState<string>('')
-  const { userLevel } = cookieDecode
+  const { role } = tokenDecode
 
   const openmodalProfile = () => {
     setShowProfile(true)
@@ -53,25 +55,10 @@ export default function Account() {
   const reFetchdata = async () => {
     if (cookieDecode) {
       try {
-        const response = await axios
-          .get<responseType<usersType>>(`${import.meta.env.VITE_APP_API}/user/${cookieDecode.userId}`, { headers: { authorization: `Bearer ${token}` } })
-        const { displayName, userId, userLevel, userPic, ward, wardId } = response.data.data
-        const { hosId, hospital } = ward
-        const { hosPic, hosName } = hospital
-        const localDataObject = {
-          userId: userId,
-          hosId: hosId,
-          displayName: displayName,
-          userPicture: userPic,
-          userLevel: userLevel,
-          hosImg: hosPic,
-          hosName: hosName,
-          groupId: wardId,
-          token: token
-        }
-        setUserData(response.data.data)
-        cookies.set('localDataObject', String(accessToken(localDataObject)), cookieOptions)
-        dispatch(setCookieEncode(String(accessToken(localDataObject))))
+        const response = await axiosInstance
+          .get<responseType<UserProfileType>>(`${import.meta.env.VITE_APP_API}/user/${cookieDecode.id}`, { headers: { authorization: `Bearer ${token}` } })
+          setUserData(response.data.data)
+          dispatch(setUserProfile(response.data.data))
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -88,7 +75,7 @@ export default function Account() {
 
   const handleChang = async (e: ChangeEvent<HTMLInputElement>) => {
     let reader = new FileReader()
-    const url: string = `${import.meta.env.VITE_APP_API}/user/${cookieDecode.userId}`
+    const url: string = `${import.meta.env.VITE_APP_API}/user/${cookieDecode.id}`
     const formData = new FormData()
 
     if (e.target && e.target.files && e.target.files.length > 0) {
@@ -137,16 +124,11 @@ export default function Account() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (userLevel === '0' || userLevel === '1' ? (newPassword !== '') : (newPassword !== '' && oldPassword !== '')) {
+    if (role === 'SUPER' || role === 'SERVICE' ? (newPassword !== '') : (newPassword !== '' && oldPassword !== '')) {
       try {
-        const response = await axios.patch(`${import.meta.env.VITE_APP_API}/auth/reset/${cookieDecode.userId}`, {
+        const response = await axiosInstance.patch(`${import.meta.env.VITE_APP_API}/auth/reset/${cookieDecode.id}`, {
           oldPassword: oldPassword,
           password: newPassword
-        }, {
-          headers: {
-            Accept: "application/json",
-            authorization: `Bearer ${token}`
-          }
         })
         setshow(false)
         Swal.fire({
@@ -195,13 +177,8 @@ export default function Account() {
     e.preventDefault()
     if (userDisplayName !== '') {
       try {
-        const response = await axios.put(`${import.meta.env.VITE_APP_API}/user/${cookieDecode.userId}`, {
+        const response = await axiosInstance.put(`${import.meta.env.VITE_APP_API}/user/${cookieDecode.id}`, {
           displayName: userDisplayName
-        }, {
-          headers: {
-            Accept: "application/json",
-            authorization: `Bearer ${token}`
-          }
         })
         setShowProfile(false)
         Swal.fire({
@@ -256,15 +233,15 @@ export default function Account() {
       <ProfileFlexSetting $radius={50} $dimension={150} $imageFit>
         <div>
           <div>
-            <ImageComponent src={userpicture ? userpicture : cookieDecode.userPicture ? `${import.meta.env.VITE_APP_IMG}${cookieDecode.userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="user-picture" />
+            <ImageComponent src={userpicture ? userpicture : userProfile?.pic ? userProfile.pic : DefualtUserPic} alt="user-picture" />
             <label htmlFor={'user-file-upload'} >
               <RiEditLine />
               <input id="user-file-upload" type="file" accept="image/gif, image/jpg, image/jpeg, image/png" onChange={handleChang} />
             </label>
           </div>
           <div>
-            <h5>{cookieDecode.displayName}</h5>
-            <span>@{userData?.userName}</span>
+            <h5>{userProfile?.display}</h5>
+            <span>@{userData?.username}</span>
           </div>
         </div>
         <div>
@@ -338,7 +315,7 @@ export default function Account() {
           <Modal.Body>
             <Row>
               {
-                userLevel === '2' || userLevel === '3' && <Col lg={12}>
+                role === 'ADMIN' || role === 'USER' && <Col lg={12}>
                   <InputGroup className="mb-3">
                     <Form.Label className="w-100">
                       {t('oldPassword')}

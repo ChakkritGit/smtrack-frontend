@@ -9,7 +9,7 @@ import { useReactToPrint } from "react-to-print"
 import Printwarranty from "./printwarranty"
 import { useDispatch, useSelector } from "react-redux"
 import { DeviceState, DeviceStateStore } from "../../types/redux.type"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { warrantyType } from "../../types/warranty.type"
 import { responseType } from "../../types/response.type"
 import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
@@ -22,6 +22,7 @@ import { SingleValue } from "react-select"
 import { AddWarrantyButton } from "../../style/components/warranty.styled"
 import { hospitalsType } from "../../types/hospital.type"
 import { companyList } from "../../constants/constants"
+import axiosInstance from "../../constants/axiosInstance"
 
 interface dataTableProps {
   warrantyData: warrantyType[]
@@ -70,9 +71,10 @@ export default function Warranty() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const [pagenumber, setpagenumber] = useState(1)
-  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const hospitalsData = useSelector<DeviceStateStore, hospitalsType[]>((state) => state.arraySlice.hospital.hospitalsData)
-  const { token, userLevel } = cookieDecode
+  const { token } = cookieDecode
+  const { role } = tokenDecode
   const [show, setshow] = useState(false)
   const [deviceDetails, setDevicedetails] = useState<warrantyType[]>([])
   const [warrantyData, setWarrantyData] = useState<warrantyType[]>([])
@@ -111,9 +113,7 @@ export default function Warranty() {
   const fetchData = async () => {
     try {
       setIsLoading(true)
-      const response = await axios.get<responseType<warrantyType[]>>(`${import.meta.env.VITE_APP_API}/warranty`, {
-        headers: { authorization: `Bearer ${token}` }
-      })
+      const response = await axiosInstance.get<responseType<warrantyType[]>>(`${import.meta.env.VITE_APP_API}/warranty`)
       setWarrantyData(response.data.data)
       setIsLoading(false)
     } catch (error) {
@@ -167,9 +167,7 @@ export default function Warranty() {
 
   const deleteWarranty = async (wId: string) => {
     try {
-      const response = await axios.delete(`${import.meta.env.VITE_APP_API}/warranty/${wId}`, {
-        headers: { authorization: `Bearer ${token}` }
-      })
+      const response = await axiosInstance.delete(`${import.meta.env.VITE_APP_API}/warranty/${wId}`)
       Swal.fire({
         title: t('alertHeaderSuccess'),
         text: response.data.message,
@@ -308,7 +306,7 @@ export default function Warranty() {
             <RiInformationLine size={16} />
           </DetailWarranty>
           {
-            userLevel !== '2' && userLevel !== '3' && <>
+            role !== 'ADMIN' && role !== 'USER' && <>
               <AddWarrantyButton
                 onClick={() => {
                   openModalTwo();
@@ -404,9 +402,7 @@ export default function Warranty() {
         warrStatus: true
       }
       try {
-        const response = await axios.post(`${import.meta.env.VITE_APP_API}/warranty`, body, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        const response = await axiosInstance.post(`${import.meta.env.VITE_APP_API}/warranty`, body)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,
@@ -469,9 +465,7 @@ export default function Warranty() {
         warrStatus: true
       }
       try {
-        const response = await axios.put(`${import.meta.env.VITE_APP_API}/warranty/${wardId}`, body, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        const response = await axiosInstance.put(`${import.meta.env.VITE_APP_API}/warranty/${wardId}`, body)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,
@@ -550,7 +544,7 @@ export default function Warranty() {
           <WarrantyHeadBtn $primary={pagenumber === 2} onClick={() => setpagenumber(2)}>{t('tabWarrantyAfterSale')}</WarrantyHeadBtn>
           <WarrantyHeadBtn $primary={pagenumber === 3} onClick={() => setpagenumber(3)}>{t('tabWarrantyAll')}</WarrantyHeadBtn>
         </div>
-        {userLevel !== '2' && userLevel !== '3' && <div>
+        {role !== 'ADMIN' && role !== 'USER' && <div>
           <AddWarrantyButton onClick={() => { openModalTwo(); setPagestate('add') }}>
             {t('addWarrantyButton')}
             <RiAddLine />

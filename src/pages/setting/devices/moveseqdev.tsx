@@ -7,12 +7,13 @@ import { FormBtn, FormFlexBtn, ModalHead } from '../../../style/style'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
 import { RootState, storeDispatchType } from '../../../stores/store'
 import { fetchDevicesData } from '../../../stores/devicesSlices'
 import { useTheme } from '../../../theme/ThemeProvider'
 import Select, { SingleValue } from 'react-select'
+import axiosInstance from '../../../constants/axiosInstance'
 
 type moveSeqType = {
   devData: devicesType
@@ -56,13 +57,10 @@ export default function Moveseqdev({ devData }: moveSeqType) {
     e.preventDefault()
     if (devId !== '' && devSeq !== 0 && selectDev.devId !== '' && selectDev.devSeq !== 0) {
       try {
-        const response = await axios.patch(`${import.meta.env.VITE_APP_API}/device/${devId}/${selectDev.devId}`,
+        const response = await axiosInstance.patch(`${import.meta.env.VITE_APP_API}/device/${devId}/${selectDev.devId}`,
           {
             devSeq: devSeq,
             afterDevSeq: selectDev.devSeq
-          },
-          {
-            headers: { authorization: `Bearer ${token}` }
           })
         dispatch(fetchDevicesData(token))
         Swal.fire({

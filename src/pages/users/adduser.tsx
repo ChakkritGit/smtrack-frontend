@@ -12,13 +12,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchUserData } from "../../stores/userSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { responseType } from "../../types/response.type"
-import { usersType } from "../../types/user.type"
-import { accessToken, cookieOptions, cookies, ImageComponent, resizeImage } from "../../constants/constants"
-import { setCookieEncode, setShowAlert } from "../../stores/utilsStateSlice"
+import { UserProfileType, usersType } from "../../types/user.type"
+import { ImageComponent, resizeImage } from "../../constants/constants"
+import { setShowAlert, setUserProfile } from "../../stores/utilsStateSlice"
 import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
 import { ModalMuteHead } from "../../style/components/home.styled"
 import { OpenResetPasswordModalButton } from "../../style/components/manage.user"
+import axiosInstance from "../../constants/axiosInstance"
 
 type Option = {
   value: string,
@@ -34,8 +35,9 @@ export default function Adduser(AdduserProp: adduserProp) {
   const { pagestate, userData } = AdduserProp
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { tokenDecode, cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token, displayName, userLevel } = cookieDecode
+  const { tokenDecode, cookieDecode, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const { token } = cookieDecode
+  const { role } = tokenDecode
   const [show, setShow] = useState(false)
   const [showPass, setShowPass] = useState(false)
   const [form, setform] = useState({
@@ -114,26 +116,11 @@ export default function Adduser(AdduserProp: adduserProp) {
   }
 
   const reFetchdata = async () => {
-    if (tokenDecode.userId) {
+    if (tokenDecode.id) {
       try {
         const response = await axios
-          .get<responseType<usersType>>(`${import.meta.env.VITE_APP_API}/user/${tokenDecode.userId}`, { headers: { authorization: `Bearer ${token}` } })
-        const { displayName, userId, userLevel, userPic, ward, wardId } = response.data.data
-        const { hosId, hospital } = ward
-        const { hosPic, hosName } = hospital
-        const localDataObject = {
-          userId: userId,
-          hosId: hosId,
-          displayName: displayName,
-          userPicture: userPic,
-          userLevel: userLevel,
-          hosImg: hosPic,
-          hosName: hosName,
-          groupId: wardId,
-          token: token
-        }
-        cookies.set('localDataObject', String(accessToken(localDataObject)), cookieOptions)
-        dispatch(setCookieEncode(String(accessToken(localDataObject))))
+          .get<responseType<UserProfileType>>(`${import.meta.env.VITE_APP_API}/user/${tokenDecode.id}`, { headers: { authorization: `Bearer ${token}` } })
+        dispatch(setUserProfile(response.data.data))
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -160,12 +147,11 @@ export default function Adduser(AdduserProp: adduserProp) {
     if (form.fileupload) {
       formData.append('fileupload', form.fileupload as File)
     }
-    formData.append('createBy', displayName)
+    formData.append('createBy', String(userProfile?.display))
     if (form.group_id !== '' && form.user_name !== '' && form.user_password !== '' && form.display_name !== '' && form.user_level !== '') {
       try {
-        const response = await axios.post(url, formData, {
+        const response = await axiosInstance.post(url, formData, {
           headers: {
-            Accept: "application/json",
             "Content-Type": "multipart/form-data",
           }
         })
@@ -234,14 +220,12 @@ export default function Adduser(AdduserProp: adduserProp) {
     if (form.fileupload) {
       formData.append('fileupload', form.fileupload as File)
     }
-    formData.append('createBy', displayName)
+    formData.append('createBy', String(userProfile?.display))
     if (form.group_id !== '' && form.user_name !== '' && form.display_name !== '' && form.user_level !== '') {
       try {
-        const response = await axios.put<responseType<usersType>>(url, formData, {
+        const response = await axiosInstance.put<responseType<usersType>>(url, formData, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            authorization: `Bearer ${token}`
+            "Content-Type": "multipart/form-data"
           }
         })
         setShow(false)
@@ -291,16 +275,11 @@ export default function Adduser(AdduserProp: adduserProp) {
 
   const handleSubmitPassReset = async (e: FormEvent) => {
     e.preventDefault()
-    if (userLevel === '0' || userLevel === '1' ? (newPassword !== '') : (newPassword !== '' && oldPassword !== '')) {
+    if (role === 'SUPER' || role === 'SERVICE' ? (newPassword !== '') : (newPassword !== '' && oldPassword !== '')) {
       try {
-        const response = await axios.patch(`${import.meta.env.VITE_APP_API}/auth/reset/${userData?.userId}`, {
+        const response = await axiosInstance.patch(`${import.meta.env.VITE_APP_API}/auth/reset/${userData?.userId}`, {
           oldPassword: oldPassword,
           password: newPassword
-        }, {
-          headers: {
-            Accept: "application/json",
-            authorization: `Bearer ${token}`
-          }
         })
         setShowPass(false)
         setPass({ newPassword: '', oldPassword: '' })
@@ -347,21 +326,24 @@ export default function Adduser(AdduserProp: adduserProp) {
   }
 
   const userlevel =
-    userLevel === '0' ?
-      [{ value: '0', name: t('levelSuper') },
-      { value: '1', name: t('levelService') },
-      { value: '2', name: t('levelAdmin') },
-      { value: '3', name: t('levelUser') },
-      { value: '4', name: "TMS" },]
+    role === 'SUPER' ?
+      [{ value: 'SUPER', name: t('levelSuper') },
+      { value: 'SERVICE', name: t('levelService') },
+      { value: 'ADMIN', name: t('levelAdmin') },
+      { value: 'USER', name: t('levelUser') },
+      { value: 'LEGACY_ADMIN', name: "LEGACY_ADMIN" },
+      { value: 'LEGACY_USER', name: "LEGACY_USER" },
+      { value: 'GUEST', name: "GUEST" },
+    ]
       :
-      userLevel === '1' ?
-        [{ value: '1', name: t('levelService') },
-        { value: '2', name: t('levelAdmin') },
-        { value: '3', name: t('levelUser') },]
+      role === 'SERVICE' ?
+        [{ value: 'SERVICE', name: t('levelService') },
+        { value: 'ADMIN', name: t('levelAdmin') },
+        { value: 'USER', name: t('levelUser') },]
         :
 
-        [{ value: '2', name: t('levelAdmin') },
-        { value: '3', name: t('levelUser') },]
+        [{ value: 'ADMIN', name: t('levelAdmin') },
+        { value: 'USER', name: t('levelUser') },]
 
 
   const userstatus = [
@@ -614,7 +596,7 @@ export default function Adduser(AdduserProp: adduserProp) {
             <Row>
               <Row>
                 {
-                  userLevel === '2' || userLevel === '3' && <Col lg={12}>
+                  role === 'ADMIN' || role === 'USER' && <Col lg={12}>
                     <InputGroup className="mb-3">
                       <Form.Label className="w-100">
                         {t('oldPassword')}

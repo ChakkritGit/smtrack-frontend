@@ -1,14 +1,13 @@
 import { wardsType } from "../../types/ward.type"
 import { dropDownWardProp } from "../../types/prop.type"
 import { useEffect, useState } from "react"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { useTranslation } from "react-i18next"
 import { responseType } from "../../types/response.type"
 import { hospitalsType } from "../../types/hospital.type"
-import { useSelector } from "react-redux"
 import Select, { SingleValue } from 'react-select'
 import { useTheme } from "../../theme/ThemeProvider"
-import { RootState } from "../../stores/store"
+import axiosInstance from "../../constants/axiosInstance"
 
 type Option = {
   value: string,
@@ -24,8 +23,6 @@ export default function WardDropdown(DwardProp: dropDownWardProp) {
   const { t } = useTranslation()
   const { groupId, Hosid, setStateWard } = DwardProp
   const [wardData, setWardData] = useState<wardsType[]>([])
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token } = cookieDecode
   const { theme } = useTheme()
 
   const setWardId = (e: SingleValue<Option>) => {
@@ -38,9 +35,7 @@ export default function WardDropdown(DwardProp: dropDownWardProp) {
     if (Hosid !== "" || groupId !== "" && !groupId) {
       const url: string = `${import.meta.env.VITE_APP_API}/hospital/${Hosid}`
       try {
-        const response = await axios.get<responseType<hospitalsType>>(url, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+        const response = await axiosInstance.get<responseType<hospitalsType>>(url)
         setWardData(response.data.data.ward)
         // setStateWard(response.data.data.ward[0]?.wardId)
       } catch (error) { //up

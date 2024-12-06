@@ -4,7 +4,7 @@ import { devicesType, managedevices } from '../../../types/device.type'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Col, Modal, Row, Form, InputGroup } from 'react-bootstrap'
 import { useTranslation } from 'react-i18next'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import Swal from 'sweetalert2'
 import HospitalDropdown from '../../../components/dropdown/hospitalDropdown'
 import WardDropdown from '../../../components/dropdown/wardDropdown'
@@ -25,6 +25,7 @@ import { hoursOptions, ImageComponent, mapDefaultValue, mapOptions, minutesOptio
 import { TabButton, TabContainer } from '../../../style/components/manage.dev'
 import Select from 'react-select'
 import { useTheme } from '../../../theme/ThemeProvider'
+import axiosInstance from '../../../constants/axiosInstance'
 
 interface FirmwareItem {
   fileName: string,
@@ -52,7 +53,8 @@ export default function Adddevform(managedevices: managedevices) {
   })
   const dispatch = useDispatch<storeDispatchType>()
   const { cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token, userLevel } = cookieDecode
+  const { token } = cookieDecode
+  const { role, id } = tokenDecode
   const [devicePicture, setDevicePicture] = useState<string>(devdata.locPic ? `${import.meta.env.VITE_APP_IMG}${devdata.locPic}` : '')
   const { config } = devdata
   const [resetTime, setResetTime] = useState<{
@@ -94,7 +96,7 @@ export default function Adddevform(managedevices: managedevices) {
 
   const fetchWard = async () => {
     try {
-      const response = await axios.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devdata.wardId}`, { headers: { authorization: `Bearer ${token}` } })
+      const response = await axiosInstance.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devdata.wardId}`)
       setHosid(response.data.data.hospital.hosId)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -162,13 +164,13 @@ export default function Adddevform(managedevices: managedevices) {
     const url: string = `${import.meta.env.VITE_APP_API}/device`
     if (formdata.devSn !== "") {
       try {
-        const response = await axios.post<responseType<devicesType>>(url, {
+        const response = await axiosInstance.post<responseType<devicesType>>(url, {
           devSerial: formdata.devSn,
-          createBy: tokenDecode.userId,
+          createBy: id,
           config: {
             macAddWiFi: formdata.macAddWiFi
           }
-        }, { headers: { authorization: `Bearer ${token}` } })
+        })
         setShow(false)
         Swal.fire({
           title: t('alertHeaderSuccess'),
@@ -235,20 +237,14 @@ export default function Adddevform(managedevices: managedevices) {
     }
     if (formdata.devId !== '') {
       try {
-        const response = await axios.put<responseType<devicesType>>(url, formData, {
+        const response = await axiosInstance.put<responseType<devicesType>>(url, formData, {
           headers: {
-            Accept: "application/json",
             "Content-Type": "multipart/form-data",
-            authorization: `Bearer ${token}`
           }
         })
         if (netConfig.hardReset !== '') {
-          await axios.put<responseType<devicesType>>(urlcongif, {
+          await axiosInstance.put<responseType<devicesType>>(urlcongif, {
             hardReset: netConfig.hardReset
-          }, {
-            headers: {
-              authorization: `Bearer ${token}`
-            }
           })
         }
         setShow(false)
@@ -310,12 +306,8 @@ export default function Adddevform(managedevices: managedevices) {
         ssidPass: Password,
         macAddWiFi: MacAddress,
       }
-      const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
-        bodyData, {
-        headers: {
-          authorization: `Bearer ${token}`
-        }
-      })
+      const response = await axiosInstance.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+        bodyData)
       Swal.fire({
         title: t('alertHeaderSuccess'),
         text: response.data.message,
@@ -367,12 +359,8 @@ export default function Adddevform(managedevices: managedevices) {
           getway: Gateway,
           dns: DNS
         }
-        const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
-          bodyData, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
+        const response = await axiosInstance.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+          bodyData)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,
@@ -433,12 +421,8 @@ export default function Adddevform(managedevices: managedevices) {
           getwayEth: getwayEth,
           dnsEth: dnsEth
         }
-        const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
-          bodyData, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
+        const response = await axiosInstance.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+          bodyData)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,
@@ -494,12 +478,8 @@ export default function Adddevform(managedevices: managedevices) {
         const bodyData = {
           sim: Mode.sim
         }
-        const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
-          bodyData, {
-          headers: {
-            authorization: `Bearer ${token}`
-          }
-        })
+        const response = await axiosInstance.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+          bodyData)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,
@@ -555,12 +535,8 @@ export default function Adddevform(managedevices: managedevices) {
       const bodyData = {
         modeEth: "0",
       }
-      const response = await axios.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
-        bodyData, {
-        headers: {
-          authorization: `Bearer ${token}`
-        }
-      })
+      const response = await axiosInstance.put<responseType<configType>>(`${import.meta.env.VITE_APP_API}/config/${netConfig.devSerial}`,
+        bodyData)
       Swal.fire({
         title: t('alertHeaderSuccess'),
         text: response.data.message,
@@ -628,9 +604,7 @@ export default function Adddevform(managedevices: managedevices) {
 
   const fetchFirmware = async () => {
     try {
-      const response = await axios.get<responseType<firmwareType[]>>(`${import.meta.env.VITE_APP_API}/firmwares`, {
-        headers: { authorization: `Bearer ${token}` }
-      })
+      const response = await axiosInstance.get<responseType<firmwareType[]>>(`${import.meta.env.VITE_APP_API}/firmwares`)
       setFirmwareList(response.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -727,7 +701,7 @@ export default function Adddevform(managedevices: managedevices) {
                 pagestate !== "add" ?
                   <>
                     {
-                      userLevel !== '2' && userLevel !== '3' && <Col lg={6}>
+                      role !== 'ADMIN' && role !== 'USER' && <Col lg={6}>
                         <InputGroup className="mb-3">
                           <Form.Label className="w-100">
                             {t('hospitals')}
@@ -859,7 +833,7 @@ export default function Adddevform(managedevices: managedevices) {
                       </InputGroup>
                     </Col>
                     {
-                      userLevel !== '2' && userLevel !== '3' && <Col lg={6}>
+                      role !== 'ADMIN' && role !== 'USER' && <Col lg={6}>
                         <Row>
                           <InputGroup className="mb-3">
                             <Form.Label className="w-100">
@@ -872,7 +846,7 @@ export default function Adddevform(managedevices: managedevices) {
                           </InputGroup>
                         </Row>
                         {
-                          userLevel === '0' && <Row>
+                          role === 'SUPER' && <Row>
                             <InputGroup className="mb-3">
                               <Form.Label className="w-100">
                                 {t('sendOTA')}
@@ -901,7 +875,7 @@ export default function Adddevform(managedevices: managedevices) {
                           </Row>
                         }
                         {
-                          userLevel === '0' && <Row>
+                          role === 'SUPER' && <Row>
                             <Row>
                               <span className='mb-2'>{t('hardReset')}</span>
                             </Row>

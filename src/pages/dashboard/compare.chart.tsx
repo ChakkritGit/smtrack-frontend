@@ -19,7 +19,7 @@ import toast from "react-hot-toast"
 import html2canvas from "html2canvas"
 import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { wardsType } from "../../types/ward.type"
 import { responseType } from "../../types/response.type"
@@ -29,13 +29,14 @@ import ImagesOne from '../../assets/images/Thanes.png'
 import { WaitExportImage } from "../../style/components/page.loading"
 import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 import { CompareType } from "../../types/log.type"
+import axiosInstance from "../../constants/axiosInstance"
 
 const Comparechart = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
-  const { expand, cookieDecode, deviceId, wardId, hosId } = useSelector((state: RootState) => state.utilsState)
-  const { hosName, token, hosImg } = cookieDecode
+  const { expand, cookieDecode, deviceId, wardId, hosId, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const { token } = cookieDecode
   const [pageNumber, setPagenumber] = useState(1)
   const canvasChartRef = useRef<HTMLDivElement | null>(null)
   const tableInfoRef = useRef<HTMLDivElement | null>(null)
@@ -50,7 +51,7 @@ const Comparechart = () => {
 
   const fetchWard = async () => {
     try {
-      const response = await axios.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devData?.wardId}`, { headers: { authorization: `Bearer ${token}` } })
+      const response = await axiosInstance.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devData?.wardId}`)
       setValidationData(response.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -69,7 +70,7 @@ const Comparechart = () => {
 
   const fetchData = async () => {
     try {
-      const responseData = await axios
+      const responseData = await axiosInstance
         .get(`${import.meta.env.VITE_APP_API}/device/${deviceId ? deviceId : cookies.get('devid')}`, {
           headers: { authorization: `Bearer ${token}` }
         })
@@ -90,8 +91,7 @@ const Comparechart = () => {
   const fetchCompare = async () => {
     try {
       setDevices([])
-      const res = await axios.get(`${import.meta.env.VITE_APP_API}/utils/compare`, {
-        headers: { authorization: `Bearer ${token}` },
+      const res = await axiosInstance.get(`${import.meta.env.VITE_APP_API}/utils/compare`, {
         signal: AbortSignal.timeout(600000)
       })
       setDevices(res.data.data)
@@ -118,8 +118,7 @@ const Comparechart = () => {
       if (diffDays <= 31) {
         try {
           setDevices([])
-          const res = await axios.get(`${import.meta.env.VITE_APP_API}/utils/compare?start=${startDate}&end=${endDate}`, {
-            headers: { authorization: `Bearer ${token}` },
+          const res = await axiosInstance.get(`${import.meta.env.VITE_APP_API}/utils/compare?start=${startDate}&end=${endDate}`, {
             signal: AbortSignal.timeout(600000)
           })
           setDevices(res.data.data)
@@ -308,7 +307,7 @@ const Comparechart = () => {
                           devName: devData?.devDetail,
                           chartIMG: waitExport,
                           dateTime: String(new Date).substring(0, 25),
-                          hosImg: hosImg,
+                          hosImg: userProfile?.ward.hospital.hosPic,
                         }
                       })
                     } catch (error) {
@@ -352,7 +351,7 @@ const Comparechart = () => {
         </FilterContainer>}
       <FullchartBodyChartCon $primary={expand} ref={canvasChartRef}>
         <TableInfoDevice ref={tableInfoRef}>
-          <h4>{hosName}</h4>
+          <h4>{userProfile?.ward.hospital.hosName}</h4>
         </TableInfoDevice>
         {
           filteredDevicesList.length > 0 ?

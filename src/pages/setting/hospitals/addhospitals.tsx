@@ -4,7 +4,7 @@ import { RiAddLine, RiCloseLine, RiEditLine } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
 import { Col, Modal, Row, Form, InputGroup } from 'react-bootstrap'
 import Swal from 'sweetalert2'
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { addHospitalProp } from '../../../types/prop.type'
 import { useDispatch } from 'react-redux'
 import { RootState, storeDispatchType } from '../../../stores/store'
@@ -14,6 +14,7 @@ import { responseType } from '../../../types/response.type'
 import { hospitalsType } from '../../../types/hospital.type'
 import { setShowAlert } from '../../../stores/utilsStateSlice'
 import { ImageComponent, resizeImage } from '../../../constants/constants'
+import axiosInstance from '../../../constants/axiosInstance'
 
 export default function Addhospitals(addhosprop: addHospitalProp) {
   const { t } = useTranslation()
@@ -50,11 +51,9 @@ export default function Addhospitals(addhosprop: addHospitalProp) {
     }
     if (formdata.name !== "" && formdata.address !== "" && formdata.telephone !== "") {
       try {
-        const response = await axios.post<responseType<hospitalsType>>(url, formData, {
+        const response = await axiosInstance.post<responseType<hospitalsType>>(url, formData, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            authorization: `Bearer ${token}`
+            "Content-Type": "multipart/form-data"
           }
         })
         setShow(false)
@@ -118,11 +117,9 @@ export default function Addhospitals(addhosprop: addHospitalProp) {
     }
     if (formdata.name !== "" && formdata.address !== "" && formdata.telephone !== "") {
       try {
-        const response = await axios.put<responseType<hospitalsType>>(url, formData, {
+        const response = await axiosInstance.put<responseType<hospitalsType>>(url, formData, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-            authorization: `Bearer ${token}`
+            "Content-Type": "multipart/form-data"
           }
         })
         setShow(false)

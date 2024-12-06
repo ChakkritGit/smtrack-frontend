@@ -12,12 +12,13 @@ import { configType, Option, Schedule, ScheduleHour, ScheduleMinute } from "../.
 import { useTheme } from "../../theme/ThemeProvider"
 import { scheduleDayArray, scheduleMinuteArray, scheduleTimeArray } from "../../constants/constants"
 import Swal from "sweetalert2"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { responseType } from "../../types/response.type"
 import { useDispatch, useSelector } from "react-redux"
 import { client } from "../../services/mqtt"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
+import axiosInstance from "../../constants/axiosInstance"
 
 type modalAdjustType = {
   fetchData: AsyncThunk<devicesType[], string, {}>,
@@ -85,7 +86,7 @@ function ModalNotification(modalProps: modalAdjustType) {
         thirdTime: `${scheduleTime.thirdTime}${scheduleTime.thirdMinute}`
       }
       try {
-        const response = await axios.put<responseType<configType>>(url, bodyData, { headers: { authorization: `Bearer ${token}` } })
+        const response = await axiosInstance.put<responseType<configType>>(url, bodyData)
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,

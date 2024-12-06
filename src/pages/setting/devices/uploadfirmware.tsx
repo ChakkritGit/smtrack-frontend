@@ -28,7 +28,7 @@ import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetaler
 import CryptoJS from "crypto-js"
 import BinIco from "../../../assets/images/bin-icon.png"
 import Swal from "sweetalert2"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import Paginition from "../../../components/filter/paginition"
 import toast from "react-hot-toast"
 import TerminalComponent from "../../../components/settings/terminal"
@@ -40,6 +40,7 @@ import { useTheme } from "../../../theme/ThemeProvider"
 import { mapDefaultValue, mapOptions } from "../../../constants/constants"
 import { Option } from "../../../types/config.type"
 import { devicesType } from "../../../types/device.type"
+import axiosInstance from "../../../constants/axiosInstance"
 
 interface FirmwareItem {
   fileName: string;
@@ -70,9 +71,8 @@ export default function Uploadfirmware() {
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
   const { theme } = useTheme()
-  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery } = useSelector((state: RootState) => state.utilsState)
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [showConsole, setShowConsole] = useState(false)
   const [file, setFile] = useState<File | undefined>(undefined)
@@ -257,9 +257,7 @@ export default function Uploadfirmware() {
 
   const fetchFiles = async () => {
     try {
-      const response = await axios.get<responseType<firmwareType[]>>(`${import.meta.env.VITE_APP_API}/firmwares`, {
-        headers: { authorization: `Bearer ${token}`, }
-      })
+      const response = await axiosInstance.get<responseType<firmwareType[]>>(`${import.meta.env.VITE_APP_API}/firmwares`)
       setDataFile(response.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -331,9 +329,8 @@ export default function Uploadfirmware() {
     if (file) {
       try {
         setSubmit(true)
-        const response = await axios.post<responseType<string>>(`${import.meta.env.VITE_APP_API}/firmwares`, formData, {
+        const response = await axiosInstance.post<responseType<string>>(`${import.meta.env.VITE_APP_API}/firmwares`, formData, {
           headers: {
-            authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data"
           }, onUploadProgress: (progressEvent) => {
             const { progress } = progressEvent
@@ -448,7 +445,7 @@ export default function Uploadfirmware() {
 
   const getBootLoader = async () => {
     try {
-      const bootloader = await axios.get<Blob>(`${import.meta.env.VITE_APP_API}/firmware/bootloader.bin`, {
+      const bootloader = await axiosInstance.get<Blob>(`${import.meta.env.VITE_APP_API}/firmware/bootloader.bin`, {
         responseType: 'blob'
       })
 
@@ -476,7 +473,7 @@ export default function Uploadfirmware() {
 
   const getPartition = async () => {
     try {
-      const partition = await axios.get<Blob>(`${import.meta.env.VITE_APP_API}/firmware/partitions.bin`, {
+      const partition = await axiosInstance.get<Blob>(`${import.meta.env.VITE_APP_API}/firmware/partitions.bin`, {
         responseType: 'blob'
       })
 
@@ -514,8 +511,7 @@ export default function Uploadfirmware() {
 
   const downloadFw = async (fileName: string) => {
     try {
-      const response = await axios.get<Blob>(`${import.meta.env.VITE_APP_API}/firmware/${fileName}`, {
-        headers: { authorization: `Bearer ${token}`, },
+      const response = await axiosInstance.get<Blob>(`${import.meta.env.VITE_APP_API}/firmware/${fileName}`, {
         responseType: 'blob',
         onDownloadProgress: (progressEvent) => {
           const { progress } = progressEvent
@@ -549,9 +545,7 @@ export default function Uploadfirmware() {
 
   const deleteFw = async (fileName: string) => {
     try {
-      const response = await axios.delete<responseType<firmwareType>>(`${import.meta.env.VITE_APP_API}/firmwares/${fileName}`, {
-        headers: { authorization: `Bearer ${token}`, }
-      })
+      const response = await axiosInstance.delete<responseType<firmwareType>>(`${import.meta.env.VITE_APP_API}/firmwares/${fileName}`)
       Swal.fire({
         title: t('alert_header_Success'),
         text: response.data.message,
