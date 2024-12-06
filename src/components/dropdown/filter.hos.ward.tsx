@@ -34,7 +34,7 @@ function FilterHosAndWard() {
   const { hosId, wardId } = useSelector((state: RootState) => state.utilsState)
   const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
   const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
-  const { userLevel } = tokenDecode
+  const { role } = tokenDecode
   const [filterdata, setFilterdata] = useState(false)
   const [wardName, setWardname] = useState<wardsType[]>([])
 
@@ -87,7 +87,7 @@ function FilterHosAndWard() {
   return (
     <div>
       {
-        userLevel !== '3' && userLevel !== '4' &&
+        role !== 'USER' && role !== 'LEGACY_ADMIN' && role !== "LEGACY_USER" &&
         <>
           {!filterdata &&
             <DeviceInfoSpan onClick={() => setFilterdata(true)}>
@@ -99,7 +99,7 @@ function FilterHosAndWard() {
               filterdata &&
               <DevHomeHead>
                 {
-                  userLevel !== '2' && <Select
+                  role !== 'ADMIN' && <Select
                     options={mapOptions<Hospital, keyof Hospital>(updatedHosData, 'hosId', 'hosName')}
                     value={mapDefaultValue<Hospital, keyof Hospital>(updatedHosData, hosId ? hosId : '', 'hosId', 'hosName')}
                     onChange={(e) => getHospital(e?.value)}

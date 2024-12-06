@@ -13,8 +13,8 @@ const TmsHome = () => {
   const { t } = useTranslation()
   const { devices } = useSelector((state: RootState) => state.tmsDevice)
   const { hospital, ward } = useSelector((state: RootState) => state.arraySlice)
-  const { cookieDecode, hosId, wardId, transparent } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel, hosName } = cookieDecode
+  const { userProfile, hosId, wardId, transparent, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   const { hospitalsData } = hospital
   const { wardData } = ward
   const [onFilteres, setOnFilteres] = useState(false)
@@ -47,8 +47,8 @@ const TmsHome = () => {
                 {t('showAllBox')}
               </h5>
               {
-                userLevel === '0' && <TagCurrentHos>
-                  {`${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
+                role === 'SUPER' && <TagCurrentHos>
+                  {`${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
                 </TagCurrentHos>
               }
             </DevHomeHeadTile>

@@ -4,7 +4,7 @@ import {
 } from "../../../style/style"
 import { useTranslation } from "react-i18next"
 import { hospitalsType } from "../../../types/hospital.type"
-import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
+import { swalWithBootstrapButtons } from "../../../constants/sweetalertLib"
 import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine } from "react-icons/ri"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"

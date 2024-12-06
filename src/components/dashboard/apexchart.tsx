@@ -85,7 +85,6 @@ const Apexchart = (chart: chartType) => {
       type: 'line',
       animations: {
         enabled: true,
-        easing: 'easeinout',
         dynamicAnimation: {
           speed: 500
         }

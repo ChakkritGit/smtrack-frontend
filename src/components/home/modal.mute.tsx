@@ -36,8 +36,8 @@ type modalAdjustType = {
 
 function ModalMute(modalProps: modalAdjustType) {
   const { devicesdata, setShow, setShowSettingMute, showSettingMute } = modalProps
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = cookieDecode
+  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   const { devSerial, config } = devicesdata
   const { t } = useTranslation()
   const { theme } = useTheme()
@@ -191,8 +191,8 @@ function ModalMute(modalProps: modalAdjustType) {
                     <Select
                       id="hours-one"
                       key={JSON.stringify(muteDoorSelect)}
-                      options={mapOptions<selectOption, keyof selectOption>(generateOptionsOne(userLevel), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptionsOne(userLevel), muteDoorSelect.tempDuration, 'value', 'label')}
+                      options={mapOptions<selectOption, keyof selectOption>(generateOptionsOne(role), 'value', 'label')}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptionsOne(role), muteDoorSelect.tempDuration, 'value', 'label')}
                       onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, tempDuration: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, tempDuration: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}
@@ -280,8 +280,8 @@ function ModalMute(modalProps: modalAdjustType) {
                     <Select
                       id="hours-three"
                       key={JSON.stringify(muteDoorSelect)}
-                      options={mapOptions<selectOption, keyof selectOption>(generateOptions(userLevel), 'value', 'label')}
-                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(userLevel), muteDoorSelect.doorAlarm, 'value', 'label')}
+                      options={mapOptions<selectOption, keyof selectOption>(generateOptions(role), 'value', 'label')}
+                      value={mapDefaultValue<selectOption, keyof selectOption>(generateOptions(role), muteDoorSelect.doorAlarm, 'value', 'label')}
                       onChange={(e) => { setMuteDoorSelect((prev) => ({ ...prev, doorAlarm: String(e?.value) })); setMuteDoor((prev) => ({ ...prev, doorAlarm: String(e?.value) })) }}
                       autoFocus={false}
                       placeholder={'เลือกเวลา'}

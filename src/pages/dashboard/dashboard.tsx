@@ -41,7 +41,7 @@ export default function Dashboard() {
     if (!token) return
     if (cookies.get('devid')) return
     if (devices.length > 0) {
-      dispatch(fetchDevicesLog({ deviceId: devices[0]?.devId, token }))
+      dispatch(fetchDevicesLog({ deviceId: devices[0]?.devId }))
       dispatch(setSerial(devices[0]?.devSerial))
       dispatch(setDeviceId(devices[0]?.devId))
       cookies.set('devid', String(devices[0]?.devId), cookieOptions)

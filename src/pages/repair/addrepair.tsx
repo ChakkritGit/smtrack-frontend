@@ -29,11 +29,11 @@ export default function Addrepair(addrepair: addrepairtype) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { devdata, fetchdata, pagestate } = addrepair
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token, displayName, hosId, groupId } = cookieDecode
+  const { cookieDecode, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const { token, hosId, wardId } = cookieDecode
   const [show, setShow] = useState(false)
   const [repairData, setRepairdata] = useState({
-    repairInfo: devdata.repairInfo || displayName,
+    repairInfo: devdata.repairInfo || String(userProfile.display),
     repairLocation: devdata.repairLocation || '',
     telePhone: devdata.telePhone || '',
     ward: devdata.ward || '',
@@ -258,7 +258,7 @@ export default function Addrepair(addrepair: addrepairtype) {
                   <WardDropdown
                     setStateWard={setValuestate}
                     Hosid={hosId}
-                    groupId={groupId}
+                    groupId={wardId}
                   />
                 </Form.Group>
               </Col>

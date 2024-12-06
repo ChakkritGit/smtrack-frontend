@@ -41,14 +41,14 @@ import { WarrantySpan } from "../../style/components/warranty.styled"
 export default function Home() {
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { searchQuery, hosId, wardId, cookieDecode, transparent } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, hosId, wardId, userProfile, tokenDecode, transparent } = useSelector((state: RootState) => state.utilsState)
   const devicesFilter = useSelector((state: RootState) => state.arraySlice.device.devicesFilter)
   const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
   const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const { role } = tokenDecode
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
-  const { userLevel, hosName } = cookieDecode
   const [onFilteres, setOnFilteres] = useState(false)
   const [rowPerPage, setRowPerPage] = useState(cookies.get('rowperpage') ?? 12)
   const [cardActive, setCardActive] = useState('')
@@ -555,9 +555,9 @@ export default function Home() {
                 {t('showAllBox')}
               </h5>
               {
-                userLevel === '0' && <TagCurrentHos>
+                role === 'SUPER' && <TagCurrentHos>
                   {
-                    `${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`
+                    `${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`
                   }
                 </TagCurrentHos>
               }

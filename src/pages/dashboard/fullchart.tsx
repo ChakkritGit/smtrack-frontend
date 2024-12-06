@@ -24,7 +24,7 @@ import Swal from "sweetalert2"
 import { useTranslation } from "react-i18next"
 import ImagesOne from '../../assets/images/Thanes.png'
 import html2canvas from 'html2canvas'
-import { swalOptimizeChartButtons } from "../../components/dropdown/sweetalertLib"
+import { swalOptimizeChartButtons } from "../../constants/sweetalertLib"
 import { RiArrowRightSLine } from "react-icons/ri"
 import toast from "react-hot-toast"
 import Apexchart from "../../components/dashboard/apexchart"

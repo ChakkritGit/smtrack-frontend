@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { cookieOptions, cookies } from '../../constants/constants'
 import { setCookieEncode, setDeviceId, setSerial, setShowAlert } from '../../stores/utilsStateSlice'
-import { swalTokenInvalid } from '../dropdown/sweetalertLib'
+import { swalTokenInvalid } from '../../constants/sweetalertLib'
 import { RootState } from '../../stores/store'
 import { reset } from '../../stores/resetAction'
 

@@ -10,8 +10,8 @@ import { RootState } from '../../../stores/store'
 
 export default function Adddevices() {
   const { t } = useTranslation()
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = cookieDecode
+  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   const [selectedTab, setSelectedTab] = useState<string>(cookies.get('selectTabSub') ?? 'device')
 
   const saveSelectTab = (keyValue: string) => {
@@ -29,7 +29,7 @@ export default function Adddevices() {
           {t('subTabDevice')}
         </MainTab>
         {
-          userLevel !== '3' && <MainTab
+          role !== 'USER' && <MainTab
             onClick={() => saveSelectTab('probe')}
             $primary={selectedTab === 'probe'}
           >
@@ -37,7 +37,7 @@ export default function Adddevices() {
           </MainTab>
         }
         {
-          userLevel === '0' && <MainTab
+          role === 'SUPER' && <MainTab
             onClick={() => saveSelectTab('firmware')}
             $primary={selectedTab === 'firmware'}
           >
@@ -50,10 +50,10 @@ export default function Adddevices() {
         selectedTab === 'device' ?
           <Managedev /> :
           selectedTab === 'probe' ?
-            userLevel !== '3' ?
+            role !== 'USER' ?
               <Probesetting /> :
               <></> :
-            userLevel === '0' ?
+            role === 'SUPER' ?
               <Uploadfirmware />
               :
               <></>

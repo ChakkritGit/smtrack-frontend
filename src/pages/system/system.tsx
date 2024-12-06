@@ -15,7 +15,7 @@ import Lang from "./lang"
 import Noti from "./noti"
 import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
-import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
+import { swalWithBootstrapButtons } from "../../constants/sweetalertLib"
 import { cookieOptions, cookies } from "../../constants/constants"
 import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
@@ -26,8 +26,8 @@ import { reset } from "../../stores/resetAction"
 export default function System() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { expand, cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = cookieDecode
+  const { expand, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   const [pagenumber, setPagenumber] = useState(localStorage.getItem('settingTab') ?? '1')
   const navigate = useNavigate()
 
@@ -79,7 +79,7 @@ export default function System() {
                   {t('titleNotification')}
                 </span>
               </ListMenu>
-              {userLevel === '0' &&
+              {role === 'SUPER' &&
                 <ListMenu $primary={pagenumber === '5'} onClick={() => { setPagenumber('5'); localStorage.setItem('settingTab', '5') }}>
                   <RiFileTextLine />
                   <span>

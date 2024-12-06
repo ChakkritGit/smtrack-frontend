@@ -12,7 +12,7 @@ import { DeviceState, DeviceStateStore } from "../../types/redux.type"
 import { AxiosError } from "axios"
 import { warrantyType } from "../../types/warranty.type"
 import { responseType } from "../../types/response.type"
-import { swalWithBootstrapButtons } from "../../components/dropdown/sweetalertLib"
+import { swalWithBootstrapButtons } from "../../constants/sweetalertLib"
 import Swal from "sweetalert2"
 import Select from 'react-select'
 import { setRefetchdata, setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"

@@ -21,7 +21,7 @@ export default function Permission() {
   const [cardsPerPage, setCardsPerPage] = useState<number>(20)
   const [displayedCards, setDisplayedCards] = useState<usersType[]>(userData ? userData.slice(0, cardsPerPage) : [])
   const { searchQuery, expand, tokenDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userId } = tokenDecode
+  const { id } = tokenDecode
   const [isFiltering, setIsFiltering] = useState(true)
   const [filterById, setFilterById] = useState({
     hosId: '',
@@ -102,7 +102,7 @@ export default function Permission() {
           <>
             <CardUserBody $primary={expand}>
               {
-                displayedCards.filter((f) => f.userId !== userId).map((item, index) => (
+                displayedCards.filter((f) => f.userId !== id).map((item, index) => (
                   <CardUser
                     key={item.userId}
                     keyindex={index}

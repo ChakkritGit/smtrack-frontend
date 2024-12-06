@@ -6,6 +6,7 @@ import { NavProfile } from "../../style/style"
 import { ImageComponent } from "../../constants/constants"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
+import DefualtUserPic from "../../assets/images/default-user.jpg"
 
 interface BottombarProps {
   isScrollingDown: boolean
@@ -14,9 +15,8 @@ interface BottombarProps {
 const SecondBottombar = ({ isScrollingDown }: BottombarProps) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const { cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userPicture } = cookieDecode
-  const { userLevel } = tokenDecode
+  const { userProfile, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
 
   return (
     <NavigationBottom $primary={isScrollingDown}>
@@ -41,7 +41,7 @@ const SecondBottombar = ({ isScrollingDown }: BottombarProps) => {
         <ActiveNavBlur $primary={location.pathname === "/dashboard" || location.pathname.split('/')[2] === "chart" || location.pathname.split('/')[2] === "table" || location.pathname === "/dashboard/chart/compare"} />
       </NavigationItems>
       {
-        userLevel === "0" &&
+        role === "SUPER" &&
         <NavigationItems $primary={location.pathname === "/management" || location.pathname === '/management/flasher'} onClick={() => navigate('/management')}>
           {
             location.pathname === "/management" || location.pathname === "/management/logadjust" || location.pathname === '/management/flasher' ?
@@ -55,7 +55,7 @@ const SecondBottombar = ({ isScrollingDown }: BottombarProps) => {
       }
       <NavigationItems $primary={location.pathname === "/settings"} onClick={() => navigate('/settings')}>
         <NavProfile>
-          <ImageComponent src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" ></ImageComponent>
+          <ImageComponent src={userProfile?.pic ? userProfile.pic : DefualtUserPic} alt="profile" ></ImageComponent>
         </NavProfile>
         <span>{t('tabAccount')}</span>
         <ActiveNavBlur $primary={location.pathname === "/settings"} />

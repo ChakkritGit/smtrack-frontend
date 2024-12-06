@@ -37,7 +37,7 @@ type AdjustmentType = {
 function Adjustment(adjustProps: AdjustmentType) {
   const { t } = useTranslation()
   const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = tokenDecode
+  const { role } = tokenDecode
   const { humvalue, tempvalue, setTempvalue, setHumvalue, handleTempChange,
     handleHumChange, formData, setFormData, handleAdjusttempChange,
     handleAdjusthumChange, mqttData, devicesdata, showAdjust } = adjustProps
@@ -146,7 +146,7 @@ function Adjustment(adjustProps: AdjustmentType) {
                     min={-20}
                     max={20}
                     step={.01}
-                    disabled={userLevel === '3' || userLevel === '2'}
+                    disabled={role === 'USER' || role === 'ADMIN'}
                     value={formData.adjustTemp}
                     onChange={(e) => setFormData({ ...formData, adjustTemp: Number(e.target.value) })} />
                   <strong>°C</strong>
@@ -154,14 +154,14 @@ function Adjustment(adjustProps: AdjustmentType) {
               </SliderLabelFlex>
               <FormSliderRange
                 $primary="temp"
-                $disabled={userLevel === '3' || userLevel === '2'}
+                $disabled={role === 'USER' || role === 'ADMIN'}
               >
                 <Slider
                   color="error"
                   min={-20}
                   max={20}
                   step={.01}
-                  disabled={userLevel === '3' || userLevel === '2'}
+                  disabled={role === 'USER' || role === 'ADMIN'}
                   value={formData.adjustTemp}
                   onChange={handleAdjusttempChange}
                   valueLabelDisplay="off" />
@@ -180,7 +180,7 @@ function Adjustment(adjustProps: AdjustmentType) {
                     min={0}
                     max={100}
                     step={.01}
-                    disabled={userLevel === '3' || userLevel === '2'}
+                    disabled={role === 'USER' || role === 'ADMIN'}
                     value={formData.adjustHum}
                     onChange={(e) => setFormData({ ...formData, adjustHum: Number(e.target.value) })} />
                   <strong>%</strong>
@@ -188,14 +188,14 @@ function Adjustment(adjustProps: AdjustmentType) {
               </SliderLabelFlex>
               <FormSliderRange
                 $primary="hum"
-                $disabled={userLevel === '3' || userLevel === '2'}
+                $disabled={role === 'USER' || role === 'ADMIN'}
               >
                 <Slider
                   color="primary"
                   min={0}
                   max={100}
                   step={.01}
-                  disabled={userLevel === '3' || userLevel === '2'}
+                  disabled={role === 'USER' || role === 'ADMIN'}
                   value={formData.adjustHum}
                   onChange={handleAdjusthumChange}
                   valueLabelDisplay="off" />

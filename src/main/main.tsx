@@ -28,7 +28,7 @@ export default function Main() {
   const dispatch = useDispatch<storeDispatchType>()
   const { socketData, showAside, deviceId, cookieDecode, reFetchData, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
-  const { userLevel, hosId } = tokenDecode
+  const { role, hosId } = tokenDecode
   const handleClose = () => dispatch(setShowAside(false))
   const handleShow = () => dispatch(setShowAside(true))
   const [isScrollingDown, setIsScrollingDown] = useState(false)
@@ -38,32 +38,32 @@ export default function Main() {
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4") return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
     dispatch(filtersDevices(token))
     dispatch(fetchHospitals(token))
     dispatch(fetchWards(token))
     dispatch(fetchUserData(token))
     dispatch(fetchProbeData(token))
-  }, [token, userLevel])
+  }, [token, role])
 
   useEffect(() => {
-    if (userLevel === "4") return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
     if (!token) return
     dispatch(fetchDevicesData(token))
-  }, [socketData, token, dispatch, userLevel])
+  }, [socketData, token, dispatch, role])
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4") return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
     if (reFetchData) {
       dispatch(fetchDevicesData(token))
       dispatch(fetchProbeData(token))
       dispatch(setRefetchdata(false))
     }
-  }, [reFetchData, token, userLevel])
+  }, [reFetchData, token, role])
 
   useEffect(() => {
-    if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId, token }))
+    if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId }))
   }, [deviceId, token, socketData, reFetchData])
 
   const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
@@ -101,10 +101,10 @@ export default function Main() {
   const handleDisconnect = (reason: any) => console.error("Disconnected from Socket server:", reason)
   const handleError = (error: any) => console.error("Socket error:", error)
   const handleMessage = (response: socketResponseType) => {
-    if (!userLevel && !hosId) return
-    if (userLevel === "4") return
+    if (!role && !hosId) return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
 
-    if (userLevel === "0" || userLevel === "1" || hosId === response.hospital) {
+    if (role === "SUPER" || role === "SERVICE" || hosId === response.hospital) {
       dispatch(setSocketData(response))
     }
   }
@@ -123,7 +123,7 @@ export default function Main() {
       socket.off("receive_message", handleMessage)
       // socket.off("device_event", handleDeviceEvent)
     }
-  }, [userLevel, hosId, userLevel])
+  }, [hosId, role])
 
   useEffect(() => {
     try {
@@ -140,8 +140,8 @@ export default function Main() {
       setStatus(false)
       setTimeout(() => { setShow(false) }, 3000)
       if (!token) return
-      if (deviceId !== "undefined") dispatch(fetchDevicesLog({ deviceId, token }))
-      if (userLevel !== '4') {
+      if (deviceId !== "undefined") dispatch(fetchDevicesLog({ deviceId }))
+      if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") {
         dispatch(fetchDevicesData(token))
         dispatch(filtersDevices(token))
         dispatch(fetchHospitals(token))
@@ -158,7 +158,7 @@ export default function Main() {
       window.removeEventListener('offline', handleOffline)
       window.removeEventListener('online', handleOnline)
     }
-  }, [token, deviceId, userLevel])
+  }, [token, deviceId, role])
 
   return (
     <>

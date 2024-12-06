@@ -40,8 +40,8 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
   const { theme } = useTheme()
   const wardData = useSelector((state: RootState) => state.arraySlice.ward.wardData)
   const hospitalsData = useSelector((state: RootState) => state.arraySlice.hospital.hospitalsData)
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = cookieDecode
+  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   const [wardName, setWardname] = useState<wardsType[]>([])
   const [filterdata, setFilterdata] = useState(false)
   const { filterById, setFilterById } = filterProps
@@ -91,7 +91,7 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
   return (
     <div>
       {
-        userLevel !== '3' &&
+        role !== 'USER' &&
         <>
           {!filterdata &&
             <DeviceInfoSpan onClick={() => setFilterdata(true)}>
@@ -103,7 +103,7 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
               filterdata &&
               <DevHomeHead>
                 {
-                  userLevel !== '2' && <Select
+                  role !== 'ADMIN' && <Select
                     options={mapOptions<Hospital, keyof Hospital>(updatedHosData, 'hosId', 'hosName')}
                     value={mapDefaultValue<Hospital, keyof Hospital>(updatedHosData, hosId ? hosId : '', 'hosId', 'hosName')}
                     onChange={(e) => getHospital(e?.value)}

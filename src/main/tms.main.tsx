@@ -20,8 +20,9 @@ import { fetchHospitals, fetchWards } from "../stores/dataArraySlices"
 const TmsMain = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { showAside, cookieDecode, reFetchData, socketData, isTms } = useSelector((state: RootState) => state.utilsState)
-  const { token, userLevel, hosId } = cookieDecode
+  const { showAside, cookieDecode, reFetchData, socketData, isTms, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { token, hosId } = cookieDecode
+  const { role } = tokenDecode
   const [isScrollingDown, setIsScrollingDown] = useState(false)
   const [lastScrollY, setLastScrollY] = useState(0)
   const handleClose = () => dispatch(setShowAside(false))
@@ -33,8 +34,8 @@ const TmsMain = () => {
   const handleDisconnect = (reason: any) => console.error("Disconnected from Socket server:", reason)
   const handleError = (error: any) => console.error("Socket error:", error)
   const handleMessage = (response: socketResponseType) => {
-    if (!userLevel && !hosId) return
-    if (userLevel !== "4") return
+    if (!role && !hosId) return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
 
     if (hosId === response.hospital) {
       dispatch(setSocketData(response))
@@ -55,7 +56,7 @@ const TmsMain = () => {
       socket.off("receive_message", handleMessage)
       // socket.off("device_event", handleDeviceEvent)
     }
-  }, [userLevel, hosId, userLevel])
+  }, [role, hosId])
 
   const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
     // e.preventDefault()
@@ -82,18 +83,18 @@ const TmsMain = () => {
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4" || isTms) {
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" || isTms) {
       dispatch(fetchHospitals(token))
       dispatch(fetchWards(token))
     }
-  }, [token, userLevel])
+  }, [token, role])
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4" || isTms) {
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" || isTms) {
       dispatch(fetchTmsDevice(token))
     }
-  }, [socketData, token, userLevel])
+  }, [socketData, token, role])
 
   useEffect(() => {
     if (!token) return
@@ -102,10 +103,10 @@ const TmsMain = () => {
 
   useEffect(() => {
     if (!token) return
-    if (userLevel === "4" && reFetchData || isTms) {
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" && reFetchData || isTms) {
       dispatch(fetchTmsDevice(token))
     }
-  }, [token, reFetchData, userLevel])
+  }, [token, reFetchData, role])
 
   useEffect(() => {
     const handleOffline = () => { setStatus(true); setShow(true) }
@@ -113,7 +114,7 @@ const TmsMain = () => {
       setStatus(false)
       setTimeout(() => { setShow(false) }, 3000)
       if (!token) return
-      if (userLevel === '4') {
+      if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") {
         dispatch(fetchTmsDevice(token))
       }
     }

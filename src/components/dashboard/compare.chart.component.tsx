@@ -53,7 +53,6 @@ const CompareChartComponent = ({ chartData, isExport }: compareChart) => {
     chart: {
       animations: {
         enabled: true,
-        easing: 'easeinout',
         dynamicAnimation: {
           speed: 500
         }

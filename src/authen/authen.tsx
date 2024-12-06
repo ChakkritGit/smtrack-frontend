@@ -15,17 +15,17 @@ export function Islogout() {
 }
 
 export function Hidesetting() {
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = cookieDecode
+  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   return (
-    userLevel === '3' || userLevel === '4' ? <Notacess /> : <Outlet />
+    role === 'USER' || role === 'LEGACY_ADMIN' || role === 'LEGACY_USER' ? <Notacess /> : <Outlet />
   )
 }
 
 export function HideFlashFW() {
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userLevel } = cookieDecode
+  const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
   return (
-    userLevel !== '0' ? <Notacess /> : <Outlet />
+    role !== 'SUPER' ? <Notacess /> : <Outlet />
   )
 }

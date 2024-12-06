@@ -6,6 +6,7 @@ import { NavProfile } from "../../style/style"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
 import { ImageComponent } from "../../constants/constants"
+import DefualtUserPic from "../../assets/images/default-user.jpg"
 
 interface BottombarProps {
   isScrollingDown: boolean
@@ -15,8 +16,8 @@ export default function Bottombar({ isScrollingDown }: BottombarProps) {
   const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { userPicture } = cookieDecode
+  const { userProfile, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { role } = tokenDecode
 
   return (
     <NavigationBottom $primary={isScrollingDown}>
@@ -41,7 +42,7 @@ export default function Bottombar({ isScrollingDown }: BottombarProps) {
         <ActiveNavBlur $primary={location.pathname === "/dashboard" || location.pathname.split('/')[2] === "chart" || location.pathname.split('/')[2] === "table" || location.pathname === "/dashboard/chart/compare"} />
       </NavigationItems>
       {
-        cookieDecode.userLevel !== '3' ?
+        role !== 'USER' ?
           <>
             <NavigationItems $primary={location.pathname === "/permission"} onClick={() => navigate('/permission')}>
               {
@@ -69,7 +70,7 @@ export default function Bottombar({ isScrollingDown }: BottombarProps) {
       }
       <NavigationItems $primary={location.pathname === "/settings"} onClick={() => navigate('/settings')}>
         <NavProfile>
-          <ImageComponent src={userPicture ? `${import.meta.env.VITE_APP_IMG}${userPicture}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="profile" ></ImageComponent>
+          <ImageComponent src={userProfile?.pic ? userProfile.pic : DefualtUserPic} alt="profile" ></ImageComponent>
         </NavProfile>
         <span>{t('tabAccount')}</span>
         <ActiveNavBlur $primary={location.pathname === "/settings"} />

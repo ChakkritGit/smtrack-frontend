@@ -598,7 +598,7 @@ export const minutesOptions = Array.from({ length: 60 }, (_, i) => ({
   label: String(i).padStart(2, '0'),
 }))
 
-export const generateOptionsOne = (userLevel: string) => {
+export const generateOptionsOne = (role: string) => {
   let option = []
   for (let i = 5; i <= 120; i += 5) {
     option.push({
@@ -606,7 +606,7 @@ export const generateOptionsOne = (userLevel: string) => {
       label: String(i)
     })
   }
-  if (userLevel === '0' || userLevel === '1') {
+  if (role === 'SUPER' || role === 'SERVICE') {
     option.push({
       value: 'off',
       label: 'OFF'
@@ -615,7 +615,7 @@ export const generateOptionsOne = (userLevel: string) => {
   return option
 }
 
-export const generateOptions = (userLevel: string) => {
+export const generateOptions = (role: string) => {
   let option = []
   for (let i = 5; i <= 120; i += 5) {
     option.push({
@@ -623,7 +623,7 @@ export const generateOptions = (userLevel: string) => {
       label: String(i)
     })
   }
-  if (userLevel === '0' || userLevel === '1') {
+  if (role === 'SUPER' || role === 'SERVICE') {
     option.push({
       value: 'off',
       label: 'OFF'

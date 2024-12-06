@@ -11,7 +11,7 @@ import {
   SpanStatusDev
 } from "../../../style/style"
 import { RiLoopRightFill, RiShutDownLine, RiTimer2Line } from "react-icons/ri"
-import { swalWithBootstrapButtons } from "../../../components/dropdown/sweetalertLib"
+import { swalWithBootstrapButtons } from "../../../constants/sweetalertLib"
 import Adddevform from "./adddevform"
 import Swal from "sweetalert2"
 import toast from "react-hot-toast"

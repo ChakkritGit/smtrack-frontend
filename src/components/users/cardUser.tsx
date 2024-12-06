@@ -3,7 +3,7 @@ import { DelUserButton, UserDetails, UserMenu, UsercardFlex, Userimage } from ".
 import { RiDeleteBin2Line } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
 import Adduser from "../../pages/users/adduser"
-import { swalWithBootstrapButtons } from "../dropdown/sweetalertLib"
+import { swalWithBootstrapButtons } from "../../constants/sweetalertLib"
 import axios, { AxiosError } from "axios"
 import Swal from "sweetalert2"
 import { useDispatch, useSelector } from "react-redux"

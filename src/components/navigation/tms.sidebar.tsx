@@ -1,47 +1,33 @@
-import { useDispatch, useSelector } from "react-redux";
-import { HospitalName, Li, LineHr, MainMenuSide, SettingSystem, Sidebar, SidebarLogo, SpanAside, ToggleTmsButtonWrapper, TooltipSpan, Ul } from "../../style/style";
-import { RootState, storeDispatchType } from "../../stores/store";
-import { Link, useNavigate } from "react-router-dom";
-import { accessToken, cookieOptions, cookies, ImageComponent } from "../../constants/constants";
-import { setCookieEncode, setShowAlert, setShowAside, setSwitchTms } from "../../stores/utilsStateSlice";
-import { RiDashboardFill, RiDashboardLine, RiHome3Fill, RiHome3Line, RiListSettingsFill, RiListSettingsLine, RiSettings3Fill, RiSettings3Line } from "react-icons/ri";
-import { AboutVersion } from "../../style/components/sidebar";
-import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-import axios, { AxiosError } from "axios";
-import { usersType } from "../../types/user.type";
-import { responseType } from "../../types/response.type";
+import { useDispatch, useSelector } from "react-redux"
+import { HospitalName, Li, LineHr, MainMenuSide, SettingSystem, Sidebar, SidebarLogo, SpanAside, ToggleTmsButtonWrapper, TooltipSpan, Ul } from "../../style/style"
+import { RootState, storeDispatchType } from "../../stores/store"
+import { Link, useNavigate } from "react-router-dom"
+import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
+import { setShowAlert, setShowAside, setSwitchTms, setUserProfile } from "../../stores/utilsStateSlice"
+import { RiDashboardFill, RiDashboardLine, RiHome3Fill, RiHome3Line, RiListSettingsFill, RiListSettingsLine, RiSettings3Fill, RiSettings3Line } from "react-icons/ri"
+import { AboutVersion } from "../../style/components/sidebar"
+import { useTranslation } from "react-i18next"
+import { useEffect } from "react"
+import axios, { AxiosError } from "axios"
+import { UserProfileType } from "../../types/user.type"
+import { responseType } from "../../types/response.type"
+import DefualtPic from "../../assets/images/default-pic.png"
 
 const SecondSidebar = () => {
   const dispatch = useDispatch<storeDispatchType>()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { expand, cookieDecode, tokenDecode, notiData, isTms } = useSelector((state: RootState) => state.utilsState)
-  const { token, hosImg, hosName } = cookieDecode
-  const { userLevel } = tokenDecode
+  const { expand, cookieDecode, tokenDecode, notiData, isTms, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const { token } = cookieDecode
+  const { role, id } = tokenDecode
   let isFirstLoad = true
 
   const reFetchdata = async () => {
-    if (tokenDecode.userId) {
+    if (id) {
       try {
         const response = await axios
-          .get<responseType<usersType>>(`${import.meta.env.VITE_APP_API}/user/${tokenDecode.userId}`, { headers: { authorization: `Bearer ${token}` } })
-        const { displayName, userId, userLevel, userPic, ward, wardId } = response.data.data
-        const { hosId, hospital } = ward
-        const { hosPic, hosName } = hospital
-        const localDataObject = {
-          userId: userId,
-          hosId: hosId,
-          displayName: displayName,
-          userPicture: userPic,
-          userLevel: userLevel,
-          hosImg: hosPic,
-          hosName: hosName,
-          groupId: wardId,
-          token: token
-        }
-        cookies.set('localDataObject', String(accessToken(localDataObject)), cookieOptions)
-        dispatch(setCookieEncode(String(accessToken(localDataObject))))
+          .get<responseType<UserProfileType>>(`${import.meta.env.VITE_APP_API}/user/${id}`, { headers: { authorization: `Bearer ${token}` } })
+        dispatch(setUserProfile(response.data.data))
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -85,19 +71,19 @@ const SecondSidebar = () => {
       const pathSegment = location.pathname.split('/')[1]
       const capitalized = pathSegment.charAt(0).toUpperCase() + pathSegment.slice(1)
 
-      document.getElementsByTagName('head')[0].appendChild(link);
+      document.getElementsByTagName('head')[0].appendChild(link)
       document.title =
         (notiData.filter((n) => n.notiStatus === false).length > 0
           ? `(${notiData.filter((n) => n.notiStatus === false).length}) `
           : '') +
-        hosName +
+        userProfile?.ward.hospital.hosName +
         ' - ' +
         `${location.pathname.split('/')[1] !== '' ? capitalized : 'Home'}`
     }
 
     const addNotificationDotToFavicon = async () => {
-      const baseImageSrc = hosImg
-        ? `${import.meta.env.VITE_APP_IMG}${hosImg}`
+      const baseImageSrc = userProfile?.ward.hospital.hosPic
+        ? userProfile?.ward.hospital.hosPic
         : 'Logo_SM_WBG.jpg'
 
       const img = new Image()
@@ -110,7 +96,7 @@ const SecondSidebar = () => {
 
         if (!ctx) return
 
-        const size = 64;
+        const size = 64
         canvas.width = size
         canvas.height = size
 
@@ -131,11 +117,11 @@ const SecondSidebar = () => {
     if (notiData.filter((n) => n.notiStatus === false).length > 0) {
       addNotificationDotToFavicon()
     } else {
-      if (hosImg) {
-        changeFavicon(`${import.meta.env.VITE_APP_IMG}${hosImg}`)
+      if (userProfile?.ward.hospital.hosPic) {
+        changeFavicon(userProfile?.ward.hospital.hosPic)
       }
     }
-  }, [location, cookieDecode, hosImg, notiData])
+  }, [location, cookieDecode, userProfile?.ward.hospital.hosPic, notiData])
 
   const resetAsideandCardcount = () => {
     dispatch(setShowAside(false))
@@ -147,9 +133,9 @@ const SecondSidebar = () => {
         <SidebarLogo
           $primary={expand}
         >
-          <ImageComponent src={hosImg ? `${import.meta.env.VITE_APP_IMG}${hosImg}` : `${import.meta.env.VITE_APP_IMG}/img/default-pic.png`} alt="hos-logo" />
+          <ImageComponent src={userProfile?.ward.hospital.hosPic ? userProfile?.ward.hospital.hosPic : DefualtPic} alt="hos-logo" />
         </SidebarLogo>
-        <HospitalName $primary={expand}>{hosName}</HospitalName>
+        <HospitalName $primary={expand}>{userProfile?.ward.hospital.hosName}</HospitalName>
       </Link>
       <LineHr $primary />
       <Ul $primary={expand} $maxheight className="nav nav-pills">
@@ -187,7 +173,7 @@ const SecondSidebar = () => {
             </TooltipSpan>
           </Li>
           {
-            userLevel === "0" &&
+            role === "SUPER" &&
             <Li $primary={expand}>
               <Link to="/management" onClick={resetAsideandCardcount} className={location.pathname === "/management" || location.pathname === "/management/logadjust" || location.pathname === "/management/flasher" ? "nav-link d-flex align-items-center gap-2  active" : "nav-link d-flex align-items-center gap-2 text-dark"}>
                 {
@@ -211,11 +197,11 @@ const SecondSidebar = () => {
       <SettingSystem >
         <Ul className="nav nav-pills">
           {
-            userLevel === "0" && !expand && <span>{t('switchModeMain')}</span>
+            role === "SUPER" && !expand && <span>{t('switchModeMain')}</span>
           }
           {
-            userLevel === "0" && <Li>
-              <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions); }} $primary={isTms}>
+            role === "SUPER" && <Li>
+              <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions) }} $primary={isTms}>
                 <div className="icon">
                   {isTms ? 'TMS' : 'E/I'}
                 </div>
