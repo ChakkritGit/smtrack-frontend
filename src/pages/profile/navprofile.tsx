@@ -43,7 +43,7 @@ export default function Navprofile() {
               <ImageComponent src={userProfile?.pic ? `${userProfile.pic}` : DefualtUserPic} alt="profile" />
             </NavProfile>
             <div>
-              <span>{userProfile?.display}</span>
+              <span>{userProfile?.display ?? '- -'}</span>
               <span>{getRoleLabel(role, t)}</span>
             </div>
             <RiArrowDropDownLine size={28} />
@@ -57,7 +57,7 @@ export default function Navprofile() {
               <ImageComponent src={userProfile?.pic ? `${userProfile.pic}` : DefualtUserPic} alt="profile" />
             </NavProfile>
             <div style={{ display: 'flex', flexDirection: 'column', width: '100px', maxWidth: '100px' }}>
-              <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userProfile?.display}</span>
+              <span style={{ display: 'block', width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{userProfile?.display ?? '- -'}</span>
               <strong style={{ width: '100px', maxWidth: '100px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{getRoleLabel(role, t)}</strong>
             </div>
           </NavProfileContainer>

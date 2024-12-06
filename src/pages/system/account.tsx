@@ -240,8 +240,8 @@ export default function Account() {
             </label>
           </div>
           <div>
-            <h5>{userProfile?.display}</h5>
-            <span>@{userData?.username}</span>
+            <h5>{userProfile?.display ?? '- -'}</h5>
+            <span>@{userData?.username ?? ' - -'}</span>
           </div>
         </div>
         <div>
