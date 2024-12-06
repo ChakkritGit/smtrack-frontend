@@ -26,7 +26,6 @@ type MqttType = {
   doorDuration: string
 }
 
-
 type modalAdjustType = {
   devicesdata: devicesType,
   setShowSettingMute: Dispatch<SetStateAction<boolean>>,

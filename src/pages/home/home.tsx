@@ -274,7 +274,7 @@ export default function Home() {
       name: t('deviceWarrantyTb'),
       cell: items => {
 
-        return <WarrantySpan $expired={calulateDate(items).remainingDays <= 0}>
+        return <WarrantySpan $expired={calulateDate(items).remainingDays <= 0 && calulateDate(items).months <= 0 && calulateDate(items).years <= 0}>
           {items.warranty[0]?.expire ?
             calulateDate(items).daysRemaining > 0
               ? calulateDate(items).years > 0
@@ -557,7 +557,7 @@ export default function Home() {
               {
                 role === 'SUPER' && <TagCurrentHos>
                   {
-                    `${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`
+                    `${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`
                   }
                 </TagCurrentHos>
               }

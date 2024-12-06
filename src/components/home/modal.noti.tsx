@@ -28,7 +28,6 @@ type modalAdjustType = {
   setShow: Dispatch<SetStateAction<boolean>>,
 }
 
-
 function ModalNotification(modalProps: modalAdjustType) {
   const { fetchData, devicesdata, showSetting, setShowSetting, setShow } = modalProps
   const { t } = useTranslation()

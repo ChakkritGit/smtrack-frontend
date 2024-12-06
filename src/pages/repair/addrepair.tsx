@@ -33,7 +33,7 @@ export default function Addrepair(addrepair: addrepairtype) {
   const { token, hosId, wardId } = cookieDecode
   const [show, setShow] = useState(false)
   const [repairData, setRepairdata] = useState({
-    repairInfo: devdata.repairInfo || String(userProfile.display),
+    repairInfo: devdata.repairInfo || String(userProfile?.display),
     repairLocation: devdata.repairLocation || '',
     telePhone: devdata.telePhone || '',
     ward: devdata.ward || '',

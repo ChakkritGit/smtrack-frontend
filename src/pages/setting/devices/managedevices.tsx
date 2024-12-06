@@ -31,8 +31,9 @@ export default function Managedev() {
   const { t, i18n } = useTranslation()
   const langs = localStorage.getItem("lang")
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token, userLevel } = cookieDecode
+  const { searchQuery, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { token } = cookieDecode
+  const { role } = tokenDecode
   const { devices } = useSelector((state: RootState) => state.devices)
 
   const [filterById, setFilterById] = useState({
@@ -171,7 +172,7 @@ export default function Managedev() {
             devdata={item}
           />
           {
-            userLevel === '0' && (!item.devStatus ?
+            role === 'SUPER' && (!item.devStatus ?
               <Reactive onClick={() =>
                 swalWithBootstrapButtons
                   .fire({
@@ -241,7 +242,7 @@ export default function Managedev() {
             setFilterById={setFilterById}
           />
           {
-            userLevel !== '2' && userLevel !== '3' && <div>
+            role !== 'ADMIN' && role !== 'USER' && <div>
               <Adddevform
                 pagestate={'add'}
                 devdata={{} as devicesType}
