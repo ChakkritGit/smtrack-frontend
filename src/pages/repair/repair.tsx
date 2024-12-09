@@ -21,6 +21,7 @@ import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { setRefetchdata, setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
+import PageLoading from "../../components/loading/page.loading"
 
 export default function Repair() {
   const { t } = useTranslation()
@@ -237,19 +238,24 @@ export default function Repair() {
             />
           </RepairHeader>
         </RepairContainer>
-        <ManageRepairBody>
-          {/* {JSON.stringify(repairData)} */}
-          <DataTable
-            className="hiTDLB-st"
-            responsive={true}
-            columns={columns}
-            data={filteredItems}
-            pagination
-            paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
-            fixedHeader
-            fixedHeaderScrollHeight="calc(100dvh - 300px)"
-          />
-        </ManageRepairBody>
+        {
+          filteredItems.length > 0 ?
+            <ManageRepairBody>
+              {/* {JSON.stringify(repairData)} */}
+              <DataTable
+                className="hiTDLB-st"
+                responsive={true}
+                columns={columns}
+                data={filteredItems}
+                pagination
+                paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+                fixedHeader
+                fixedHeaderScrollHeight="calc(100dvh - 300px)"
+              />
+            </ManageRepairBody>
+            :
+            <PageLoading />
+        }
 
         <Modal show={show} size="lg" scrollable onHide={closemodal}>
           <Modal.Header>

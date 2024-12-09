@@ -98,7 +98,8 @@ export default function Permission() {
       </CardUserHead>
 
       {
-        !isFiltering ?
+        displayedCards.length > 0 ?
+          !isFiltering &&
           <>
             <CardUserBody $primary={expand}>
               {
@@ -109,7 +110,7 @@ export default function Permission() {
                     userPic={item.userPic}
                     displayName={item.displayName}
                     userName={item.userName}
-                    userLevel={item.userLevel}
+                    role={item.role}
                     userId={item.userId}
                     hosId={item.ward.hosId}
                     userStatus={item.userStatus}

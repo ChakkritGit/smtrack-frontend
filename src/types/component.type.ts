@@ -7,7 +7,7 @@ interface cardType {
   userId: string,
   displayName: string,
   userName: string,
-  userLevel: string,
+  role: UserRole,
   userPic: string,
   hosId: string,
   userStatus: boolean,

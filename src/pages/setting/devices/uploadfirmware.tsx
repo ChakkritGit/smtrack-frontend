@@ -41,6 +41,7 @@ import { mapDefaultValue, mapOptions } from "../../../constants/constants"
 import { Option } from "../../../types/config.type"
 import { devicesType } from "../../../types/device.type"
 import axiosInstance from "../../../constants/axiosInstance"
+import PageLoading from "../../../components/loading/page.loading"
 
 interface FirmwareItem {
   fileName: string;
@@ -264,13 +265,7 @@ export default function Uploadfirmware() {
         if (error.response?.status === 401) {
           dispatch(setShowAlert(true))
         } else {
-          Swal.fire({
-            title: t('alertHeaderError'),
-            text: error.response?.data.message,
-            icon: "error",
-            timer: 2000,
-            showConfirmButton: false,
-          })
+          console.error(error)
         }
       } else {
         Swal.fire({
@@ -789,67 +784,73 @@ export default function Uploadfirmware() {
           </UploadButton>
         </div>
       </FirmwareHeader>
-      <PaginitionContainer className="mt-3">
-        <div></div>
-        <Paginition
-          currentPage={currentPage}
-          cardsPerPage={cardsPerPage}
-          changePage={changePage}
-          displaySelectDevices={displaySelectDevices}
-          displayedCards={combinedList}
-          userdata={dataFiles}
-        />
-      </PaginitionContainer>
-      <FirewareContent>
-        {
-          combinedList.map((items: FirmwareItem, index: number) => (
-            <FileList key={items.fileName + index}>
-              <div>
-                <img src={BinIco} alt="Icon" />
-                <div>
-                  <span>{items.fileName}</span>
-                  <small>{items.fileSize}</small>
+      {
+        combinedList.length > 0 ? <>
+          <FirewareContent>
+            {
+              combinedList.map((items: FirmwareItem, index: number) => (
+                <FileList key={items.fileName + index}>
                   <div>
-                    <small>{items.createDate.split(' ')[0]}</small>
-                    <small>{items.createDate.split(' ')[1]}</small>
+                    <img src={BinIco} alt="Icon" />
+                    <div>
+                      <span>{items.fileName}</span>
+                      <small>{items.fileSize}</small>
+                      <div>
+                        <small>{items.createDate.split(' ')[0]}</small>
+                        <small>{items.createDate.split(' ')[1]}</small>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div>
-                {
-                  !items.fileName.startsWith('bootloader') && !items.fileName.startsWith('partition') &&
                   <div>
-                    <button onClick={() => {
-                      downloadFw(items.fileName);
-                      getBootLoader();
-                      getPartition();
-                    }}>
-                      <RiDownloadCloud2Line size={32} />
-                    </button>
-                    <button onClick={() => swalWithBootstrapButtons
-                      .fire({
-                        title: t('deleteFirmware'),
-                        html: `${items.fileName}<br />${t('deleteFirmwareText')}`,
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: t('confirmButton'),
-                        cancelButtonText: t('cancelButton'),
-                        reverseButtons: false,
-                      })
-                      .then((result) => {
-                        if (result.isConfirmed) {
-                          deleteFw(items.fileName);
-                        }
-                      })}>
-                      <RiDeleteBin2Line size={32} />
-                    </button>
+                    {
+                      !items.fileName.startsWith('bootloader') && !items.fileName.startsWith('partition') &&
+                      <div>
+                        <button onClick={() => {
+                          downloadFw(items.fileName);
+                          getBootLoader();
+                          getPartition();
+                        }}>
+                          <RiDownloadCloud2Line size={32} />
+                        </button>
+                        <button onClick={() => swalWithBootstrapButtons
+                          .fire({
+                            title: t('deleteFirmware'),
+                            html: `${items.fileName}<br />${t('deleteFirmwareText')}`,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: t('confirmButton'),
+                            cancelButtonText: t('cancelButton'),
+                            reverseButtons: false,
+                          })
+                          .then((result) => {
+                            if (result.isConfirmed) {
+                              deleteFw(items.fileName);
+                            }
+                          })}>
+                          <RiDeleteBin2Line size={32} />
+                        </button>
+                      </div>
+                    }
                   </div>
-                }
-              </div>
-            </FileList>
-          ))
-        }
-      </FirewareContent>
+                </FileList>
+              ))
+            }
+          </FirewareContent>
+          <PaginitionContainer className="mt-3">
+            <div></div>
+            <Paginition
+              currentPage={currentPage}
+              cardsPerPage={cardsPerPage}
+              changePage={changePage}
+              displaySelectDevices={displaySelectDevices}
+              displayedCards={combinedList}
+              userdata={dataFiles}
+            />
+          </PaginitionContainer>
+        </>
+          :
+          <PageLoading />
+      }
 
       <Modal size="xl" show={modalSelected} onHide={closeModalSelected} scrollable>
         <Modal.Header>

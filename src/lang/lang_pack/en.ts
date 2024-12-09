@@ -419,6 +419,7 @@ export default {
     reportText: 'Report',
     switchModeMain: '*Switch mode eTEMP and TMS',
     readAll: 'Read All',
+    failTolaodData: 'Failed to load data',
 
     // connect
     ipAddress: 'IP',

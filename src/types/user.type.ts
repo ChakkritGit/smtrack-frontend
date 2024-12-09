@@ -5,7 +5,7 @@ type usersType = {
   wardId: string,
   userName: string,
   userStatus: boolean,
-  userLevel: string,
+  role: UserRole,
   displayName: string,
   userPic: string,
   comment: null,

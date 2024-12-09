@@ -22,6 +22,7 @@ import { Col, Form, InputGroup, Modal, Row } from "react-bootstrap"
 import HospitalDropdown from "../../../components/dropdown/hospitalDropdown"
 import { ImageComponent } from "../../../constants/constants"
 import axiosInstance from "../../../constants/axiosInstance"
+import PageLoading from "../../../components/loading/page.loading"
 
 export default function ManageHospitals() {
   const { t } = useTranslation()
@@ -408,21 +409,26 @@ export default function ManageHospitals() {
           </ManageWardAdd>
         </ManageHospitalsHeaderAction>
       </ManageHospitalsHeader>
-      <ManageHospitalsBody>
-        <DataTable
-          columns={columns}
-          data={filteredItems}
-          expandableRows
-          expandOnRowClicked
-          expandableRowsComponent={ExpandedComponent}
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
-          pagination
-          responsive
-          fixedHeader
-          fixedHeaderScrollHeight="calc(100dvh - 350px)"
-        />
-      </ManageHospitalsBody>
+      {
+        filteredItems.length > 0 ?
+          <ManageHospitalsBody>
+            <DataTable
+              columns={columns}
+              data={filteredItems}
+              expandableRows
+              expandOnRowClicked
+              expandableRowsComponent={ExpandedComponent}
+              paginationPerPage={10}
+              paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              pagination
+              responsive
+              fixedHeader
+              fixedHeaderScrollHeight="calc(100dvh - 350px)"
+            />
+          </ManageHospitalsBody>
+          :
+          <PageLoading />
+      }
 
       <Modal show={show} onHide={closemodal}>
         <Modal.Header>

@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
 import axiosInstance from "../../../constants/axiosInstance"
+import PageLoading from "../../../components/loading/page.loading"
 
 export default function Probesetting() {
   const { t } = useTranslation()
@@ -175,18 +176,23 @@ export default function Probesetting() {
           }
         </div>
       </ManageProbeHeader>
-      <ManageProbeBody>
-        <DataTable
-          columns={columns}
-          data={filter}
-          paginationPerPage={10}
-          paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
-          pagination
-          responsive
-          fixedHeader
-          fixedHeaderScrollHeight="calc(100dvh - 350px)"
-        />
-      </ManageProbeBody>
+      {
+        filter.length > 0 ?
+          <ManageProbeBody>
+            <DataTable
+              columns={columns}
+              data={filter}
+              paginationPerPage={10}
+              paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              pagination
+              responsive
+              fixedHeader
+              fixedHeaderScrollHeight="calc(100dvh - 350px)"
+            />
+          </ManageProbeBody>
+          :
+          <PageLoading />
+      }
     </ManageProbeContainer>
   )
 }

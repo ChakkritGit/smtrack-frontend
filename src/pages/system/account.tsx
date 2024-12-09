@@ -17,6 +17,7 @@ import { RootState, storeDispatchType } from "../../stores/store"
 import { setShowAlert, setUserProfile } from "../../stores/utilsStateSlice"
 import axiosInstance from "../../constants/axiosInstance"
 import DefualtUserPic from "../../assets/images/default-user.jpg"
+import LazyText from "../../components/loading/lazy.text"
 
 export default function Account() {
   const [userpicture, setUserpicture] = useState<string>('')
@@ -56,9 +57,10 @@ export default function Account() {
     if (cookieDecode) {
       try {
         const response = await axiosInstance
-          .get<responseType<UserProfileType>>(`${import.meta.env.VITE_APP_API}/user/${cookieDecode.id}`, { headers: { authorization: `Bearer ${token}` } })
-          setUserData(response.data.data)
-          dispatch(setUserProfile(response.data.data))
+          .get<responseType<UserProfileType>>(`${import.meta.env.VITE_APP_API}/auth/user/${cookieDecode.id}`, { headers: { authorization: `Bearer ${token}` } })
+        console.log("UserData: ", response.data.data)
+        setUserData(response.data.data)
+        dispatch(setUserProfile(response.data.data))
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -241,7 +243,7 @@ export default function Account() {
           </div>
           <div>
             <h5>{userProfile?.display ?? '- -'}</h5>
-            <span>@{userData?.username ?? ' - -'}</span>
+            <span>{userData?.username ? `@${userData?.username}` : <LazyText width={'150px'} />}</span>
           </div>
         </div>
         <div>

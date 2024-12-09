@@ -23,6 +23,7 @@ import { AddWarrantyButton } from "../../style/components/warranty.styled"
 import { hospitalsType } from "../../types/hospital.type"
 import { companyList } from "../../constants/constants"
 import axiosInstance from "../../constants/axiosInstance"
+import PageLoading from "../../components/loading/page.loading"
 
 interface dataTableProps {
   warrantyData: warrantyType[]
@@ -562,7 +563,7 @@ export default function Warranty() {
                       warrantyData={expiredArray}
                     />
                     :
-                    <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                    <PageLoading />
                 }
               </>
               :
@@ -574,7 +575,7 @@ export default function Warranty() {
                         warrantyData={onwarrantyArray}
                       />
                       :
-                      <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                      <PageLoading />
                   }
                 </>
                 :
@@ -585,11 +586,11 @@ export default function Warranty() {
                         warrantyData={devicesArray}
                       />
                       :
-                      <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                      <PageLoading />
                   }
                 </>
             :
-            <Loading loading={true} title={t('loading')} icn={<RiLoader3Line />} />
+            <PageLoading />
         }
       </WarrantyBody>
 

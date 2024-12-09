@@ -12,14 +12,14 @@ import { fetchUserData } from "../../stores/userSlice"
 import { responseType } from "../../types/response.type"
 import { usersType } from "../../types/user.type"
 import { setShowAlert } from "../../stores/utilsStateSlice"
-import { ImageComponent } from "../../constants/constants"
+import { getRoleLabel, ImageComponent } from "../../constants/constants"
 
 export default function CardUser(userProp: cardType) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
-  const { displayName, userId, userLevel, userName, userPic } = userProp
+  const { displayName, userId, role, userName, userPic } = userProp
 
   const deleteUser = async (uID: string) => {
     const url: string = `${import.meta.env.VITE_APP_API}/user/${uID}`
@@ -73,7 +73,7 @@ export default function CardUser(userProp: cardType) {
         <UserDetails>
           <span>{displayName}</span>
           <span>@{userName}</span>
-          <span>{userLevel === "0" ? t('levelSuper') : userLevel === "1" ? t('levelService') : userLevel === "2" ? t('levelAdmin') : userLevel === "3" ? t('levelUser') : "TMS"}</span>
+          <span>{getRoleLabel(role, t)}</span>
         </UserDetails>
       </div>
       <UserMenu>

@@ -1,8 +1,8 @@
-import { RiCloseLine, RiLoader2Line } from "react-icons/ri"
-import { FailedtoLoad, PageLoadContainer } from "../../style/components/page.loading"
-import Loading from "./loading"
-import { useTranslation } from "react-i18next"
+import { RiFileCloseLine } from "react-icons/ri"
+import { FailedtoLoad } from "../../style/components/page.loading"
 import { useEffect, useState } from "react"
+import LazyLoadComponent from "./lazy.load.component"
+import { useTranslation } from "react-i18next"
 
 type state = {
   reset?: number
@@ -24,14 +24,13 @@ const PageLoading = (state: state) => {
     <>
       {
         !timeOut ?
-          <PageLoadContainer>
-            <Loading loading={true} title={t('loading')} icn={<RiLoader2Line />} />
-          </PageLoadContainer>
+          <LazyLoadComponent />
           :
           <FailedtoLoad>
             <div>
-              <RiCloseLine size={32}/>
-              <span>Failed to load data</span>
+              <RiFileCloseLine size={42} />
+              <span>{t('nodata')}</span>
+              <div></div>
             </div>
           </FailedtoLoad>
       }

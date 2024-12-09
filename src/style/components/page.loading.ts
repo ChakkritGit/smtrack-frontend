@@ -22,10 +22,27 @@ height: calc(100dvh - 200px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .5rem;
+  gap: 1rem;
 
   &>svg {
-    fill: red;
+    fill: var(--danger-color);
+    z-index: 1;
+  }
+
+  &>span {
+    font-size: 24px;
+    z-index: 1;
+  }
+
+  &>div {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(231, 76, 60, .5);
+    filter: blur(40px);
+    -backdrop-filter: blur(40px);
+    position: fixed;
+    margin: 0 0 20px 0;
+    z-index: 0;
   }
 }
 `

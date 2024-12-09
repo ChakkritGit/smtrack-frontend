@@ -23,6 +23,7 @@ import { UserProfileType } from "../../types/user.type"
 import { cookieOptions, cookies, ImageComponent } from "../../constants/constants"
 import axiosInstance from "../../constants/axiosInstance"
 import DefualtPic from "../../assets/images/default-pic.png"
+import LazyText from "../loading/lazy.text"
 
 export default function sidebar() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -146,7 +147,7 @@ export default function sidebar() {
         >
           <ImageComponent src={userProfile?.ward.hospital.hosPic ? `${userProfile.ward.hospital.hosPic}` : DefualtPic} alt="hos-logo" />
         </SidebarLogo>
-        <HospitalName $primary={expand}>{userProfile?.ward.hospital.hosName}</HospitalName>
+        <HospitalName $primary={expand}>{userProfile?.ward.hospital.hosName ?? <LazyText width={'150px'} />}</HospitalName>
       </Link>
       <LineHr $primary />
       <Ul $primary={expand} $maxheight className="nav nav-pills">

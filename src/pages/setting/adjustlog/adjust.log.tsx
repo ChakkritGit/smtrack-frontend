@@ -12,6 +12,7 @@ import { Modal } from "react-bootstrap"
 import { RiCloseLine } from "react-icons/ri"
 import { DetailsFlex, LogDetailsButton } from "../../../style/components/log.update"
 import axiosInstance from "../../../constants/axiosInstance"
+import PageLoading from "../../../components/loading/page.loading"
 
 export default function AdjustLog() {
   const { t } = useTranslation()
@@ -123,18 +124,26 @@ export default function AdjustLog() {
   }
 
   return (
-    <ManageHistoryBody>
-      <h3 className="my-3">{t('tabAdjustHistory')}</h3>
-      <DataTable
-        columns={columns}
-        data={filteredItems}
-        paginationRowsPerPageOptions={[10, 30, 50, 80, 100, 150, 200, 300, 500]}
-        paginationPerPage={10}
-        pagination
-        responsive
-        fixedHeader
-        fixedHeaderScrollHeight="calc(100dvh - 330px)"
-      />
+    <>
+      {
+        filteredItems.length > 0 ?
+          <ManageHistoryBody>
+            <h3 className="my-3">{t('tabAdjustHistory')}</h3>
+            <DataTable
+              columns={columns}
+              data={filteredItems}
+              paginationRowsPerPageOptions={[10, 30, 50, 80, 100, 150, 200, 300, 500]}
+              paginationPerPage={10}
+              pagination
+              responsive
+              fixedHeader
+              fixedHeaderScrollHeight="calc(100dvh - 330px)"
+            />
+          </ManageHistoryBody>
+          :
+          <PageLoading />
+      }
+
       <Modal size="lg" show={show} onHide={closeModal} scrollable>
         <Modal.Header>
           <ModalHead>
@@ -168,6 +177,6 @@ export default function AdjustLog() {
           </DetailsFlex>
         </Modal.Body>
       </Modal>
-    </ManageHistoryBody>
+    </>
   )
 }

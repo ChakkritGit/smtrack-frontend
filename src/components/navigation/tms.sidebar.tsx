@@ -135,7 +135,7 @@ const SecondSidebar = () => {
         >
           <ImageComponent src={userProfile?.ward.hospital.hosPic ? userProfile?.ward.hospital.hosPic : DefualtPic} alt="hos-logo" />
         </SidebarLogo>
-        <HospitalName $primary={expand}>{userProfile?.ward.hospital.hosName}</HospitalName>
+        <HospitalName $primary={expand}>{userProfile?.ward.hospital.hosName ?? '- -'}</HospitalName>
       </Link>
       <LineHr $primary />
       <Ul $primary={expand} $maxheight className="nav nav-pills">
