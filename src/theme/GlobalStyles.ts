@@ -59,6 +59,49 @@ body {
   background-color: var(--white-grey-1) !important;
 }
 
+.btn {
+  width: max-content;
+  height: 40px;
+  border-radius: var(--border-radius-small);
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  border: var(--bs-btn-border-width) solid var(--danger-color);
+
+  &:hover {
+    background-color: var(--danger-color-hover);
+    border: var(--bs-btn-border-width) solid var(--danger-color-hover);
+  }
+}
+
+.btn-dark {
+  background-color: var(--main-seccond-color);
+  border: var(--bs-btn-border-width) solid var(--main-seccond-color);
+
+  &:hover {
+    background-color: var(--hover-dark-color);
+    border: var(--bs-btn-border-width) solid var(--hover-dark-color);
+  }
+}
+
+.btn.btn-warning {
+  background-color: var(--warning-primary);
+  border-color: var(--warning-primary);
+  color: var(--white-grey-1);
+
+  &:hover {
+    background-color: var(--warning-seccond);
+    border-color: var(--warning-seccond) !important;
+    color: var(--white-grey-1);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--warning-primary);
+  }
+}
+
 /* sweetalert */
 div:where(.swal2-container) div:where(.swal2-actions) {
   gap: 0.5rem;
@@ -68,24 +111,6 @@ div:where(.swal2-container) div:where(.swal2-actions) {
     display: flex !important;
     justify-content: center;
     align-items: center;
-    width: max-content;
-  }
-
-  & .btn.btn-warning {
-    background-color: var(--warning-primary);
-    border-color: var(--warning-primary);
-    color: var(--white-grey-1);
-  }
-
-  & .btn.btn-warning:hover {
-    background-color: var(--warning-seccond);
-    border-color: var(--warning-seccond);
-    color: var(--white-grey-1);
-  }
-
-  & .btn.btn-warning:focus {
-    outline: none;
-    border-color: var(--warning-primary);
   }
 }
 
