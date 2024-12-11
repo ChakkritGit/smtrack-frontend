@@ -181,7 +181,7 @@ export default function Home() {
       ),
       sortable: false,
       center: true,
-      width: '85px',
+      width: '90px',
     },
     {
       name: t('deviceHumiTb'),
@@ -274,7 +274,7 @@ export default function Home() {
       name: t('deviceWarrantyTb'),
       cell: items => {
 
-        return <WarrantySpan $expired={calulateDate(items).remainingDays <= 0}>
+        return <WarrantySpan $expired={calulateDate(items).remainingDays <= 0 && calulateDate(items).months <= 0 && calulateDate(items).years <= 0}>
           {items.warranty[0]?.expire ?
             calulateDate(items).daysRemaining > 0
               ? calulateDate(items).years > 0
