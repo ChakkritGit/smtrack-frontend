@@ -181,7 +181,7 @@ export default function Home() {
       ),
       sortable: false,
       center: true,
-      width: '85px',
+      width: '90px',
     },
     {
       name: t('deviceHumiTb'),
