@@ -236,13 +236,13 @@ export default function Fulltable() {
     },
     {
       name: t('deviceTempTb'),
-      selector: (items) => `${items.tempAvg} °C`,
+      selector: (items) => `${items.tempAvg.toFixed(2)} °C`,
       sortable: false,
       center: true,
     },
     {
       name: t('deviceHumiTb'),
-      selector: (items) => `${items.humidityAvg} %`,
+      selector: (items) => `${items.humidityAvg.toFixed(2)} %`,
       sortable: false,
       center: true,
     },

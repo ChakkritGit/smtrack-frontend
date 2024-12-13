@@ -3166,7 +3166,7 @@ align-items: center;
 justify-content: center;
 flex-direction: column;
 gap: .5rem;
-height: calc(100dvh - 150px);
+margin-top: 5rem;
 width: 100%;
 
 span {

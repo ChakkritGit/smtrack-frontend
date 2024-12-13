@@ -590,6 +590,10 @@ div:where(.swal2-container) div:where(.swal2-loader) {
   }
 }
 
+.resetHeight {
+  height: auto !important;
+}
+
 ${(props) =>
     props.theme.mode === 'dark' ?
       css`

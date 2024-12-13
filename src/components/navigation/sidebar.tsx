@@ -27,16 +27,16 @@ import LazyText from "../loading/lazy.text"
 
 export default function sidebar() {
   const dispatch = useDispatch<storeDispatchType>()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
   const { expand, tokenDecode, cookieDecode, notiData, isTms, userProfile } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
-  const { role } = tokenDecode
-  const { t } = useTranslation()
+  const { role, id } = tokenDecode
   const location = useLocation()
-  const navigate = useNavigate()
   let isFirstLoad = true
 
   const reFetchdata = async () => {
-    if (tokenDecode.id) {
+    if (id) {
       try {
         const response = await axiosInstance.get<responseType<UserProfileType>>(`/auth/user/${tokenDecode.id}`)
         dispatch(setUserProfile(response.data.data))

@@ -310,7 +310,7 @@ justify-content: space-around;
 }
 `
 
-export const HomeCardItem = styled.div<{ $primary?: boolean }>`
+export const HomeCardItem = styled.div<{ $primary?: boolean, $disableClick?: boolean }>`
 display: flex;
 flex-direction: column;
 gap: 0.5rem;
@@ -324,7 +324,7 @@ max-height: 130px;
 border-radius: var(--border-radius-small);
 box-shadow: rgba(50, 50, 50, 0.1) 0px 12px 28px;
 transition: 0.3s;
-cursor: pointer;
+cursor: ${props => props.$disableClick ? 'unset' : 'pointer'};
 overflow: hidden;
 
 &>span:nth-child(1) {
@@ -340,7 +340,7 @@ overflow: hidden;
 }
 
 &:hover {
-  transform: scale(1.05);
+  transform: ${props => props.$disableClick ? 'unset' : 'scale(1.05)'};
   transition: 0.3s;
 }
 

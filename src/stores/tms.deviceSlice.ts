@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 import { payloadError, TmsDeviceState } from "../types/redux.type"
 import { responseType } from "../types/response.type"
-import { TmsDeviceType } from "../types/tms.type"
+import { FetchDeviceType, TmsDeviceType } from "../types/tms.type"
 import axiosInstance from "../constants/axiosInstance"
 
 export const fetchTmsDevice = createAsyncThunk<TmsDeviceType[], string>('newDev/fetchNewDevice', async () => {
-  const response = await axiosInstance.get<responseType<TmsDeviceType[]>>(`${import.meta.env.VITE_APP_API}/device`)
-  return response.data.data
+  const response = await axiosInstance.get<responseType<FetchDeviceType>>(`http://192.168.0.74:8080/legacy/device`)
+  return response.data.data.devices
 })
 
 const initialState: TmsDeviceState = {

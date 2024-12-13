@@ -1,5 +1,5 @@
 import { RiArrowDropDownLine, RiLogoutBoxRLine } from "react-icons/ri"
-import { LineHr, NavLogout, NavProfile, NavProfileContainer, NavProfileFlex } from "../../style/style"
+import { LineHr, NavLogout, NavProfile, NavProfileContainer } from "../../style/style"
 import { Dropdown } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -17,7 +17,7 @@ export default function Navprofile() {
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
   const { userProfile, tokenDecode } = useSelector((state: RootState) => state.utilsState)
-  const {role} = tokenDecode
+  const { role } = tokenDecode
 
   const logOut = () => {
     dispatch(reset())
@@ -36,19 +36,17 @@ export default function Navprofile() {
 
   return (
     <Dropdown>
-      <Dropdown.Toggle variant="0" className="border-0 p-0">
-        <NavProfileFlex>
-          <NavProfileContainer className="profile-name-dark">
-            <NavProfile>
-              <ImageComponent src={userProfile?.pic ? `${userProfile.pic}` : DefualtUserPic} alt="profile" />
-            </NavProfile>
-            <div>
-              <span>{userProfile?.display ?? '- -'}</span>
-              <span>{getRoleLabel(role, t)}</span>
-            </div>
-            <RiArrowDropDownLine size={28} />
-          </NavProfileContainer>
-        </NavProfileFlex>
+      <Dropdown.Toggle variant="0" className="border-0 p-0 resetHeight">
+        <NavProfileContainer className="profile-name-dark">
+          <NavProfile>
+            <ImageComponent src={userProfile?.pic ? `${userProfile.pic}` : DefualtUserPic} alt="profile" />
+          </NavProfile>
+          <div>
+            <span>{userProfile?.display ?? '- -'}</span>
+            <span>{getRoleLabel(role, t)}</span>
+          </div>
+          <RiArrowDropDownLine size={28} />
+        </NavProfileContainer>
       </Dropdown.Toggle>
       <Dropdown.Menu>
         <NavbarProfileDropdown>

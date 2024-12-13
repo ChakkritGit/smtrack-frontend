@@ -8,10 +8,11 @@ import { RiDashboardFill, RiDashboardLine, RiHome3Fill, RiHome3Line, RiListSetti
 import { AboutVersion } from "../../style/components/sidebar"
 import { useTranslation } from "react-i18next"
 import { useEffect } from "react"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { UserProfileType } from "../../types/user.type"
 import { responseType } from "../../types/response.type"
 import DefualtPic from "../../assets/images/default-pic.png"
+import axiosInstance from "../../constants/axiosInstance"
 
 const SecondSidebar = () => {
   const dispatch = useDispatch<storeDispatchType>()
@@ -25,8 +26,7 @@ const SecondSidebar = () => {
   const reFetchdata = async () => {
     if (id) {
       try {
-        const response = await axios
-          .get<responseType<UserProfileType>>(`${import.meta.env.VITE_APP_API}/user/${id}`, { headers: { authorization: `Bearer ${token}` } })
+        const response = await axiosInstance.get<responseType<UserProfileType>>(`/auth/user/${tokenDecode.id}`)
         dispatch(setUserProfile(response.data.data))
       } catch (error) {
         if (error instanceof AxiosError) {
