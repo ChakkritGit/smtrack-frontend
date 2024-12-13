@@ -406,18 +406,14 @@ export default function Home() {
   const ExpandedComponent = ({ data }: { data: devicesType }) => {
     const { probe } = data
     return (
-      <>
-        {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
-        <SubWardColumnFlex>
-          <DataTable
-            columns={subDeviceColumns}
-            data={probe}
-            responsive
-            dense
-
-          />
-        </SubWardColumnFlex>
-      </>
+      <SubWardColumnFlex>
+        <DataTable
+          columns={subDeviceColumns}
+          data={probe}
+          responsive
+          dense
+        />
+      </SubWardColumnFlex>
     )
   }
 
