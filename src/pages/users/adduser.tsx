@@ -42,12 +42,12 @@ export default function Adduser(AdduserProp: adduserProp) {
   const [show, setShow] = useState(false)
   const [showPass, setShowPass] = useState(false)
   const [form, setform] = useState({
-    group_id: pagestate !== "add" ? String(userData?.userId) : '',
-    user_name: pagestate !== "add" ? String(userData?.userName) : '',
-    user_password: '',
-    display_name: pagestate !== "add" ? String(userData?.displayName) : '',
-    user_level: pagestate !== "add" ? String(userData?.userLevel) : '',
-    user_status: pagestate !== "add" ? userData?.userStatus === true ? 1 : 0 : 0,
+    wardId: pagestate !== "add" ? String(userData?.userId) : '',
+    username: pagestate !== "add" ? String(userData?.userName) : '',
+    password: '',
+    display: pagestate !== "add" ? String(userData?.displayName) : '',
+    role: pagestate !== "add" ? String(userData?.role) : '',
+    status: pagestate !== "add" ? userData?.userStatus === true ? 1 : 0 : 0,
     fileupload: null as File | null,
   })
   const [hosid, setHosid] = useState('')
@@ -101,19 +101,19 @@ export default function Adduser(AdduserProp: adduserProp) {
   }
 
   const setValuestate = (value: string) => {
-    setform({ ...form, group_id: value })
+    setform({ ...form, wardId: value })
   }
 
   const setLevel = (e: SingleValue<Option>) => {
     const selectedValue = e?.value
     if (!selectedValue) return
-    setform({ ...form, user_level: selectedValue })
+    setform({ ...form, role: selectedValue })
   }
 
   const setStatus = (e: SingleValue<Option>) => {
     const selectedValue = e?.value
     if (!selectedValue) return
-    setform({ ...form, user_status: Number(selectedValue) })
+    setform({ ...form, status: Number(selectedValue) })
   }
 
   const reFetchdata = async () => {
@@ -140,16 +140,16 @@ export default function Adduser(AdduserProp: adduserProp) {
     e.preventDefault()
     const url: string = `${import.meta.env.VITE_APP_API}/auth/register`
     const formData = new FormData()
-    formData.append('wardId', form.group_id)
-    formData.append('userName', form.user_name)
-    formData.append('userPassword', form.user_password)
-    formData.append('displayName', form.display_name)
-    formData.append('userLevel', form.user_level)
+    formData.append('wardId', form.wardId)
+    formData.append('userName', form.username)
+    formData.append('userPassword', form.password)
+    formData.append('displayName', form.display)
+    formData.append('userLevel', form.role)
     if (form.fileupload) {
       formData.append('fileupload', form.fileupload as File)
     }
     formData.append('createBy', String(userProfile?.display))
-    if (form.group_id !== '' && form.user_name !== '' && form.user_password !== '' && form.display_name !== '' && form.user_level !== '') {
+    if (form.wardId !== '' && form.username !== '' && form.password !== '' && form.display !== '' && form.role !== '') {
       try {
         const response = await axiosInstance.post(url, formData, {
           headers: {
@@ -166,12 +166,12 @@ export default function Adduser(AdduserProp: adduserProp) {
           showConfirmButton: false,
         })
         setform({
-          group_id: '',
-          user_name: '',
-          user_password: '',
-          display_name: '',
-          user_level: '',
-          user_status: 0,
+          wardId: '',
+          username: '',
+          password: '',
+          display: '',
+          role: '',
+          status: 0,
           fileupload: null as File | null,
         })
         dispatch(fetchUserData(token))
@@ -214,15 +214,15 @@ export default function Adduser(AdduserProp: adduserProp) {
     e.preventDefault()
     const url: string = `${import.meta.env.VITE_APP_API}/user/${userData?.userId}`
     const formData = new FormData()
-    formData.append('userName', form.user_name)
-    formData.append('displayName', form.display_name)
-    formData.append('userLevel', form.user_level)
-    formData.append('userStatus', String(form.user_status))
+    formData.append('userName', form.username)
+    formData.append('displayName', form.display)
+    formData.append('userLevel', form.role)
+    formData.append('userStatus', String(form.status))
     if (form.fileupload) {
       formData.append('fileupload', form.fileupload as File)
     }
     formData.append('createBy', String(userProfile?.display))
-    if (form.group_id !== '' && form.user_name !== '' && form.display_name !== '' && form.user_level !== '') {
+    if (form.wardId !== '' && form.username !== '' && form.display !== '' && form.role !== '') {
       try {
         const response = await axiosInstance.put<responseType<usersType>>(url, formData, {
           headers: {
@@ -430,8 +430,8 @@ export default function Adduser(AdduserProp: adduserProp) {
                       name="fieldUsername"
                       autoComplete='off'
                       type='text'
-                      value={form.user_name}
-                      onChange={(e) => setform({ ...form, user_name: e.target.value })}
+                      value={form.username}
+                      onChange={(e) => setform({ ...form, username: e.target.value })}
                     />
                   </Form.Label>
                 </InputGroup>
@@ -446,8 +446,8 @@ export default function Adduser(AdduserProp: adduserProp) {
                           name="fieldUserpassword"
                           autoComplete='off'
                           type='password'
-                          value={form.user_password}
-                          onChange={(e) => setform({ ...form, user_password: e.target.value })}
+                          value={form.password}
+                          onChange={(e) => setform({ ...form, password: e.target.value })}
                         />
                       </Form.Label>
                     </InputGroup>
@@ -463,8 +463,8 @@ export default function Adduser(AdduserProp: adduserProp) {
                       name="fieldDisplayname"
                       autoComplete='off'
                       type='text'
-                      value={form.display_name}
-                      onChange={(e) => setform({ ...form, display_name: e.target.value })}
+                      value={form.display}
+                      onChange={(e) => setform({ ...form, display: e.target.value })}
                     />
                   </Form.Label>
                 </InputGroup>
@@ -475,7 +475,7 @@ export default function Adduser(AdduserProp: adduserProp) {
                     {t('userRole')}
                     <Select
                       options={mapOptions<dataType, keyof dataType>(userlevel, 'value', 'name')}
-                      value={mapDefaultValue<dataType, keyof dataType>(userlevel, form.user_level, 'value', 'name')}
+                      value={mapDefaultValue<dataType, keyof dataType>(userlevel, form.role, 'value', 'name')}
                       onChange={setLevel}
                       autoFocus={false}
                       placeholder={t('selectRole')}
@@ -528,7 +528,7 @@ export default function Adduser(AdduserProp: adduserProp) {
                           {t('userStatus')}
                           <Select
                             options={mapOptions<dataType, keyof dataType>(userstatus, 'value', 'name')}
-                            value={mapDefaultValue<dataType, keyof dataType>(userstatus, String(form.user_status), 'value', 'name')}
+                            value={mapDefaultValue<dataType, keyof dataType>(userstatus, String(form.status), 'value', 'name')}
                             onChange={setStatus}
                             autoFocus={false}
                             placeholder={t('selectStatus')}

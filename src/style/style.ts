@@ -2025,6 +2025,11 @@ justify-content: space-between;
 align-items: center;
 flex-wrap: wrap;
 margin-top: 1rem;
+transition: .3s;
+
+${props => props.$primary && css`
+  padding: 0 0 0 5.5rem;
+`}
 
 & h5 {
   margin-bottom: 0;
@@ -2141,6 +2146,16 @@ gap: .5rem;
 margin: 1rem 0;
 height: 45px;
 padding: 0 .5rem 0 0;
+
+&>h5 {
+  transition: .3s;
+}
+
+${props => props.$primary && css`
+  &>h5 {
+    padding: 0 0 0 5.5rem;
+  }
+`}
 
 @media (max-width: 430px) {
   height: max-content;

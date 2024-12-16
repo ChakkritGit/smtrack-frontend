@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
   const [isValid, setIsValid] = useState<boolean | null>(null)
 
   useEffect(() => {
-    if (!cookieEncode) return
+    if (cookieEncode === '' || cookieEncode === undefined) return
     try {
       const CookieObject: CookieType = JSON.parse(decodeCookieObject(cookieEncode).toString(CryptoJS.enc.Utf8))
       dispatch(setCookieDecode(CookieObject))
@@ -63,7 +63,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
       }
     }
 
-    if (cookieEncode !== '') {
+    if (cookieEncode !== '' || cookieEncode !== undefined) {
       verifyToken(cookieEncode)
     } else {
       setIsValid(false)

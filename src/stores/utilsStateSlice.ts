@@ -10,7 +10,6 @@ const initialState: UtilsStateStore = {
   deviceId: String(cookies.get('devid')),
   Serial: String(cookies.get('devSerial')),
   socketData: null,
-  // deviceEvent: null,
   searchQuery: '',
   expand: localStorage.getItem('expandaside') === 'true',
   showAside: false,
@@ -46,9 +45,6 @@ const utilsSlice = createSlice({
     setSocketData: (state, action: PayloadAction<socketResponseType | null>) => {
       state.socketData = action.payload
     },
-    // setDeviceEvent: (state, action: PayloadAction<DeviceEventResponseType | null>) => {
-    //   state.deviceEvent = action.payload
-    // },
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload
     },
