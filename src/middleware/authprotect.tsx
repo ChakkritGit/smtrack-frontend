@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { CookieType } from '../types/cookie.type'
 import { cookieOptions, cookies, decodeCookieObject } from '../constants/constants'
 import CryptoJS from "crypto-js"
-import { setCookieDecode, setCookieEncode, setDeviceId, setSerial } from '../stores/utilsStateSlice'
+import { setCookieDecode, setCookieEncode, setDeviceId, setSerial, setSwitchTms } from '../stores/utilsStateSlice'
 import { RootState, storeDispatchType } from '../stores/store'
 import { reset } from '../stores/resetAction'
 
@@ -38,6 +38,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
           dispatch(setCookieEncode(''))
           dispatch(setDeviceId(''))
           dispatch(setSerial(''))
+          dispatch(setSwitchTms(false))
           cookies.remove('localDataObject', cookieOptions)
           cookies.remove('devSerial', cookieOptions)
           cookies.remove('devid', cookieOptions)
@@ -52,6 +53,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
         dispatch(setCookieEncode(''))
         dispatch(setDeviceId(''))
         dispatch(setSerial(''))
+        dispatch(setSwitchTms(false))
         cookies.remove('localDataObject', cookieOptions)
         cookies.remove('devSerial', cookieOptions)
         cookies.remove('devid', cookieOptions)

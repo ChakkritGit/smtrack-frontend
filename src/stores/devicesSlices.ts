@@ -5,7 +5,7 @@ import { responseType } from "../types/response.type"
 import axiosInstance from "../constants/axiosInstance"
 // import { cookieOptions, cookies } from "../constants/constants"
 
-export const fetchDevicesData = createAsyncThunk<devicesType[], string>('device/fetchDevicesData', async () => {
+export const fetchDevicesData = createAsyncThunk<devicesType[]>('device/fetchDevicesData', async () => {
   const response = await axiosInstance.get<responseType<devicesType[]>>(`${import.meta.env.VITE_APP_API}/device`)
   return response.data.data
 })

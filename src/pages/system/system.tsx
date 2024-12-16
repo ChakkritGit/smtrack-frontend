@@ -17,7 +17,7 @@ import { motion } from "framer-motion"
 import { items } from "../../animation/animate"
 import { swalWithBootstrapButtons } from "../../constants/sweetalertLib"
 import { cookieOptions, cookies } from "../../constants/constants"
-import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
+import { setCookieEncode, setDeviceId, setSerial, setSwitchTms } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import Logs from "../setting/Logs"
 import DownloadApp from "./download"
@@ -36,6 +36,7 @@ export default function System() {
     dispatch(setCookieEncode(''))
     dispatch(setDeviceId(''))
     dispatch(setSerial(''))
+    dispatch(setSwitchTms(false))
     cookies.remove('localDataObject', cookieOptions)
     cookies.remove('devSerial', cookieOptions)
     cookies.remove('devid', cookieOptions)

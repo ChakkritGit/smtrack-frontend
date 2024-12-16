@@ -14,14 +14,14 @@ import { scheduleDayArray, scheduleMinuteArray, scheduleTimeArray } from "../../
 import Swal from "sweetalert2"
 import { AxiosError } from "axios"
 import { responseType } from "../../types/response.type"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { client } from "../../services/mqtt"
-import { RootState, storeDispatchType } from "../../stores/store"
+import { storeDispatchType } from "../../stores/store"
 import { setRefetchdata, setShowAlert } from "../../stores/utilsStateSlice"
 import axiosInstance from "../../constants/axiosInstance"
 
 type modalAdjustType = {
-  fetchData: AsyncThunk<devicesType[], string, {}>,
+  fetchData: AsyncThunk<devicesType[], void, {}>,
   devicesdata: devicesType,
   setShowSetting: Dispatch<SetStateAction<boolean>>,
   showSetting: boolean,
@@ -32,7 +32,6 @@ function ModalNotification(modalProps: modalAdjustType) {
   const { fetchData, devicesdata, showSetting, setShowSetting, setShow } = modalProps
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
   const [muteMode, setMuteMode] = useState({
     choichOne: devicesdata.config.notiTime === 0 ? 'immediately' : 'after',
     choichtwo: devicesdata.config.backToNormal === "0" ? 'send' : 'donotsend',
@@ -58,7 +57,6 @@ function ModalNotification(modalProps: modalAdjustType) {
   })
   const { choichOne, choichfour, choichthree, choichtwo } = muteMode
   const { theme } = useTheme()
-  const { token } = cookieDecode
   const { devSerial } = devicesdata
   const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
@@ -93,7 +91,7 @@ function ModalNotification(modalProps: modalAdjustType) {
           timer: 2000,
           showConfirmButton: false,
         })
-        fetchData(token)
+        fetchData()
         if (deviceModel === 'etemp') {
           client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/adj`, 'on')
         } else {

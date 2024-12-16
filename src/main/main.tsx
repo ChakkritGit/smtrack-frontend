@@ -39,25 +39,25 @@ export default function Main() {
   useEffect(() => {
     if (!token) return
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
-    dispatch(filtersDevices(token))
-    dispatch(fetchHospitals(token))
-    dispatch(fetchWards(token))
-    dispatch(fetchUserData(token))
-    dispatch(fetchProbeData(token))
+    dispatch(filtersDevices())
+    dispatch(fetchHospitals())
+    dispatch(fetchWards())
+    dispatch(fetchUserData())
+    dispatch(fetchProbeData())
   }, [token, role])
 
   useEffect(() => {
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
     if (!token) return
-    dispatch(fetchDevicesData(token))
+    dispatch(fetchDevicesData())
   }, [socketData, token, dispatch, role])
 
   useEffect(() => {
     if (!token) return
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
     if (reFetchData) {
-      dispatch(fetchDevicesData(token))
-      dispatch(fetchProbeData(token))
+      dispatch(fetchDevicesData())
+      dispatch(fetchProbeData())
       dispatch(setRefetchdata(false))
     }
   }, [reFetchData, token, role])
@@ -141,13 +141,13 @@ export default function Main() {
       setTimeout(() => { setShow(false) }, 3000)
       if (!token) return
       if (deviceId !== "undefined") dispatch(fetchDevicesLog({ deviceId }))
-      if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") {
-        dispatch(fetchDevicesData(token))
-        dispatch(filtersDevices(token))
-        dispatch(fetchHospitals(token))
-        dispatch(fetchWards(token))
-        dispatch(fetchUserData(token))
-        dispatch(fetchProbeData(token))
+      if (role === "SUPER" || role === "SERVICE" || role === "ADMIN" || role === "USER") {
+        dispatch(fetchDevicesData())
+        dispatch(filtersDevices())
+        dispatch(fetchHospitals())
+        dispatch(fetchWards())
+        dispatch(fetchUserData())
+        dispatch(fetchProbeData())
       }
     }
 

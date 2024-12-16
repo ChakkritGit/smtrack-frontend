@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
 import { HomeContainer, TagCurrentHos } from "../../style/components/home.styled"
-import { AboutBox, DatatableHome, DevHomeHeadTile, DevHomeSecctionOne, DeviceInfoflex, DeviceListFlex, HomeContainerFlex, ListBtn } from "../../style/style"
+import { AboutBox, DatatableHome, DevHomeHeadTile, DevHomeSecctionOne, DeviceCardFooterDoor, DeviceCardFooterDoorFlex, DeviceInfoflex, DeviceListFlex, DeviceStateNetwork, HomeContainerFlex, ListBtn } from "../../style/style"
 import { useTranslation } from "react-i18next"
-import { RiArrowDownWideLine, RiArrowUpWideLine, RiFileForbidLine, RiLayoutGridLine, RiListUnordered } from "react-icons/ri"
+import { RiArrowDownWideLine, RiArrowUpWideLine, RiDoorClosedLine, RiDoorOpenLine, RiFileForbidLine, RiLayoutGridLine, RiListUnordered } from "react-icons/ri"
 import { FiLoader } from "react-icons/fi"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
@@ -15,6 +15,7 @@ import { AxiosError } from "axios"
 import { responseType } from "../../types/response.type"
 import Loading from "../../components/loading/loading"
 import { NoRecordContainer } from "../../style/components/datatable.styled"
+import { DoorKey } from "../../types/log.type"
 
 const TmsHome = () => {
   const { t } = useTranslation()
@@ -107,6 +108,43 @@ const TmsHome = () => {
       {
         name: t('deviceTempTb'),
         cell: (item) => item.log.length > 0 ? `${item.log[0]?.tempValue.toFixed(2)}°C` : '- -',
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('deviceDoorTb'),
+        cell: (item) => {
+          const doorCount: number = 1
+          const doors: DoorKey[] = ['door1']
+
+          return (
+            <DeviceCardFooterDoorFlex key={item.sn} $primary>
+              {doors.slice(0, doorCount).map(doorKey => (
+                <DeviceCardFooterDoor $primary={item.log[0]?.door} key={doorKey}>
+                  {item.log[0]?.door ? <RiDoorOpenLine /> : <RiDoorClosedLine />}
+                </DeviceCardFooterDoor>
+              ))}
+            </DeviceCardFooterDoorFlex>
+          )
+        },
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('deviceDoorTb'),
+        cell: (item) => (
+          <DeviceStateNetwork $primary={item.log[0]?.internet}>
+            {item.log[0]?.internet ? t('deviceOffline') : t('deviceOnline')}
+          </DeviceStateNetwork>
+        ),
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('deviceDoorTb'),
+        cell: (item) => (
+          <span>{item.log[0]?.plugin ? t('stateProblem') : t('stateNormal')}</span>
+        ),
         sortable: false,
         center: true
       }

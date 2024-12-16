@@ -20,17 +20,17 @@ const initialState: DataArrayStore = {
   arrayError: ''
 }
 
-export const filtersDevices = createAsyncThunk<devicesType[], string>('array/filters', async () => {
+export const filtersDevices = createAsyncThunk<devicesType[]>('array/filters', async () => {
   const response = await axiosInstance.get<responseType<devicesType[]>>(`${import.meta.env.VITE_APP_API}/device`)
   return response.data.data
 })
 
-export const fetchHospitals = createAsyncThunk<hospitalsType[], string>('array/fetchHospitals', async () => {
+export const fetchHospitals = createAsyncThunk<hospitalsType[]>('array/fetchHospitals', async () => {
   const response = await axiosInstance.get<responseType<hospitalsType[]>>(`${import.meta.env.VITE_APP_API}/hospital`)
   return response.data.data
 })
 
-export const fetchWards = createAsyncThunk<wardsType[], string>('array/fetchWards', async () => {
+export const fetchWards = createAsyncThunk<wardsType[]>('array/fetchWards', async () => {
   const response = await axiosInstance.get<responseType<wardsType[]>>(`${import.meta.env.VITE_APP_API}/ward`)
   return response.data.data
 })

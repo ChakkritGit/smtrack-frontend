@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { swalWithBootstrapButtons } from "../../constants/sweetalertLib"
 import { reset } from "../../stores/resetAction"
-import { setCookieEncode, setDeviceId, setSerial } from "../../stores/utilsStateSlice"
+import { setCookieEncode, setDeviceId, setSerial, setSwitchTms } from "../../stores/utilsStateSlice"
 import DefualtUserPic from "../../assets/images/default-user.jpg"
 
 export default function Navprofile() {
@@ -24,6 +24,7 @@ export default function Navprofile() {
     dispatch(setCookieEncode(''))
     dispatch(setDeviceId(''))
     dispatch(setSerial(''))
+    dispatch(setSwitchTms(false))
     cookies.remove('localDataObject', cookieOptions)
     cookies.remove('devSerial', cookieOptions)
     cookies.remove('devid', cookieOptions)

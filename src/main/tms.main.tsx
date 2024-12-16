@@ -84,8 +84,8 @@ const TmsMain = () => {
   useEffect(() => {
     if (!token) return
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" || isTms) {
-      dispatch(fetchHospitals(token))
-      dispatch(fetchWards(token))
+      dispatch(fetchHospitals())
+      dispatch(fetchWards())
     }
   }, [token, role])
 
@@ -116,6 +116,8 @@ const TmsMain = () => {
       if (!token) return
       if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") {
         dispatch(fetchTmsDevice(token))
+        dispatch(fetchHospitals())
+        dispatch(fetchWards())
       }
     }
 

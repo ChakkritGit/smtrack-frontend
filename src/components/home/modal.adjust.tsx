@@ -25,7 +25,7 @@ import Adjustment from "../adjustments/adjustment"
 import axiosInstance from "../../constants/axiosInstance"
 
 type modalAdjustType = {
-  fetchData: AsyncThunk<devicesType[], string, {}>,
+  fetchData: AsyncThunk<devicesType[], void, {}>,
   devicesdata: devicesType,
   setShow: Dispatch<SetStateAction<boolean>>,
   show: boolean,

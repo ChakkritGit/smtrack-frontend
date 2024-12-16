@@ -5,7 +5,7 @@ import { probeType } from "../types/probe.type"
 import axiosInstance from "../constants/axiosInstance"
 // import { cookieOptions, cookies } from "../constants/constants"
 
-export const fetchProbeData = createAsyncThunk<probeType[], string>('probe/fetchProbeData', async () => {
+export const fetchProbeData = createAsyncThunk<probeType[]>('probe/fetchProbeData', async () => {
   const response = await axiosInstance.get<responseType<probeType[]>>(`${import.meta.env.VITE_APP_API}/probe`)
   return response.data.data
 })
