@@ -142,3 +142,14 @@ ${props => props.theme.mode === 'dark' && css`
 export const LiNoti = styled.li<{ $primary?: boolean }>`
   list-style-type: none;
 `
+
+export const NotificationBody = styled.div<{ $primary?: boolean }>`
+  height: calc(100dvh - 180px);
+
+  ${props => props.$primary && css`
+    &>div {
+    margin-top: unset;
+    height: 100%;
+  }
+  `}
+`

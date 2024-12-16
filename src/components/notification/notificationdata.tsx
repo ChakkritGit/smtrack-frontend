@@ -5,7 +5,7 @@ import Loading from "../loading/loading"
 import { RiAlarmWarningFill, RiDoorClosedLine, RiDoorOpenLine, RiFileCloseLine, RiSignalWifi3Line, RiSignalWifiErrorLine } from "react-icons/ri"
 import { useTranslation } from "react-i18next"
 import { useEffect, useState } from "react"
-import { NotiHead, NotiHeadBtn } from "../../style/components/notification"
+import { NotificationBody, NotiHead, NotiHeadBtn } from "../../style/components/notification"
 import { useSelector } from "react-redux"
 import { RootState } from "../../stores/store"
 import { FaTemperatureArrowDown, FaTemperatureArrowUp } from "react-icons/fa6"
@@ -192,29 +192,12 @@ export default function Notificationdata(notilist: notilist) {
           }
         </div>
       </NotiHead>
-      {
-        pageState === 1 ?
-          filterNoti.length > 0 ?
-            (() => {
-              const filteredData = filterNoti.filter(items => items.notiStatus === false)
-              return filteredData.length > 0 ? (
-                filteredData.map((items, index) => (
-                  <ListNotiTSX
-                    key={index}
-                    index={index}
-                    notiData={items}
-                  />
-                ))
-              ) :
-                <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
-            })()
-            :
-            <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
-          :
-          pageState === 2 ?
+      <NotificationBody $primary={filterNoti.length === 0}>
+        {
+          pageState === 1 ?
             filterNoti.length > 0 ?
               (() => {
-                const filteredData = filterNoti.filter(items => items.notiStatus === true)
+                const filteredData = filterNoti.filter(items => items.notiStatus === false)
                 return filteredData.length > 0 ? (
                   filteredData.map((items, index) => (
                     <ListNotiTSX
@@ -229,22 +212,41 @@ export default function Notificationdata(notilist: notilist) {
               :
               <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
             :
-            filterNoti.length > 0 ?
-              (() => {
-                return filterNoti.length > 0 ? (
-                  filterNoti.map((items, index) => (
-                    <ListNotiTSX
-                      key={index}
-                      index={index}
-                      notiData={items}
-                    />
-                  ))
-                ) :
-                  <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
-              })()
+            pageState === 2 ?
+              filterNoti.length > 0 ?
+                (() => {
+                  const filteredData = filterNoti.filter(items => items.notiStatus === true)
+                  return filteredData.length > 0 ? (
+                    filteredData.map((items, index) => (
+                      <ListNotiTSX
+                        key={index}
+                        index={index}
+                        notiData={items}
+                      />
+                    ))
+                  ) :
+                    <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                })()
+                :
+                <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
               :
-              <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
-      }
+              filterNoti.length > 0 ?
+                (() => {
+                  return filterNoti.length > 0 ? (
+                    filterNoti.map((items, index) => (
+                      <ListNotiTSX
+                        key={index}
+                        index={index}
+                        notiData={items}
+                      />
+                    ))
+                  ) :
+                    <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+                })()
+                :
+                <Loading loading={false} title={t('nodata')} icn={<RiFileCloseLine />} />
+        }
+      </NotificationBody>
     </>
   )
 }

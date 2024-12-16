@@ -594,6 +594,12 @@ div:where(.swal2-container) div:where(.swal2-loader) {
   height: auto !important;
 }
 
+input {
+  caret-color: var(--main-color);
+  font-weight: bold;
+  text-rendering: geometricPrecision;
+}
+
 ${(props) =>
     props.theme.mode === 'dark' ?
       css`
