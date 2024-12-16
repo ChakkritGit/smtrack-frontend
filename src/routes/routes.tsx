@@ -242,9 +242,6 @@ export default function RoutesComponent() {
   return (
     <RouterProvider
       router={router}
-      future={{
-        v7_startTransition: true,
-      }}
     />
   )
 }
