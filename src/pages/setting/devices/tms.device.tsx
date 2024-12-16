@@ -10,6 +10,8 @@ import { TmsDeviceType } from "../../../types/tms.type"
 import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
 import { setSearchQuery } from "../../../stores/utilsStateSlice"
 import TmsAddDevice from "./tms.add.device"
+import { NoRecordContainer } from "../../../style/components/datatable.styled"
+import { RiFileForbidLine } from "react-icons/ri"
 
 const TmsDevice = () => {
   const { t } = useTranslation()
@@ -76,6 +78,10 @@ const TmsDevice = () => {
               data={devices}
               paginationPerPage={10}
               paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
               pagination
               fixedHeader
               fixedHeaderScrollHeight="calc(100dvh - 230px)"

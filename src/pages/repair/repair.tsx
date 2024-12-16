@@ -11,7 +11,7 @@ import { repairType } from "../../types/repair.type"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { useTranslation } from "react-i18next"
 import { swalWithBootstrapButtons } from "../../constants/sweetalertLib"
-import { RiCloseLine, RiDeleteBin2Line, RiPrinterLine } from "react-icons/ri"
+import { RiCloseLine, RiDeleteBin2Line, RiFileForbidLine, RiPrinterLine } from "react-icons/ri"
 import Swal from "sweetalert2"
 import { useReactToPrint } from "react-to-print"
 import PrintComponent from "./printComponent"
@@ -22,6 +22,7 @@ import { items } from "../../animation/animate"
 import { setRefetchdata, setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import PageLoading from "../../components/loading/page.loading"
+import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 export default function Repair() {
   const { t } = useTranslation()
@@ -249,6 +250,10 @@ export default function Repair() {
                 data={filteredItems}
                 pagination
                 paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+                noDataComponent={<NoRecordContainer>
+                  <RiFileForbidLine size={32} />
+                  <h4>{t('nodata')}</h4>
+                </NoRecordContainer>}
                 fixedHeader
                 fixedHeaderScrollHeight="calc(100dvh - 300px)"
               />

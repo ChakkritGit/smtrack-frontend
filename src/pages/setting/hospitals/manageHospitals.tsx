@@ -5,7 +5,7 @@ import {
 import { useTranslation } from "react-i18next"
 import { hospitalsType } from "../../../types/hospital.type"
 import { swalWithBootstrapButtons } from "../../../constants/sweetalertLib"
-import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine } from "react-icons/ri"
+import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine, RiFileForbidLine } from "react-icons/ri"
 import { useSelector } from "react-redux"
 import { useDispatch } from "react-redux"
 import { RootState, storeDispatchType } from "../../../stores/store"
@@ -23,6 +23,7 @@ import HospitalDropdown from "../../../components/dropdown/hospitalDropdown"
 import { ImageComponent } from "../../../constants/constants"
 import axiosInstance from "../../../constants/axiosInstance"
 import PageLoading from "../../../components/loading/page.loading"
+import { NoRecordContainer } from "../../../style/components/datatable.styled"
 
 export default function ManageHospitals() {
   const { t } = useTranslation()
@@ -265,6 +266,10 @@ export default function ManageHospitals() {
       <DataTable
         columns={subWardColumns}
         data={data.ward}
+        noDataComponent={<NoRecordContainer>
+          <RiFileForbidLine size={32} />
+          <h4>{t('nodata')}</h4>
+        </NoRecordContainer>}
         responsive
       />
     </SubWardColumnFlex>
@@ -420,6 +425,10 @@ export default function ManageHospitals() {
               expandableRowsComponent={ExpandedComponent}
               paginationPerPage={10}
               paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
               pagination
               responsive
               fixedHeader

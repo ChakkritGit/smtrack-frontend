@@ -7,8 +7,12 @@ import { useSelector } from "react-redux"
 import { devicesType } from "../../types/device.type"
 import { notificationType } from "../../types/notification.type"
 import DataTable, { TableColumn } from "react-data-table-component"
+import { NoRecordContainer } from '../../style/components/datatable.styled'
+import { RiFileForbidLine } from 'react-icons/ri'
+import { useTranslation } from 'react-i18next'
 
 function Test() {
+  const { t } = useTranslation()
   const [cardActive, setCardActive] = useState('')
   const [show, setShow] = useState(false)
   const [newFilter, setNewFilter] = useState<devicesType[]>([])
@@ -76,6 +80,10 @@ function Test() {
       <DataTable
         columns={subWardColumns}
         data={data.noti}
+        noDataComponent={<NoRecordContainer>
+          <RiFileForbidLine size={32} />
+          <h4>{t('nodata')}</h4>
+        </NoRecordContainer>}
         responsive
       />
     </SubWardColumnFlex>
@@ -160,6 +168,10 @@ function Test() {
             expandableRowsComponent={ExpandedComponent}
             paginationPerPage={10}
             paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+            noDataComponent={<NoRecordContainer>
+              <RiFileForbidLine size={32} />
+              <h4>{t('nodata')}</h4>
+            </NoRecordContainer>}
             pagination
             responsive
             fixedHeader

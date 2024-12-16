@@ -10,7 +10,7 @@ import {
   Reactive,
   SpanStatusDev
 } from "../../../style/style"
-import { RiLoopRightFill, RiShutDownLine, RiTimer2Line } from "react-icons/ri"
+import { RiFileForbidLine, RiLoopRightFill, RiShutDownLine, RiTimer2Line } from "react-icons/ri"
 import { swalWithBootstrapButtons } from "../../../constants/sweetalertLib"
 import Adddevform from "./adddevform"
 import Swal from "sweetalert2"
@@ -26,6 +26,7 @@ import Moveseqdev from "./moveseqdev"
 import { socket } from "../../../services/websocket"
 import { AdjustTime } from "../../../style/components/manage.dev"
 import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
+import { NoRecordContainer } from "../../../style/components/datatable.styled"
 
 export default function Managedev() {
   const { t, i18n } = useTranslation()
@@ -272,6 +273,10 @@ export default function Managedev() {
               data={filter}
               paginationPerPage={10}
               paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
               pagination
               fixedHeader
               fixedHeaderScrollHeight="calc(100dvh - 350px)"

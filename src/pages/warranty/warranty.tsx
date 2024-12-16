@@ -3,7 +3,7 @@ import { DelWarrantyButton, DetailFlex, DetailWarranty, FormBtn, FormFlexBtn, Mo
 import { FormEvent, useEffect, useRef, useState } from "react"
 import Loading from "../../components/loading/loading"
 import { useTranslation } from "react-i18next"
-import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine, RiFileCloseLine, RiInformationLine, RiLoader3Line, RiPrinterLine } from "react-icons/ri"
+import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine, RiFileCloseLine, RiFileForbidLine, RiInformationLine, RiLoader3Line, RiPrinterLine } from "react-icons/ri"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { useReactToPrint } from "react-to-print"
 import Printwarranty from "./printwarranty"
@@ -24,6 +24,7 @@ import { hospitalsType } from "../../types/hospital.type"
 import { companyList } from "../../constants/constants"
 import axiosInstance from "../../constants/axiosInstance"
 import PageLoading from "../../components/loading/page.loading"
+import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 interface dataTableProps {
   warrantyData: warrantyType[]
@@ -358,6 +359,10 @@ export default function Warranty() {
       pagination
       paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
       paginationPerPage={10}
+      noDataComponent={<NoRecordContainer>
+        <RiFileForbidLine size={32} />
+        <h4>{t('nodata')}</h4>
+      </NoRecordContainer>}
       dense
       fixedHeader
       fixedHeaderScrollHeight="calc(100dvh - 320px)"

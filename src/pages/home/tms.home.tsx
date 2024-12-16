@@ -3,7 +3,7 @@ import { RootState } from "../../stores/store"
 import { HomeContainer, TagCurrentHos } from "../../style/components/home.styled"
 import { AboutBox, DatatableHome, DevHomeHeadTile, DevHomeSecctionOne, DeviceInfoflex, DeviceListFlex, HomeContainerFlex, ListBtn } from "../../style/style"
 import { useTranslation } from "react-i18next"
-import { RiArrowDownWideLine, RiArrowUpWideLine, RiLayoutGridLine, RiListUnordered } from "react-icons/ri"
+import { RiArrowDownWideLine, RiArrowUpWideLine, RiFileForbidLine, RiLayoutGridLine, RiListUnordered } from "react-icons/ri"
 import { FiLoader } from "react-icons/fi"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
@@ -14,6 +14,7 @@ import axiosInstance from "../../constants/axiosInstance"
 import { AxiosError } from "axios"
 import { responseType } from "../../types/response.type"
 import Loading from "../../components/loading/loading"
+import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 const TmsHome = () => {
   const { t } = useTranslation()
@@ -201,6 +202,11 @@ const TmsHome = () => {
                     paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
                     onChangeRowsPerPage={handlePerRowsChange}
                     onChangePage={handlePageChange}
+                    noDataComponent={<NoRecordContainer>
+                      <RiFileForbidLine size={32} />
+                      <h4>{t('nodata')}</h4>
+                    </NoRecordContainer>}
+                    responsive
                     pointerOnHover
                     fixedHeader
                     fixedHeaderScrollHeight="calc(100dvh - 450px)"

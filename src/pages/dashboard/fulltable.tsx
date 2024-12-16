@@ -9,7 +9,8 @@ import {
 } from "../../style/style"
 import {
   RiDashboardFill,
-  RiDoorClosedLine, RiDoorOpenLine, RiFileExcel2Line
+  RiDoorClosedLine, RiDoorOpenLine, RiFileExcel2Line,
+  RiFileForbidLine
 } from "react-icons/ri"
 import { useEffect, useState } from "react"
 import { logtype } from "../../types/log.type"
@@ -29,6 +30,7 @@ import { items } from "../../animation/animate"
 import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../stores/store"
 import PageLoading from "../../components/loading/page.loading"
+import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 export default function Fulltable() {
   const { t } = useTranslation()
@@ -428,6 +430,10 @@ export default function Fulltable() {
                       pagination
                       paginationRowsPerPageOptions={[15, 30, 50, 100, 200, 300, 500]}
                       paginationPerPage={15}
+                      noDataComponent={<NoRecordContainer>
+                        <RiFileForbidLine size={32} />
+                        <h4>{t('nodata')}</h4>
+                      </NoRecordContainer>}
                       dense
                       fixedHeader
                       fixedHeaderScrollHeight="calc(100dvh - 250px)"

@@ -5,7 +5,7 @@ import DataTable, { TableColumn } from "react-data-table-component"
 import { probeType } from "../../../types/probe.type"
 import { useDispatch, useSelector } from "react-redux"
 import { swalWithBootstrapButtons } from "../../../constants/sweetalertLib"
-import { RiDeleteBin2Line } from "react-icons/ri"
+import { RiDeleteBin2Line, RiFileForbidLine } from "react-icons/ri"
 import { AxiosError } from "axios"
 import { RootState, storeDispatchType } from "../../../stores/store"
 import { fetchProbeData } from "../../../stores/probeSlice"
@@ -17,6 +17,7 @@ import { useEffect, useMemo, useState } from "react"
 import FilterHosWardTemporary from "../../../components/dropdown/filter.hos.ward.temp"
 import axiosInstance from "../../../constants/axiosInstance"
 import PageLoading from "../../../components/loading/page.loading"
+import { NoRecordContainer } from "../../../style/components/datatable.styled"
 
 export default function Probesetting() {
   const { t } = useTranslation()
@@ -184,6 +185,10 @@ export default function Probesetting() {
               data={filter}
               paginationPerPage={10}
               paginationRowsPerPageOptions={[10, 20, 40, 60, 80, 100]}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
               pagination
               responsive
               fixedHeader

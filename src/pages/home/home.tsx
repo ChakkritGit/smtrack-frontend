@@ -3,6 +3,7 @@ import {
   RiArrowUpWideLine,
   RiDoorClosedLine, RiDoorOpenLine, RiErrorWarningLine,
   RiFileCloseLine,
+  RiFileForbidLine,
   RiLayoutGridLine, RiListUnordered, RiSettings3Line, RiSkipUpLine, RiTempColdLine
 } from "react-icons/ri"
 import {
@@ -37,6 +38,7 @@ import ModalAdjust from "../../components/home/modal.adjust"
 import ModalNotification from "../../components/home/modal.noti"
 import ModalMute from "../../components/home/modal.mute"
 import { WarrantySpan } from "../../style/components/warranty.styled"
+import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 export default function Home() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -410,6 +412,10 @@ export default function Home() {
         <DataTable
           columns={subDeviceColumns}
           data={probe}
+          noDataComponent={<NoRecordContainer>
+            <RiFileForbidLine size={32} />
+            <h4>{t('nodata')}</h4>
+          </NoRecordContainer>}
           responsive
           dense
         />
@@ -497,6 +503,10 @@ export default function Home() {
                 setRowPerPage(n);
                 cookies.set('rowperpage', n, cookieOptions);
               }}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
               highlightOnHover
               pagination
               expandableRows

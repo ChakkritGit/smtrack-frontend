@@ -1,4 +1,4 @@
-import { RiFullscreenLine } from "react-icons/ri"
+import { RiFileForbidLine, RiFullscreenLine } from "react-icons/ri"
 import { ChartCardHeah, ChartCardHeahBtn, TableContainer } from "../../style/style"
 import { logtype } from "../../types/log.type"
 import DataTable, { TableColumn } from "react-data-table-component"
@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next"
 import { useSelector } from "react-redux"
 import { cookieOptions, cookies } from "../../constants/constants"
 import { RootState } from "../../stores/store"
+import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 type tableType = {
   data: logtype[],
@@ -93,6 +94,10 @@ export default function Table(tableType: tableType) {
         pagination
         paginationRowsPerPageOptions={[12, 30, 50, 100]}
         paginationPerPage={12}
+        noDataComponent={<NoRecordContainer>
+          <RiFileForbidLine size={32} />
+          <h4>{t('nodata')}</h4>
+        </NoRecordContainer>}
         dense
         fixedHeader
         fixedHeaderScrollHeight="420px"

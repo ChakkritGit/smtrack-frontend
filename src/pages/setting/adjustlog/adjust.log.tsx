@@ -9,10 +9,11 @@ import { useTranslation } from "react-i18next"
 import { setSearchQuery, setShowAlert } from "../../../stores/utilsStateSlice"
 import { RootState, storeDispatchType } from "../../../stores/store"
 import { Modal } from "react-bootstrap"
-import { RiCloseLine } from "react-icons/ri"
+import { RiCloseLine, RiFileForbidLine } from "react-icons/ri"
 import { DetailsFlex, LogDetailsButton } from "../../../style/components/log.update"
 import axiosInstance from "../../../constants/axiosInstance"
 import PageLoading from "../../../components/loading/page.loading"
+import { NoRecordContainer } from "../../../style/components/datatable.styled"
 
 export default function AdjustLog() {
   const { t } = useTranslation()
@@ -134,6 +135,10 @@ export default function AdjustLog() {
               data={filteredItems}
               paginationRowsPerPageOptions={[10, 30, 50, 80, 100, 150, 200, 300, 500]}
               paginationPerPage={10}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
               pagination
               responsive
               fixedHeader
