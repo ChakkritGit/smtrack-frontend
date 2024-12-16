@@ -131,7 +131,7 @@ const TmsHome = () => {
       {
         // devices.length > 0 ?
         <HomeContainerFlex>
-          <DevHomeHeadTile>
+          <DevHomeHeadTile $primary={listAndgrid === 2}>
             <h5>
               {t('showAllBox')}
             </h5>
@@ -165,7 +165,7 @@ const TmsHome = () => {
               }
             </div>
           </DevHomeSecctionOne>
-          <AboutBox>
+          <AboutBox $primary={listAndgrid === 2}>
             <h5>{t('detailAllBox')}</h5>
             <DeviceInfoflex>
               <FilterHosAndWard />

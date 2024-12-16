@@ -15,9 +15,9 @@ function TmsHomeCard({ counts }: HomeCardData) {
   const { t } = useTranslation()
 
   const cardItems = [
-    { key: '1', label: t('countProbe'), count: counts?.temp, icon: <RiTempColdLine /> },
-    { key: '2', label: t('countDoor'), count: counts?.door, icon: <RiDoorClosedLine /> },
-    { key: '3', label: t('countPlug'), count: counts?.plug, icon: <RiPlugLine /> }
+    { key: '1', label: t('countProbe'), count: counts?.temp ?? 0, icon: <RiTempColdLine /> },
+    { key: '2', label: t('countDoor'), count: counts?.door ?? 0, icon: <RiDoorClosedLine /> },
+    { key: '3', label: t('countPlug'), count: counts?.plug ?? 0, icon: <RiPlugLine /> }
   ]
 
   return (
