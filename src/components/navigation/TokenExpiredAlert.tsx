@@ -26,10 +26,10 @@ const TokenExpiredAlert = () => {
     })
       .then((result) => {
         if (result.isConfirmed) {
+          dispatch(reset())
           dispatch(setCookieEncode(''))
           dispatch(setDeviceId(''))
           dispatch(setSerial(''))
-          dispatch(reset())
           cookies.remove('localDataObject', cookieOptions)
           cookies.remove('devSerial', cookieOptions)
           cookies.remove('devid', cookieOptions)
@@ -37,7 +37,7 @@ const TokenExpiredAlert = () => {
           cookies.remove('selectWard', cookieOptions)
           cookies.remove('isTms', cookieOptions)
           cookies.update()
-          dispatch(setShowAlert(false))
+          setShowAlert(false)
           navigate("/login")
         }
       })

@@ -22,8 +22,6 @@ const TmsHome = () => {
   const { role } = tokenDecode
   const { hospitalsData } = hospital
   const { wardData } = ward
-  const [onFilteres, setOnFilteres] = useState(false)
-  const [cardActive, setCardActive] = useState('')
   const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
   const [scrolled, setScrolled] = useState(false)
   const [expand, setExpand] = useState(false)

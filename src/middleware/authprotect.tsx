@@ -34,6 +34,10 @@ const ProtectedRoute = ({ children }: AuthProps) => {
         if (cookieObject.token) {
           setIsValid(true)
         } else {
+          dispatch(reset())
+          dispatch(setCookieEncode(''))
+          dispatch(setDeviceId(''))
+          dispatch(setSerial(''))
           cookies.remove('localDataObject', cookieOptions)
           cookies.remove('devSerial', cookieOptions)
           cookies.remove('devid', cookieOptions)
@@ -41,13 +45,13 @@ const ProtectedRoute = ({ children }: AuthProps) => {
           cookies.remove('selectWard', cookieOptions)
           cookies.remove('isTms', cookieOptions)
           cookies.update()
-          dispatch(reset())
-          dispatch(setDeviceId(''))
-          dispatch(setSerial(''))
-          dispatch(setCookieEncode(''))
           setIsValid(false)
         }
       } catch (error) {
+        dispatch(reset())
+        dispatch(setCookieEncode(''))
+        dispatch(setDeviceId(''))
+        dispatch(setSerial(''))
         cookies.remove('localDataObject', cookieOptions)
         cookies.remove('devSerial', cookieOptions)
         cookies.remove('devid', cookieOptions)
@@ -55,10 +59,6 @@ const ProtectedRoute = ({ children }: AuthProps) => {
         cookies.remove('selectWard', cookieOptions)
         cookies.remove('isTms', cookieOptions)
         cookies.update()
-        dispatch(reset())
-        dispatch(setDeviceId(''))
-        dispatch(setSerial(''))
-        dispatch(setCookieEncode(''))
         setIsValid(false)
       }
     }
