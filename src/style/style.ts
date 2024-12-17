@@ -2754,7 +2754,9 @@ export const DeviceDetailsBodyimg = styled.div<{ $primary?: boolean }>`
   height: 180px;
   max-height: 180px;
   overflow: hidden;
-  cursor: pointer;
+  ${props => !props.$primary && css`
+    cursor: pointer;
+    `}
 
   &>span {
   display: flex !important;
@@ -2768,10 +2770,12 @@ export const DeviceDetailsBodyimg = styled.div<{ $primary?: boolean }>`
   border-radius: var(--border-radius-big);
   box-shadow: 0 12px 28px ${props => props.theme.mode === 'dark' ? 'rgb(50 50 50 / 10%)' : 'rgb(190 190 190 / 25%)'};
 
-  &:hover {
+  ${props => !props.$primary && css`
+    &:hover {
     transform: scale(.95);
     transition: transform ease .3s;
   }
+    `}
 
   @media (max-width: 1185px) {
     height: 200px;

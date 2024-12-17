@@ -16,6 +16,7 @@ import { responseType } from "../../types/response.type"
 import Loading from "../../components/loading/loading"
 import { NoRecordContainer } from "../../style/components/datatable.styled"
 import { DoorKey } from "../../types/log.type"
+import PageLoading from "../../components/loading/page.loading"
 
 const TmsHome = () => {
   const { t } = useTranslation()
@@ -168,95 +169,95 @@ const TmsHome = () => {
   return (
     <HomeContainer>
       {
-        // devices.length > 0 ?
-        <HomeContainerFlex>
-          <DevHomeHeadTile $primary={listAndgrid === 2}>
-            <h5>
-              {t('showAllBox')}
-            </h5>
-            {
-              role === 'SUPER' && <TagCurrentHos>
-                {`${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
-              </TagCurrentHos>
-            }
-          </DevHomeHeadTile>
-          <DevHomeSecctionOne
-            $primary={scrolled}
-            $expand={expand}
-            $inList={listAndgrid === 1}
-            $transparent={transparent}
-          >
-            <div>
+        devices.length > 0 ?
+          <HomeContainerFlex>
+            <DevHomeHeadTile $primary={listAndgrid === 2}>
+              <h5>
+                {t('showAllBox')}
+              </h5>
               {
-                !loading.countLoading ?
-                  <TmsHomeCard
-                    counts={count}
-                  />
-                  :
-                  <Loading icn={<FiLoader size={42} />} loading title="Loading..." />
+                role === 'SUPER' && <TagCurrentHos>
+                  {`${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
+                </TagCurrentHos>
               }
+            </DevHomeHeadTile>
+            <DevHomeSecctionOne
+              $primary={scrolled}
+              $expand={expand}
+              $inList={listAndgrid === 1}
+              $transparent={transparent}
+            >
+              <div>
+                {
+                  !loading.countLoading ?
+                    <TmsHomeCard
+                      counts={count}
+                    />
+                    :
+                    <Loading icn={<FiLoader size={42} />} loading title={t('loading')} />
+                }
 
-            </div>
+              </div>
+              <div>
+                {
+                  !expand ? <RiArrowUpWideLine size={24} onClick={() => setExpand(true)} /> :
+                    <RiArrowDownWideLine size={24} onClick={() => setExpand(false)} />
+                }
+              </div>
+            </DevHomeSecctionOne>
+            <AboutBox $primary={listAndgrid === 2}>
+              <h5>{t('detailAllBox')}</h5>
+              <DeviceInfoflex>
+                <FilterHosAndWard />
+                <DeviceListFlex>
+                  <ListBtn $primary={listAndgrid === 1} onClick={() => {
+                    localStorage.setItem('listGrid', String(1))
+                    setListandgrid(1)
+                  }}>
+                    <RiListUnordered />
+                  </ListBtn>
+                  <ListBtn $primary={listAndgrid === 2} onClick={() => {
+                    localStorage.setItem('listGrid', String(2))
+                    setListandgrid(2)
+                  }}>
+                    <RiLayoutGridLine />
+                  </ListBtn>
+                </DeviceListFlex>
+              </DeviceInfoflex>
+            </AboutBox>
             <div>
               {
-                !expand ? <RiArrowUpWideLine size={24} onClick={() => setExpand(true)} /> :
-                  <RiArrowDownWideLine size={24} onClick={() => setExpand(false)} />
+                listAndgrid === 1 ?
+                  <DatatableHome>
+                    <DataTable
+                      columns={columns}
+                      data={devices}
+                      progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
+                      progressPending={loading.deviceLoading}
+                      pagination
+                      paginationServer
+                      paginationTotalRows={totalRows}
+                      paginationDefaultPage={currentPage}
+                      paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
+                      onChangeRowsPerPage={handlePerRowsChange}
+                      onChangePage={handlePageChange}
+                      noDataComponent={<NoRecordContainer>
+                        <RiFileForbidLine size={32} />
+                        <h4>{t('nodata')}</h4>
+                      </NoRecordContainer>}
+                      responsive
+                      pointerOnHover
+                      fixedHeader
+                      fixedHeaderScrollHeight="calc(100dvh - 450px)"
+                    />
+                  </DatatableHome>
+                  :
+                  <div>Card</div>
               }
             </div>
-          </DevHomeSecctionOne>
-          <AboutBox $primary={listAndgrid === 2}>
-            <h5>{t('detailAllBox')}</h5>
-            <DeviceInfoflex>
-              <FilterHosAndWard />
-              <DeviceListFlex>
-                <ListBtn $primary={listAndgrid === 1} onClick={() => {
-                  localStorage.setItem('listGrid', String(1))
-                  setListandgrid(1)
-                }}>
-                  <RiListUnordered />
-                </ListBtn>
-                <ListBtn $primary={listAndgrid === 2} onClick={() => {
-                  localStorage.setItem('listGrid', String(2))
-                  setListandgrid(2)
-                }}>
-                  <RiLayoutGridLine />
-                </ListBtn>
-              </DeviceListFlex>
-            </DeviceInfoflex>
-          </AboutBox>
-          <div>
-            {
-              listAndgrid === 1 ?
-                <DatatableHome>
-                  <DataTable
-                    columns={columns}
-                    data={devices}
-                    progressComponent={<Loading icn={<FiLoader size={42} />} loading title="Loading..." />}
-                    progressPending={loading.deviceLoading}
-                    pagination
-                    paginationServer
-                    paginationTotalRows={totalRows}
-                    paginationDefaultPage={currentPage}
-                    paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
-                    onChangeRowsPerPage={handlePerRowsChange}
-                    onChangePage={handlePageChange}
-                    noDataComponent={<NoRecordContainer>
-                      <RiFileForbidLine size={32} />
-                      <h4>{t('nodata')}</h4>
-                    </NoRecordContainer>}
-                    responsive
-                    pointerOnHover
-                    fixedHeader
-                    fixedHeaderScrollHeight="calc(100dvh - 450px)"
-                  />
-                </DatatableHome>
-                :
-                <div>Card</div>
-            }
-          </div>
-        </HomeContainerFlex>
-        // :
-        // <PageLoading />
+          </HomeContainerFlex>
+          :
+          <PageLoading />
       }
     </HomeContainer>
   )

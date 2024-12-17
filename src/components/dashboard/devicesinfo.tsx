@@ -41,13 +41,13 @@ import { HiOutlineArrowsUpDown } from "react-icons/hi2"
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
 import axiosInstance from "../../constants/axiosInstance"
 
-type devicesinfo = {
+type Devicesinfo = {
   devicesData: devicesType,
   index: number
 }
 
-export default function Devicesinfo(devicesinfo: devicesinfo) {
-  const { devicesData } = devicesinfo
+export default function Devicesinfo(deviceInfo: Devicesinfo) {
+  const { devicesData } = deviceInfo
   const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
   const [show, setShow] = useState(false)

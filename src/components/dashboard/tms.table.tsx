@@ -1,38 +1,38 @@
-import { RiFileForbidLine, RiFullscreenLine } from "react-icons/ri"
-import { ChartCardHeah, ChartCardHeahBtn, TableContainer } from "../../style/style"
-import { logtype } from "../../types/log.type"
-import DataTable, { TableColumn } from "react-data-table-component"
+import { useTranslation } from "react-i18next"
+import { TmsLogType } from "../../types/tms.type"
+import { useSelector } from "react-redux"
+import { RootState } from "../../stores/store"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
-import { useSelector } from "react-redux"
+import DataTable, { TableColumn } from "react-data-table-component"
 import { cookieOptions, cookies } from "../../constants/constants"
-import { RootState } from "../../stores/store"
+import { ChartCardHeah, ChartCardHeahBtn, TableContainer } from "../../style/style"
+import { RiFileForbidLine, RiFullscreenLine } from "react-icons/ri"
 import { NoRecordContainer } from "../../style/components/datatable.styled"
 
 type TableType = {
-  data: logtype[],
+  data: TmsLogType[],
   devSn: string,
-  devStatus: boolean,
   tempMin: number,
   tempMax: number
 }
 
-export default function Table(tablesData: TableType) {
+
+const TmsTable = (tablesData: TableType) => {
   const { t } = useTranslation()
   const { data, devSn, tempMin, tempMax } = tablesData
   const { searchQuery } = useSelector((state: RootState) => state.utilsState)
-  const [tableData, setTableData] = useState<logtype[]>([])
+  const [tableData, setTableData] = useState<TmsLogType[]>([])
   const navigate = useNavigate()
 
   useEffect(() => {
     const filtered = data.filter((items) =>
-      items.sendTime && items.sendTime.substring(11, 16).toLowerCase().includes(searchQuery.toLowerCase()))
+      items.time && items.time.substring(11, 16).toLowerCase().includes(searchQuery.toLowerCase()))
 
     setTableData(filtered)
   }, [searchQuery])
 
-  const columns: TableColumn<logtype>[] = [
+  const columns: TableColumn<TmsLogType>[] = [
     {
       name: t('deviceNoTb'),
       cell: (_, index) => {
@@ -43,38 +43,33 @@ export default function Table(tablesData: TableType) {
     },
     {
       name: t('deviceSerialTb'),
-      cell: () => <span title={devSn}>...{devSn.substring(17)}</span>,
+      cell: () => <span title={devSn}>...{devSn.substring(7)}</span>,
       sortable: false,
       center: true
     },
     {
       name: t('deviceTime'),
-      cell: (item) => item.sendTime.substring(11, 16),
+      cell: (item) => item.time.substring(0, 5),
       sortable: false,
       center: false
     },
     {
       name: t('probeTempSubTb'),
-      cell: (item) => item.tempAvg.toFixed(2) + '°C',
-      sortable: false,
-      center: false
-    },
-    {
-      name: t('probeHumiSubTb'),
-      cell: (item) => item.humidityAvg.toFixed(2) + '%',
+      cell: (item) => item.tempValue.toFixed(2) + '°C',
       sortable: false,
       center: false
     },
     {
       name: t('deviceConnectTb'),
-      cell: (item) => item.internet === '0' ? t('deviceOnline') : t('deviceOffline'),
+      cell: (item) => item.internet ? t('deviceOffline') : t('deviceOnline'),
       sortable: false,
       center: true
     },
   ]
 
+
   const openFulltable = () => {
-    cookies.set('devSerial', data ? data[0].devSerial : '', cookieOptions)
+    cookies.set('devSerial', devSn ? devSn : '', cookieOptions)
     navigate(`/dashboard/table`, { state: { tempMin: tempMin, tempMax: tempMax } })
     window.scrollTo(0, 0)
   }
@@ -105,3 +100,5 @@ export default function Table(tablesData: TableType) {
     </TableContainer>
   )
 }
+
+export default TmsTable
