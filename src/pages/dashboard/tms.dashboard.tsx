@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom"
 import PageLoading from "../../components/loading/page.loading"
 import TmsChart from "../../components/dashboard/tms.chart"
 import TmsDeviceInfo from "../../components/dashboard/tms.devicesinfo"
-import { setShowAlert } from "../../stores/utilsStateSlice"
+import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import TmsTable from "../../components/dashboard/tms.table"
 
 const TmsDashboard = () => {
@@ -30,6 +30,12 @@ const TmsDashboard = () => {
   })
   const [deviceLogs, setDeviceLogs] = useState<TmsDeviceType>({} as TmsDeviceType)
   const { hosId, wardId } = filterById
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSearchQuery(''))
+    }
+  }, [])
 
   const fetchDevice = async () => {
     try {

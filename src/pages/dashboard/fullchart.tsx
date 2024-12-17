@@ -17,7 +17,7 @@ import {
   RiPriceTag3Line
 } from "react-icons/ri"
 import { useEffect, useMemo, useRef, useState } from "react"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import { logtype } from "../../types/log.type"
 import { devicesType } from "../../types/device.type"
 import Swal from "sweetalert2"
@@ -88,7 +88,7 @@ export default function Fullchart() {
 
   const fetchData = async () => {
     try {
-      const responseData = await axios
+      const responseData = await axiosInstance
         .get(`${import.meta.env.VITE_APP_API}/device/${deviceId ? deviceId : cookies.get('devid')}`)
       setDevData(responseData.data.data)
     } catch (error) {
@@ -108,7 +108,7 @@ export default function Fullchart() {
     setPagenumber(1)
     setLogData([])
     try {
-      const responseData = await axios
+      const responseData = await axiosInstance
         .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=day&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
@@ -128,7 +128,7 @@ export default function Fullchart() {
     setPagenumber(2)
     setLogData([])
     try {
-      const responseData = await axios
+      const responseData = await axiosInstance
         .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=week&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
@@ -148,7 +148,7 @@ export default function Fullchart() {
     setPagenumber(3)
     setLogData([])
     try {
-      const responseData = await axios
+      const responseData = await axiosInstance
         .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=month&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
@@ -174,7 +174,7 @@ export default function Fullchart() {
       if (diffDays <= 31) {
         try {
           setLogData([])
-          const responseData = await axios
+          const responseData = await axiosInstance
             .get<responseType<logtype[]>>(`${import.meta.env.VITE_APP_API}/log?filter=${filterDate.startDate},${filterDate.endDate}&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
           setLogData(responseData.data.data)
         } catch (error) {
@@ -257,7 +257,7 @@ export default function Fullchart() {
 
       const canvas = canvasChartRef.current
 
-      const promise = html2canvas(canvas).then((canvasImage) => {
+      const promise = html2canvas(canvas, { scale: 2 }).then((canvasImage) => {
         const dataURL = canvasImage.toDataURL(type === 'png' ? 'image/png' : 'image/jpg', 1.0);
 
         let pagename = ''

@@ -1,30 +1,41 @@
 import Chart from "react-apexcharts"
-import { logtype } from "../../types/log.type"
+import { useSelector } from "react-redux"
 import { useTheme } from "../../theme/ThemeProvider"
+import { RootState } from "../../stores/store"
+import { useMemo, useRef } from "react"
+import { TmsLogType } from "../../types/tms.type"
+
 type chartType = {
-  chartData: logtype[],
-  devicesData: { tempMin: number | undefined, tempMax: number | undefined },
+  chartData: TmsLogType[],
+  devicesData: { tempMin: number, tempMax: number },
   tempHeight: number | string | undefined,
-  tempWidth: number | string | undefined
+  tempWidth: number | string | undefined,
+  isExport: boolean,
+  showDataLabel: boolean
 }
 
-const ApexchartFull = (chart: chartType) => {
-  const { chartData, devicesData } = chart
+const TmsApexChart = (chart: chartType) => {
+  const { expand } = useSelector((state: RootState) => state.utilsState)
+  const { chartData, devicesData, isExport, showDataLabel } = chart
   const { tempMax, tempMin } = devicesData
-  const tempAvgValues = chartData.map((items) => items.tempAvg)
+  const tempAvgValues = chartData.map((items) => items.tempValue)
   const minTempAvg = Math.min(...tempAvgValues) - 2
   const maxTempAvg = Math.max(...tempAvgValues) + 2
   const { theme } = useTheme()
 
-  const mappedData = chartData.map((items) => {
-    const time = new Date(items.sendTime).getTime()
-    return {
-      time,
-      tempAvg: items.tempAvg,
-      humidityAvg: items.humidityAvg,
-      door: items.door1 === '1' || items.door2 === '1' || items.door3 === '1' ? 1 : 0
-    }
-  })
+  const zoomPanSelection = useRef<any>(null)
+  const chartRef = useRef<any>(null)
+
+  const mappedData = useMemo(() => {
+    return chartData.map((items) => {
+      const time = new Date(`${items.date}T${items.time}`).getTime()
+      return {
+        time,
+        tempAvg: items.tempValue,
+        door: items.door ? 1 : 0,
+      }
+    })
+  }, [chartData])
 
   const series: ApexAxisChartSeries = [
     {
@@ -35,13 +46,7 @@ const ApexchartFull = (chart: chartType) => {
       }))
     },
     {
-      name: 'Humidity',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: data.humidityAvg
-      }))
-    },
-    {
+      hidden: isExport || showDataLabel,
       name: 'Min',
       data: mappedData.map((data) => ({
         x: data.time,
@@ -49,6 +54,7 @@ const ApexchartFull = (chart: chartType) => {
       }))
     },
     {
+      hidden: isExport || showDataLabel,
       name: 'Max',
       data: mappedData.map((data) => ({
         x: data.time,
@@ -66,6 +72,8 @@ const ApexchartFull = (chart: chartType) => {
 
   const options: ApexCharts.ApexOptions = {
     chart: {
+      height: isExport ? Math.min(window.innerHeight * 0.8, 600) : undefined,
+      width: isExport ? Math.min(window.innerWidth * 0.8, 1185) : undefined,
       type: 'line',
       animations: {
         enabled: true,
@@ -76,11 +84,27 @@ const ApexchartFull = (chart: chartType) => {
       stacked: false,
       zoom: {
         type: 'x',
-        enabled: false,
-        autoScaleYaxis: false
+        enabled: isExport ? false : true,
+        autoScaleYaxis: isExport ? false : true
+      },
+      events: {
+        mounted: (chart) => {
+          if (zoomPanSelection.current) {
+            chart.zoomX(zoomPanSelection.current.minX, zoomPanSelection.current.maxX)
+          }
+        },
+        updated: (chart) => {
+          const selection = chart.zoomPanSelection
+          if (selection) {
+            zoomPanSelection.current = {
+              minX: selection.minX,
+              maxX: selection.maxX,
+            }
+          }
+        },
       },
       toolbar: {
-        show: false,
+        show: isExport ? false : true,
         autoSelected: 'zoom',
         tools: {
           download: false,
@@ -110,6 +134,7 @@ const ApexchartFull = (chart: chartType) => {
       defaultLocale: "en"
     },
     tooltip: {
+      enabled: isExport ? false : true,
       theme: 'apexcharts-tooltip',
       x: {
         format: 'dd MMM yy HH:mm'
@@ -134,15 +159,15 @@ const ApexchartFull = (chart: chartType) => {
       }
     },
     dataLabels: {
-      enabled: false
+      enabled: showDataLabel
     },
     markers: {
       size: 0
     },
     stroke: {
       lineCap: 'round',
-      curve: ["smooth", "smooth", "smooth", "smooth", "stepline"],
-      width: [2.5, 2, .8, .8, 1.5]
+      curve: ["smooth", "smooth", "smooth", "stepline"],
+      width: [2.5, .8, .8, 1.5]
     },
     xaxis: {
       type: "datetime"
@@ -158,19 +183,6 @@ const ApexchartFull = (chart: chartType) => {
         },
         min: minTempAvg,
         max: maxTempAvg
-      },
-      {
-        show: true,
-        opposite: false,
-        axisTicks: {
-          show: true
-        },
-        axisBorder: {
-          show: false,
-          color: "rgba(52, 152, 219, 1)"
-        },
-        min: 0,
-        max: 100
       },
       {
         show: false,
@@ -200,18 +212,57 @@ const ApexchartFull = (chart: chartType) => {
         fontFamily: undefined
       }
     },
-    colors: ["rgba(255, 76, 60 , 1)", "rgba(52, 152, 219, .5)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
+    colors: ["rgba(255, 76, 60 , 1)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
+    ...(isExport
+      ? {}
+      : {
+        responsive: [
+          {
+            breakpoint: 1185,
+            options: {
+              chart: {
+                height: 600,
+                width: expand ? 1050 : 900,
+              },
+            },
+          },
+          {
+            breakpoint: 430,
+            options: {
+              chart: {
+                height: 330,
+                width: 350,
+              },
+            },
+          },
+        ],
+      }),
   }
 
   return (
-    <Chart
-      type="line"
-      options={options}
-      series={series}
-      height={chart.tempHeight}
-      width={chart.tempWidth}
-    />
+    <>
+      {showDataLabel ?
+        <Chart
+          key={'1'}
+          ref={chartRef}
+          type="line"
+          options={options}
+          series={series}
+          height={chart.tempHeight}
+          width={chart.tempWidth}
+        /> :
+        <Chart
+          key={'2'}
+          ref={chartRef}
+          type="line"
+          options={options}
+          series={series}
+          height={chart.tempHeight}
+          width={chart.tempWidth}
+        />
+      }
+    </>
   )
 }
 
-export default ApexchartFull
+export default TmsApexChart

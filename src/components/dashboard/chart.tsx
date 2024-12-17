@@ -5,7 +5,7 @@ import {
 } from '../../style/style'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import ApexchartFull from './apexchartFull'
+import ApexchartFull from './tmsapexchart'
 import { cookieOptions, cookies } from '../../constants/constants'
 
 type chartData = {
