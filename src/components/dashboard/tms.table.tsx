@@ -27,7 +27,7 @@ const TmsTable = (tablesData: TableType) => {
 
   useEffect(() => {
     const filtered = data.filter((items) =>
-      items.time && items.time.substring(11, 16).toLowerCase().includes(searchQuery.toLowerCase()))
+      items.time && items.time.substring(11, 16).toLowerCase().includes(searchQuery.toLowerCase())).reverse()
 
     setTableData(filtered)
   }, [searchQuery])
@@ -49,7 +49,7 @@ const TmsTable = (tablesData: TableType) => {
     },
     {
       name: t('deviceTime'),
-      cell: (item) => item.time.substring(0, 5),
+      cell: (item) => item.createdAt.substring(11, 16),
       sortable: false,
       center: false
     },

@@ -6,7 +6,7 @@ import { Modal } from "react-bootstrap"
 import { CountUp } from "countup.js"
 import { useDispatch, useSelector } from "react-redux"
 import { responseType } from "../../types/response.type"
-import axios, { AxiosError } from "axios"
+import { AxiosError } from "axios"
 import Notificationdata from "../../components/notification/notificationdata"
 import notificationSound from "../../assets/sounds/notification.mp3"
 import { RootState, storeDispatchType } from "../../stores/store"
@@ -19,12 +19,14 @@ import { TbPlugConnected, TbPlugConnectedX, TbReportAnalytics } from "react-icon
 import { MdOutlineSdCard, MdOutlineSdCardAlert } from "react-icons/md"
 import { FaTemperatureArrowDown, FaTemperatureArrowUp, FaTemperatureEmpty } from "react-icons/fa6"
 import { extractValues } from "../../constants/constants"
+import axiosInstance from "../../constants/axiosInstance"
 
 export default function Notification() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { socketData, soundMode, popUpMode, cookieDecode, notiData, transparent } = useSelector((state: RootState) => state.utilsState)
+  const { socketData, soundMode, popUpMode, cookieDecode, notiData, transparent, tokenDecode, isTms } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
+  const { role } = tokenDecode
   const [number, setNumber] = useState(0)
   const [show, setShow] = useState(false)
   const countupRef = useRef(null)
@@ -41,11 +43,10 @@ export default function Notification() {
   }
 
   const fetchData = async () => {
+    const baseUrl = role === "LEGACY_ADMIN" || role === "LEGACY_USER" || isTms ? `${import.meta.env.VITE_APP_API}/legacy/templog/alert/notification` : `${import.meta.env.VITE_APP_API}/notification`
     try {
-      const responseData = await axios
-        .get<responseType<notificationType[]>>(`${import.meta.env.VITE_APP_API}/notification`, {
-          headers: { authorization: `Bearer ${token}` }
-        })
+      const responseData = await axiosInstance
+        .get<responseType<notificationType[]>>(baseUrl)
       dispatch(setNotidata(responseData.data.data))
     } catch (error) {
       if (error instanceof AxiosError) {
