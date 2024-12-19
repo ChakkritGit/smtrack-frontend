@@ -109,37 +109,25 @@ export default function Adddevform(managedevices: managedevices) {
     }
   }
 
-  useEffect(() => {
-    if (pagestate !== "add") {
-      setFormdata({
-        devZone: devdata.devZone,
-        devLocation: devdata.locInstall,
-        groupId: devdata.wardId || '',
-        devId: devdata.devId,
-        devName: devdata.devDetail,
-        devSn: devdata.devSerial,
-        locationPic: null,
-        macAddWiFi: devdata.config.macAddWiFi,
-      });
-    } else {
-      setFormdata({
-        devZone: '',
-        devLocation: '',
-        groupId: '',
-        devId: '',
-        devName: '',
-        devSn: '',
-        locationPic: null,
-        macAddWiFi: '',
-      });
-    }
-  }, [pagestate, devdata])
+  const setInitalState = () => {
+    setFormdata({
+      devZone: devdata.devZone,
+      devLocation: devdata.locInstall,
+      groupId: devdata.wardId || '',
+      devId: devdata.devId,
+      devName: devdata.devDetail,
+      devSn: devdata.devSerial,
+      locationPic: null,
+      macAddWiFi: devdata.config.macAddWiFi,
+    })
+  }
 
   useEffect(() => {
     setNetConfig({ ...netConfig, hardReset: `${resetHour}${resetMinute}` })
   }, [resetHour, resetMinute])
 
   const openmodal = () => {
+    setInitalState()
     setShow(true)
   }
 
