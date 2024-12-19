@@ -24,6 +24,20 @@ type TmsLogType = {
   updatedAt: string
 }
 
+type FilterLogType = {
+  result: string,
+  table: number,
+  _start: string,
+  _stop: string,
+  _time: string,
+  _value: number,
+  _field: string,
+  _measurement: string,
+  hospital: string,
+  sn: string,
+  ward: string
+}
+
 interface TmsDeviceType extends DeviceType {
   log: TmsLogType[]
 }
@@ -39,4 +53,4 @@ type FetchDeviceType = {
   devices: TmsDeviceType[]
 }
 
-export type { TmsDeviceType, FetchDeviceType, TmsCountType, TmsLogType }
+export type { TmsDeviceType, FetchDeviceType, TmsCountType, TmsLogType, FilterLogType }

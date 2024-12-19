@@ -1,15 +1,22 @@
 import { Breadcrumbs, Typography } from "@mui/material"
 import { Container, Dropdown, Form } from "react-bootstrap"
 import { useTranslation } from "react-i18next"
-import { RiArrowRightSLine, RiDashboardFill, RiFilePdf2Line, RiFolderSharedLine, RiImageLine, RiLoader2Line, RiPriceTag3Line } from "react-icons/ri"
+import {
+  RiArrowRightSLine, RiDashboardFill, RiFilePdf2Line, RiFolderSharedLine,
+  RiImageLine, RiLoader2Line, RiPriceTag3Line
+} from "react-icons/ri"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { CustomChart, ExportandAuditFlex, FilterContainer, FilterSearchBtn, FullchartBody, FullchartBodyChartCon, FullchartHead, FullchartHeadBtn, FullchartHeadExport, FullchartHeadLeft, LineHr, TableInfoDevice } from "../../style/style"
+import {
+  CustomChart, ExportandAuditFlex, FilterContainer, FilterSearchBtn, FullchartBody,
+  FullchartBodyChartCon, FullchartHead, FullchartHeadBtn, FullchartHeadExport,
+  FullchartHeadLeft, LineHr, TableInfoDevice
+} from "../../style/style"
 import Swal from "sweetalert2"
 import Loading from "../../components/loading/loading"
 import { WaitExportImage } from "../../style/components/page.loading"
 import { useEffect, useMemo, useRef, useState } from "react"
-import TmsApexChart from "../../components/dashboard/tmsapexfull"
-import { TmsDeviceType, TmsLogType } from "../../types/tms.type"
+import TmsApexChart from "../../components/dashboard/smtrack.apexfull"
+import { FilterLogType, TmsDeviceType } from "../../types/tms.type"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
 import PageLoading from "../../components/loading/page.loading"
@@ -28,8 +35,8 @@ const TmsFullChart = () => {
   const { state } = useLocation()
   const navigate = useNavigate()
   const { tempMin, tempMax } = state ?? { tempMin: 0, tempMax: 0 }
-  const { Serial, deviceId, expand, cookieDecode, userProfile } = useSelector((state: RootState) => state.utilsState)
-  const [logData, setLogData] = useState<TmsLogType[]>([])
+  const { Serial, expand, cookieDecode, userProfile } = useSelector((state: RootState) => state.utilsState)
+  const [logData, setLogData] = useState<FilterLogType[]>([])
   const [devData, setDevData] = useState<TmsDeviceType>()
   const [pageNumber, setPagenumber] = useState(1)
   const [isloading, setIsLoading] = useState(false)
@@ -54,7 +61,7 @@ const TmsFullChart = () => {
         try {
           setLogData([])
           const responseData = await axiosInstance
-            .get<responseType<TmsLogType[]>>(`${import.meta.env.VITE_APP_API}/log?filter=${filterDate.startDate},${filterDate.endDate}&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
+            .get<responseType<FilterLogType[]>>(`${import.meta.env.VITE_APP_API}/legacy/graph?filter=${filterDate.startDate},${filterDate.endDate}&sn=${Serial ? Serial : cookies.get('devSerial')}`)
           setLogData(responseData.data.data)
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -90,7 +97,7 @@ const TmsFullChart = () => {
   const fetchData = async () => {
     try {
       const responseData = await axiosInstance
-        .get(`${import.meta.env.VITE_APP_API}/device/${deviceId ? deviceId : cookies.get('devid')}`)
+        .get(`${import.meta.env.VITE_APP_API}/legacy/device/${Serial ? Serial : cookies.get('devSerial')}`)
       setDevData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -110,7 +117,7 @@ const TmsFullChart = () => {
     setLogData([])
     try {
       const responseData = await axiosInstance
-        .get<responseType<TmsLogType[]>>(`${import.meta.env.VITE_APP_API}/log?filter=day&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
+        .get<responseType<FilterLogType[]>>(`${import.meta.env.VITE_APP_API}/legacy/graph?filter=day&sn=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -130,7 +137,7 @@ const TmsFullChart = () => {
     setLogData([])
     try {
       const responseData = await axiosInstance
-        .get<responseType<TmsLogType[]>>(`${import.meta.env.VITE_APP_API}/log?filter=week&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
+        .get<responseType<FilterLogType[]>>(`${import.meta.env.VITE_APP_API}/legacy/graph?filter=week&sn=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -150,7 +157,7 @@ const TmsFullChart = () => {
     setLogData([])
     try {
       const responseData = await axiosInstance
-        .get<responseType<TmsLogType[]>>(`${import.meta.env.VITE_APP_API}/log?filter=month&devSerial=${Serial ? Serial : cookies.get('devSerial')}`)
+        .get<responseType<FilterLogType[]>>(`${import.meta.env.VITE_APP_API}/legacy/graph?filter=month&sn=${Serial ? Serial : cookies.get('devSerial')}`)
       setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -166,8 +173,8 @@ const TmsFullChart = () => {
   }
 
   useEffect(() => {
-    if (deviceId !== 'undefined' && token) fetchData()
-  }, [pageNumber, token, deviceId])
+    if (Serial !== 'undefined' && token) fetchData()
+  }, [pageNumber, token, Serial])
 
   useEffect(() => {
     if (token) {
@@ -306,10 +313,6 @@ const TmsFullChart = () => {
           </TableInfoDevice>
           <TmsApexChart
             chartData={logData}
-            devicesData={{
-              tempMin,
-              tempMax
-            }}
             tempHeight={680}
             tempWidth={1480}
             isExport={isloading}

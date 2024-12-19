@@ -24,7 +24,7 @@ import axiosInstance from "../../constants/axiosInstance"
 export default function Notification() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { socketData, soundMode, popUpMode, cookieDecode, notiData, transparent, tokenDecode, isTms } = useSelector((state: RootState) => state.utilsState)
+  const { socketData, soundMode, popUpMode, cookieDecode, notiData, transparent, isTms, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { token } = cookieDecode
   const { role } = tokenDecode
   const [number, setNumber] = useState(0)

@@ -39,8 +39,6 @@ export default function Addprobe(addprobe: addprobeProps) {
   const dispatch = useDispatch<storeDispatchType>()
   const { pagestate, probeData } = addprobe
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token } = cookieDecode
   const [show, setShow] = useState(false)
   const [formdata, setFormdata] = useState({
     probeName: pagestate !== "add" ? probeData?.probeName : '',
@@ -107,7 +105,7 @@ export default function Addprobe(addprobe: addprobeProps) {
         })
         setFormdata({ ...formdata, tempvalue: [0, 0] })
         closemodal()
-        dispatch(fetchProbeData(token))
+        dispatch(fetchProbeData())
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {

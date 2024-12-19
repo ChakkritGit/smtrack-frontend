@@ -278,6 +278,7 @@ export default function Managedev() {
                 <h4>{t('nodata')}</h4>
               </NoRecordContainer>}
               pagination
+              highlightOnHover
               fixedHeader
               fixedHeaderScrollHeight="calc(100dvh - 350px)"
             />

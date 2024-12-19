@@ -22,9 +22,8 @@ import { NoRecordContainer } from "../../../style/components/datatable.styled"
 export default function Probesetting() {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { searchQuery, cookieDecode, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { searchQuery, tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { probeData } = useSelector((state: RootState) => state.probe)
-  const { token } = cookieDecode
   const { role } = tokenDecode
   const [filterById, setFilterById] = useState({
     hosId: '',
@@ -41,7 +40,7 @@ export default function Probesetting() {
   const deleteProbe = async (probeId: string) => {
     try {
       const response = await axiosInstance.delete<responseType<probeType>>(`${import.meta.env.VITE_APP_API}/probe/${probeId}`)
-      dispatch(fetchProbeData(token))
+      dispatch(fetchProbeData())
       Swal.fire({
         title: t('alertHeaderSuccess'),
         text: response.data.message,
@@ -190,6 +189,7 @@ export default function Probesetting() {
                 <h4>{t('nodata')}</h4>
               </NoRecordContainer>}
               pagination
+              highlightOnHover
               responsive
               fixedHeader
               fixedHeaderScrollHeight="calc(100dvh - 350px)"

@@ -1,17 +1,18 @@
 import { wardsType } from "./ward.type"
 
 type hospitalsType = {
-  hosId: string,
-  hosName: string,
-  hosAddress: string,
-  hosTelephone: string,
-  userContact: string,
-  userTelePhone: string,
-  hosLatitude: string,
-  hosLongitude: string,
-  hosPic: string,
   createAt: string,
+  hosAddress?: string,
+  hosLatitude?: string,
+  hosLongitude?: string,
+  hosName: string,
+  hosPic?: string,
+  hosSeq: number,
+  hosTel?: string,
+  id: string,
   updateAt: string,
+  userContact?: string,
+  userTel?: string,
   ward: wardsType[]
 }
 

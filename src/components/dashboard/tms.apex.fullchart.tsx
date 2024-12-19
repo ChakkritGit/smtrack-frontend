@@ -4,15 +4,13 @@ import Chart from "react-apexcharts"
 
 type ChartData = {
   logs: TmsLogType[],
-  devicesData: { tempMin: number | undefined, tempMax: number | undefined },
   tempHeight: number | string | undefined,
   tempWidth: number | string | undefined
 }
 
 const TmsApexFullChat = (chartData: ChartData) => {
   const { theme } = useTheme()
-  const { logs, tempHeight, tempWidth, devicesData } = chartData
-  const { tempMax, tempMin } = devicesData
+  const { logs, tempHeight, tempWidth } = chartData
 
   const tempAvgValues = logs.map((items) => items.tempValue)
   const minTempAvg = Math.min(...tempAvgValues) - 2
@@ -23,7 +21,6 @@ const TmsApexFullChat = (chartData: ChartData) => {
     return {
       time,
       tempAvg: items.tempValue,
-      door: items.door ? 1 : 0
     }
   })
 
@@ -35,27 +32,7 @@ const TmsApexFullChat = (chartData: ChartData) => {
         y: data.tempAvg
       }))
     },
-    {
-      name: 'Min',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: tempMin
-      }))
-    },
-    {
-      name: 'Max',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: tempMax
-      }))
-    },
-    {
-      name: 'Door',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: data.door
-      }))
-    }
+
   ]
 
   const options: ApexCharts.ApexOptions = {
@@ -135,8 +112,8 @@ const TmsApexFullChat = (chartData: ChartData) => {
     },
     stroke: {
       lineCap: 'round',
-      curve: ["smooth", "smooth", "smooth", "stepline"],
-      width: [2.5, .8, .8, 1.5]
+      curve: ["smooth"],
+      width: [2.5]
     },
     xaxis: {
       type: "datetime"
@@ -149,23 +126,10 @@ const TmsApexFullChat = (chartData: ChartData) => {
         axisBorder: {
           show: false,
           color: "rgba(255, 76, 60 , 1)"
-        }
-      },
-      {
-        show: false,
+        },
         min: minTempAvg,
         max: maxTempAvg
       },
-      {
-        show: false,
-        min: minTempAvg,
-        max: maxTempAvg
-      },
-      {
-        show: false,
-        min: 5,
-        max: 0
-      }
     ],
     noData: {
       text: undefined,
@@ -179,7 +143,7 @@ const TmsApexFullChat = (chartData: ChartData) => {
         fontFamily: undefined
       }
     },
-    colors: ["rgba(255, 76, 60 , 1)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
+    colors: ["rgba(255, 76, 60 , 1)"],
   }
 
   return (

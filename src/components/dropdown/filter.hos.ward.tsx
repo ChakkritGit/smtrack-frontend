@@ -12,12 +12,12 @@ import { cookieOptions, cookies } from "../../constants/constants"
 import { setHosId, setWardId } from "../../stores/utilsStateSlice"
 
 interface Hospital {
-  hosId: string,
+  id: string,
   hosName: string,
 }
 
 interface Ward {
-  wardId: string,
+  id: string,
   wardName: string,
 }
 
@@ -53,7 +53,7 @@ function FilterHosAndWard() {
   const getHospital = (hospitalID: string | undefined) => {
     if (hospitalID !== '') {
       updateLocalStorageAndDispatch('selectHos', hospitalID, setHosId)
-      setWardname(wardData.filter((items) => hospitalID ? items.hospital.hosId.includes(hospitalID) : items))
+      setWardname(wardData.filter((items) => hospitalID ? items.hospital.id.includes(hospitalID) : items))
     } else {
       cookies.remove('selectHos', cookieOptions)
       dispatch(setHosId(''))
@@ -66,7 +66,7 @@ function FilterHosAndWard() {
   }
 
   useEffect(() => {
-    setWardname(wardData.filter((items) => hosId ? items.hospital.hosId.includes(hosId) : items))
+    setWardname(wardData.filter((items) => hosId ? items.hospital.id.includes(hosId) : items))
   }, [wardData, hosId])
 
   const getWard = (wardID: string | undefined) => {
@@ -78,8 +78,8 @@ function FilterHosAndWard() {
     }
   }
 
-  const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
-  const allHos = { hosId: '', hosName: 'ALL', createAt: '', updateAt: '', hospital: {} as hospitalsType }
+  const allWard = { id: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
+  const allHos = { id: '', hosName: 'ALL', createAt: '', updateAt: '', hospital: {} as hospitalsType }
 
   const updatedWardData = [allWard, ...wardName]
   const updatedHosData = [allHos, ...hospitalsData]
@@ -100,8 +100,8 @@ function FilterHosAndWard() {
               <DevHomeHead>
                 {
                   role !== 'ADMIN' && <Select
-                    options={mapOptions<Hospital, keyof Hospital>(updatedHosData, 'hosId', 'hosName')}
-                    value={mapDefaultValue<Hospital, keyof Hospital>(updatedHosData, hosId ? hosId : '', 'hosId', 'hosName')}
+                    options={mapOptions<Hospital, keyof Hospital>(updatedHosData, 'id', 'hosName')}
+                    value={mapDefaultValue<Hospital, keyof Hospital>(updatedHosData, hosId ? hosId : '', 'id', 'hosName')}
                     onChange={(e) => getHospital(e?.value)}
                     autoFocus={false}
                     styles={{
@@ -128,8 +128,8 @@ function FilterHosAndWard() {
                   />
                 }
                 <Select
-                  options={mapOptions<Ward, keyof Ward>(updatedWardData, 'wardId', 'wardName')}
-                  value={mapDefaultValue<Ward, keyof Ward>(updatedWardData, wardId ? wardId : '', 'wardId', 'wardName')}
+                  options={mapOptions<Ward, keyof Ward>(updatedWardData, 'id', 'wardName')}
+                  value={mapDefaultValue<Ward, keyof Ward>(updatedWardData, wardId ? wardId : '', 'id', 'wardName')}
                   onChange={(e) => getWard(e?.value)}
                   autoFocus={false}
                   styles={{

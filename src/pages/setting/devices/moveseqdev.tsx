@@ -34,8 +34,6 @@ export default function Moveseqdev({ devData }: moveSeqType) {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const { devices } = useSelector((state: RootState) => state.devices)
-  const { cookieDecode } = useSelector((state: RootState) => state.utilsState)
-  const { token } = cookieDecode
   const { devId, devSeq, devSerial } = devData
   const [show, setShow] = useState(false)
   const { theme } = useTheme()
@@ -62,7 +60,7 @@ export default function Moveseqdev({ devData }: moveSeqType) {
             devSeq: devSeq,
             afterDevSeq: selectDev.devSeq
           })
-        dispatch(fetchDevicesData(token))
+        dispatch(fetchDevicesData())
         Swal.fire({
           title: t('alertHeaderSuccess'),
           text: response.data.message,

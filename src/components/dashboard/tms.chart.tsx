@@ -36,10 +36,6 @@ const TmsChart = (chartData: ChartData) => {
         logs={logs}
         tempHeight={460}
         tempWidth={undefined}
-        devicesData={{
-          tempMin: chartData.tempMin,
-          tempMax: chartData.tempMax
-        }}
       />
     </ChartContainer>
   )

@@ -48,16 +48,14 @@ const TmsHome = () => {
   useEffect(() => {
     setDeviceFilter(devices.filter((f) => {
       return f?.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
-      f?.sn.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+        f?.sn.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
     }))
   }, [searchQuery, devices])
 
   const fetchDevices = useCallback(async (page: number, size = perPage) => {
     try {
       setLoading({ ...loading, deviceLoading: true })
-
-      const response = await axiosInstance.get<responseType<FetchDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device?ward=test&page=${page}&perpage=${size}`)
-
+      const response = await axiosInstance.get<responseType<FetchDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device?ward=${wardId}&page=${page}&perpage=${size}`)
       setDevices(response.data.data.devices)
       setTotalRows(response.data.data.total)
     } catch (error) {
@@ -69,16 +67,13 @@ const TmsHome = () => {
     } finally {
       setLoading({ ...loading, deviceLoading: false })
     }
-  }, [perPage])
+  }, [perPage, wardId])
 
   const fetchCount = useCallback(async () => {
     try {
       setLoading({ ...loading, countLoading: true })
-
-      const response = await axiosInstance.get<responseType<TmsCountType>>(`${import.meta.env.VITE_APP_API}/legacy/templog/dashboard/count`)
-
+      const response = await axiosInstance.get<responseType<TmsCountType>>(`${import.meta.env.VITE_APP_API}/legacy/templog/dashboard/count?ward=${wardId}`)
       setCount(response.data.data)
-
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error.message)
@@ -88,7 +83,7 @@ const TmsHome = () => {
     } finally {
       setLoading({ ...loading, countLoading: false })
     }
-  }, [])
+  }, [wardId])
 
   const handlePageChange = (page: number) => {
     fetchDevices(page)
@@ -103,7 +98,7 @@ const TmsHome = () => {
   useEffect(() => {
     fetchDevices(1)
     fetchCount()
-  }, [])
+  }, [wardId])
 
   const columns: TableColumn<TmsDeviceType>[] = useMemo(
     () => [
@@ -197,7 +192,7 @@ const TmsHome = () => {
               </h5>
               {
                 role === 'SUPER' && <TagCurrentHos>
-                  {`${hospitalsData.filter((f) => f.hosId?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.wardId?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
+                  {`${hospitalsData.filter((f) => f.id?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.id?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
                 </TagCurrentHos>
               }
             </DevHomeHeadTile>

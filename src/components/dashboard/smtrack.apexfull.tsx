@@ -3,11 +3,10 @@ import { useSelector } from "react-redux"
 import { useTheme } from "../../theme/ThemeProvider"
 import { RootState } from "../../stores/store"
 import { useMemo, useRef } from "react"
-import { TmsLogType } from "../../types/tms.type"
+import { FilterLogType } from "../../types/tms.type"
 
 type chartType = {
-  chartData: TmsLogType[],
-  devicesData: { tempMin: number, tempMax: number },
+  chartData: FilterLogType[],
   tempHeight: number | string | undefined,
   tempWidth: number | string | undefined,
   isExport: boolean,
@@ -16,9 +15,8 @@ type chartType = {
 
 const TmsApexChart = (chart: chartType) => {
   const { expand } = useSelector((state: RootState) => state.utilsState)
-  const { chartData, devicesData, isExport, showDataLabel } = chart
-  const { tempMax, tempMin } = devicesData
-  const tempAvgValues = chartData.map((items) => items.tempValue)
+  const { chartData, isExport, showDataLabel } = chart
+  const tempAvgValues = chartData.map((items) => items._value)
   const minTempAvg = Math.min(...tempAvgValues) - 2
   const maxTempAvg = Math.max(...tempAvgValues) + 2
   const { theme } = useTheme()
@@ -28,11 +26,10 @@ const TmsApexChart = (chart: chartType) => {
 
   const mappedData = useMemo(() => {
     return chartData.map((items) => {
-      const time = new Date(`${items.date}T${items.time}`).getTime()
+      const time = new Date(items._time).getTime()
       return {
         time,
-        tempAvg: items.tempValue,
-        door: items.door ? 1 : 0,
+        tempAvg: items._value,
       }
     })
   }, [chartData])
@@ -45,29 +42,6 @@ const TmsApexChart = (chart: chartType) => {
         y: data.tempAvg
       }))
     },
-    {
-      hidden: isExport || showDataLabel,
-      name: 'Min',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: tempMin
-      }))
-    },
-    {
-      hidden: isExport || showDataLabel,
-      name: 'Max',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: tempMax
-      }))
-    },
-    {
-      name: 'Door',
-      data: mappedData.map((data) => ({
-        x: data.time,
-        y: data.door
-      }))
-    }
   ]
 
   const options: ApexCharts.ApexOptions = {
@@ -166,8 +140,8 @@ const TmsApexChart = (chart: chartType) => {
     },
     stroke: {
       lineCap: 'round',
-      curve: ["smooth", "smooth", "smooth", "stepline"],
-      width: [2.5, .8, .8, 1.5]
+      curve: ["smooth"],
+      width: [2.5]
     },
     xaxis: {
       type: "datetime"
@@ -184,21 +158,6 @@ const TmsApexChart = (chart: chartType) => {
         min: minTempAvg,
         max: maxTempAvg
       },
-      {
-        show: false,
-        min: minTempAvg,
-        max: maxTempAvg
-      },
-      {
-        show: false,
-        min: minTempAvg,
-        max: maxTempAvg
-      },
-      {
-        show: false,
-        min: 5,
-        max: 0
-      }
     ],
     noData: {
       text: undefined,
@@ -212,7 +171,7 @@ const TmsApexChart = (chart: chartType) => {
         fontFamily: undefined
       }
     },
-    colors: ["rgba(255, 76, 60 , 1)", "rgba(46, 204, 113, 1)", "rgba(46, 204, 113, 1)", "rgba(235, 152, 78, 1)"],
+    colors: ["rgba(255, 76, 60 , 1)"],
     ...(isExport
       ? {}
       : {
