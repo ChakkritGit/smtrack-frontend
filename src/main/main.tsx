@@ -36,67 +36,6 @@ export default function Main() {
   const [status, setStatus] = useState(false)
   const [show, setShow] = useState(false)
 
-  useEffect(() => {
-    if (!token) return
-    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
-    dispatch(filtersDevices())
-    dispatch(fetchHospitals())
-    dispatch(fetchWards())
-    dispatch(fetchUserData())
-    dispatch(fetchProbeData())
-  }, [token, role])
-
-  useEffect(() => {
-    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
-    if (!token) return
-    dispatch(fetchDevicesData())
-  }, [socketData, token, dispatch, role])
-
-  useEffect(() => {
-    if (!token) return
-    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
-    if (reFetchData) {
-      dispatch(fetchDevicesData())
-      dispatch(fetchProbeData())
-      dispatch(setRefetchdata(false))
-    }
-  }, [reFetchData, token, role])
-
-  useEffect(() => {
-    if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId }))
-  }, [deviceId, token, socketData, reFetchData])
-
-  const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
-    // e.preventDefault()
-  }
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY
-
-    if (currentScrollY > lastScrollY && currentScrollY > 50) {
-      setIsScrollingDown(true)
-    } else {
-      setIsScrollingDown(false)
-    }
-    setLastScrollY(currentScrollY)
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [lastScrollY])
-
-  useEffect(() => {
-    navigator.serviceWorker.addEventListener('message', event => {
-      if (event.data.type === 'RELOAD_PAGE') {
-        window.location.reload()
-      }
-    })
-  }, [])
-
   const handleConnect = () => { }
   const handleDisconnect = (reason: any) => console.error("Disconnected from Socket server:", reason)
   const handleError = (error: any) => console.error("Socket error:", error)
@@ -125,6 +64,10 @@ export default function Main() {
     }
   }, [hosId, role])
 
+  const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
+    // e.preventDefault()
+  }
+
   useEffect(() => {
     try {
       client.on('connect', () => { setStatus(false); setTimeout(() => { setShow(false) }, 3000) })
@@ -133,6 +76,55 @@ export default function Main() {
       console.error("MQTT Error: ", error)
     }
   }, [])
+
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY
+
+    if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      setIsScrollingDown(true)
+    } else {
+      setIsScrollingDown(false)
+    }
+    setLastScrollY(currentScrollY)
+  }
+
+  useEffect(() => {
+    if (!token) return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
+    dispatch(filtersDevices())
+    dispatch(fetchHospitals())
+    dispatch(fetchWards())
+    dispatch(fetchUserData())
+    dispatch(fetchProbeData())
+  }, [token, role])
+
+  useEffect(() => {
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
+    if (!token) return
+    dispatch(fetchDevicesData())
+  }, [socketData, token, dispatch, role])
+
+  useEffect(() => {
+    if (!token) return
+    if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") return
+    if (reFetchData) {
+      dispatch(fetchDevicesData())
+      dispatch(fetchProbeData())
+      dispatch(setRefetchdata(false))
+    }
+  }, [reFetchData, token, role])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [lastScrollY])
+
+  useEffect(() => {
+    if (deviceId !== "undefined" && token) dispatch(fetchDevicesLog({ deviceId }))
+  }, [deviceId, token, socketData, reFetchData])
 
   useEffect(() => {
     const handleOffline = () => { setStatus(true); setShow(true) }
@@ -159,6 +151,14 @@ export default function Main() {
       window.removeEventListener('online', handleOnline)
     }
   }, [token, deviceId, role])
+
+  useEffect(() => {
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data.type === 'RELOAD_PAGE') {
+        window.location.reload()
+      }
+    })
+  }, [])
 
   return (
     <>

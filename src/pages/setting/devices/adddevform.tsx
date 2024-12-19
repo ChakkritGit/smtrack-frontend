@@ -181,7 +181,7 @@ export default function Adddevform(managedevices: managedevices) {
           showConfirmButton: false,
         })
         setFormdata({ ...formdata, devSn: '' })
-        dispatch(fetchDevicesData(token))
+        dispatch(fetchDevicesData())
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401) {
@@ -256,7 +256,7 @@ export default function Adddevform(managedevices: managedevices) {
           timer: 2000,
           showConfirmButton: false,
         })
-        dispatch(fetchDevicesData(token))
+        dispatch(fetchDevicesData())
         if (deviceModel === 'etemp') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
@@ -316,7 +316,7 @@ export default function Adddevform(managedevices: managedevices) {
         timer: 2000,
         showConfirmButton: false,
       })
-      dispatch(fetchDevicesData(token))
+      dispatch(fetchDevicesData())
       if (deviceModel === 'etemp') {
         client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
       } else {
@@ -369,7 +369,7 @@ export default function Adddevform(managedevices: managedevices) {
           timer: 2000,
           showConfirmButton: false,
         })
-        dispatch(fetchDevicesData(token))
+        dispatch(fetchDevicesData())
         if (deviceModel === 'etemp') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
@@ -431,7 +431,7 @@ export default function Adddevform(managedevices: managedevices) {
           timer: 2000,
           showConfirmButton: false,
         })
-        dispatch(fetchDevicesData(token))
+        dispatch(fetchDevicesData())
         if (deviceModel === 'etemp') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
@@ -488,7 +488,7 @@ export default function Adddevform(managedevices: managedevices) {
           timer: 2000,
           showConfirmButton: false,
         })
-        dispatch(fetchDevicesData(token))
+        dispatch(fetchDevicesData())
         if (deviceModel === 'etemp') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
@@ -545,7 +545,7 @@ export default function Adddevform(managedevices: managedevices) {
         timer: 2000,
         showConfirmButton: false,
       })
-      dispatch(fetchDevicesData(token))
+      dispatch(fetchDevicesData())
       if (deviceModel === 'etemp') {
         client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
       } else {

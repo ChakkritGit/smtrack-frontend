@@ -67,9 +67,9 @@ const TmsDeviceInfo = (deviceInfo: Devicesinfo) => {
         <CardstatusNomal
           title={t('dashConnect')}
           valuestext={
-            log[0]?.internet ? t('stateDisconnect') : t('stateConnect')}
+            log[0]?.internet ? t('stateConnect') : t('stateDisconnect')}
           svg={<RiSignalWifi1Line />}
-          alertone={log[0]?.internet}
+          alertone={!log[0]?.internet}
           onClick={() => { }}
         />
         <CardstatusNomal

@@ -1,22 +1,22 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import { payloadError, TmsDeviceState } from "../types/redux.type"
+import { payloadError, TmsDeviceLogState } from "../types/redux.type"
 import { responseType } from "../types/response.type"
-import { FetchDeviceType, TmsDeviceType } from "../types/tms.type"
+import { TmsDeviceType } from "../types/tms.type"
 import axiosInstance from "../constants/axiosInstance"
 
-export const fetchTmsDevice = createAsyncThunk<TmsDeviceType[]>('newDev/fetchNewDevice', async () => {
-  const response = await axiosInstance.get<responseType<FetchDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device`)
-  return response.data.data.devices
+export const fetchTmsDeviceLog = createAsyncThunk<TmsDeviceType, string>('tmsLogs/fetchTmsLog', async (serial) => {
+  const response = await axiosInstance.get<responseType<TmsDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device/${serial}`)
+  return response.data.data
 })
 
-const initialState: TmsDeviceState = {
-  devices: [],
+const initialState: TmsDeviceLogState = {
+  devicesLog: {} as TmsDeviceType,
   devicesLoading: false,
   devicesError: '',
 }
 
-const tmsDeviceSlice = createSlice({
-  name: 'newDev',
+const tmsDeviceLogSlice = createSlice({
+  name: 'tmsLogs',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -30,16 +30,16 @@ const tmsDeviceSlice = createSlice({
       )
       .addMatcher(
         (action) => action.type.endsWith("/fulfilled"),
-        (state: TmsDeviceState, action: PayloadAction<TmsDeviceType[]>) => {
+        (state: TmsDeviceLogState, action: PayloadAction<TmsDeviceType>) => {
           state.devicesLoading = false
-          if (action.type.includes("fetchNewDevice")) {
-            state.devices = action.payload
+          if (action.type.includes("fetchTmsLog")) {
+            state.devicesLog = action.payload
           }
         },
       )
       .addMatcher(
         (action) => action.type.endsWith("/rejected"),
-        (state: TmsDeviceState, action: payloadError) => {
+        (state: TmsDeviceLogState, action: payloadError) => {
           state.devicesLoading = false
           state.devicesError = action.error.message
         },
@@ -47,4 +47,4 @@ const tmsDeviceSlice = createSlice({
   }
 })
 
-export default tmsDeviceSlice.reducer
+export default tmsDeviceLogSlice.reducer

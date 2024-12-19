@@ -31,6 +31,12 @@ type TmsDeviceState = {
   devicesError: string
 }
 
+type TmsDeviceLogState = {
+  devicesLog: TmsDeviceType,
+  devicesLoading: boolean,
+  devicesError: string
+}
+
 type LogState = {
   devicesLogs: devicesType,
   logLoading: boolean,
@@ -68,7 +74,8 @@ type DeviceStateStore = {
   arraySlice: DataArrayStore,
   user: UserState,
   probe: ProbeState
-  tmsDevice: TmsDeviceState
+  tmsDevice: TmsDeviceState,
+  tmsLog: TmsDeviceLogState
 }
 
 type ArrayStore = {
@@ -98,5 +105,5 @@ type ProbeState = {
 export type {
   DeviceState, LogState, DataArrayStore,
   UtilsStateStore, DeviceStateStore, ArrayStore, payloadError, UserState,
-  ProbeState, TmsDeviceState
+  ProbeState, TmsDeviceState, TmsDeviceLogState
 }

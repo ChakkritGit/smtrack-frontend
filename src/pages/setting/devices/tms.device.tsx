@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { TmsAddDeviceHead, TmsManageDevicesContainer } from "../../../style/components/tms.adddevice.style"
-import { DevHomeHead, ManageDeviceBody } from "../../../style/style"
+import { DevHomeHead, ManageDeviceBody, ManageDevSpanUnsetUserSelect } from "../../../style/style"
 import PageLoading from "../../../components/loading/page.loading"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { useDispatch, useSelector } from "react-redux"
@@ -12,6 +12,7 @@ import { setSearchQuery } from "../../../stores/utilsStateSlice"
 import TmsAddDevice from "./tms.add.device"
 import { NoRecordContainer } from "../../../style/components/datatable.styled"
 import { RiFileForbidLine } from "react-icons/ri"
+import toast from "react-hot-toast"
 
 const TmsDevice = () => {
   const { t } = useTranslation()
@@ -41,6 +42,32 @@ const TmsDevice = () => {
       center: true,
       width: '80px'
     },
+    {
+      name: t('deviceSerialTb'),
+      cell: (item) => (
+        <ManageDevSpanUnsetUserSelect
+          key={item.sn}
+          onClick={() => {
+            try {
+              navigator.clipboard.writeText(item.sn)
+              toast.success(t('copyToClip'))
+            } catch (error) {
+              console.error('Failed to copy: ', error)
+              toast.error(t('copyToClipFaile'))
+            }
+          }}>
+          {item.sn}
+        </ManageDevSpanUnsetUserSelect>
+      ),
+      sortable: false,
+      center: true,
+    },
+    {
+      name: t('deviceNameTb'),
+      selector: (item) => item.name,
+      sortable: false,
+      center: true
+    }
   ]
 
   // Filter Data
@@ -63,10 +90,7 @@ const TmsDevice = () => {
             filterById={filterById}
             setFilterById={setFilterById}
           />
-          <TmsAddDevice
-            pagestate="add"
-            devdata={{} as TmsDeviceType}
-          />
+          <TmsAddDevice />
         </DevHomeHead>
       </TmsAddDeviceHead>
       <ManageDeviceBody>

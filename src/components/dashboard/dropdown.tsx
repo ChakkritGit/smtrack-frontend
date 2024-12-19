@@ -69,7 +69,6 @@ export default function Dropdown(filterProps: FilterProps) {
         : devices
   }, [wardId, devices, hosId])
 
-
   return (
     <Select
       options={mapOptions<Device, keyof Device>(filteredDevicesList, 'devId', 'devSerial', 'devDetail')}

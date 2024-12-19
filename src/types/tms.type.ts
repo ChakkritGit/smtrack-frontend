@@ -1,4 +1,4 @@
-type TmsDeviceType = {
+type DeviceType = {
   sn: string,
   name: string,
   ward: string,
@@ -7,7 +7,6 @@ type TmsDeviceType = {
   minTemp: number,
   adjTemp: number,
   record: number,
-  log: TmsLogType[]
 }
 
 type TmsLogType = {
@@ -23,6 +22,10 @@ type TmsLogType = {
   isAlert: boolean,
   createdAt: string,
   updatedAt: string
+}
+
+interface TmsDeviceType extends DeviceType {
+  log: TmsLogType[]
 }
 
 type TmsCountType = {

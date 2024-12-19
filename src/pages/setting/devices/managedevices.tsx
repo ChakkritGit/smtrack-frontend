@@ -64,7 +64,7 @@ export default function Managedev() {
         }, {
           headers: { authorization: `Bearer ${token}` }
         })
-      dispatch(fetchDevicesData(token))
+      dispatch(fetchDevicesData())
       Swal.fire({
         title: t('alertHeaderSuccess'),
         text: response.data.message,

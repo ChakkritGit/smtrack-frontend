@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux"
-import { RootState } from "../../stores/store"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState, storeDispatchType } from "../../stores/store"
 import { HomeContainer, TagCurrentHos } from "../../style/components/home.styled"
 import { AboutBox, DatatableHome, DevHomeHeadTile, DevHomeSecctionOne, DeviceCardFooterDoor, DeviceCardFooterDoorFlex, DeviceInfoflex, DeviceListFlex, DeviceStateNetwork, HomeContainerFlex, ListBtn } from "../../style/style"
 import { useTranslation } from "react-i18next"
@@ -17,11 +17,16 @@ import Loading from "../../components/loading/loading"
 import { NoRecordContainer } from "../../style/components/datatable.styled"
 import { DoorKey } from "../../types/log.type"
 import PageLoading from "../../components/loading/page.loading"
+import { cookieOptions, cookies } from "../../constants/constants"
+import { setSerial } from "../../stores/utilsStateSlice"
+import { useNavigate } from "react-router-dom"
 
 const TmsHome = () => {
+  const dispatch = useDispatch<storeDispatchType>()
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const { hospital, ward } = useSelector((state: RootState) => state.arraySlice)
-  const { userProfile, hosId, wardId, transparent, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { userProfile, hosId, wardId, transparent, tokenDecode, searchQuery } = useSelector((state: RootState) => state.utilsState)
   const { role } = tokenDecode
   const { hospitalsData } = hospital
   const { wardData } = ward
@@ -38,12 +43,20 @@ const TmsHome = () => {
   const [totalRows, setTotalRows] = useState(0)
   const [perPage, setPerPage] = useState(10)
   const [currentPage, setCurrentPage] = useState(1)
+  const [deviceFilter, setDeviceFilter] = useState<TmsDeviceType[]>([])
+
+  useEffect(() => {
+    setDeviceFilter(devices.filter((f) => {
+      return f?.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()) ||
+      f?.sn.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+    }))
+  }, [searchQuery, devices])
 
   const fetchDevices = useCallback(async (page: number, size = perPage) => {
     try {
       setLoading({ ...loading, deviceLoading: true })
 
-      const response = await axiosInstance.get<responseType<FetchDeviceType>>(`http://192.168.0.74:8080/legacy/device?ward=test&page=${page}&perpage=${size}`)
+      const response = await axiosInstance.get<responseType<FetchDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device?ward=test&page=${page}&perpage=${size}`)
 
       setDevices(response.data.data.devices)
       setTotalRows(response.data.data.total)
@@ -62,7 +75,7 @@ const TmsHome = () => {
     try {
       setLoading({ ...loading, countLoading: true })
 
-      const response = await axiosInstance.get<responseType<TmsCountType>>(`http://192.168.0.74:8080/legacy/templog/dashboard/count`)
+      const response = await axiosInstance.get<responseType<TmsCountType>>(`${import.meta.env.VITE_APP_API}/legacy/templog/dashboard/count`)
 
       setCount(response.data.data)
 
@@ -132,17 +145,17 @@ const TmsHome = () => {
         center: true
       },
       {
-        name: t('deviceDoorTb'),
+        name: t('deviceConnectTb'),
         cell: (item) => (
-          <DeviceStateNetwork $primary={item.log[0]?.internet}>
-            {item.log[0]?.internet ? t('deviceOffline') : t('deviceOnline')}
+          <DeviceStateNetwork $primary={!item.log[0]?.internet}>
+            {item.log[0]?.internet ? t('deviceOnline') : t('deviceOffline')}
           </DeviceStateNetwork>
         ),
         sortable: false,
         center: true
       },
       {
-        name: t('deviceDoorTb'),
+        name: t('devicePlugTb'),
         cell: (item) => (
           <span>{item.log[0]?.plugin ? t('stateProblem') : t('stateNormal')}</span>
         ),
@@ -165,6 +178,13 @@ const TmsHome = () => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleRowClicked = (row: TmsDeviceType) => {
+    cookies.set('devSerial', row.sn, cookieOptions)
+    dispatch(setSerial(row.sn))
+    navigate('/dashboard')
+    window.scrollTo(0, 0)
+  }
 
   return (
     <HomeContainer>
@@ -231,7 +251,7 @@ const TmsHome = () => {
                   <DatatableHome>
                     <DataTable
                       columns={columns}
-                      data={devices}
+                      data={deviceFilter}
                       progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
                       progressPending={loading.deviceLoading}
                       pagination
@@ -241,6 +261,7 @@ const TmsHome = () => {
                       paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
                       onChangeRowsPerPage={handlePerRowsChange}
                       onChangePage={handlePageChange}
+                      onRowClicked={handleRowClicked}
                       noDataComponent={<NoRecordContainer>
                         <RiFileForbidLine size={32} />
                         <h4>{t('nodata')}</h4>

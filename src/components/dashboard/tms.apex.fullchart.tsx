@@ -19,7 +19,7 @@ const TmsApexFullChat = (chartData: ChartData) => {
   const maxTempAvg = Math.max(...tempAvgValues) + 2
 
   const mappedData = logs.map((items) => {
-    const time = new Date(`${items.date}T${items.time}`).getTime()
+    const time = new Date(`${items.createdAt}`).getTime()
     return {
       time,
       tempAvg: items.tempValue,

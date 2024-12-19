@@ -1,5 +1,8 @@
 import { MouseEventHandler, useEffect, useState } from "react"
-import { HamburgerExpand, SideChild, SideChildOutlet, SideChildSide, SideParent, TabConnect } from "../style/style"
+import {
+  HamburgerExpand, SideChild, SideChildOutlet, SideChildSide,
+  SideParent, TabConnect
+} from "../style/style"
 import Popupcomponent from "../components/utils/popupcomponent"
 import { Button, Offcanvas } from "react-bootstrap"
 import { RiMenuFoldLine } from "react-icons/ri"
@@ -16,11 +19,12 @@ import { fetchTmsDevice } from "../stores/tms.deviceSlice"
 import { socket } from "../services/websocket"
 import { socketResponseType } from "../types/component.type"
 import { fetchHospitals, fetchWards } from "../stores/dataArraySlices"
+import { fetchTmsDeviceLog } from "../stores/tms.device.log"
 
 const TmsMain = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
-  const { showAside, cookieDecode, reFetchData, socketData, isTms, tokenDecode } = useSelector((state: RootState) => state.utilsState)
+  const { showAside, cookieDecode, reFetchData, socketData, isTms, tokenDecode, Serial } = useSelector((state: RootState) => state.utilsState)
   const { token, hosId } = cookieDecode
   const { role } = tokenDecode
   const [isScrollingDown, setIsScrollingDown] = useState(false)
@@ -74,14 +78,6 @@ const TmsMain = () => {
   }
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-    }
-  }, [lastScrollY])
-
-  useEffect(() => {
     if (!token) return
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" || isTms) {
       dispatch(fetchHospitals())
@@ -92,21 +88,28 @@ const TmsMain = () => {
   useEffect(() => {
     if (!token) return
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" || isTms) {
-      dispatch(fetchTmsDevice(token))
+      dispatch(fetchTmsDevice())
     }
-  }, [socketData, token, role])
-
-  useEffect(() => {
-    if (!token) return
-    dispatch(fetchTmsDevice(token))
-  }, [token])
+  }, [socketData, token, dispatch, role])
 
   useEffect(() => {
     if (!token) return
     if (role === "LEGACY_ADMIN" || role === "LEGACY_USER" && reFetchData || isTms) {
-      dispatch(fetchTmsDevice(token))
+      dispatch(fetchTmsDevice())
     }
   }, [token, reFetchData, role])
+
+  useEffect(() => {
+    if (Serial !== "undefined" && token) dispatch(fetchTmsDeviceLog(Serial))
+  }, [Serial, token, socketData, reFetchData])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [lastScrollY])
 
   useEffect(() => {
     const handleOffline = () => { setStatus(true); setShow(true) }
@@ -115,7 +118,7 @@ const TmsMain = () => {
       setTimeout(() => { setShow(false) }, 3000)
       if (!token) return
       if (role === "LEGACY_ADMIN" || role === "LEGACY_USER") {
-        dispatch(fetchTmsDevice(token))
+        dispatch(fetchTmsDevice())
         dispatch(fetchHospitals())
         dispatch(fetchWards())
       }
