@@ -139,7 +139,7 @@ export default defineConfig(({ }) => {
               id: "id6670781090"
             }
           ],
-          description: "The system show all etemp box detect temperature realtime and nofi when temperture higher then limit.",
+          description: "The system show all smtrack box detect temperature realtime and nofi when temperture higher then limit.",
           theme_color: '#fdfdfd',
           background_color: '#fdfdfd',
           start_url: '/',

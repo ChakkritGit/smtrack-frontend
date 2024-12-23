@@ -58,7 +58,7 @@ function ModalNotification(modalProps: modalAdjustType) {
   const { choichOne, choichfour, choichthree, choichtwo } = muteMode
   const { theme } = useTheme()
   const { devSerial } = devicesdata
-  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "smtrack" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
 
   const handleSubmitNoti = async (e: FormEvent) => {
@@ -92,7 +92,7 @@ function ModalNotification(modalProps: modalAdjustType) {
           showConfirmButton: false,
         })
         fetchData()
-        if (deviceModel === 'etemp') {
+        if (deviceModel === 'smtrack') {
           client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/adj`, 'on')
         } else {
           client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/adj`, 'on')

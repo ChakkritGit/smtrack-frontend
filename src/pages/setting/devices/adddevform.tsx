@@ -92,7 +92,7 @@ export default function Adddevform(managedevices: managedevices) {
   const { theme } = useTheme()
   const { resetHour, resetMinute } = resetTime
   const { devSerial } = devdata
-  const deviceModel = devSerial?.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const deviceModel = devSerial?.substring(0, 3) === "eTP" ? "smtrack" : "items"
   const version = devSerial?.substring(3, 5).toLowerCase()
 
   const fetchWard = async () => {
@@ -257,7 +257,7 @@ export default function Adddevform(managedevices: managedevices) {
           showConfirmButton: false,
         })
         dispatch(fetchDevicesData())
-        if (deviceModel === 'etemp') {
+        if (deviceModel === 'smtrack') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
@@ -317,7 +317,7 @@ export default function Adddevform(managedevices: managedevices) {
         showConfirmButton: false,
       })
       dispatch(fetchDevicesData())
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
       } else {
         client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
@@ -370,7 +370,7 @@ export default function Adddevform(managedevices: managedevices) {
           showConfirmButton: false,
         })
         dispatch(fetchDevicesData())
-        if (deviceModel === 'etemp') {
+        if (deviceModel === 'smtrack') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
@@ -432,7 +432,7 @@ export default function Adddevform(managedevices: managedevices) {
           showConfirmButton: false,
         })
         dispatch(fetchDevicesData())
-        if (deviceModel === 'etemp') {
+        if (deviceModel === 'smtrack') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
@@ -489,7 +489,7 @@ export default function Adddevform(managedevices: managedevices) {
           showConfirmButton: false,
         })
         dispatch(fetchDevicesData())
-        if (deviceModel === 'etemp') {
+        if (deviceModel === 'smtrack') {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
         } else {
           client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
@@ -546,7 +546,7 @@ export default function Adddevform(managedevices: managedevices) {
         showConfirmButton: false,
       })
       dispatch(fetchDevicesData())
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
       } else {
         client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/adj`, 'on')
@@ -861,7 +861,7 @@ export default function Adddevform(managedevices: managedevices) {
                                     ))}
                                   </Form.Select>
                                   <UploadButton type='button' disabled={firmwareName === ''} onClick={() => {
-                                    if (deviceModel === 'etemp') {
+                                    if (deviceModel === 'smtrack') {
                                       client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/firmware`, firmwareName)
                                     } else {
                                       client.publish(`siamatic/${deviceModel}/${version}/${devdata.devSerial}/firmware`, firmwareName)

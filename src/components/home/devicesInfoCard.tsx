@@ -130,7 +130,7 @@ export default function DevicesInfoCard(DevicesInfoCard: DevicesInfoCard) {
               {log[0]?.tempAvg.toFixed(2) || '- -'}
               <sub>°C</sub>
               <TooltipSpan>
-                {t('deviceTemp')}
+                {t('devicsmtrack')}
               </TooltipSpan>
             </DeviceCardFooterTempT>
             <DeviceCardFooterTempT>

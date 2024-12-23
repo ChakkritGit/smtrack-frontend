@@ -61,7 +61,7 @@ export default function PrintComponent(printtype: printtype) {
                       <span>สถานที่ติดตั้ง <TUD $class="preLine">วอร์ด {items.ward} {data[0]?.device.locInstall}</TUD></span>
                     </HDF1>
                     <HDF1>
-                      <span>สินค้า <TUD>{data[0]?.device.devSerial.substring(0, 3) === "eTP" ? "eTEMP" : "iTEMP"}</TUD></span>
+                      <span>สินค้า <TUD>{data[0]?.device.devSerial.substring(0, 3) === "eTP" ? "smtrack" : "iTEMP"}</TUD></span>
                       <span>Model <TUD>{data[0]?.device.devSerial.substring(0, 8)}</TUD></span>
                       <span>S/N <TUD>{data[0]?.device.devSerial}</TUD></span>
                     </HDF1>

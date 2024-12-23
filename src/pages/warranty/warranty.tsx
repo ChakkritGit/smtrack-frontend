@@ -651,7 +651,7 @@ export default function Warranty() {
                     <Select
                       options={mapOptions<WarrantyOption, keyof WarrantyOption>(devices, 'devName', 'devSerial')}
                       value={mapDefaultValue<WarrantyOption, keyof WarrantyOption>(devices, String(devName), 'devName', 'devSerial')}
-                      onChange={(e) => setWarrantyObject({ ...warrantyObject, devName: String(e?.value), devSerial: String(e?.label.substring(0, 3) === "eTP" ? 'eTEMP' : 'i-TeMS') })}
+                      onChange={(e) => setWarrantyObject({ ...warrantyObject, devName: String(e?.value), devSerial: String(e?.label.substring(0, 3) === "eTP" ? 'smtrack' : 'i-TeMS') })}
                       autoFocus={false}
                       placeholder={t('selectDeviceDrop')}
                       styles={{

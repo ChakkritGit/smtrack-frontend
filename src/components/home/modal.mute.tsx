@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { RiArrowLeftSLine } from "react-icons/ri"
 import { devicesType } from "../../types/device.type"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { MuteEtemp } from "../../style/components/sound.setting"
+import { Mutesmtrack } from "../../style/components/sound.setting"
 import { cookies, generateOptions, generateOptionsOne, generateOptionsTwo, mapDefaultValue, mapOptions } from "../../constants/constants"
 import { client } from "../../services/mqtt"
 import Select from 'react-select'
@@ -40,7 +40,7 @@ function ModalMute(modalProps: modalAdjustType) {
   const { devSerial, config } = devicesdata
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "smtrack" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
   const [muteDoorSelect, setMuteDoorSelect] = useState<MqttType>({
     tempAlarm: '',
@@ -64,7 +64,7 @@ function ModalMute(modalProps: modalAdjustType) {
     }
   }, [tempTemporary])
 
-  const [muteEtemp, setMuteEtemp] = useState({
+  const [mutesmtrack, setMutesmtrack] = useState({
     duration: cookies.get(devSerial) === 'duration' || false,
     door: config.muteDoor === '0' ? false : true,
   })
@@ -74,7 +74,7 @@ function ModalMute(modalProps: modalAdjustType) {
     setShow(true)
   }
 
-  const muteTemporary = () => {
+  const mutsmtrackorary = () => {
     setMuteDoorSelect({ ...muteDoorSelect, tempTemporary: !muteDoorSelect.tempTemporary })
     if (!muteDoorSelect.tempTemporary) {
       client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/temp/temporary`, 'on')
@@ -86,8 +86,8 @@ function ModalMute(modalProps: modalAdjustType) {
   }
 
   const muteAlarm = () => {
-    setMuteEtemp({ ...muteEtemp, door: !muteEtemp.door })
-    if (!muteEtemp.door) {
+    setMutesmtrack({ ...mutesmtrack, door: !mutesmtrack.door })
+    if (!mutesmtrack.door) {
       client.publish(`siamatic/${deviceModel}/${version}/${devSerial}/mute/door/sound`, 'on')
       client.publish(`${devSerial}/mute/long`, 'on')
     } else {
@@ -170,16 +170,16 @@ function ModalMute(modalProps: modalAdjustType) {
             doorAlarm !== '' && tempDuration !== '' ?
               <>
                 <h5 className="text-decoration-underline">{t('countProbe')}</h5>
-                {deviceModel === 'etemp' && <div>
-                  <span>{t('muteTemporary')}</span>
-                  {/* <button onClick={muteTemporary}>
-                    {muteEtemp.temporary ? <RiVolumeVibrateLine size={24} /> : <RiVolumeUpLine size={24} />}
+                {deviceModel === 'smtrack' && <div>
+                  <span>{t('mutsmtrackorary')}</span>
+                  {/* <button onClick={mutsmtrackorary}>
+                    {mutesmtrack.temporary ? <RiVolumeVibrateLine size={24} /> : <RiVolumeUpLine size={24} />}
                   </button> */}
-                  <MuteEtemp type="button" onClick={muteTemporary} $primary={muteDoorSelect.tempTemporary} $disable={tempAlarm === "normal"} disabled={tempAlarm === "normal"}>
+                  <Mutesmtrack type="button" onClick={mutsmtrackorary} $primary={muteDoorSelect.tempTemporary} $disable={tempAlarm === "normal"} disabled={tempAlarm === "normal"}>
                     <div className="icon">
                       {/* {muteDoorSelect.tempTemporary ? t('stateOn') : t('stateOff')} */}
                     </div>
-                  </MuteEtemp>
+                  </Mutesmtrack>
                 </div>}
                 <div>
                   <div>
@@ -226,11 +226,11 @@ function ModalMute(modalProps: modalAdjustType) {
                 <h5 className="text-decoration-underline">{t('countDoor')}</h5>
                 <div>
                   <span>{t('muteDoor')}</span>
-                  <MuteEtemp type="button" onClick={muteAlarm} $primary={muteEtemp.door}>
+                  <Mutesmtrack type="button" onClick={muteAlarm} $primary={mutesmtrack.door}>
                     <div className="icon">
-                      {/* {muteEtemp.door ? t('stateOn') : t('stateOff')} */}
+                      {/* {mutesmtrack.door ? t('stateOn') : t('stateOff')} */}
                     </div>
-                  </MuteEtemp>
+                  </Mutesmtrack>
                 </div>
                 <div>
                   <div>

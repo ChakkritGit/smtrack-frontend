@@ -134,7 +134,7 @@ export default function Uploadfirmware() {
   }
 
   const publishDeviceUpdate = async (item: string, selectedDevicesOption: string): Promise<void> => {
-    const deviceModel = item.substring(0, 3) === "eTP" ? "etemp" : "items"
+    const deviceModel = item.substring(0, 3) === "eTP" ? "smtrack" : "items"
     const version = item.substring(3, 5).toLowerCase()
 
     if (!client.connected) {

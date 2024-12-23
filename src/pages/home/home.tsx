@@ -175,7 +175,7 @@ export default function Home() {
       width: '200px',
     },
     {
-      name: t('deviceTempTb'),
+      name: t('devicsmtrackTb'),
       cell: items => (
         <span key={items.devSerial}>
           {items.log[0]?.tempAvg ? `${items.log[0].tempAvg.toFixed(2)}°C` : '- -'}
@@ -330,7 +330,7 @@ export default function Home() {
       center: true,
     },
     {
-      name: t('probeTempSubTb'),
+      name: t('probsmtrackSubTb'),
       cell: (items, index) => {
         const deviceLog = devicesFilter
           .find(dev => dev.devSerial === items.devSerial)

@@ -1,7 +1,7 @@
 
-# eTEMP Tracking Temperarure
+# smtrack Tracking Temperarure
 
-a eTEMP system are tracking temperarure and alert, this system working with eTEMP Box sensors detech temperarure and humidity door opening etc.
+a smtrack system are tracking temperarure and alert, this system working with smtrack Box sensors detech temperarure and humidity door opening etc.
 
 
 ## Demo
@@ -13,13 +13,13 @@ https://siamatic.co.th
 Clone the project
 
 ```bash
-  git clone https://github.com/ChakkritGit/etemp-react-bun.git
+  git clone https://github.com/ChakkritGit/smtrack-react-bun.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd etemp-react-bun
+  cd smtrack-react-bun
 ```
 
 Install dependencies

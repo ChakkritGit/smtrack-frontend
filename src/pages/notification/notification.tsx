@@ -190,7 +190,7 @@ export default function Notification() {
         return t('tempBackToNormal')
       }
     } else if (text.split("/")[0] === "REPORT") {
-      return `${t('reportText')}/ ${t('deviceTempTb')}: ${extractValues(text)?.temperature ? extractValues(text)?.temperature : '- -'}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity ? extractValues(text)?.humidity : '- -'}%`
+      return `${t('reportText')}/ ${t('devicsmtrackTb')}: ${extractValues(text)?.temperature ? extractValues(text)?.temperature : '- -'}°C, ${t('deviceHumiTb')}: ${extractValues(text)?.humidity ? extractValues(text)?.humidity : '- -'}%`
     } else {
       return text
     }

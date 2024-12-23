@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "bun i && tsc && vite build --mode production && docker build -t siamatic/smtrack-frontend . && docker run --name etemp-frontend -p 12345:7258 -d --restart=always --network=proxy siamatic/smtrack-frontend && docker push siamatic/smtrack-frontend && docker rm --force etemp-frontend && docker rmi siamatic/smtrack-frontend:latest",
+    "build": "bun i && tsc && vite build --mode production && docker build -t siamatic/smtrack-frontend . && docker run --name smtrack-frontend -p 12345:7258 -d --restart=always --network=proxy siamatic/smtrack-frontend && docker push siamatic/smtrack-frontend && docker rm --force smtrack-frontend && docker rmi siamatic/smtrack-frontend:latest",
     "lint": "eslint .",
     "preview": "vite preview",
     "dep": "dep-tree entropy src/*"

@@ -15,45 +15,33 @@ export const router = (role: string, isTms: boolean) => createBrowserRouter([
   {
     path: "/",
     element: <AuthRoute />,
-    children: (role !== "LEGACY_ADMIN" && !isTms) || (role !== "LEGACY_USER" && !isTms) || (role === "SUPER" && !isTms) ? [
+    children: [
       {
         path: "/",
-        element: <Main />,
+        element: role !== "LEGACY_ADMIN" && role !== "LEGACY_USER" && !isTms ? <Main /> : <TmsMain />,
         errorElement: <SomethingWrong />,
-        children: smtrackChildren,
-      }
-    ] : [
-      {
-        path: "/",
-        element: <TmsMain />,
-        errorElement: <SomethingWrong />,
-        children: tmsChildren
+        children: role !== "LEGACY_ADMIN" && role !== "LEGACY_USER" && !isTms ? smtrackChildren : tmsChildren,
       },
     ],
   },
   {
     path: "/privacy-policy",
-    element: <Policy />,
-    errorElement: <SomethingWrong />
+    element: <Policy />
   },
   {
     path: "/terms-conditions",
-    element: <Terms />,
-    errorElement: <SomethingWrong />
+    element: <Terms />
   },
   {
     path: "/support",
-    element: <Support />,
-    errorElement: <SomethingWrong />
+    element: <Support />
   },
   {
     path: "/login",
-    element: <Islogout />,
-    errorElement: <SomethingWrong />
+    element: <Islogout />
   },
   {
     path: "*",
-    element: <ErrorPage />,
-    errorElement: <SomethingWrong />
+    element: <ErrorPage />
   },
 ])

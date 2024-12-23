@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components"
 
-export const MuteEtemp = styled.button<{ $primary?: boolean | string, $disable?: boolean }>`
+export const Mutesmtrack = styled.button<{ $primary?: boolean | string, $disable?: boolean }>`
   position: relative;
   width: 60px;
   height: 35px;

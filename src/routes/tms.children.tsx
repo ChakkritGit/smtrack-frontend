@@ -1,21 +1,29 @@
+import { lazy, Suspense } from "react";
 import { Hidesetting } from "../authen/authen";
-import TmsDashboard from "../pages/dashboard/tms.dashboard";
-import TmsFullChart from "../pages/dashboard/tms.fullchart";
-import TmsHome from "../pages/home/tms.home";
 import Log from "../pages/log/log";
-import TmsDevice from "../pages/setting/devices/tms.device";
-import System from "../pages/system/system";
 import SomethingWrong from "./something-wrong";
+import PageLoading from "../components/loading/page.loading";
+const TmsHome = lazy(() => import('../pages/home/tms.home'));
+const TmsDashboard = lazy(() => import('../pages/dashboard/tms.dashboard'));
+const TmsDevice = lazy(() => import('../pages/setting/devices/tms.device'));
+const System = lazy(() => import('../pages/system/system'));
+const TmsFullChart = lazy(() => import('../pages/dashboard/tms.fullchart'));
+const TmsFullTable = lazy(() => import('../pages/dashboard/tms.fulltable'));
+const PreviewPDF = lazy(() => import('../components/pdf/preview.pdf'));
 
 export const tmsChildren = [
   {
     path: "/",
-    element: <TmsHome />,
+    element: <Suspense fallback={<PageLoading />}>
+      <TmsHome />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {
     path: "dashboard",
-    element: <TmsDashboard />,
+    element: <Suspense fallback={<PageLoading />}>
+      <TmsDashboard />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {
@@ -24,29 +32,39 @@ export const tmsChildren = [
     children: [
       {
         path: "management",
-        element: <TmsDevice />,
+        element: <Suspense fallback={<PageLoading />}>
+          <TmsDevice />
+        </Suspense>,
         errorElement: <SomethingWrong />
       },
     ]
   },
   {
     path: "settings",
-    element: <System />,
+    element: <Suspense fallback={<PageLoading />}>
+      <System />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {
     path: "dashboard/chart",
-    element: <TmsFullChart />,
+    element: <Suspense fallback={<PageLoading />}>
+      <TmsFullChart />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {
     path: "dashboard/chart/preview",
-    element: <div>pdf</div>,
+    element: <Suspense fallback={<PageLoading />}>
+      <PreviewPDF />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {
     path: "dashboard/table",
-    element: <div>table</div>,
+    element: <Suspense fallback={<PageLoading />}>
+      <TmsFullTable />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {

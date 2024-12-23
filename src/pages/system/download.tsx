@@ -19,7 +19,7 @@ function DownloadApp() {
           <div>
             <span>SMTrack+</span>
             <span>
-              โปรแกรมสำหรับดูค่าอุณหภูมิ/ความชื้นปัจจุบัน ของตู้แช่ แบบ Real-Time รวมถึงแจ้งเตือนหากเกินค่า Min/Max ที่กำหนดใช้ร่วมกับเครื่องติดตามอุณหภูมิตู้แช่ รุ่น eTEMP/i-TEMS
+              โปรแกรมสำหรับดูค่าอุณหภูมิ/ความชื้นปัจจุบัน ของตู้แช่ แบบ Real-Time รวมถึงแจ้งเตือนหากเกินค่า Min/Max ที่กำหนดใช้ร่วมกับเครื่องติดตามอุณหภูมิตู้แช่ รุ่น smtrack/i-TEMS
             </span>
             <a onClick={toggleExpandText}>
               {isExpanded ? t('isCollapseText') : t('isExapndText')}
@@ -28,7 +28,7 @@ function DownloadApp() {
         </div>
       </div>
       <a
-        href="https://api.siamatic.co.th/etemp/media/app-release.apk"
+        href="https://api.siamatic.co.th/smtrack/media/app-release.apk"
         rel="noopener noreferrer">{t('appDownload')}</a>
     </DowmloadFlex>
   )

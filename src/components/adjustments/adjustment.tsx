@@ -14,7 +14,7 @@ type AdjustmentType = {
   humvalue: number[],
   setTempvalue: Dispatch<SetStateAction<number[]>>,
   setHumvalue: Dispatch<SetStateAction<number[]>>,
-  handleTempChange: (_event: Event, newValue: number | number[]) => void,
+  handlsmtrackChange: (_event: Event, newValue: number | number[]) => void,
   handleHumChange: (_event: Event, newValue: number | number[]) => void,
   handleAdjusttempChange: (_event: Event, newValue: number | number[]) => void,
   handleAdjusthumChange: (_event: Event, newValue: number | number[]) => void,
@@ -38,7 +38,7 @@ function Adjustment(adjustProps: AdjustmentType) {
   const { t } = useTranslation()
   const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { role } = tokenDecode
-  const { humvalue, tempvalue, setTempvalue, setHumvalue, handleTempChange,
+  const { humvalue, tempvalue, setTempvalue, setHumvalue, handlsmtrackChange,
     handleHumChange, formData, setFormData, handleAdjusttempChange,
     handleAdjusthumChange, mqttData, devicesdata, showAdjust } = adjustProps
   return (
@@ -80,7 +80,7 @@ function Adjustment(adjustProps: AdjustmentType) {
             <SliderRangeFlex $rangename={'temp'}>
               <Slider
                 value={tempvalue}
-                onChange={handleTempChange}
+                onChange={handlsmtrackChange}
                 valueLabelDisplay="off"
                 disableSwap
                 min={-40}

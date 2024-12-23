@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next"
 import { TmsAddDeviceHead, TmsManageDevicesContainer } from "../../../style/components/tms.adddevice.style"
 import { DevHomeHead, ManageDeviceBody, ManageDevSpanUnsetUserSelect } from "../../../style/style"
-import PageLoading from "../../../components/loading/page.loading"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../../stores/store"
@@ -200,32 +199,27 @@ const TmsDevice = () => {
         </DevHomeHead>
       </TmsAddDeviceHead>
       <ManageDeviceBody>
-        {
-          devices.length > 0 ?
-            <DataTable
-              columns={columns}
-              data={deviceFilter}
-              progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
-              progressPending={loading.deviceLoading}
-              pagination
-              paginationServer
-              paginationTotalRows={totalRows}
-              paginationDefaultPage={currentPage}
-              paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
-              onChangeRowsPerPage={handlePerRowsChange}
-              onChangePage={handlePageChange}
-              noDataComponent={<NoRecordContainer>
-                <RiFileForbidLine size={32} />
-                <h4>{t('nodata')}</h4>
-              </NoRecordContainer>}
-              responsive
-              pointerOnHover
-              fixedHeader
-              fixedHeaderScrollHeight="calc(100dvh - 230px)"
-            />
-            :
-            <PageLoading />
-        }
+        <DataTable
+          columns={columns}
+          data={deviceFilter}
+          progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
+          progressPending={loading.deviceLoading}
+          pagination
+          paginationServer
+          paginationTotalRows={totalRows}
+          paginationDefaultPage={currentPage}
+          paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
+          onChangeRowsPerPage={handlePerRowsChange}
+          onChangePage={handlePageChange}
+          noDataComponent={<NoRecordContainer>
+            <RiFileForbidLine size={32} />
+            <h4>{t('nodata')}</h4>
+          </NoRecordContainer>}
+          responsive
+          pointerOnHover
+          fixedHeader
+          fixedHeaderScrollHeight="calc(100dvh - 230px)"
+        />
       </ManageDeviceBody>
     </TmsManageDevicesContainer>
   )

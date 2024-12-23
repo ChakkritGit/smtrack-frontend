@@ -54,7 +54,7 @@ export default function Table(tablesData: TableType) {
       center: false
     },
     {
-      name: t('probeTempSubTb'),
+      name: t('probsmtrackSubTb'),
       cell: (item) => item.tempAvg.toFixed(2) + '°C',
       sortable: false,
       center: false

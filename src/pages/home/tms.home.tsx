@@ -18,7 +18,6 @@ import { responseType } from "../../types/response.type"
 import Loading from "../../components/loading/loading"
 import { NoRecordContainer } from "../../style/components/datatable.styled"
 import { DoorKey } from "../../types/log.type"
-import PageLoading from "../../components/loading/page.loading"
 import { cookieOptions, cookies } from "../../constants/constants"
 import { setSerial } from "../../stores/utilsStateSlice"
 import { useNavigate } from "react-router-dom"
@@ -117,7 +116,7 @@ const TmsHome = () => {
         center: true
       },
       {
-        name: t('deviceTempTb'),
+        name: t('devicsmtrackTb'),
         cell: (item) => item.log.length > 0 ? `${item.log[0]?.tempValue.toFixed(2)}°C` : '- -',
         sortable: false,
         center: true
@@ -159,7 +158,7 @@ const TmsHome = () => {
         sortable: false,
         center: true
       }
-    ], [fetchDevices]
+    ], [fetchDevices, t]
   )
 
   useEffect(() => {
@@ -185,78 +184,73 @@ const TmsHome = () => {
 
   return (
     <HomeContainer>
-      {
-        devices.length > 0 ?
-          <HomeContainerFlex>
-            <DevHomeHeadTile>
-              <h5>
-                {t('showAllBox')}
-              </h5>
-              {
-                role === 'SUPER' && <TagCurrentHos>
-                  {`${hospitalsData.filter((f) => f.id?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.id?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
-                </TagCurrentHos>
-              }
-            </DevHomeHeadTile>
-            <DevHomeSecctionOne
-              $primary={scrolled}
-              $expand={expand}
-              $transparent={transparent}
-            >
-              <div>
-                {
-                  !loading.countLoading ?
-                    <TmsHomeCard
-                      counts={count}
-                    />
-                    :
-                    <Loading icn={<FiLoader size={42} />} loading title={t('loading')} />
-                }
-
-              </div>
-              <div>
-                {
-                  !expand ? <RiArrowUpWideLine size={24} onClick={() => setExpand(true)} /> :
-                    <RiArrowDownWideLine size={24} onClick={() => setExpand(false)} />
-                }
-              </div>
-            </DevHomeSecctionOne>
-            <AboutBox>
-              <h5>{t('detailAllBox')}</h5>
-              <DeviceInfoflex>
-                <FilterHosAndWard />
-              </DeviceInfoflex>
-            </AboutBox>
-            <div>
-              <DatatableHome>
-                <DataTable
-                  columns={columns}
-                  data={deviceFilter}
-                  progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
-                  progressPending={loading.deviceLoading}
-                  pagination
-                  paginationServer
-                  paginationTotalRows={totalRows}
-                  paginationDefaultPage={currentPage}
-                  paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
-                  onChangeRowsPerPage={handlePerRowsChange}
-                  onChangePage={handlePageChange}
-                  onRowClicked={handleRowClicked}
-                  noDataComponent={<NoRecordContainer>
-                    <RiFileForbidLine size={32} />
-                    <h4>{t('nodata')}</h4>
-                  </NoRecordContainer>}
-                  responsive
-                  pointerOnHover
-                  fixedHeader
-                  fixedHeaderScrollHeight="calc(100dvh - 490px)"
+      <HomeContainerFlex>
+        <DevHomeHeadTile>
+          <h5>
+            {t('showAllBox')}
+          </h5>
+          {
+            role === 'SUPER' && <TagCurrentHos>
+              {`${hospitalsData.filter((f) => f.id?.includes(hosId))[0]?.hosName ?? userProfile?.ward.hospital.hosName} - ${wardData?.filter((w) => w.id?.includes(wardId))[0]?.wardName ?? 'ALL'}`}
+            </TagCurrentHos>
+          }
+        </DevHomeHeadTile>
+        <DevHomeSecctionOne
+          $primary={scrolled}
+          $expand={expand}
+          $transparent={transparent}
+        >
+          <div>
+            {
+              !loading.countLoading ?
+                <TmsHomeCard
+                  counts={count}
                 />
-              </DatatableHome>
-            </div>
-          </HomeContainerFlex>
-          :
-          <PageLoading />
-      }
+                :
+                <Loading icn={<FiLoader size={42} />} loading title={t('loading')} />
+            }
+
+          </div>
+          <div>
+            {
+              !expand ? <RiArrowUpWideLine size={24} onClick={() => setExpand(true)} /> :
+                <RiArrowDownWideLine size={24} onClick={() => setExpand(false)} />
+            }
+          </div>
+        </DevHomeSecctionOne>
+        <AboutBox>
+          <h5>{t('detailAllBox')}</h5>
+          <DeviceInfoflex>
+            <FilterHosAndWard />
+          </DeviceInfoflex>
+        </AboutBox>
+        <div>
+          <DatatableHome>
+            <DataTable
+              columns={columns}
+              data={deviceFilter}
+              progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
+              progressPending={loading.deviceLoading}
+              pagination
+              paginationServer
+              paginationTotalRows={totalRows}
+              paginationDefaultPage={currentPage}
+              paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
+              onChangeRowsPerPage={handlePerRowsChange}
+              onChangePage={handlePageChange}
+              onRowClicked={handleRowClicked}
+              noDataComponent={<NoRecordContainer>
+                <RiFileForbidLine size={32} />
+                <h4>{t('nodata')}</h4>
+              </NoRecordContainer>}
+              responsive
+              pointerOnHover
+              fixedHeader
+              fixedHeaderScrollHeight="calc(100dvh - 490px)"
+            />
+          </DatatableHome>
+        </div>
+      </HomeContainerFlex>
     </HomeContainer>
   )
 }

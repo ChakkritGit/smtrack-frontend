@@ -1,6 +1,7 @@
 import { Document, Page, Text, View, Image } from '@react-pdf/renderer'
 import { StylesPdf } from "./styles/styles"
 import { pdftype } from '../../types/pdf.type'
+import defaultImg from "../../assets/images/default-pic.png"
 
 export default function Fullchartpdf(pdftype: pdftype) {
   const { chartIMG, dateTime, devName, devSn, hospital, title, ward, hosImg } = pdftype
@@ -10,7 +11,7 @@ export default function Fullchartpdf(pdftype: pdftype) {
       pdfVersion='1.7ext3'
       title={title}
       author='Thanes Development Co., Ltd'
-      subject='eTEMP-Report'
+      subject='smtrack-Report'
       keywords='Chart, Datatable etc.'
       pageLayout='singlePage'
       language='th-TH'
@@ -45,7 +46,7 @@ export default function Fullchartpdf(pdftype: pdftype) {
           <View style={StylesPdf.right}>
             <Image
               style={StylesPdf.img}
-              src={`${import.meta.env.VITE_APP_IMG}${hosImg}`}
+              src={hosImg ? `${import.meta.env.VITE_APP_IMG}${hosImg}` : defaultImg}
             />
             <Text>{hospital}</Text>
             <Text>{ward}</Text>

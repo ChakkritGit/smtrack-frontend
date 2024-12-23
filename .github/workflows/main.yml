@@ -24,20 +24,20 @@ jobs:
       with:
         context: .
         push: true
-        tags: thanespgm/etemp-frontend
+        tags: thanespgm/smtrack-frontend
     - name: Send success message to slack
       id: slack
       uses: slackapi/slack-github-action@v1.27.0
       with:
         payload: |
           {
-            "text": "GitHub Action build thanespgm/etemp-frontend result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "text": "GitHub Action build thanespgm/smtrack-frontend result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
             "blocks": [
               {
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "GitHub Action build thanespgm/etemp-frontend result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                  "text": "GitHub Action build thanespgm/smtrack-frontend result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                 }
               }
             ]

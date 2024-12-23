@@ -63,11 +63,11 @@ export default function Devicesinfo(deviceInfo: Devicesinfo) {
   const [dataData, setDateData] = useState<dateCalType>({} as dateCalType)
   const [showSetting, setShowSetting] = useState(false)
   const [showSettingMute, setShowSettingMute] = useState(false)
-  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "smtrack" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
   const [showSdDetail, setShowSdDetail] = useState(false)
 
-  const handleTempChange = (_event: Event, newValue: number | number[]) => {
+  const handlsmtrackChange = (_event: Event, newValue: number | number[]) => {
     setTempvalue(newValue as number[])
   }
   const handleHumChange = (_event: Event, newValue: number | number[]) => {
@@ -87,7 +87,7 @@ export default function Devicesinfo(deviceInfo: Devicesinfo) {
   }
 
   const closemodal = () => {
-    if (deviceModel === 'etemp') {
+    if (deviceModel === 'smtrack') {
       client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/temp`, 'off')
     } else {
       client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/temp`, 'off')
@@ -127,7 +127,7 @@ export default function Devicesinfo(deviceInfo: Devicesinfo) {
         adjustTemp: formdata.adjustTemp,
         adjustHum: formdata.adjustHum,
       })
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/adj`, 'on')
       } else {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/adj`, 'on')
@@ -176,7 +176,7 @@ export default function Devicesinfo(deviceInfo: Devicesinfo) {
         }
       })
 
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/temp`, 'on')
       } else {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesData.devSerial}/temp`, 'on')
@@ -418,7 +418,7 @@ export default function Devicesinfo(deviceInfo: Devicesinfo) {
                 handleAdjusthumChange={handleAdjusthumChange}
                 handleAdjusttempChange={handleAdjusttempChange}
                 handleHumChange={handleHumChange}
-                handleTempChange={handleTempChange}
+                handlsmtrackChange={handlsmtrackChange}
                 humvalue={humvalue}
                 mqttData={mqttData}
                 setFormData={setFormdata}

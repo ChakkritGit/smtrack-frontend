@@ -197,7 +197,7 @@ function Test() {
         <h3>Select Devices</h3>
         <select onChange={handleSelectedandClearSelected} value={selectedDevicesOption}>
           <option value="">Select option</option>
-          <option value="eTP">eTEMP</option>
+          <option value="eTP">smtrack</option>
           <option value="iTS">iTeMS</option>
         </select>
 

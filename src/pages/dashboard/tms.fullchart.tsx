@@ -19,7 +19,6 @@ import TmsApexChart from "../../components/dashboard/tms.apexfull"
 import { FilterLogType, TmsDeviceType } from "../../types/tms.type"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
-import PageLoading from "../../components/loading/page.loading"
 import { cookies, getDateNow, styleElement } from "../../constants/constants"
 import html2canvas from "html2canvas"
 import toast from "react-hot-toast"
@@ -28,6 +27,7 @@ import { setSearchQuery, setShowAlert } from "../../stores/utilsStateSlice"
 import { responseType } from "../../types/response.type"
 import axiosInstance from "../../constants/axiosInstance"
 import { AxiosError } from "axios"
+import PageLoading from "../../components/loading/page.loading"
 
 const TmsFullChart = () => {
   const dispatch = useDispatch<storeDispatchType>()
@@ -119,7 +119,7 @@ const TmsFullChart = () => {
       const responseData = await axiosInstance
         .get<responseType<FilterLogType[]>>(`${import.meta.env.VITE_APP_API}/legacy/graph?filter=day&sn=${Serial ? Serial : cookies.get('devSerial')}`)
       console.log(responseData.data.data)
-        setLogData(responseData.data.data)
+      setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
@@ -278,7 +278,7 @@ const TmsFullChart = () => {
           navigate('/dashboard/chart/preview', {
             state: {
               title: 'Chart-Report',
-              ward: '',
+              ward: userProfile?.ward.wardName,
               image: ImagesOne,
               hospital: '',
               devSn: devData?.sn,
@@ -304,27 +304,23 @@ const TmsFullChart = () => {
     }
   }, [isloading])
 
-  const chartContent = useMemo(() => {
-    if (logData.length > 0) {
-      return (
-        <FullchartBodyChartCon key={String(isloading)} $primary={expand} ref={canvasChartRef}>
-          <TableInfoDevice ref={tableInfoRef}>
-            <h4>{userProfile?.ward.hospital.hosName}</h4>
-            <span>{devData?.name ? devData?.name : '--'} | {devData?.name}</span>
-          </TableInfoDevice>
-          <TmsApexChart
-            chartData={logData}
-            tempHeight={680}
-            tempWidth={1480}
-            isExport={isloading}
-            showDataLabel={showDataLabel}
-          />
-        </FullchartBodyChartCon>
-      )
-    } else {
-      return <PageLoading reset={pageNumber} />
-    }
-  }, [logData, isloading, expand, userProfile?.ward.hospital.hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
+  const chartContent = useMemo(() => (
+    logData.length > 0 ? <FullchartBodyChartCon key={String(isloading)} $primary={expand} ref={canvasChartRef}>
+      <TableInfoDevice ref={tableInfoRef}>
+        <h4>{userProfile?.ward.hospital.hosName}</h4>
+        <span>{devData?.name ? devData?.name : '--'} | {devData?.name}</span>
+      </TableInfoDevice>
+      <TmsApexChart
+        chartData={logData}
+        tempHeight={680}
+        tempWidth={1480}
+        isExport={isloading}
+        showDataLabel={showDataLabel}
+      />
+    </FullchartBodyChartCon>
+      :
+      <PageLoading />
+  ), [logData, isloading, expand, userProfile?.ward.hospital.hosName, devData, tempMin, tempMax, showDataLabel, pageNumber])
 
   return (
     <Container fluid>

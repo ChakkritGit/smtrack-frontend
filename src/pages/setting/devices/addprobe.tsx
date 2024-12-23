@@ -57,7 +57,7 @@ export default function Addprobe(addprobe: addprobeProps) {
   })
   const [mqttData, setMqttData] = useState({ temp: 0, humi: 0 })
   const { theme } = useTheme()
-  const deviceModel = probeData?.device.devSerial?.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const deviceModel = probeData?.device.devSerial?.substring(0, 3) === "eTP" ? "smtrack" : "items"
   const version = probeData?.device.devSerial?.substring(3, 5).toLowerCase()
 
   const openmodal = () => {
@@ -65,7 +65,7 @@ export default function Addprobe(addprobe: addprobeProps) {
   }
 
   const closemodal = () => {
-    if (deviceModel === 'etemp') {
+    if (deviceModel === 'smtrack') {
       client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'off')
     } else {
       client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'off')
@@ -180,7 +180,7 @@ export default function Addprobe(addprobe: addprobeProps) {
         })
         closemodal()
         dispatch(setRefetchdata(true))
-        if (deviceModel === 'etemp') {
+        if (deviceModel === 'smtrack') {
           client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/adj`, 'on')
         } else {
           client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/adj`, 'on')
@@ -220,7 +220,7 @@ export default function Addprobe(addprobe: addprobeProps) {
     }
   }
 
-  const handleTempChange = (_event: Event, newValue: number | number[]) => {
+  const handlsmtrackChange = (_event: Event, newValue: number | number[]) => {
     setFormdata({ ...formdata, tempvalue: newValue as number[] })
   }
   const handleHumChange = (_event: Event, newValue: number | number[]) => {
@@ -284,7 +284,7 @@ export default function Addprobe(addprobe: addprobeProps) {
         }
       })
 
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'on')
       } else {
         client.publish(`siamatic/i${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'on')
@@ -587,7 +587,7 @@ export default function Addprobe(addprobe: addprobeProps) {
                 handleAdjusthumChange={handleAdjusthumChange}
                 handleAdjusttempChange={handleAdjusttempChange}
                 handleHumChange={handleHumChange}
-                handleTempChange={handleTempChange}
+                handlsmtrackChange={handlsmtrackChange}
                 humvalue={formdata.humvalue}
                 tempvalue={formdata.tempvalue}
                 mqttData={mqttData}

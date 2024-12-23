@@ -44,13 +44,13 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
     adjustTemp: devicesdata.probe[0]?.adjustTemp,
     adjustHum: devicesdata.probe[0]?.adjustHum
   })
-  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "etemp" : "items"
+  const deviceModel = devSerial.substring(0, 3) === "eTP" ? "smtrack" : "items"
   const version = devSerial.substring(3, 5).toLowerCase()
   const [mqttData, setMqttData] = useState({ temp: 0, humi: 0 })
   const [selectProbeI, setSelectProbeI] = useState(devicesdata.probe[0]?.probeId)
   const { theme } = useTheme()
 
-  const handleTempChange = (_event: Event, newValue: number | number[]) => {
+  const handlsmtrackChange = (_event: Event, newValue: number | number[]) => {
     setTempvalue(newValue as number[])
   }
   const handleHumChange = (_event: Event, newValue: number | number[]) => {
@@ -99,7 +99,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
         showConfirmButton: false,
       })
       fetchData()
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/adj`, 'on')
       } else {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/adj`, 'on')
@@ -132,7 +132,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
   }
 
   const closemodal = () => {
-    if (deviceModel === 'etemp') {
+    if (deviceModel === 'smtrack') {
       client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/temp`, 'off')
     } else {
       client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/temp`, 'off')
@@ -149,7 +149,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
         }
       })
 
-      if (deviceModel === 'etemp') {
+      if (deviceModel === 'smtrack') {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/temp`, 'on')
       } else {
         client.publish(`siamatic/${deviceModel}/${version}/${devicesdata.devSerial}/temp`, 'on')
@@ -249,7 +249,7 @@ const ModalAdjust = (modalProps: modalAdjustType) => {
               handleAdjusthumChange={handleAdjusthumChange}
               handleAdjusttempChange={handleAdjusttempChange}
               handleHumChange={handleHumChange}
-              handleTempChange={handleTempChange}
+              handlsmtrackChange={handlsmtrackChange}
               humvalue={humvalue}
               mqttData={mqttData}
               setFormData={setFormData}
