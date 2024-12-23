@@ -31,7 +31,7 @@
     "crypto-js": "^4.2.0",
     "d": "^1.0.2",
     "date-fns": "^4.1.0",
-    "esptool-js": "file:vendor\\esptool-js-0.4.3.tgz",
+    "esptool-js": "file:vendor\\esptool-js-0.5.3.tgz",
     "filesize": "^10.1.6",
     "framer-motion": "^11.14.4",
     "html2canvas": "^1.4.1",
