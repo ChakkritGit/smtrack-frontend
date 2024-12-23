@@ -11,7 +11,7 @@ type Option = {
 }
 
 type Hospital = {
-  hosId: string,
+  id: string,
   hosName: string,
 }
 
@@ -45,8 +45,8 @@ export default function HospitalDropdown(hosprop: dropDownHospitalProp) {
 
   return (
     <Select
-      options={mapOptions<Hospital, keyof Hospital>(hospitalsData, 'hosId', 'hosName')}
-      value={mapDefaultValue<Hospital, keyof Hospital>(hospitalsData, String(Hosid), 'hosId', 'hosName')}
+      options={mapOptions<Hospital, keyof Hospital>(hospitalsData, 'id', 'hosName')}
+      value={mapDefaultValue<Hospital, keyof Hospital>(hospitalsData, String(Hosid), 'id', 'hosName')}
       onChange={setHosId}
       autoFocus={false}
       placeholder={t('selectDeviceDrop')}

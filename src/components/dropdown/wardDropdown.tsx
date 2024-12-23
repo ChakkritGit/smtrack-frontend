@@ -15,7 +15,7 @@ type Option = {
 }
 
 type Ward = {
-  wardId: string,
+  id: string,
   wardName: string,
 }
 
@@ -33,7 +33,7 @@ export default function WardDropdown(DwardProp: dropDownWardProp) {
 
   const fetchHospital = async () => {
     if (Hosid !== "" || groupId !== "" && !groupId) {
-      const url: string = `${import.meta.env.VITE_APP_API}/hospital/${Hosid}`
+      const url: string = `${import.meta.env.VITE_APP_API}/auth/hospital/${Hosid}`
       try {
         const response = await axiosInstance.get<responseType<hospitalsType>>(url)
         setWardData(response.data.data.ward)
@@ -69,8 +69,8 @@ export default function WardDropdown(DwardProp: dropDownWardProp) {
       {
         wardData.length > 0 &&
         <Select
-          options={mapOptions<Ward, keyof Ward>(wardData, 'wardId', 'wardName')}
-          defaultValue={mapDefaultValue<Ward, keyof Ward>(wardData, String(groupId), 'wardId', 'wardName')}
+          options={mapOptions<Ward, keyof Ward>(wardData, 'id', 'wardName')}
+          defaultValue={mapDefaultValue<Ward, keyof Ward>(wardData, String(groupId), 'id', 'wardName')}
           onChange={setWardId}
           autoFocus={false}
           isDisabled={Hosid !== "" ? false : true}

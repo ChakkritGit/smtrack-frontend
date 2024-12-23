@@ -11,14 +11,18 @@ import { useDispatch } from "react-redux"
 import { storeDispatchType } from "../../../stores/store"
 import { setShowAlert } from "../../../stores/utilsStateSlice"
 import axiosInstance from "../../../constants/axiosInstance"
-import { fetchTmsDevice } from "../../../stores/tms.deviceSlice"
 
-const TmsAddDevice = () => {
+interface TmsAddDeviceProps {
+  fetchDevice: (page: number, size?: number) => Promise<void>
+}
+
+const TmsAddDevice = (addProps: TmsAddDeviceProps) => {
+  const { fetchDevice } = addProps
   const { t } = useTranslation()
   const dispatch = useDispatch<storeDispatchType>()
   const [show, setShow] = useState(false)
-  const [hosId, sethosId] = useState('test')
-  const [wardId, setwardId] = useState('test')
+  const [hosId, sethosId] = useState('')
+  const [wardId, setwardId] = useState('')
   const [deviceData, setDeviceData] = useState({
     serial: '',
     name: ''
@@ -65,7 +69,7 @@ const TmsAddDevice = () => {
           timer: 2000,
           showConfirmButton: false,
         })
-        dispatch(fetchTmsDevice())
+        fetchDevice(1)
         resetState()
       } catch (error) {
         if (error instanceof AxiosError) {

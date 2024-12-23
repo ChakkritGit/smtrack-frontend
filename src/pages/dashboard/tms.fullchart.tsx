@@ -15,7 +15,7 @@ import Swal from "sweetalert2"
 import Loading from "../../components/loading/loading"
 import { WaitExportImage } from "../../style/components/page.loading"
 import { useEffect, useMemo, useRef, useState } from "react"
-import TmsApexChart from "../../components/dashboard/smtrack.apexfull"
+import TmsApexChart from "../../components/dashboard/tms.apexfull"
 import { FilterLogType, TmsDeviceType } from "../../types/tms.type"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
@@ -118,7 +118,8 @@ const TmsFullChart = () => {
     try {
       const responseData = await axiosInstance
         .get<responseType<FilterLogType[]>>(`${import.meta.env.VITE_APP_API}/legacy/graph?filter=day&sn=${Serial ? Serial : cookies.get('devSerial')}`)
-      setLogData(responseData.data.data)
+      console.log(responseData.data.data)
+        setLogData(responseData.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {

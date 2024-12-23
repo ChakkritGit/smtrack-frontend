@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from "react-redux"
 import { RootState, storeDispatchType } from "../../stores/store"
 import { HomeContainer, TagCurrentHos } from "../../style/components/home.styled"
-import { AboutBox, DatatableHome, DevHomeHeadTile, DevHomeSecctionOne, DeviceCardFooterDoor, DeviceCardFooterDoorFlex, DeviceInfoflex, DeviceListFlex, DeviceStateNetwork, HomeContainerFlex, ListBtn } from "../../style/style"
+import {
+  AboutBox, DatatableHome, DevHomeHeadTile, DevHomeSecctionOne, DeviceCardFooterDoor,
+  DeviceCardFooterDoorFlex, DeviceInfoflex, DeviceStateNetwork, HomeContainerFlex
+} from "../../style/style"
 import { useTranslation } from "react-i18next"
-import { RiArrowDownWideLine, RiArrowUpWideLine, RiDoorClosedLine, RiDoorOpenLine, RiFileForbidLine, RiLayoutGridLine, RiListUnordered } from "react-icons/ri"
+import { RiArrowDownWideLine, RiArrowUpWideLine, RiDoorClosedLine, RiDoorOpenLine, RiFileForbidLine } from "react-icons/ri"
 import { FiLoader } from "react-icons/fi"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 import TmsHomeCard from "../../components/home/tms.home.card"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { FetchDeviceType, TmsCountType, TmsDeviceType } from "../../types/tms.type"
@@ -20,6 +22,7 @@ import PageLoading from "../../components/loading/page.loading"
 import { cookieOptions, cookies } from "../../constants/constants"
 import { setSerial } from "../../stores/utilsStateSlice"
 import { useNavigate } from "react-router-dom"
+import FilterHosAndWard from "../../components/dropdown/filter.hos.ward"
 
 const TmsHome = () => {
   const dispatch = useDispatch<storeDispatchType>()
@@ -30,7 +33,6 @@ const TmsHome = () => {
   const { role } = tokenDecode
   const { hospitalsData } = hospital
   const { wardData } = ward
-  const [listAndgrid, setListandgrid] = useState(Number(localStorage.getItem('listGrid') ?? 1))
   const [scrolled, setScrolled] = useState(false)
   const [expand, setExpand] = useState(false)
 
@@ -186,7 +188,7 @@ const TmsHome = () => {
       {
         devices.length > 0 ?
           <HomeContainerFlex>
-            <DevHomeHeadTile $primary={listAndgrid === 2}>
+            <DevHomeHeadTile>
               <h5>
                 {t('showAllBox')}
               </h5>
@@ -199,7 +201,6 @@ const TmsHome = () => {
             <DevHomeSecctionOne
               $primary={scrolled}
               $expand={expand}
-              $inList={listAndgrid === 1}
               $transparent={transparent}
             >
               <div>
@@ -220,56 +221,37 @@ const TmsHome = () => {
                 }
               </div>
             </DevHomeSecctionOne>
-            <AboutBox $primary={listAndgrid === 2}>
+            <AboutBox>
               <h5>{t('detailAllBox')}</h5>
               <DeviceInfoflex>
                 <FilterHosAndWard />
-                <DeviceListFlex>
-                  <ListBtn $primary={listAndgrid === 1} onClick={() => {
-                    localStorage.setItem('listGrid', String(1))
-                    setListandgrid(1)
-                  }}>
-                    <RiListUnordered />
-                  </ListBtn>
-                  <ListBtn $primary={listAndgrid === 2} onClick={() => {
-                    localStorage.setItem('listGrid', String(2))
-                    setListandgrid(2)
-                  }}>
-                    <RiLayoutGridLine />
-                  </ListBtn>
-                </DeviceListFlex>
               </DeviceInfoflex>
             </AboutBox>
             <div>
-              {
-                listAndgrid === 1 ?
-                  <DatatableHome>
-                    <DataTable
-                      columns={columns}
-                      data={deviceFilter}
-                      progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
-                      progressPending={loading.deviceLoading}
-                      pagination
-                      paginationServer
-                      paginationTotalRows={totalRows}
-                      paginationDefaultPage={currentPage}
-                      paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
-                      onChangeRowsPerPage={handlePerRowsChange}
-                      onChangePage={handlePageChange}
-                      onRowClicked={handleRowClicked}
-                      noDataComponent={<NoRecordContainer>
-                        <RiFileForbidLine size={32} />
-                        <h4>{t('nodata')}</h4>
-                      </NoRecordContainer>}
-                      responsive
-                      pointerOnHover
-                      fixedHeader
-                      fixedHeaderScrollHeight="calc(100dvh - 450px)"
-                    />
-                  </DatatableHome>
-                  :
-                  <div>Card</div>
-              }
+              <DatatableHome>
+                <DataTable
+                  columns={columns}
+                  data={deviceFilter}
+                  progressComponent={<Loading icn={<FiLoader size={42} />} loading title={t('loading')} />}
+                  progressPending={loading.deviceLoading}
+                  pagination
+                  paginationServer
+                  paginationTotalRows={totalRows}
+                  paginationDefaultPage={currentPage}
+                  paginationRowsPerPageOptions={[10, 20, 50, 100, 150, 200]}
+                  onChangeRowsPerPage={handlePerRowsChange}
+                  onChangePage={handlePageChange}
+                  onRowClicked={handleRowClicked}
+                  noDataComponent={<NoRecordContainer>
+                    <RiFileForbidLine size={32} />
+                    <h4>{t('nodata')}</h4>
+                  </NoRecordContainer>}
+                  responsive
+                  pointerOnHover
+                  fixedHeader
+                  fixedHeaderScrollHeight="calc(100dvh - 490px)"
+                />
+              </DatatableHome>
             </div>
           </HomeContainerFlex>
           :
