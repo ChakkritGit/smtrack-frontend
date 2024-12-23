@@ -159,11 +159,17 @@ const ESPToolComponent = () => {
     await transport.connect(115200)
     isConsoleClosed = false
 
-    while (true && !isConsoleClosed) {
-      const val = await transport.rawRead()
-      if (typeof val !== "undefined") {
-        term.write(val)
+    const decoder = new TextDecoder()
+
+    for await (const chunk of transport.rawRead()) {
+      if (chunk instanceof Uint8Array) {
+        const decodedChunk = decoder.decode(chunk)
+        term.write(decodedChunk)
       } else {
+        console.warn("Unexpected data type:", chunk)
+      }
+
+      if (isConsoleClosed) {
         break
       }
     }
