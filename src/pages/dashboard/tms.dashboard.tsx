@@ -59,60 +59,63 @@ const TmsDashboard = () => {
             setFilterById={setFilterById}
           />
         </DashboardHeadFilter>
-        <>
-          <TmsDeviceInfo
-            devicesData={devicesLog}
-          />
-          <Dashboardanalys>
-            <TmsChart
-              logs={devicesLog.log}
-              tempMin={devicesLog.minTemp}
-              tempMax={devicesLog.maxTemp}
+        {
+          devicesLog.log?.length > 0 &&
+          <>
+            <TmsDeviceInfo
+              devicesData={devicesLog}
             />
-            <TmsTable
-              data={devicesLog.log}
-              devSn={devicesLog.sn}
-              tempMax={devicesLog.maxTemp}
-              tempMin={devicesLog.minTemp}
+            <Dashboardanalys>
+              <TmsChart
+                logs={devicesLog.log}
+                tempMin={devicesLog.minTemp}
+                tempMax={devicesLog.maxTemp}
+              />
+              <TmsTable
+                data={devicesLog.log}
+                devSn={devicesLog.sn}
+                tempMax={devicesLog.maxTemp}
+                tempMin={devicesLog.minTemp}
+              />
+            </Dashboardanalys>
+          </>
+        }
+        {devicesLog.log?.length === 0 &&
+          <>
+            <TmsDeviceInfo
+              devicesData={devicesLog}
             />
-          </Dashboardanalys>
-        </>
-        :
-        devicesLog.log?.length === 0 ?
-        <>
-          <TmsDeviceInfo
-            devicesData={devicesLog}
-          />
-          <OfflineDataFlex>
-            <span>{t('todayNoData')}</span>
-            <div>
+            <OfflineDataFlex>
+              <span>{t('todayNoData')}</span>
               <div>
                 <div>
-                  <RiBarChartBoxLine size={62} />
+                  <div>
+                    <RiBarChartBoxLine size={62} />
+                  </div>
+                  <div>
+                    <span>{t('pageChart')}</span>
+                    <button
+                      onClick={() => navigate(`/dashboard/chart`, { state: {} })}>
+                      {t('seeLastData')}
+                    </button>
+                  </div>
                 </div>
                 <div>
-                  <span>{t('pageChart')}</span>
-                  <button
-                    onClick={() => navigate(`/dashboard/chart`, { state: {} })}>
-                    {t('seeLastData')}
-                  </button>
+                  <div>
+                    <RiTableView size={62} />
+                  </div>
+                  <div>
+                    <span>{t('pageTable')}</span>
+                    <button
+                      onClick={() => navigate(`/dashboard/table`, { state: {} })}>
+                      {t('seeLastData')}
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div>
-                <div>
-                  <RiTableView size={62} />
-                </div>
-                <div>
-                  <span>{t('pageTable')}</span>
-                  <button
-                    onClick={() => navigate(`/dashboard/table`, { state: {} })}>
-                    {t('seeLastData')}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </OfflineDataFlex>
-        </>
+            </OfflineDataFlex>
+          </>
+        }
       </DashboardFlex>
 
     </Container>
