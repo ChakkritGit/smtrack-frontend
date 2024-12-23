@@ -1,15 +1,15 @@
-import { lazy, Suspense } from "react";
-import { Hidesetting } from "../authen/authen";
-import Log from "../pages/log/log";
-import SomethingWrong from "./something-wrong";
-import PageLoading from "../components/loading/page.loading";
-const TmsHome = lazy(() => import('../pages/home/tms.home'));
-const TmsDashboard = lazy(() => import('../pages/dashboard/tms.dashboard'));
-const TmsDevice = lazy(() => import('../pages/setting/devices/tms.device'));
-const System = lazy(() => import('../pages/system/system'));
-const TmsFullChart = lazy(() => import('../pages/dashboard/tms.fullchart'));
-const TmsFullTable = lazy(() => import('../pages/dashboard/tms.fulltable'));
-const PreviewPDF = lazy(() => import('../components/pdf/preview.pdf'));
+import { lazy, Suspense } from "react"
+import { Hidesetting } from "../authen/authen"
+import SomethingWrong from "./something-wrong"
+import PageLoading from "../components/loading/page.loading"
+const TmsHome = lazy(() => import('../pages/home/tms.home'))
+const TmsDashboard = lazy(() => import('../pages/dashboard/tms.dashboard'))
+const TmsDevice = lazy(() => import('../pages/setting/devices/tms.device'))
+const System = lazy(() => import('../pages/system/system'))
+const TmsFullChart = lazy(() => import('../pages/dashboard/tms.fullchart'))
+const TmsFullTable = lazy(() => import('../pages/dashboard/tms.fulltable'))
+const PreviewPDF = lazy(() => import('../components/pdf/preview.pdf'))
+const Log = lazy(() => import('../pages/log/log'))
 
 export const tmsChildren = [
   {
@@ -69,7 +69,9 @@ export const tmsChildren = [
   },
   {
     path: "changeLog",
-    element: <Log />,
+    element: <Suspense fallback={<PageLoading />}>
+      <Log />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
 ]
