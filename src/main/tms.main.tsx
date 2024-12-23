@@ -51,19 +51,31 @@ const TmsMain = () => {
     socket.on("disconnect", handleDisconnect)
     socket.on("error", handleError)
     socket.on("receive_message", handleMessage)
-    // socket.on("device_event", handleDeviceEvent)
 
     return () => {
       socket.off("connect", handleConnect)
       socket.off("disconnect", handleDisconnect)
       socket.off("error", handleError)
       socket.off("receive_message", handleMessage)
-      // socket.off("device_event", handleDeviceEvent)
     }
   }, [role, hosId])
 
-  const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
-    // e.preventDefault()
+  const handleContextMenu: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (import.meta.env.VITE_APP_NODE_ENV === 'production') {
+      e.preventDefault()
+    }
+  }
+
+  if (import.meta.env.VITE_APP_NODE_ENV === 'production') {
+    document.addEventListener('keydown', function (event) {
+      if (event.ctrlKey && event.shiftKey && event.key === 'I' ||
+        event.ctrlKey && event.shiftKey && event.key === 'C' ||
+        event.ctrlKey && event.shiftKey && event.key === 'J' ||
+        event.ctrlKey && event.key === 'u' ||
+        event.key === 'F12') {
+        event.preventDefault()
+      }
+    })
   }
 
   const handleScroll = () => {

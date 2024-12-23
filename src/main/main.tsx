@@ -7,7 +7,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import { Button } from "react-bootstrap"
 import { RiMenuFoldLine } from "react-icons/ri"
 import { useDispatch, useSelector } from "react-redux"
-import {  setRefetchdata, setShowAside } from "../stores/utilsStateSlice"
+import { setRefetchdata, setShowAside } from "../stores/utilsStateSlice"
 import { fetchHospitals, fetchWards, filtersDevices } from "../stores/dataArraySlices"
 import { RootState, storeDispatchType } from "../stores/store"
 import { fetchDevicesLog } from "../stores/LogsSlice"
@@ -53,19 +53,34 @@ export default function Main() {
     socket.on("disconnect", handleDisconnect)
     socket.on("error", handleError)
     socket.on("receive_message", handleMessage)
-    // socket.on("device_event", handleDeviceEvent)
 
     return () => {
       socket.off("connect", handleConnect)
       socket.off("disconnect", handleDisconnect)
       socket.off("error", handleError)
       socket.off("receive_message", handleMessage)
-      // socket.off("device_event", handleDeviceEvent)
     }
   }, [hosId, role])
 
-  const handleContextMenu: MouseEventHandler<HTMLDivElement> = (_e) => {
-    // e.preventDefault()
+  const handleContextMenu: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (import.meta.env.VITE_APP_NODE_ENV === 'production') {
+      e.preventDefault()
+    }
+  }
+
+  if (import.meta.env.VITE_APP_NODE_ENV === 'production') {
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'F12') {
+        event.preventDefault()
+      }
+
+      if (event.ctrlKey && event.shiftKey && event.key === 'I' ||
+        event.ctrlKey && event.shiftKey && event.key === 'C' ||
+        event.ctrlKey && event.shiftKey && event.key === 'J' ||
+        event.ctrlKey && event.key === 'u') {
+        event.preventDefault()
+      }
+    })
   }
 
   useEffect(() => {
