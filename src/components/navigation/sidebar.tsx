@@ -24,6 +24,7 @@ import { cookieOptions, cookies, ImageComponent } from "../../constants/constant
 import axiosInstance from "../../constants/axiosInstance"
 import DefualtPic from "../../assets/images/default-pic.png"
 import LazyText from "../loading/lazy.text"
+import { reset } from "../../stores/resetAction"
 
 export default function sidebar() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -265,7 +266,7 @@ export default function sidebar() {
           }
           {
             role === "SUPER" && <Li>
-              <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions); }} $primary={isTms}>
+              <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(reset()); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions); }} $primary={isTms}>
                 <div className="icon">
                   {isTms ? 'TMS' : 'E/I'}
                 </div>
