@@ -14,8 +14,9 @@ import System from "../pages/system/system";
 import Permission from "../pages/users/manageusers";
 import Warranty from "../pages/warranty/warranty";
 import SomethingWrong from "./something-wrong";
-import ESPToolComponent from "../pages/setting/devices/serial.port";
+import PageLoading from "../components/loading/page.loading";
 const LazyTest = lazy(() => import('../pages/test/test'))
+const ESPToolComponent = lazy(() => import('../pages/setting/devices/serial.port'))
 
 export const smtrackChildren = [
   {
@@ -99,7 +100,7 @@ export const smtrackChildren = [
       {
         path: "test",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<PageLoading />}>
             <LazyTest />
           </Suspense>
         ),
@@ -113,7 +114,9 @@ export const smtrackChildren = [
     children: [
       {
         path: "management/flasher",
-        element: <ESPToolComponent />,
+        element: <Suspense fallback={<PageLoading />}>
+          <ESPToolComponent />
+        </Suspense>,
         errorElement: <SomethingWrong />
       },
     ]

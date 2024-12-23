@@ -5,8 +5,6 @@ import CryptoJS from "crypto-js"
 import { ESPLoader, FlashOptions, LoaderOptions, Transport } from "esptool-js"
 import { useEffect, useRef } from "react"
 import { useState } from "react"
-import { motion } from "framer-motion"
-import { items } from "../../../animation/animate"
 import { Col, Container, Form, Row } from "react-bootstrap"
 import { Breadcrumbs, Typography } from "@mui/material"
 import { RiArrowRightSLine, RiCloseFill, RiEraserLine, RiFileCopyLine, RiListSettingsFill, RiLoopRightFill, RiStopCircleLine, RiTerminalBoxLine, RiUsbLine } from "react-icons/ri"
@@ -242,100 +240,94 @@ const ESPToolComponent = () => {
   }, [progress])
 
   return (
-    <motion.div
-      variants={items}
-      initial="hidden"
-      animate="visible"
-    >
-      <Container fluid>
-        <Breadcrumbs className="mt-3"
-          separator={<RiArrowRightSLine fontSize={20} />}
-        >
-          <Link to={'/management'}>
-            <RiListSettingsFill size={20} />
-          </Link>
-          <Typography color="text.primary">{t('writeFirmware')}</Typography>
-        </Breadcrumbs>
-        <FlashFirmwareContainer>
-          <div>
-            <h3>{t('writeFirmware')}</h3>
-            {
-              !consoleStart && <ConnectionFlex>
-                {chip === '' ? <ConnectButton onClick={connectDevice}>
-                  <RiUsbLine size={24} />
-                  {t('connectDevice')}
-                </ConnectButton>
-                  :
-                  <ConnectionFlex>
-                    <DisConnectButton $primary={progress !== ''} onClick={disconnectFunc} disabled={progress !== ''}>
-                      <RiCloseFill size={24} />
-                      {t('disConnectDevice')}
-                    </DisConnectButton>
-                    <div>
-                      <TraceButton onClick={traceFunc}>
-                        <RiFileCopyLine size={24} />
-                        {t('copyTrace')}
-                      </TraceButton>
-                      <EraseButton $primary={true} onClick={eraseFunc} ref={erasButtonRef} disabled={true}>
-                        <RiEraserLine size={24} />
-                        {t('eraseMemory')}
-                      </EraseButton>
-                    </div>
-                  </ConnectionFlex>
-                }
-              </ConnectionFlex>
-            }
-            {
-              chip && <>
-                <hr />
-                <Row className="d-flex align-items-center">
-                  <Col lg={3}>
-                    <Form.Group controlId="formFile">
-                      <Form.Control type="file" onChange={handleFileSelect} />
-                    </Form.Group>
-                  </Col>
-                  <Col lg={9}>
-                    <ProgramButton onClick={programFunc}>
-                      {t('programBoard')}
-                    </ProgramButton>
-                  </Col>
-                </Row>
-              </>
-            }
-          </div>
-          <hr />
+    <Container fluid>
+      <Breadcrumbs className="mt-3"
+        separator={<RiArrowRightSLine fontSize={20} />}
+      >
+        <Link to={'/management'}>
+          <RiListSettingsFill size={20} />
+        </Link>
+        <Typography color="text.primary">{t('writeFirmware')}</Typography>
+      </Breadcrumbs>
+      <FlashFirmwareContainer>
+        <div>
+          <h3>{t('writeFirmware')}</h3>
           {
-            chip === '' && <>
-              <>
-                <h3>{t('consoleText')}</h3>
-                <ConsoleFlex>
-                  {
-                    consoleStart ? <>
-                      <StopConsoleButton onClick={consoleStopFunc}>
-                        <RiStopCircleLine size={24} />
-                        {t('stopconButton')}
-                      </StopConsoleButton>
-                      <ResetButton onClick={resetFunc}>
-                        <RiLoopRightFill size={24} />
-                        {t('resetconButton')}
-                      </ResetButton>
-                    </>
-                      :
-                      <StartConsoleButton onClick={consoleStartFunc}>
-                        <RiTerminalBoxLine size={24} />
-                        {t('startconButton')}
-                      </StartConsoleButton>
-                  }
-                </ConsoleFlex>
-              </>
+            !consoleStart && <ConnectionFlex>
+              {chip === '' ? <ConnectButton onClick={connectDevice}>
+                <RiUsbLine size={24} />
+                {t('connectDevice')}
+              </ConnectButton>
+                :
+                <ConnectionFlex>
+                  <DisConnectButton $primary={progress !== ''} onClick={disconnectFunc} disabled={progress !== ''}>
+                    <RiCloseFill size={24} />
+                    {t('disConnectDevice')}
+                  </DisConnectButton>
+                  <div>
+                    <TraceButton onClick={traceFunc}>
+                      <RiFileCopyLine size={24} />
+                      {t('copyTrace')}
+                    </TraceButton>
+                    <EraseButton $primary={true} onClick={eraseFunc} ref={erasButtonRef} disabled={true}>
+                      <RiEraserLine size={24} />
+                      {t('eraseMemory')}
+                    </EraseButton>
+                  </div>
+                </ConnectionFlex>
+              }
+            </ConnectionFlex>
+          }
+          {
+            chip && <>
               <hr />
+              <Row className="d-flex align-items-center">
+                <Col lg={3}>
+                  <Form.Group controlId="formFile">
+                    <Form.Control type="file" onChange={handleFileSelect} />
+                  </Form.Group>
+                </Col>
+                <Col lg={9}>
+                  <ProgramButton onClick={programFunc}>
+                    {t('programBoard')}
+                  </ProgramButton>
+                </Col>
+              </Row>
             </>
           }
-          <ProgressBar $primary={progress} />
-          <TerminalComponent terminalRef={terminalRef} />
-        </FlashFirmwareContainer>
-      </Container>
-    </motion.div>
+        </div>
+        <hr />
+        {
+          chip === '' && <>
+            <>
+              <h3>{t('consoleText')}</h3>
+              <ConsoleFlex>
+                {
+                  consoleStart ? <>
+                    <StopConsoleButton onClick={consoleStopFunc}>
+                      <RiStopCircleLine size={24} />
+                      {t('stopconButton')}
+                    </StopConsoleButton>
+                    <ResetButton onClick={resetFunc}>
+                      <RiLoopRightFill size={24} />
+                      {t('resetconButton')}
+                    </ResetButton>
+                  </>
+                    :
+                    <StartConsoleButton onClick={consoleStartFunc}>
+                      <RiTerminalBoxLine size={24} />
+                      {t('startconButton')}
+                    </StartConsoleButton>
+                }
+              </ConsoleFlex>
+            </>
+            <hr />
+          </>
+        }
+        <ProgressBar $primary={progress} />
+        <TerminalComponent terminalRef={terminalRef} />
+      </FlashFirmwareContainer>
+    </Container>
   )
 }
 
