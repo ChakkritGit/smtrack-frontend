@@ -59,12 +59,12 @@ const TmsTable = (tablesData: TableType) => {
       sortable: false,
       center: false
     },
-    {
-      name: t('deviceConnectTb'),
-      cell: (item) => item.internet ? t('deviceOffline') : t('deviceOnline'),
-      sortable: false,
-      center: true
-    },
+    // {
+    //   name: t('deviceConnectTb'),
+    //   cell: (item) => item.internet ? t('deviceOffline') : t('deviceOnline'),
+    //   sortable: false,
+    //   center: true
+    // },
   ]
 
 

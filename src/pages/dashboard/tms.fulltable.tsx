@@ -184,8 +184,22 @@ const TmsFullTable = () => {
   const columns: TableColumn<FilterLogType>[] = useMemo(
     () => [
       {
+        name: t('deviceNoTb'),
+        cell: (_, index) => {
+          return <div>{tableData.length - index}</div>
+        },
+        sortable: false,
+        center: true
+      },
+      {
         name: t('deviceSerialTb'),
         cell: (item) => item.sn,
+        sortable: false,
+        center: true
+      },
+      {
+        name: t('deviceTime'),
+        cell: (item) => item._time.substring(11, 16),
         sortable: false,
         center: true
       },
@@ -195,7 +209,7 @@ const TmsFullTable = () => {
         sortable: false,
         center: true
       },
-    ], [t])
+    ], [t, tableData])
 
   const convertArrayOfObjectsToExcel = (object: {
     deviceData: TmsDeviceType | undefined,
