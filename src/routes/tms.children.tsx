@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react"
-import { Hidesetting } from "../authen/authen"
+import { HideSetting } from "../authen/authen"
 import SomethingWrong from "./something-wrong"
 import PageLoading from "../components/loading/page.loading"
 const TmsHome = lazy(() => import('../pages/home/tms.home'))
@@ -27,7 +27,7 @@ export const tmsChildren = [
     errorElement: <SomethingWrong />
   },
   {
-    element: <Hidesetting />,
+    element: <HideSetting />,
     errorElement: <SomethingWrong />,
     children: [
       {
