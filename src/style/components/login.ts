@@ -140,6 +140,13 @@ export const LoginContact = styled.div<{ $primary?: boolean }>`
   }
 `
 
+export const AppContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+`
+
 export const StoreContainer = styled.div`
 display: flex;
 align-items: center;

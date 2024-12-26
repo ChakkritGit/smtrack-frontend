@@ -5,8 +5,7 @@ import appStore from '../assets/images/appstore.png'
 import LogoBanner from '../assets/images/app-logo.png'
 import ApkBanner from '../assets/images/apk-banner.svg'
 import { useTranslation } from "react-i18next"
-import { AppContainer } from "../style/components/app"
-import { StoreBanner, StoreContainer } from "../../style/components/login"
+import { AppContainer, StoreBanner, StoreContainer } from "../../style/components/login"
 
 const Application = () => {
   const { t } = useTranslation()
