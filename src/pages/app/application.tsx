@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { UAParser } from "ua-parser-js"
-import playStore from '../assets/images/playstore.png'
-import appStore from '../assets/images/appstore.png'
-import LogoBanner from '../assets/images/app-logo.png'
-import ApkBanner from '../assets/images/apk-banner.svg'
+import playStore from '../../assets/images/playstore.png'
+import appStore from '../../assets/images/appstore.png'
+import LogoBanner from '../../assets/images/app-logo.png'
+import ApkBanner from '../../assets/images/apk-banner.svg'
 import { useTranslation } from "react-i18next"
 import { AppContainer, StoreBanner, StoreContainer } from "../../style/components/login"
 
