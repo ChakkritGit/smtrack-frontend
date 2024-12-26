@@ -419,7 +419,7 @@ export default {
     reportText: 'รายงาน',
     switchModeMain: '*สลับโหมด eTEMP และ TMS',
     readAll: 'อ่านทั้งหมด',
-    installApp: 'วิธีการติดตั้งแอปพลิเคชั่น',
+    installApp: 'วิธีการติดตั้งแอปพลิเคชั่น (APK)',
 
     // connect
     ipAddress: 'IP',
