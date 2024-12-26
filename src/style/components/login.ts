@@ -143,8 +143,22 @@ export const LoginContact = styled.div<{ $primary?: boolean }>`
 export const AppContainer = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 1.5rem;
   height: 100dvh;
+  color: ${props => props.theme.mode === 'dark' ? 'var(--white)' : 'var(--main-dark-color)'};
+
+  &>a {
+    cursor: pointer;
+    text-decoration: underline !important;
+    color: var(--main-color) !important;
+
+    &:hover {
+      color: var(--second-color) !important;
+      transition: .3s;
+    }
+  }
 `
 
 export const StoreContainer = styled.div`
@@ -199,6 +213,11 @@ margin-top: 1rem;
   }
   &>div:nth-child(3) {
     align-items: center;
+
+    &>div {
+    flex-direction: column;
+    gap: .5rem;
+  }
 
     &>span {
     font-size: 18px;

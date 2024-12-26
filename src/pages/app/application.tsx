@@ -6,6 +6,7 @@ import LogoBanner from '../../assets/images/app-logo.png'
 import ApkBanner from '../../assets/images/apk-banner.svg'
 import { useTranslation } from "react-i18next"
 import { AppContainer, StoreBanner, StoreContainer } from "../../style/components/login"
+import pdf from "../../assets/pdf/install_apk.pdf"
 
 const Application = () => {
   const { t } = useTranslation()
@@ -48,6 +49,7 @@ const Application = () => {
           </div>
         </div>
       </StoreContainer>
+      <a onClick={() => window.open(pdf)}>{t('installApp')}</a>
     </AppContainer>
   )
 }
