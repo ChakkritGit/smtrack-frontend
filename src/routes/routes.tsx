@@ -32,6 +32,7 @@ import { jwtDecode } from 'jwt-decode'
 import { jwtToken } from '../types/component.type'
 import TmsDevice from '../pages/setting/devices/tms.device'
 import TmsDashboard from '../pages/dashboard/tms.dashboard'
+import Application from '../pages/app/Application'
 
 export default function RoutesComponent() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -235,6 +236,11 @@ export default function RoutesComponent() {
     {
       path: "*",
       element: <ErrorPage />,
+      errorElement: <SomethingWrong />
+    },
+    {
+      path: "app",
+      element: <Application />,
       errorElement: <SomethingWrong />
     },
   ])
