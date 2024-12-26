@@ -1030,14 +1030,14 @@ export default function Adddevform(managedevices: managedevices) {
                           <Form.Check
                             type='radio'
                             label='Ethernet'
-                            checked={Mode.lan === 0}
-                            onChange={() => setMode({ ...Mode, lan: 0 })}
+                            checked={Mode.lan === 1}
+                            onChange={() => setMode({ ...Mode, lan: 1 })}
                           />
                           <Form.Check
                             type='radio'
                             label='Auto'
-                            checked={Mode.lan === 1}
-                            onChange={() => setMode({ ...Mode, lan: 1 })}
+                            checked={Mode.lan === 0}
+                            onChange={() => setMode({ ...Mode, lan: 0 })}
                           />
                         </>
                         :
