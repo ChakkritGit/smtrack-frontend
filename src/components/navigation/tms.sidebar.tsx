@@ -13,7 +13,7 @@ import { UserProfileType } from "../../types/user.type"
 import { responseType } from "../../types/response.type"
 import DefualtPic from "../../assets/images/default-pic.png"
 import axiosInstance from "../../constants/axiosInstance"
-import { reset } from "../../stores/resetAction"
+// import { reset } from "../../stores/resetAction"
 
 const SecondSidebar = () => {
   const dispatch = useDispatch<storeDispatchType>()
@@ -202,7 +202,12 @@ const SecondSidebar = () => {
           }
           {
             role === "SUPER" && <Li>
-              <ToggleTmsButtonWrapper onClick={() => { navigate("/"); dispatch(reset()); dispatch(setSwitchTms(!isTms)); cookies.set('isTms', !isTms, cookieOptions) }} $primary={isTms}>
+              <ToggleTmsButtonWrapper onClick={() => {
+                navigate("/");
+                // dispatch(reset());
+                dispatch(setSwitchTms(!isTms));
+                cookies.set('isTms', !isTms, cookieOptions)
+              }} $primary={isTms}>
                 <div className="icon">
                   {isTms ? 'TMS' : 'E/I'}
                 </div>

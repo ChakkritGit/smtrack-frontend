@@ -60,7 +60,7 @@ const TmsDashboard = () => {
           />
         </DashboardHeadFilter>
         {
-          devicesLog.log?.length > 0 &&
+          devicesLog?.log?.length > 0 &&
           <>
             <TmsDeviceInfo
               devicesData={devicesLog}
@@ -80,7 +80,7 @@ const TmsDashboard = () => {
             </Dashboardanalys>
           </>
         }
-        {devicesLog.log?.length === 0 &&
+        {devicesLog?.log?.length === 0 &&
           <>
             <TmsDeviceInfo
               devicesData={devicesLog}

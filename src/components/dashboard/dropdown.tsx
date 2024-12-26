@@ -8,18 +8,19 @@ import { cookieOptions, cookies } from "../../constants/constants"
 import Select, { SingleValue } from 'react-select'
 import { useTranslation } from "react-i18next"
 import { useTheme } from "../../theme/ThemeProvider"
+import { HomeDeviceType } from "../../types/smtrack/devices.type"
 
 type Option = {
   value: string,
   label: string,
 }
 
-type Device = {
-  wardId: string,
-  devId: string,
-  devSerial: string,
-  devDetail: string,
-}
+// type Device = {
+//   ward: string,
+//   id: string,
+//   sn: string,
+//   name: string
+// }
 
 interface FilterProps {
   hosId: string;
@@ -63,16 +64,16 @@ export default function Dropdown(filterProps: FilterProps) {
 
   let filteredDevicesList = useMemo(() => {
     return wardId !== ''
-      ? devices.filter((item) => item.wardId.includes(wardId))
+      ? devices.filter((item) => item.ward.includes(wardId))
       : hosId && hosId !== 'ALL'
-        ? devices.filter((item) => item.ward.hospital.hosId.includes(hosId))
+        ? devices.filter((item) => item.hospital.includes(hosId))
         : devices
   }, [wardId, devices, hosId])
 
   return (
     <Select
-      options={mapOptions<Device, keyof Device>(filteredDevicesList, 'devId', 'devSerial', 'devDetail')}
-      value={mapDefaultValue<Device, keyof Device>(filteredDevicesList, val, 'devId', 'devSerial', 'devDetail')}
+      options={mapOptions<HomeDeviceType, keyof HomeDeviceType>(filteredDevicesList, 'id', 'id', 'name')}
+      value={mapDefaultValue<HomeDeviceType, keyof HomeDeviceType>(filteredDevicesList, val, 'id', 'id', 'name')}
       onChange={selectchang}
       autoFocus={false}
       placeholder={t('selectDeviceDrop')}

@@ -56,7 +56,7 @@ const TmsHome = () => {
   const fetchDevices = useCallback(async (page: number, size = perPage) => {
     try {
       setLoading({ ...loading, deviceLoading: true })
-      const response = await axiosInstance.get<responseType<FetchDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device?ward=${wardId}&page=${page}&perpage=${size}`)
+      const response = await axiosInstance.get<responseType<FetchDeviceType>>(`${import.meta.env.VITE_APP_API}/legacy/device?${wardId ? `ward=${wardId}&` : ''}page=${page}&perpage=${size}`)
       setDevices(response.data.data.devices)
       setTotalRows(response.data.data.total)
     } catch (error) {
@@ -73,7 +73,7 @@ const TmsHome = () => {
   const fetchCount = useCallback(async () => {
     try {
       setLoading({ ...loading, countLoading: true })
-      const response = await axiosInstance.get<responseType<TmsCountType>>(`${import.meta.env.VITE_APP_API}/legacy/templog/dashboard/count?ward=${wardId}`)
+      const response = await axiosInstance.get<responseType<TmsCountType>>(`${import.meta.env.VITE_APP_API}/legacy/templog/dashboard/count${wardId ? `?ward=${wardId}` : ''}`)
       setCount(response.data.data)
     } catch (error) {
       if (error instanceof AxiosError) {

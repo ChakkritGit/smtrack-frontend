@@ -18,6 +18,7 @@ type navbar = {
 export default function Navbar(navbar: navbar) {
   const dispatch = useDispatch<storeDispatchType>()
   const { expand, transparent } = useSelector((state: RootState) => state.utilsState)
+
   useEffect(() => {
     localStorage.setItem('expandaside', expand.toString())
   }, [expand])

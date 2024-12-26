@@ -5,8 +5,8 @@ import Cookies, { CookieSetOptions } from "universal-cookie"
 import CryptoJS from "crypto-js"
 import { Option, Schedule, ScheduleHour, ScheduleMinute } from "../types/config.type"
 import piexif from "piexifjs"
-import { devicesType } from "../types/device.type"
 import { UserRole } from "../types/user.type"
+import { HomeDeviceType } from "../types/smtrack/devices.type"
 
 export const getDateNow = () => {
   let date = new Date()
@@ -684,7 +684,7 @@ const isLeapYear = (year: number): boolean => {
   return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0)
 }
 
-export const calulateDate = (devicesData: devicesType) => {
+export const calulateDate = (devicesData: HomeDeviceType) => {
   const { warranty } = devicesData
   const today = new Date()
   const expiredDate = new Date(String(warranty[0]?.expire))

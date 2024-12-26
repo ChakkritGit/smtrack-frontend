@@ -14,7 +14,7 @@ export function Islogout() {
   return <Login />
 }
 
-export function Hidesetting() {
+export function HideSetting() {
   const { tokenDecode } = useSelector((state: RootState) => state.utilsState)
   const { role } = tokenDecode
   return (

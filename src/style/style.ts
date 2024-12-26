@@ -344,7 +344,7 @@ flex-shrink: 0;
 height: 100%;
 width: 235px;
 padding: 1rem;
-border-right: 1.5px solid var(--soft-grey);
+/* border-right: 1.5px solid var(--soft-grey); */
 background-color: var(--white-grey-1);
 transition: width ease .3s;
 
@@ -651,7 +651,7 @@ width: 100%;
 height: 60px;
 padding: 0 1.5rem 0 1rem;
 min-height: 55px;
-border-bottom: .5px solid var(--soft-grey);
+/* border-bottom: .5px solid var(--soft-grey); */
 box-shadow: 0px 15px 10px -15px rgba(0, 0, 0, .05);
 
 ${props => props.theme.mode === 'dark' &&
@@ -3187,6 +3187,7 @@ flex-direction: column;
 gap: .5rem;
 margin-top: 5rem;
 width: 100%;
+color: ${props => props.theme.mode === "dark" ? 'var(--white)' : 'var(--main-dark-color)'};
 
 span {
   font-size: 24px;

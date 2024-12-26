@@ -5,7 +5,7 @@ import { UserState, payloadError } from "../types/redux.type"
 import axiosInstance from "../constants/axiosInstance"
 
 export const fetchUserData = createAsyncThunk<usersType[]>('user/fetchUserData', async () => {
-  const response = await axiosInstance.get<responseType<usersType[]>>(`${import.meta.env.VITE_APP_API}/user`)
+  const response = await axiosInstance.get<responseType<usersType[]>>(`${import.meta.env.VITE_APP_AUTH}/auth/user`)
   return response.data.data
 })
 

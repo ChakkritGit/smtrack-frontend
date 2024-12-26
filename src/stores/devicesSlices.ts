@@ -1,13 +1,12 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
-import { devicesType } from "../types/device.type"
 import { DeviceState, payloadError } from "../types/redux.type"
 import { responseType } from "../types/response.type"
 import axiosInstance from "../constants/axiosInstance"
-// import { cookieOptions, cookies } from "../constants/constants"
+import { DevicesType, HomeDeviceType } from "../types/smtrack/devices.type"
 
-export const fetchDevicesData = createAsyncThunk<devicesType[]>('device/fetchDevicesData', async () => {
-  const response = await axiosInstance.get<responseType<devicesType[]>>(`${import.meta.env.VITE_APP_API}/device`)
-  return response.data.data
+export const fetchDevicesData = createAsyncThunk<HomeDeviceType[]>('device/fetchDevicesData', async () => {
+  const response = await axiosInstance.get<responseType<DevicesType>>(`${import.meta.env.VITE_APP_API}/devices/device`)
+  return response.data.data.devices
 })
 
 const initialState: DeviceState = {
@@ -31,7 +30,7 @@ const deviceSlice = createSlice({
       )
       .addMatcher(
         (action) => action.type.endsWith("/fulfilled"),
-        (state: DeviceState, action: PayloadAction<devicesType[]>) => {
+        (state: DeviceState, action: PayloadAction<HomeDeviceType[]>) => {
           state.devicesLoading = false
           if (action.type.includes("fetchDevicesData")) {
             state.devices = action.payload

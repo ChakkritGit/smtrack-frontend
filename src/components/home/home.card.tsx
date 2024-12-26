@@ -42,11 +42,11 @@ function HomeCard({ cardActive, deviceData, wardId, setCardActive, setOnFilteres
     filter.flatMap(i => i.noti).filter(predicate).length
 
   const countState = {
-    temp: getFilteredCount(n => ['LOWER', 'OVER'].includes(n.notiDetail.split('/')[1])),
-    door: getFilteredCount(n => n.notiDetail.startsWith('PROBE') && n.notiDetail.split('/')[2].startsWith('ON')),
+    temp: getFilteredCount(n => ['LOWER', 'OVER'].includes(n?.notiDetail.split('/')[1])),
+    door: getFilteredCount(n => n?.notiDetail.startsWith('PROBE') && n?.notiDetail.split('/')[2].startsWith('ON')),
     connect: getSum('noti'),
-    plug: getFilteredCount(n => n.notiDetail.split('/')[0] === 'AC'),
-    scCard: getFilteredCount(n => n.notiDetail.split('/')[0] === 'SD'),
+    plug: getFilteredCount(n => n?.notiDetail.split('/')[0] === 'AC'),
+    scCard: getFilteredCount(n => n?.notiDetail.split('/')[0] === 'SD'),
     adjust: getSum('history'),
     repair: getSum('repair'),
     warranties: getSum('warranty'),

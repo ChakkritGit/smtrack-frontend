@@ -26,12 +26,12 @@ export const filtersDevices = createAsyncThunk<devicesType[]>('array/filters', a
 })
 
 export const fetchHospitals = createAsyncThunk<hospitalsType[]>('array/fetchHospitals', async () => {
-  const response = await axiosInstance.get<responseType<hospitalsType[]>>(`${import.meta.env.VITE_APP_API}/auth/hospital`)
+  const response = await axiosInstance.get<responseType<hospitalsType[]>>(`${import.meta.env.VITE_APP_AUTH}/auth/hospital`)
   return response.data.data
 })
 
 export const fetchWards = createAsyncThunk<wardsType[]>('array/fetchWards', async () => {
-  const response = await axiosInstance.get<responseType<wardsType[]>>(`${import.meta.env.VITE_APP_API}/auth/ward`)
+  const response = await axiosInstance.get<responseType<wardsType[]>>(`${import.meta.env.VITE_APP_AUTH}/auth/ward`)
   return response.data.data
 })
 

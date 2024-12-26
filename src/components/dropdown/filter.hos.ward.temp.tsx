@@ -10,12 +10,12 @@ import Select from "react-select"
 import { hospitalsType } from "../../types/hospital.type"
 
 interface Hospital {
-  hosId: string,
+  id: string,
   hosName: string,
 }
 
 interface Ward {
-  wardId: string,
+  id: string,
   wardName: string,
 }
 
@@ -48,7 +48,7 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
   const { hosId, wardId } = filterById
 
   useEffect(() => {
-    setWardname(wardData.filter((items) => hosId ? items.hospital.hosId.includes(hosId) : items))
+    setWardname(wardData.filter((items) => hosId ? items.hospital.id.includes(hosId) : items))
   }, [wardData, hosId])
 
   const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
@@ -66,7 +66,7 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
   const getHospital = (hospitalID: string | undefined) => {
     if (hospitalID !== '') {
       setFilterById({ ...filterById, hosId: String(hospitalID) })
-      setWardname(wardData.filter((items) => hospitalID ? items.hospital.hosId.includes(hospitalID) : items))
+      setWardname(wardData.filter((items) => hospitalID ? items.hospital.id.includes(hospitalID) : items))
     } else {
       setFilterById({ ...filterById, hosId: '' })
     }
@@ -80,11 +80,11 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
     }
   }
 
-  const allWard = { wardId: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
+  const allWard = { id: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
 
   const updatedWardData = [allWard, ...wardName]
 
-  const allHos = { hosId: '', hosName: 'ALL', createAt: '', updateAt: '', hospital: {} as hospitalsType }
+  const allHos = { id: '', hosName: 'ALL', createAt: '', updateAt: '', hospital: {} as hospitalsType }
 
   const updatedHosData = [allHos, ...hospitalsData]
 
@@ -104,8 +104,8 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
               <DevHomeHead>
                 {
                   role !== 'ADMIN' && <Select
-                    options={mapOptions<Hospital, keyof Hospital>(updatedHosData, 'hosId', 'hosName')}
-                    value={mapDefaultValue<Hospital, keyof Hospital>(updatedHosData, hosId ? hosId : '', 'hosId', 'hosName')}
+                    options={mapOptions<Hospital, keyof Hospital>(updatedHosData, 'id', 'hosName')}
+                    value={mapDefaultValue<Hospital, keyof Hospital>(updatedHosData, hosId ? hosId : '', 'id', 'hosName')}
                     onChange={(e) => getHospital(e?.value)}
                     autoFocus={false}
                     styles={{
@@ -132,8 +132,8 @@ function FilterHosWardTemporary(filterProps: FilterProps) {
                   />
                 }
                 <Select
-                  options={mapOptions<Ward, keyof Ward>(updatedWardData, 'wardId', 'wardName')}
-                  value={mapDefaultValue<Ward, keyof Ward>(updatedWardData, wardId ? wardId : '', 'wardId', 'wardName')}
+                  options={mapOptions<Ward, keyof Ward>(updatedWardData, 'id', 'wardName')}
+                  value={mapDefaultValue<Ward, keyof Ward>(updatedWardData, wardId ? wardId : '', 'id', 'wardName')}
                   onChange={(e) => getWard(e?.value)}
                   autoFocus={false}
                   styles={{

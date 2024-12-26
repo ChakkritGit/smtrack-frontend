@@ -10,6 +10,7 @@ import Support from "../pages/contact/support";
 import { Islogout } from "../authen/authen";
 import ErrorPage from "./error-page";
 import TmsMain from "../main/tms.main";
+import Application from "./Application";
 
 export const router = (role: string, isTms: boolean) => createBrowserRouter([
   {
@@ -44,4 +45,9 @@ export const router = (role: string, isTms: boolean) => createBrowserRouter([
     path: "*",
     element: <ErrorPage />
   },
+  {
+    path: "app",
+    element: <Application />,
+    errorElement: <SomethingWrong />,
+  }
 ])

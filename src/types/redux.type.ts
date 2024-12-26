@@ -4,6 +4,7 @@ import { devicesType } from "./device.type"
 import { hospitalsType } from "./hospital.type"
 import { notificationType } from "./notification.type"
 import { probeType } from "./probe.type"
+import { HomeDeviceType } from "./smtrack/devices.type"
 import { TmsDeviceType } from "./tms.type"
 import { UserProfileType, usersType } from "./user.type"
 import { wardsType } from "./ward.type"
@@ -20,7 +21,7 @@ interface DataArrayStore extends ArrayStore {
 }
 
 type DeviceState = {
-  devices: devicesType[],
+  devices: HomeDeviceType[],
   devicesLoading: boolean,
   devicesError: string
 }

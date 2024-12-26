@@ -178,7 +178,6 @@ export default function Main() {
   return (
     <>
       <SideParent onContextMenu={handleContextMenu}>
-        <Popupcomponent />
         <SideChildSide $primary>
           <Sidebar />
         </SideChildSide>
@@ -202,6 +201,7 @@ export default function Main() {
           </BottomNavigateWrapper>
         </SideParent>
       </SideParent>
+      <Popupcomponent />
       {
         show && <TabConnect $primary={status} $show={show}>
           <span>{status ? t('stateDisconnect') : t('stateConnect')}</span>

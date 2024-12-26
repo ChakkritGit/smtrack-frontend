@@ -1,11 +1,11 @@
 import { lazy, Suspense } from "react"
-import { HideFlashFW, Hidesetting } from "../authen/authen"
+import { HideFlashFW, HideSetting } from "../authen/authen"
 import PreviewPDF from "../components/pdf/preview.pdf"
 import Comparechart from "../pages/dashboard/compare.chart"
 import Dashboard from "../pages/dashboard/dashboard"
 import Fullchart from "../pages/dashboard/fullchart"
 import Fulltable from "../pages/dashboard/fulltable"
-import Home from "../pages/home/home"
+// import Home from "../pages/home/home"
 import Log from "../pages/log/log"
 import Repair from "../pages/repair/repair"
 import Logs from "../pages/setting/Logs"
@@ -15,13 +15,17 @@ import Permission from "../pages/users/manageusers"
 import Warranty from "../pages/warranty/warranty"
 import SomethingWrong from "./something-wrong"
 import PageLoading from "../components/loading/page.loading"
+import { RouteObject } from "react-router-dom"
 const LazyTest = lazy(() => import('../pages/test/test'))
+const Home = lazy(() => import('../pages/home/home'))
 const ESPToolComponent = lazy(() => import('../pages/setting/devices/serial.port'))
 
-export const smtrackChildren = [
+export const smtrackChildren: RouteObject[] = [
   {
     path: "/",
-    element: <Home />,
+    element: <Suspense fallback={<PageLoading />}>
+      <Home />
+    </Suspense>,
     errorElement: <SomethingWrong />
   },
   {
@@ -30,7 +34,7 @@ export const smtrackChildren = [
     errorElement: <SomethingWrong />
   },
   {
-    element: <Hidesetting />,
+    element: <HideSetting />,
     errorElement: <SomethingWrong />,
     children: [
       {

@@ -1,21 +1,14 @@
-import { hospitalsType } from "./hospital.type"
-
 type usersType = {
-  userId: string,
-  wardId: string,
-  userName: string,
-  userStatus: boolean,
+  display: string,
+  id: string,
+  pic: string,
   role: UserRole,
-  displayName: string,
-  userPic: string,
-  comment: null,
-  createBy: string,
-  createAt: string,
-  updateAt: string
+  status: boolean,
+  username: string,
   ward: {
-    wardName: string,
     hosId: string,
-    hospital: hospitalsType
+    id: string,
+    wardName: string
   }
 }
 

@@ -174,7 +174,7 @@ export default function Adduser(AdduserProp: adduserProp) {
           status: 0,
           fileupload: null as File | null,
         })
-        dispatch(fetchUserData(token))
+        dispatch(fetchUserData())
         reFetchdata()
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -238,7 +238,7 @@ export default function Adduser(AdduserProp: adduserProp) {
           timer: 2000,
           showConfirmButton: false,
         })
-        dispatch(fetchUserData(token))
+        dispatch(fetchUserData())
         reFetchdata()
       } catch (error) {
         if (error instanceof AxiosError) {

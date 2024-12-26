@@ -193,6 +193,11 @@ margin-top: 1rem;
   &>div:nth-child(3) {
     align-items: center;
 
+    &>div {
+      flex-direction: column;
+      gap: .5rem;
+  }
+
     &>span {
     font-size: 18px;
   }
@@ -206,6 +211,6 @@ export const StoreBanner = styled.img`
   object-fit: contain;
 
   @media (max-width: 430px) {
-    width: 120px;
+    width: 130px;
 }
 `

@@ -1,9 +1,15 @@
 import { Col, Container, Form, Modal, Row } from "react-bootstrap"
-import { DelWarrantyButton, DetailFlex, DetailWarranty, FormBtn, FormFlexBtn, ModalHead, WarrantyBody, WarrantyHead, WarrantyHeadBtn } from "../../style/style"
+import {
+  DelWarrantyButton, DetailFlex, DetailWarranty, FormBtn, FormFlexBtn,
+  ModalHead, WarrantyBody, WarrantyHead, WarrantyHeadBtn
+} from "../../style/style"
 import { FormEvent, useEffect, useRef, useState } from "react"
 import Loading from "../../components/loading/loading"
 import { useTranslation } from "react-i18next"
-import { RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine, RiFileCloseLine, RiFileForbidLine, RiInformationLine, RiLoader3Line, RiPrinterLine } from "react-icons/ri"
+import {
+  RiAddLine, RiCloseLine, RiDeleteBin2Line, RiEditLine, RiFileCloseLine,
+  RiFileForbidLine, RiInformationLine, RiPrinterLine
+} from "react-icons/ri"
 import DataTable, { TableColumn } from "react-data-table-component"
 import { useReactToPrint } from "react-to-print"
 import Printwarranty from "./printwarranty"
@@ -49,7 +55,7 @@ type Option = {
 }
 
 type Hospital = {
-  hosId: string,
+  id: string,
   hosName: string,
 }
 
@@ -383,7 +389,7 @@ export default function Warranty() {
     const selectedValue = e?.value
     const selectedLabel = e?.label
     if (!selectedValue) return
-    setWarrantyObject({ ...warrantyObject, customerAddress: hospitalsData.filter((items) => items.hosId.toLowerCase().includes(selectedValue.toLowerCase())).map((items) => items.hosAddress)[0], customerName: String(selectedLabel) })
+    setWarrantyObject({ ...warrantyObject, customerAddress: String(hospitalsData.filter((items) => items.id.toLowerCase().includes(selectedValue.toLowerCase())).map((items) => items.hosAddress)[0]), customerName: String(selectedLabel) })
   }
 
   const setSaleDept = (e: SingleValue<Option>) => {
@@ -715,8 +721,8 @@ export default function Warranty() {
                 <Form.Label className="w-100">
                   {t('customerName')}
                   <Select
-                    options={mapOptionsHospital<Hospital, keyof Hospital>(hospitalsData, 'hosId', 'hosName')}
-                    value={mapDefaultValueHospital<Hospital, keyof Hospital>(hospitalsData, String(customerName), 'hosId', 'hosName')}
+                    options={mapOptionsHospital<Hospital, keyof Hospital>(hospitalsData, 'id', 'hosName')}
+                    value={mapDefaultValueHospital<Hospital, keyof Hospital>(hospitalsData, String(customerName), 'id', 'hosName')}
                     onChange={setHosId}
                     autoFocus={false}
                     placeholder={t('selectDeviceDrop')}

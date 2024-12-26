@@ -4,7 +4,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import LangguageSelector from '../../components/lang/LangguageSelector'
 import Swal from "sweetalert2"
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 import { useTranslation } from 'react-i18next'
 import { FormEvent, useState } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
@@ -25,12 +25,10 @@ import {
   TimeStap
 } from '../../style/components/login'
 import { LineHr } from '../../style/style'
-import { Helmet } from 'react-helmet'
 import { AgreeSection } from '../../style/components/contact.styled'
 import playStore from '../../assets/images/playstore.png'
 import appStore from '../../assets/images/appstore.png'
 import LogoBanner from '../../assets/images/app-logo.png'
-import axiosInstance from '../../constants/axiosInstance'
 
 export default function Login() {
   const dispatch = useDispatch<storeDispatchType>()
@@ -67,8 +65,8 @@ export default function Login() {
     if (username !== '' && password !== '') {
       try {
         setIsloading(true)
-        const url: string = `${import.meta.env.VITE_APP_API}/auth/login`
-        const response = await axiosInstance.post<responseType<LoginResponse>>(url, loginForm)
+        const url: string = `${import.meta.env.VITE_APP_AUTH}/auth/login`
+        const response = await axios.post<responseType<LoginResponse>>(url, loginForm)
         const { hosId, token, refreshToken, id, wardId } = response.data.data
         const localDataObject = {
           hosId: hosId,
@@ -135,9 +133,6 @@ export default function Login() {
 
   return (
     <Container className='p-3 d-flex flex-column gap-3'>
-      <Helmet>
-        <title>Login</title>
-      </Helmet>
       <LangContainer>
         <LangguageSelector />
       </LangContainer>

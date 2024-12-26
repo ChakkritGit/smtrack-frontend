@@ -31,7 +31,7 @@ export default function Permission() {
 
   let filteredItems = useMemo(() => {
     const result = wardId !== ''
-      ? userData.filter((item) => item.wardId.includes(wardId))
+      ? userData.filter((item) => item.ward.id.includes(wardId))
       : hosId && hosId !== ''
         ? userData.filter((item) => item.ward.hosId.includes(hosId))
         : userData
@@ -65,7 +65,7 @@ export default function Permission() {
   const showPage = (pageNumber: number, query: string = '') => {
     const startIndex = pageNumber * cardsPerPage
     const endIndex = startIndex + cardsPerPage
-    const filteredCards = filteredItems ? (query ? filteredItems.filter(card => [card.displayName, card.userName, card.userId].some(attr => attr.toLowerCase().includes(query.toLowerCase()))) : filteredItems) : []
+    const filteredCards = filteredItems ? (query ? filteredItems.filter(card => [card.display, card.username, card.id].some(attr => attr.toLowerCase().includes(query.toLowerCase()))) : filteredItems) : []
     const cardsToDisplay = filteredCards ? filteredCards.slice(startIndex, endIndex) : []
     setDisplayedCards(cardsToDisplay)
     setIsFiltering(false)
@@ -103,18 +103,18 @@ export default function Permission() {
           <>
             <CardUserBody $primary={expand}>
               {
-                displayedCards.filter((f) => f.userId !== id).map((item, index) => (
+                displayedCards.filter((f) => f.id !== id).map((item, index) => (
                   <CardUser
-                    key={item.userId}
+                    key={item.id}
                     keyindex={index}
-                    userPic={item.userPic}
-                    displayName={item.displayName}
-                    userName={item.userName}
+                    userPic={item.pic}
+                    displayName={item.display}
+                    userName={item.username}
                     role={item.role}
-                    userId={item.userId}
+                    userId={item.id}
                     hosId={item.ward.hosId}
-                    userStatus={item.userStatus}
-                    wardId={item.wardId}
+                    userStatus={item.status}
+                    wardId={item.ward.id}
                   />
                 ))
               }
