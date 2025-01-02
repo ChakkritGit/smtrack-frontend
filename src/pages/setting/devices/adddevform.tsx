@@ -98,7 +98,7 @@ export default function Adddevform(managedevices: managedevices) {
   const fetchWard = async () => {
     try {
       const response = await axiosInstance.get<responseType<wardsType>>(`${import.meta.env.VITE_APP_API}/ward/${devdata.wardId}`)
-      setHosid(response.data.data.hospital.hosId)
+      setHosid(response.data.data.hospital.id)
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 401) {
