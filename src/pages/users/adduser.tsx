@@ -227,6 +227,7 @@ export default function Adduser(AdduserProp: adduserProp) {
     e.preventDefault()
     const url: string = `${import.meta.env.VITE_APP_API}/user/${userData?.userId}`
     const formData = new FormData()
+    formData.append('wardId', form.group_id)
     formData.append('userName', form.user_name)
     formData.append('displayName', form.display_name)
     formData.append('userLevel', form.user_level)
