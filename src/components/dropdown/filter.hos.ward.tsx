@@ -60,15 +60,6 @@ function FilterHosAndWard() {
     }
   }
 
-  const updateLocalStorageAndDispatch = (key: string, id: string | undefined, action: Function) => {
-    cookies.set(key, String(id), cookieOptions)
-    dispatch(action(String(id)))
-  }
-
-  useEffect(() => {
-    setWardname(wardData.filter((items) => hosId ? items.hospital.id.includes(hosId) : items))
-  }, [wardData, hosId])
-
   const getWard = (wardID: string | undefined) => {
     if (wardID !== '') {
       updateLocalStorageAndDispatch('selectWard', wardID, setWardId)
@@ -77,6 +68,15 @@ function FilterHosAndWard() {
       dispatch(setWardId(''))
     }
   }
+
+  const updateLocalStorageAndDispatch = (key: string, id: string | undefined, action: Function) => {
+    cookies.set(key, String(id), cookieOptions)
+    dispatch(action(String(id)))
+  }
+
+  useEffect(() => {
+    setWardname(wardData.filter((items) => hosId ? items.hospital.id.includes(hosId) : items))
+  }, [wardData, hosId])
 
   const allWard = { id: '', wardName: 'ALL', wardSeq: 0, hosId: '', createAt: '', updateAt: '', hospital: {} as hospitalsType }
   const allHos = { id: '', hosName: 'ALL', createAt: '', updateAt: '', hospital: {} as hospitalsType }
