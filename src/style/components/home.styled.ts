@@ -430,4 +430,6 @@ export const OnErrorFlex = styled.div<{ $primary?: boolean }>`
 
 export const HomeContainer = styled.div`
   padding: 0 1rem;
+  max-width: 1536px;
+  margin: 0 auto;
 `
