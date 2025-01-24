@@ -25,7 +25,6 @@ import {
   TimeStap
 } from '../../style/components/login'
 import { LineHr } from '../../style/style'
-import { Helmet } from 'react-helmet'
 import { AgreeSection } from '../../style/components/contact.styled'
 import playStore from '../../assets/images/playstore.png'
 import appStore from '../../assets/images/appstore.png'
@@ -141,9 +140,6 @@ export default function Login() {
 
   return (
     <Container className='p-3 d-flex flex-column gap-3'>
-      <Helmet>
-        <title>Login</title>
-      </Helmet>
       <LangContainer>
         <LangguageSelector />
       </LangContainer>

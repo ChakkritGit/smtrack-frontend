@@ -1,6 +1,7 @@
 import Chart from "react-apexcharts"
 import { logtype } from "../../types/log.type"
 import { useTheme } from "../../theme/ThemeProvider"
+
 type chartType = {
   chartData: logtype[],
   devicesData: { tempMin: number | undefined, tempMax: number | undefined },

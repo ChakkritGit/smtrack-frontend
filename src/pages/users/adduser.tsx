@@ -39,7 +39,7 @@ export default function Adduser(AdduserProp: adduserProp) {
   const [show, setShow] = useState(false)
   const [showPass, setShowPass] = useState(false)
   const [form, setform] = useState({
-    group_id: pagestate !== "add" ? String(userData?.userId) : '',
+    group_id: pagestate !== "add" ? String(userData?.wardId) : '',
     user_name: pagestate !== "add" ? String(userData?.userName) : '',
     user_password: '',
     display_name: pagestate !== "add" ? String(userData?.displayName) : '',
