@@ -135,7 +135,7 @@ export default function Login() {
   const formattedTime = currentDate.toLocaleTimeString(t('thTime'), {
     hour: '2-digit',
     minute: '2-digit',
-    // second: '2-digit'
+    // second: '2-digit'bun
   })
 
   return (
