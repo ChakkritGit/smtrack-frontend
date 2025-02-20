@@ -1,57 +1,57 @@
-import { ChangeEventHandler, MouseEventHandler } from "react"
-import { UserRole } from "./user.type"
+import { ChangeEventHandler, MouseEventHandler } from 'react'
+import { UserRole } from './user.type'
 
 // userComponent
 interface cardType {
-  keyindex: number,
-  userId: string,
-  displayName: string,
-  userName: string,
-  role: UserRole,
-  userPic: string,
-  hosId: string,
-  userStatus: boolean,
+  keyindex: number
+  userId: string
+  displayName: string
+  userName: string
+  role: UserRole
+  userPic: string
+  hosId: string
+  userStatus: boolean
   wardId: string
 }
 // closeUserComponent
 
 // filterComponent
 type MyComponentFilters = {
-  filterText: string,
-  onFilter: ChangeEventHandler<HTMLInputElement> | undefined,
-  onClear: MouseEventHandler<HTMLButtonElement> | undefined,
+  filterText: string
+  onFilter: ChangeEventHandler<HTMLInputElement> | undefined
+  onClear: MouseEventHandler<HTMLButtonElement> | undefined
   onState: string
 }
 // closeFilterComponent
 
 // countProblemComponent
 type countProblem = {
-  probe: number,
-  door: number,
-  connect: number,
-  ac: number,
-  sd: number,
-  adjust: number,
-  repair: number,
+  probe: number
+  door: number
+  connect: number
+  ac: number
+  sd: number
+  adjust: number
+  repair: number
   warranty: number
 }
 // closeCountProblemComponent
 
 // dataTableLogExportComponent
 type dataTableLog = {
-  No: number,
-  DeviceSN: string,
-  DeviceName: string,
-  TemeratureMax: number,
-  TemeratureMin: number,
-  Temperature: number,
-  Humidity: number,
-  Door1: string,
-  Door2: string,
-  Door3: string,
-  Connectivity: string,
-  Plug: string,
-  Battery: string,
+  No: number
+  DeviceSN: string
+  DeviceName: string
+  TemeratureMax: number
+  TemeratureMin: number
+  Temperature: number
+  Humidity: number
+  Door1: string
+  Door2: string
+  Door3: string
+  Connectivity: string
+  Plug: string
+  Battery: string
   Time: string
 }
 // closeDataTableLogExportComponent
@@ -67,7 +67,15 @@ type jwtToken = {
 }
 
 // jwtTokenComponent
-type FilterText = 'probe' | 'door' | 'connect' | 'plug' | 'sd' | 'adjust' | 'repair' | 'warranty'
+type FilterText =
+  | 'probe'
+  | 'door'
+  | 'connect'
+  | 'plug'
+  | 'sd'
+  | 'adjust'
+  | 'repair'
+  | 'warranty'
 
 type cardFilter = {
   id: number
@@ -80,9 +88,9 @@ type cardFilter = {
 }
 
 type socketResponseType = {
-  device: string,
-  message: string,
-  hospital: string,
+  device: string
+  message: string
+  hospital: string
   time: string
 }
 
@@ -91,9 +99,19 @@ type socketResponseType = {
 // }
 
 type firmwareType = {
-  fileName: string,
-  fileSize: string,
+  fileName: string
+  fileSize: string
   createDate: string
 }
 
-export type { cardType, MyComponentFilters, countProblem, dataTableLog, jwtToken, cardFilter, socketResponseType, firmwareType, FilterText }
+export type {
+  cardType,
+  MyComponentFilters,
+  countProblem,
+  dataTableLog,
+  jwtToken,
+  cardFilter,
+  socketResponseType,
+  firmwareType,
+  FilterText
+}

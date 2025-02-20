@@ -584,12 +584,6 @@ div:where(.swal2-container) div:where(.swal2-loader) {
     to { transform: rotate(360deg); }
 }
 
-.go2072408551 {
-  &>svg {
-    margin: 0 .5rem;
-  }
-}
-
 .resetHeight {
   height: auto !important;
 }
@@ -746,6 +740,12 @@ div:where(.swal2-container).swal2-center>.swal2-popup {
 .go2072408551 {
   background-color: var(--main-last-color);
   color: var(--white-grey-1);
+}
+
+.go2072408551 {
+  &>svg {
+    margin: 0 .5rem;
+  }
 }
 
 .apexcharts-tooltip {

@@ -243,15 +243,16 @@ export default function Addprobe(addprobe: addprobeProps) {
     if (!selectedValue) return
     setFormdata({ ...formdata, door: selectedValue })
   }
-  const deviceSelected = (e: SingleValue<Option>) => {
-    const selectedValue = e?.value
-    if (!selectedValue) return
-    setFormdata({ ...formdata, devSerial: selectedValue })
-  }
+  
   const channelSelected = (e: SingleValue<Option>) => {
     const selectedValue = e?.value
     if (!selectedValue) return
     setFormdata({ ...formdata, probeCh: selectedValue })
+  }
+  const deviceSelected = (e: SingleValue<Option>) => {
+    const selectedValue = e?.value
+    if (!selectedValue) return
+    setFormdata({ ...formdata, devSerial: selectedValue })
   }
 
   const delayTimeArray = [
