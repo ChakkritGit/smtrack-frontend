@@ -118,7 +118,7 @@ export default function Adddevform(managedevices: managedevices) {
       devName: devdata.devDetail,
       devSn: devdata.devSerial,
       locationPic: null,
-      macAddWiFi: devdata.config.macAddWiFi,
+      macAddWiFi: devdata?.config?.macAddWiFi,
     })
   }
 
