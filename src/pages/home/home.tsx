@@ -630,13 +630,6 @@ export default function Home () {
           $transparent={transparent}
         >
           <div>
-            {/* <HomeCard
-                  deviceData={devices}
-                  cardActive={cardActive}
-                  setCardActive={setCardActive}
-                  wardId={wardId}
-                  setOnFilteres={setOnFilteres}
-                /> */}
           </div>
           <div>
             {!expand ? (

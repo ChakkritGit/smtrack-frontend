@@ -1,25 +1,24 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
 export const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
-    confirmButton: "btn btn-danger",
-    cancelButton: "btn btn-dark",
+    confirmButton: 'btn btn-danger',
+    cancelButton: 'btn btn-dark'
   },
-  buttonsStyling: false,
+  buttonsStyling: false
 })
 
 export const swalOptimizeChartButtons = Swal.mixin({
   customClass: {
-    confirmButton: "btn btn-warning",
-    cancelButton: "btn btn-dark"
+    confirmButton: 'btn btn-warning',
+    cancelButton: 'btn btn-dark'
   },
-  buttonsStyling: false,
+  buttonsStyling: false
 })
 
 export const swalTokenInvalid = Swal.mixin({
   customClass: {
-    confirmButton: "btn btn-danger"
+    confirmButton: 'btn btn-danger'
   },
-  buttonsStyling: false,
-}
-)
+  buttonsStyling: false
+})

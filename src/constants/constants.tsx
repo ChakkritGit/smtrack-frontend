@@ -643,7 +643,6 @@ export const generateOptionsTwo = () => {
   return option
 }
 
-
 export const mapOptions = <T, K extends keyof T>(data: T[], valueKey: K, labelKey: K): Option[] =>
   data.map(item => ({
     value: item[valueKey] as unknown as string,
