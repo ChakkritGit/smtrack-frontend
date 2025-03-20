@@ -296,7 +296,7 @@ export default function Addprobe(addprobe: addprobeProps) {
       if (deviceModel === 'etemp') {
         client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'on')
       } else {
-        client.publish(`siamatic/i${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'on')
+        client.publish(`siamatic/${deviceModel}/${version}/${probeData?.device.devSerial}/temp`, 'on')
       }
 
       client.publish(`${probeData?.devSerial}/temp`, 'on')
