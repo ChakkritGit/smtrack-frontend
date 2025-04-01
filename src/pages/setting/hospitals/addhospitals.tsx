@@ -44,7 +44,7 @@ export default function Addhospitals(addhosprop: addHospitalProp) {
     const formData = new FormData()
     formData.append('hosName', String(formdata.name))
     formData.append('hosAddress', String(formdata.address))
-    formData.append('userTelePhone', String(formdata.telephone))
+    formData.append('hosTelephone', String(formdata.telephone))
     if (formdata.picture) {
       formData.append('fileupload', formdata.picture as File)
     }

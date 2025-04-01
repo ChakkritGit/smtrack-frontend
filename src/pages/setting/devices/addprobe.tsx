@@ -269,20 +269,20 @@ export default function Addprobe(addprobe: addprobeProps) {
     { value: '30', name: t('probe30Minute') },
     { value: '60', name: t('probe1Hour') },
     { value: '120', name: t('probe2Hour') },
-    { value: '240', name: t('probe4Hour') },
+    { value: '240', name: t('probe4Hour') }
   ]
 
   const doorArray = [
     { value: '1', name: t('probeDoor1') },
     { value: '2', name: t('probeDoor2') },
-    { value: '3', name: t('probeDoor3') },
+    { value: '3', name: t('probeDoor3') }
   ]
 
   const channelArray = [
     { value: '1', name: t('probeChanel1') },
     { value: '2', name: t('probeChanel2') },
     { value: '3', name: t('probeChanel3') },
-    { value: '4', name: t('probeChanel4') },
+    { value: '4', name: t('probeChanel4') }
   ]
 
   useEffect(() => {
